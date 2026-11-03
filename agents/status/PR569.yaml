@@ -1,0 +1,60 @@
+schema: AgentPrStatus.v1
+repository: reallaksh19/3D_Converters
+pr_or_wip: PR569
+mission: "Issue #568 reusable fail-closed Engineering Work Pack framework"
+workstream: ENGINEERING_WORKPACK_FRAMEWORK
+branch: agent/engineering-workpack-framework-568
+implementation_head: 85b07c936ea3ea4684f13f4c0ffa6239324b7309
+report_basis_head: 85b07c936ea3ea4684f13f4c0ffa6239324b7309
+main_head_last_checked: ecf3b7c44826212710f24ff00f3c0e8847570725
+merge_base: ecf3b7c44826212710f24ff00f3c0e8847570725
+work_intent: IMPLEMENT
+criticality: ENGINEERING_CRITICAL
+execution_mode: AUTO
+auto_state: COMPLETE_OWNER_MERGE_AUTHORIZED
+auto_authorization: "Owner instruction 2026-08-16T23:04+04:00: proceed in auto mode; skip workflow, only local check. Owner instruction 2026-08-17: review PR567 and PR569, fix and then merge."
+agent_state: REVIEWED_FIXED_READY_FOR_MERGE
+pr_recovery_state: READY_FOR_MERGE
+handover_readiness: READY
+report_path: agents/PR569_workreport.md
+appendix_a_status: QUALIFIED_FOR_ENGINEERING_WORKPACK_FRAMEWORK
+qualification_comment: 5309114286
+current_stage: REVIEW_COMPLETE_OWNER_MERGE_AUTHORIZED
+protected_authority:
+  - FIT_NUMERICAL_METHOD_UNCHANGED
+  - FIT_SCREENING_AUTHORITY_AUTHORIZED_BOUNDED
+  - FIT_DESIGN_AUTHORITY_FALSE
+  - FIT_CODE_COMPLIANCE_FALSE
+  - QST003_FAIL_CLOSED
+  - FIT_PRODUCT_FREEZE_SEPARATE_BLOCKED
+  - CAPABILITY_LIFECYCLE_NOT_INFERRED_FROM_REGISTRY
+  - BENCHMARK_ORACLE_IDENTITY_UNCHANGED
+validation:
+  pre_edit_blob_backups: PASS
+  changed_scope_reconciliation: PASS
+  new_js_line_limit: PASS_UNDER_300
+  reconstructed_mjs_node_check: PASS
+  synthetic_second_consumer: PASS_LOCAL_RECONSTRUCTION
+  unknown_check_type_fail_closed: PASS_LOCAL_RECONSTRUCTION
+  missing_probe_fail_closed: PASS_LOCAL_RECONSTRUCTION
+  duplicate_check_id_fail_closed: PASS_LOCAL_RECONSTRUCTION
+  unsupported_schema_fail_closed: PASS_LOCAL_RECONSTRUCTION
+  mutation_probe_immutability: PASS_LOCAL_RECONSTRUCTION
+  repository_path_escape_fail_closed: PASS_LOCAL_RECONSTRUCTION
+  generic_core_mechanism_rule_scan: PASS_LOCAL_RECONSTRUCTION
+  review_consumer_coupling_fix: PASS_EXPLICIT_CAPTURE_LIST_COUNT
+  async_list_export_support: PASS_LOCAL_RECONSTRUCTION
+  explicit_list_count_on_off: PASS_LOCAL_RECONSTRUCTION
+  fit_probe_syntax: PASS_LOCAL_RECONSTRUCTION
+  pull_request_mergeable: PASS
+  main_drift: PASS_NONE_AT_LAST_CHECK
+  exact_head_git_clone: FAIL_ENVIRONMENT_BLOCKED_DNS_GITHUB
+  exact_head_fit_workpack: NOT_RUN_ENVIRONMENT_BLOCKED_NO_PRIVATE_CHECKOUT
+  exact_head_framework_test: NOT_RUN_ENVIRONMENT_BLOCKED_NO_PRIVATE_CHECKOUT
+  exact_head_fit_release: NOT_RUN_ENVIRONMENT_BLOCKED_NO_PRIVATE_CHECKOUT
+  workflows_actions: NOT_APPLICABLE_OWNER_DIRECTED_SKIP
+coordination_state: PR569_MERGE_FIRST_THEN_REPLAY_PR567_ON_GENERIC_FRAMEWORK
+highest_risk: "Full private-checkout FIT/release suites remain NOT_RUN. They are not represented as PASS; Owner explicitly authorized review/fix/merge after local exact-source review."
+exact_next_action: "Merge PR569 at head 85b07c936ea3ea4684f13f4c0ffa6239324b7309, then re-ground main and replay PR567 without a mechanism branch in the generic verifier."
+merge_authority: OWNER_EXPLICITLY_GRANTED_2026-08-17
+last_updated: 2026-08-17T05:50:00+04:00

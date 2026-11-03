@@ -1,0 +1,224 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "FbxSelectedZoneComponentCrosswalk.v1",
+  "title": "FBX Selected-Zone Component Crosswalk v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "artifactId",
+    "inputs",
+    "sourceOccurrences",
+    "managedComponents",
+    "summary",
+    "authority"
+  ],
+  "properties": {
+    "schema": { "const": "FbxSelectedZoneComponentCrosswalk.v1" },
+    "artifactId": { "type": "string", "pattern": "^FBXZCROSS-[0-9a-f]{32}$" },
+    "inputs": { "$ref": "#/$defs/inputs" },
+    "sourceOccurrences": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/sourceOccurrence" }
+    },
+    "managedComponents": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/managedComponent" }
+    },
+    "summary": { "$ref": "#/$defs/summary" },
+    "authority": { "$ref": "#/$defs/authority" }
+  },
+  "$defs": {
+    "nullableText": {
+      "oneOf": [
+        { "type": "string", "minLength": 1 },
+        { "type": "null" }
+      ]
+    },
+    "stringArray": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "inputs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sourceGraphSchema",
+        "zoneGeometryEvidenceSchema",
+        "zoneGeometryArtifactId",
+        "selectedZoneId"
+      ],
+      "properties": {
+        "sourceGraphSchema": { "const": "FbxSourceGraph.v2" },
+        "zoneGeometryEvidenceSchema": { "const": "FbxZoneGeometryEvidence.v1" },
+        "zoneGeometryArtifactId": { "type": "string", "minLength": 1 },
+        "selectedZoneId": { "type": "string", "minLength": 1 }
+      }
+    },
+    "sourceOccurrence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sourceOccurrenceId",
+        "sourceModelObjectId",
+        "parentOccurrenceId",
+        "geometryObjectIds",
+        "displayName",
+        "domSubtype",
+        "managedRecordIds",
+        "relationship"
+      ],
+      "properties": {
+        "sourceOccurrenceId": { "type": "string", "minLength": 1 },
+        "sourceModelObjectId": { "type": "string", "minLength": 1 },
+        "parentOccurrenceId": { "$ref": "#/$defs/nullableText" },
+        "geometryObjectIds": { "$ref": "#/$defs/stringArray" },
+        "displayName": { "$ref": "#/$defs/nullableText" },
+        "domSubtype": { "$ref": "#/$defs/nullableText" },
+        "managedRecordIds": { "$ref": "#/$defs/stringArray" },
+        "relationship": {
+          "enum": [
+            "UNMATCHED_SOURCE_OCCURRENCE",
+            "ONE_TO_ONE",
+            "ONE_SOURCE_TO_MANY_MANAGED"
+          ]
+        }
+      }
+    },
+    "managedComponent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "managedRecordId",
+        "branchId",
+        "outerType",
+        "rawType",
+        "reference",
+        "displayName",
+        "sourceOccurrenceId",
+        "sourceModelObjectId",
+        "sourceGeometryObjectIds",
+        "generated",
+        "generationMethod",
+        "generationProvenanceStatus",
+        "exactSourceOccurrenceId",
+        "candidateSourceOccurrenceIds",
+        "disposition"
+      ],
+      "properties": {
+        "managedRecordId": { "type": "string", "minLength": 1 },
+        "branchId": { "type": "string", "minLength": 1 },
+        "outerType": { "type": "string", "minLength": 1 },
+        "rawType": { "type": "string", "minLength": 1 },
+        "reference": { "$ref": "#/$defs/nullableText" },
+        "displayName": { "$ref": "#/$defs/nullableText" },
+        "sourceOccurrenceId": { "$ref": "#/$defs/nullableText" },
+        "sourceModelObjectId": { "$ref": "#/$defs/nullableText" },
+        "sourceGeometryObjectIds": { "$ref": "#/$defs/stringArray" },
+        "generated": { "type": "boolean" },
+        "generationMethod": { "$ref": "#/$defs/nullableText" },
+        "generationProvenanceStatus": {
+          "enum": ["NOT_APPLICABLE", "EVIDENCED", "UNRESOLVED"]
+        },
+        "exactSourceOccurrenceId": { "$ref": "#/$defs/nullableText" },
+        "candidateSourceOccurrenceIds": { "$ref": "#/$defs/stringArray" },
+        "disposition": {
+          "enum": [
+            "MATCHED_SOURCE_COMPONENT",
+            "GENERATED_MANAGED_COMPONENT",
+            "SOURCE_OCCURRENCE_CANDIDATES",
+            "UNRESOLVED_SOURCE_BINDING",
+            "UNMATCHED_MANAGED_COMPONENT"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "generated": { "const": true } } },
+          "then": {
+            "properties": {
+              "generationProvenanceStatus": { "enum": ["EVIDENCED", "UNRESOLVED"] },
+              "sourceOccurrenceId": { "type": "null" },
+              "sourceModelObjectId": { "type": "null" },
+              "sourceGeometryObjectIds": { "maxItems": 0 },
+              "exactSourceOccurrenceId": { "type": "null" },
+              "candidateSourceOccurrenceIds": { "maxItems": 0 },
+              "disposition": { "const": "GENERATED_MANAGED_COMPONENT" }
+            }
+          },
+          "else": {
+            "properties": {
+              "generationMethod": { "type": "null" },
+              "generationProvenanceStatus": { "const": "NOT_APPLICABLE" },
+              "disposition": { "not": { "const": "GENERATED_MANAGED_COMPONENT" } }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "generationProvenanceStatus": { "const": "EVIDENCED" } } },
+          "then": { "properties": { "generationMethod": { "type": "string", "minLength": 1 } } }
+        },
+        {
+          "if": { "properties": { "generationProvenanceStatus": { "const": "UNRESOLVED" } } },
+          "then": { "properties": { "generationMethod": { "type": "null" } } }
+        }
+      ]
+    },
+    "countMap": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "selectedSourceOccurrenceCount",
+        "managedComponentCount",
+        "managedCountsByRawType",
+        "matchedManagedComponentCount",
+        "generatedManagedComponentCount",
+        "unresolvedGenerationProvenanceCount",
+        "candidateManagedComponentCount",
+        "unresolvedSourceBindingCount",
+        "unmatchedManagedComponentCount",
+        "unmatchedSourceOccurrenceCount",
+        "oneSourceToManyCount"
+      ],
+      "properties": {
+        "selectedSourceOccurrenceCount": { "type": "integer", "minimum": 0 },
+        "managedComponentCount": { "type": "integer", "minimum": 0 },
+        "managedCountsByRawType": { "$ref": "#/$defs/countMap" },
+        "matchedManagedComponentCount": { "type": "integer", "minimum": 0 },
+        "generatedManagedComponentCount": { "type": "integer", "minimum": 0 },
+        "unresolvedGenerationProvenanceCount": { "type": "integer", "minimum": 0 },
+        "candidateManagedComponentCount": { "type": "integer", "minimum": 0 },
+        "unresolvedSourceBindingCount": { "type": "integer", "minimum": 0 },
+        "unmatchedManagedComponentCount": { "type": "integer", "minimum": 0 },
+        "unmatchedSourceOccurrenceCount": { "type": "integer", "minimum": 0 },
+        "oneSourceToManyCount": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "exactBindingsRequireSourceOccurrenceId",
+        "candidatesAreNonAuthoritative",
+        "missingGenerationMethodIsUnresolved",
+        "runtimeAdmissionChanged",
+        "engineeringAttributesInferred"
+      ],
+      "properties": {
+        "exactBindingsRequireSourceOccurrenceId": { "const": true },
+        "candidatesAreNonAuthoritative": { "const": true },
+        "missingGenerationMethodIsUnresolved": { "const": true },
+        "runtimeAdmissionChanged": { "const": false },
+        "engineeringAttributesInferred": { "const": false }
+      }
+    }
+  }
+}

@@ -1,0 +1,151 @@
+name: FBX2 Benchmark Audit
+
+on:
+  pull_request:
+    paths:
+      - 'Benchmarks/FBX2/**'
+      - 'scripts/fbx/audit-fbx2-benchmark.mjs'
+      - 'scripts/fbx/audit-fbx2-support-names.mjs'
+      - 'scripts/fbx/audit-fbx2-weld-projection.mjs'
+      - 'scripts/fbx/audit-fbx2-weld-tolerance.mjs'
+      - 'scripts/fbx/qualify-fbx2-benchmark.mjs'
+      - 'scripts/fbx/qualify-fbx2-real.mjs'
+      - 'scripts/fbx/run-fbx2-small-benchmark.mjs'
+      - 'scripts/fbx/fbx2-small-benchmark/**'
+      - 'tabs/model-converters/converters/fbx/**'
+      - 'contracts/fbx/**'
+      - 'tests/fbx/**'
+      - '.github/workflows/fbx2-benchmark-audit.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+
+      - name: Validate audit sources
+        run: |
+          node --check scripts/fbx/audit-fbx2-benchmark.mjs
+          node --check scripts/fbx/audit-fbx2-support-names.mjs
+          node --check scripts/fbx/audit-fbx2-weld-projection.mjs
+          node --check scripts/fbx/audit-fbx2-weld-tolerance.mjs
+          node --check scripts/fbx/qualify-fbx2-benchmark.mjs
+          node --check scripts/fbx/qualify-fbx2-real.mjs
+          node --check scripts/fbx/run-fbx2-small-benchmark.mjs
+          node --check scripts/fbx/fbx2-small-benchmark/coordinate-profile.mjs
+          node --check scripts/fbx/fbx2-small-benchmark/cross-zone-support-association.mjs
+          node --check scripts/fbx/fbx2-small-benchmark/global-occurrence-index.mjs
+          node --check scripts/fbx/fbx2-small-benchmark/managed-inventory.mjs
+          node --check scripts/fbx/fbx2-small-benchmark/package-closure.mjs
+          node --check scripts/fbx/fbx2-small-benchmark/real-qualification.mjs
+          node --check scripts/fbx/fbx2-small-benchmark/source-inventory.mjs
+          node --check scripts/fbx/fbx2-small-benchmark/reconcile-indexes.mjs
+          node --check scripts/fbx/fbx2-small-benchmark/reconcile.mjs
+          node --check scripts/fbx/fbx2-small-benchmark/report.mjs
+          node --check scripts/fbx/fbx2-small-benchmark/run-artifacts.mjs
+          node --check scripts/fbx/fbx2-small-benchmark/profile.mjs
+          node --check scripts/fbx/fbx2-small-benchmark/support-name-authority.mjs
+          node --check tabs/model-converters/converters/fbx/zone-package/benchmark-closure-validation.js
+          node --check tabs/model-converters/converters/fbx/solid-fitting-ports/analysis-topology.js
+          node --check tabs/model-converters/converters/fbx/solid-fitting-ports/terminal-cap-bridge.js
+          node tests/fbx/test-fbx2-small-benchmark-core.mjs
+          node tests/fbx/test-fbx2-small-benchmark-profile.mjs
+          node tests/fbx/test-fbx2-small-benchmark-contract.mjs
+          node tests/fbx/test-fbx2-small-benchmark-static.mjs
+          node tests/fbx/test-fbx2-support-name-authority.mjs
+          node tests/fbx/test-fbx2-global-support-association.mjs
+          node tests/fbx/test-fbx2-selected-zone-package-closure.mjs
+          node tests/fbx/test-fbx2-selected-zone-package-contracts.mjs
+
+      - name: Extract governed benchmark archives
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf .tmp/fbx2 artifacts
+          mkdir -p .tmp/fbx2/input .tmp/fbx2/output artifacts
+          python - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile
+
+          pairs = [
+              (Path('Benchmarks/FBX2/STF_2026Jul23-1554_binary.zip'), Path('.tmp/fbx2/input')),
+              (Path('Benchmarks/FBX2/ATTRIBUTE_GL_managed_stage.zip'), Path('.tmp/fbx2/output')),
+          ]
+          for archive, target in pairs:
+              with ZipFile(archive) as source:
+                  names = source.namelist()
+                  if not names:
+                      raise SystemExit(f'Empty benchmark archive: {archive}')
+                  for name in names:
+                      if Path(name).is_absolute() or '..' in Path(name).parts:
+                          raise SystemExit(f'Unsafe benchmark path: {name}')
+                  source.extractall(target)
+                  print(f'{archive}: {names}')
+          PY
+
+      - name: Run exact FBX2 selected-zone audits
+        shell: bash
+        env:
+          NODE_OPTIONS: --max-old-space-size=6144
+        run: |
+          set -euo pipefail
+          fbx_path="$(find .tmp/fbx2/input -type f -iname '*.fbx' -print -quit)"
+          managed_path="$(find .tmp/fbx2/output -type f -iname '*.json' -print -quit)"
+          test -n "$fbx_path"
+          test -n "$managed_path"
+          node scripts/fbx/audit-fbx2-benchmark.mjs \
+            --fbx "$fbx_path" \
+            --managed "$managed_path" \
+            --input-zip Benchmarks/FBX2/STF_2026Jul23-1554_binary.zip \
+            --output-zip Benchmarks/FBX2/ATTRIBUTE_GL_managed_stage.zip \
+            --zone '/GLRD-1000-CU-PI-P' \
+            --evidence artifacts/fbx2-benchmark-audit.json
+          node scripts/fbx/qualify-fbx2-benchmark.mjs \
+            --audit artifacts/fbx2-benchmark-audit.json \
+            --output artifacts/fbx2-benchmark-qualification.json
+          node scripts/fbx/qualify-fbx2-real.mjs \
+            --fbx "$fbx_path" \
+            --managed "$managed_path" \
+            --input-zip Benchmarks/FBX2/STF_2026Jul23-1554_binary.zip \
+            --output-zip Benchmarks/FBX2/ATTRIBUTE_GL_managed_stage.zip \
+            --zone '/GLRD-1000-CU-PI-P' \
+            --artifact-root artifacts \
+            --receipt artifacts/fbx2-real-qualification.json
+          node scripts/fbx/audit-fbx2-support-names.mjs \
+            --fbx "$fbx_path" \
+            --input-zip Benchmarks/FBX2/STF_2026Jul23-1554_binary.zip \
+            --zone '/GLRD-1000-CU-PI-P' \
+            --output artifacts/fbx2-support-name-audit.json
+          node scripts/fbx/audit-fbx2-weld-projection.mjs \
+            --fbx "$fbx_path" \
+            --zone '/GLRD-1000-CU-PI-P' \
+            --evidence artifacts/fbx2-weld-projection.json
+          node scripts/fbx/audit-fbx2-weld-tolerance.mjs \
+            --fbx "$fbx_path" \
+            --zone '/GLRD-1000-CU-PI-P' \
+            --evidence artifacts/fbx2-weld-tolerance-sweep.json
+
+      - name: Upload benchmark audit evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: fbx2-benchmark-audit
+          path: artifacts/*
+          if-no-files-found: error
+          retention-days: 30

@@ -1,0 +1,29 @@
+{
+  "schema": "xml-builder-producer-conformance-pin/v1",
+  "mode": "shadow-only",
+  "sourceRepository": "reallaksh19/XML_Compare_Utilities",
+  "sourceCommit": "dd7e62c2dc879d0ac4916303f9c41ff863b50cbc",
+  "serviceEntrypoint": "xml-compare/inputxml-producer-api/index.js",
+  "operation": "producer.categorizeInputXml",
+  "requestSchema": "InputXmlProducerCategorizeRequest.v1",
+  "resultSchema": "InputXmlProducerCategorizeResult.v1",
+  "artifactRole": "categorized-review-document",
+  "localAuthorityManifest": "xml-compare/CategorizedInputXmlConverter.pin.json",
+  "requiredLocalAuthorityCommit": "dd7e62c2dc879d0ac4916303f9c41ff863b50cbc",
+  "producer": {
+    "id": "xml-builder",
+    "repository": "reallaksh19/3D_Converters",
+    "module": "tabs/xml-builder-tab.js",
+    "operation": "buildXmlCiiCustomInputXml+buildInputXmlFromNodeXml",
+    "version": "xml-builder-producer-shadow-conformance/v1",
+    "artifactRole": "generated-inputxml"
+  },
+  "protectedAuthorities": [
+    "tabs/xml-builder-tab.js",
+    "converters/xml-cii2019-core/custom-input-api.js",
+    "tabs/model-converters/xml-cii-node-to-inputxml-core.js",
+    "xml-compare/CategorizedInputXmlConverter.js",
+    "xml-compare/CategorizedInputXmlConverter.pin.json"
+  ],
+  "switchAuthorized": false
+}

@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>HP Piping Class Standardization - B31.3-2024</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="hero">
+  <div class="hero-copy">
+    <p class="eyebrow">Engineering qualification workspace</p>
+    <h1>High Pressure Piping Class Standardization</h1>
+    <p>ASME B31.3-2024 Chapter IX — straight-pipe pressure design and bounded pressure-fatigue prequalification.</p>
+  </div>
+  <div class="scope-card">
+    <span class="scope-label">Scope boundary</span>
+    <strong>Piping class only</strong>
+    <span>No routed-system fatigue, CAESAR system analysis, local FEA or HCF acceptance.</span>
+  </div>
+</header>
+
+<div class="workflow-shell">
+<nav class="workflow-nav" aria-label="Qualification workflow">
+  <button class="workflow-tab active" type="button" data-workflow-target="design">
+    <span class="workflow-number">1</span>
+    <span class="workflow-copy"><strong>Design Basis</strong><small>Code, material, geometry</small></span>
+    <span class="workflow-status pending" data-workflow-status="design">Pending</span>
+  </button>
+  <button class="workflow-tab" type="button" data-workflow-target="static">
+    <span class="workflow-number">2</span>
+    <span class="workflow-copy"><strong>Static Wall</strong><small>K304.1 qualification</small></span>
+    <span class="workflow-status pending" data-workflow-status="static">Pending</span>
+  </button>
+  <button class="workflow-tab" type="button" data-workflow-target="cycles">
+    <span class="workflow-number">3</span>
+    <span class="workflow-copy"><strong>Pressure Cycles</strong><small>Class transient spectrum</small></span>
+    <span class="workflow-status pending" data-workflow-status="cycles">Pending</span>
+  </button>
+  <button class="workflow-tab" type="button" data-workflow-target="kd">
+    <span class="workflow-number">4</span>
+    <span class="workflow-copy"><strong>KD Review</strong><small>KD-2 + external KD-3</small></span>
+    <span class="workflow-status blocked" data-workflow-status="kd">Review only</span>
+  </button>
+  <button class="workflow-tab" type="button" data-workflow-target="envelope">
+    <span class="workflow-number">5</span>
+    <span class="workflow-copy"><strong>Review Envelope</strong><small>No design-authority release</small></span>
+    <span class="workflow-status blocked" data-workflow-status="envelope">Blocked</span>
+  </button>
+</nav>
+
+<div class="workspace-grid">
+<main class="workspace">
+  <section class="authority-banner">
+    <div>
+      <strong>Engineering authority boundary</strong>
+      <span>Native CORE KD-3 is not qualified. The usable fatigue path is USER_CALCULATED_KD3: externally supplied Seq and N with CORE cycle bookkeeping and Miner accumulation.</span>
+    </div>
+    <div class="legend">
+      <span class="legend-item calculated">CORE calculated</span>
+      <span class="legend-item controlled">Engineering input</span>
+      <span class="legend-item evidence">External / licensed evidence</span>
+    </div>
+  </section>
+
+  <section id="workflow-design" class="workflow-panel active" data-workflow-panel="design">
+    <div class="panel-heading">
+      <div>
+        <p class="step-kicker">Step 1</p>
+        <h2>Design Basis</h2>
+        <p>Fix the Code basis, material/product identity, dimensions and pressure-design inputs.</p>
+      </div>
+      <div class="code-chip">K302.3 / K304.1.1</div>
+    </div>
+
+    <div class="control-group evidence-input">
+      <div class="group-heading">
+        <div><h3>Authority & source identity</h3><p>Blank fields remain review blockers.</p></div>
+        <span class="group-type">Evidence</span>
+      </div>
+      <div class="form-grid">
+        <label>B31.3 edition<input id="b31Edition" value="2024" readonly></label>
+        <label>BPVC VIII-3 project edition / addenda<input id="viii3Edition" placeholder="e.g. 2023"></label>
+        <label>Material specification<input id="materialSpec" placeholder="ASTM / ASME material spec"></label>
+        <label>Grade / condition<input id="materialGrade" placeholder="grade / heat treatment"></label>
+        <label>Product specification<input id="productSpec" placeholder="pipe product specification"></label>
+        <label>Dimension / tolerance source<input id="toleranceSource" placeholder="spec / table / clause"></label>
+        <label class="span-2">Calculation / evidence package ID<input id="evidencePackage" placeholder="controlled calc / approval ID"></label>
+      </div>
+    </div>
+
+    <div class="control-group user-input">
+      <div class="group-heading">
+        <div><h3>Pressure-design inputs</h3><p>Engineer-controlled B31.3 class-side values.</p></div>
+        <span class="group-type">Input</span>
+      </div>
+      <div class="form-grid">
+        <label>Design diameter D (mm)<input id="diameter" type="number" step="any"></label>
+        <label>Design pressure P (MPa)<input id="designPressure" type="number" step="any"></label>
+        <label>Allowable stress S (MPa)<input id="allowableStress" type="number" step="any"><small>Controlled Table K-1/K-1C input</small></label>
+        <label>Internal allowance ci (mm)<input id="ci" type="number" step="any"></label>
+        <label>External allowance co (mm)<input id="co" type="number" step="any"></label>
+        <label>Purchase minus tolerance (%)<input id="tolerance" type="number" step="any"></label>
+        <label class="span-2">Candidate nominal walls (mm, comma-separated)<input id="candidateWalls"></label>
+      </div>
+    </div>
+
+    <div class="page-actions">
+      <button id="calculateButton" class="primary">Calculate / refresh</button>
+      <button id="resetButton">Load reference example</button>
+      <button class="next-step" type="button" data-go-to="static">Continue to Static Wall →</button>
+    </div>
+    <div id="errorBox" class="notice error" hidden></div>
+  </section>
+
+  <section id="workflow-static" class="workflow-panel" data-workflow-panel="static" hidden>
+    <div class="panel-heading">
+      <div>
+        <p class="step-kicker">Step 2</p>
+        <h2>Static Wall</h2>
+        <p>Establish the pressure-design minimum before fatigue review.</p>
+      </div>
+      <div class="code-chip">K304.1.1 / K304.1.2</div>
+    </div>
+
+    <div class="metric-grid result-group">
+      <article><span>Pressure wall t</span><strong id="requiredWall">-</strong><small>Eq. (34a)</small></article>
+      <article><span>Minimum wall tm</span><strong id="minimumWall">-</strong><small>tm = t + ci + co</small></article>
+      <article><span>Required nominal wall</span><strong id="nominalRequired">-</strong><small>Includes entered minus tolerance</small></article>
+      <article><span>Cycle blocks</span><strong id="cycleCountMetric">-</strong><small>Pressure-fatigue blocks</small></article>
+    </div>
+
+    <div class="table-wrap small-table">
+      <table class="static-table">
+        <thead><tr><th>Nominal wall<br>mm</th><th>Minimum T<br>mm</th><th>T-tm margin<br>mm</th><th>Eq. (35a) rating<br>MPa</th><th>Static gate</th></tr></thead>
+        <tbody id="staticBody"></tbody>
+      </table>
+    </div>
+
+    <div class="page-actions split">
+      <button type="button" data-go-to="design">← Design Basis</button>
+      <button class="next-step" type="button" data-go-to="cycles">Continue to Pressure Cycles →</button>
+    </div>
+  </section>
+
+  <section id="workflow-cycles" class="workflow-panel" data-workflow-panel="cycles" hidden>
+    <div class="panel-heading">
+      <div>
+        <p class="step-kicker">Step 3</p>
+        <h2>Pressure Cycles</h2>
+        <p>Define explicit pressure/temperature endpoints, Syt and lifetime counts.</p>
+      </div>
+      <div class="code-chip">K304.8 spectrum</div>
+    </div>
+
+    <div class="review-note">
+      <strong>Per-block material control</strong>
+      <span>Enter Syt at the applicable cycle-average temperature.</span>
+    </div>
+
+    <div class="table-wrap compact-table">
+      <table class="cycle-table">
+        <thead>
+          <tr>
+            <th>Block</th><th>Pmin<br>MPa</th><th>Pmax<br>MPa</th><th>Tmin<br>°C</th><th>Tmax<br>°C</th>
+            <th>Avg T<br>°C</th><th>Syt @ Avg T<br>MPa</th><th>Cycles n</th><th></th>
+          </tr>
+        </thead>
+        <tbody id="cycleBody"></tbody>
+      </table>
+    </div>
+    <div class="page-actions split">
+      <div><button id="addCycleButton">+ Add cycle block</button><button type="button" data-go-to="static">← Static Wall</button></div>
+      <button class="next-step" type="button" data-go-to="kd">Continue to KD Review →</button>
+    </div>
+  </section>
+
+  <section id="workflow-kd" class="workflow-panel" data-workflow-panel="kd" hidden>
+    <div class="panel-heading">
+      <div>
+        <p class="step-kicker">Step 4</p>
+        <h2>KD Review</h2>
+        <p>Review KD-2 pressure-state mechanics and consume externally calculated KD-3 Seq/N without promoting CORE native KD-3 authority.</p>
+      </div>
+      <div class="code-chip">K304.8.2 → VIII-3 KD</div>
+    </div>
+
+    <div class="notice warning">
+      <strong>Native KD-3 blocked:</strong> CORE KD-3 mean-stress correction and fatigue-curve life evaluation are not qualified in PR #531. Use externally calculated Seq and permissible cycles N. CORE may calculate Ui=n/N and cumulative Miner usage for engineering review only.
+    </div>
+
+    <div class="kd-grid">
+      <article class="kd-card">
+        <div class="kd-card-head">
+          <div><span class="kd-label">Article KD-2</span><h3>Stress-analysis package</h3></div>
+          <span id="kd2StatusChip" class="status-chip blocked">Blocked</span>
+        </div>
+        <p class="card-intro">Analytical closed-end pressure state is provided for uniform straight pipe. Edition, detailed limits and approval remain controlled.</p>
+        <div class="source-box">
+          <strong>Connected KD-2 source</strong>
+          <span>Common commit <code>4dd651abbc86310077eaace6caa8b6788c1a6697</code></span>
+          <span>Blob <code>8f20cd0dab683d28359e02207f6f65b834144ec9</code></span>
+        </div>
+        <div class="form-grid compact-grid evidence-input">
+          <label>KD-2 source edition / year<input id="kd2Edition" placeholder="confirm from controlled PDF"></label>
+          <label>KD-2 analysis route
+            <select id="kd2AnalysisMethod">
+              <option value="unassessed">Unassessed - blocked</option>
+              <option value="elastic">Elastic analysis</option>
+              <option value="inelastic">Inelastic / elastic-plastic</option>
+              <option value="special">Other detailed / special route</option>
+            </select>
+          </label>
+          <label>Stress-model basis
+            <select id="kd2StressModel">
+              <option value="pressure-analytic">Analytical pressure-only straight pipe</option>
+              <option value="fea">Detailed FEA / numerical model</option>
+              <option value="other">Other controlled model</option>
+            </select>
+          </label>
+          <label>Geometry / discontinuity
+            <select id="kd2Geometry">
+              <option value="uniform">Uniform straight pipe</option>
+              <option value="local">Local discontinuity present</option>
+              <option value="special">Special / nonstandard geometry</option>
+            </select>
+          </label>
+          <label>Residual / prestress
+            <select id="kd2Residual">
+              <option value="none">Not included / not credited</option>
+              <option value="evidence">Included with controlled evidence</option>
+            </select>
+          </label>
+          <label class="span-2">KD-2 limit-check calculation ID<input id="kd2LimitCalcId" placeholder="controlled KD-2 calculation / review ID"></label>
+          <label class="checkbox-label span-2"><input id="kd2Approved" type="checkbox"> KD-2 analysis package reviewed / approved</label>
+        </div>
+      </article>
+
+      <article class="kd-card">
+        <div class="kd-card-head">
+          <div><span class="kd-label">Article KD-3</span><h3>External calculation custody</h3></div>
+          <span id="kd3StatusChip" class="status-chip blocked">External only</span>
+        </div>
+        <p class="card-intro">The supplied KD-3 artifact is source-locked. No Code curve values are embedded and CORE native KD-3 execution remains blocked.</p>
+        <div class="source-box">
+          <strong>Connected KD-3 source</strong>
+          <span>Common commit <code>f4d49f2a47d970ae0abf913b537193e324556177</code></span>
+          <span>Blob <code>e6abaddb7833eb0a61c9460ae39201e2252dc596</code> · 1,179,548 bytes</span>
+        </div>
+
+        <div class="form-grid compact-grid evidence-input">
+          <label>KD-3 source edition / year<input id="kd3SourceEdition" placeholder="confirm from supplied PDF"></label>
+          <label class="checkbox-label"><input id="kd3SourceConfirmed" type="checkbox"> Supplied KD-3 source edition verified</label>
+          <label class="checkbox-label span-2"><input id="kd3CompatibilityConfirmed" type="checkbox"> Project/source VIII-3 edition compatibility reviewed</label>
+          <label>KD-3 method / clause reference<input id="kdRoute" placeholder="licensed KD-3 method / clause"></label>
+          <label>Design fatigue curve ID (optional evidence)<input id="fatigueCurveId" placeholder="external calculation curve identifier"></label>
+        </div>
+
+        <div class="fatigue-chain" aria-label="KD-3 fatigue chain">
+          <span class="chain-node known">CORE pressure states</span><span class="chain-arrow">→</span>
+          <span class="chain-node known">CORE Salt</span><span class="chain-arrow">→</span>
+          <span class="chain-node pending">User Seq</span><span class="chain-arrow">→</span>
+          <span class="chain-node pending">User N</span><span class="chain-arrow">→</span>
+          <span class="chain-node known">CORE Σ n/N</span>
+        </div>
+      </article>
+    </div>
+
+    <div class="control-group evidence-input">
+      <div class="group-heading">
+        <div>
+          <h3>USER_CALCULATED_KD3 custody</h3>
+          <p>Seq and permissible cycles N must come from the controlled external/licensed calculation. CORE does not reconstruct mean-stress correction or fatigue life in this PR.</p>
+        </div>
+        <span class="group-type">External authority</span>
+      </div>
+
+      <div class="form-grid">
+        <label>Fatigue calculation mode
+          <select id="seqMode">
+            <option value="manual">User-calculated KD-3 — supply Seq and N</option>
+            <option value="core-kd3" disabled>CORE KD-3 — not qualified</option>
+          </select>
+        </label>
+        <label>External calculation reference<input id="seqRouteSourceRef" placeholder="checked KD-3 calculation / worksheet ID"></label>
+        <label class="checkbox-label span-2"><input id="seqRouteApproved" type="checkbox"> External KD-3 calculation custody reviewed; this does not establish CORE or Code/design authority</label>
+
+        <label hidden>Associated mean basis
+          <select id="seqMeanBasis" disabled>
+            <option value="elastic-average-nonnegative">Legacy native input — blocked</option>
+          </select>
+        </label>
+        <label hidden>Explicit correction coefficient β<input id="seqBeta" type="number" min="0" step="any" disabled></label>
+        <label hidden>Reference cycle count Nref<input id="seqReferenceCycles" type="number" min="1" step="any" disabled></label>
+        <label hidden>Correction-term limit<input id="seqMeanTermLimit" type="number" min="0" max="0.999999" step="any" disabled></label>
+      </div>
+      <div id="seqStatusBox" class="notice info">User-calculated mode: each wall × cycle row requires externally calculated Seq and permissible cycles N.</div>
+    </div>
+
+    <div class="control-group evidence-input">
+      <div class="group-heading">
+        <div>
+          <h3>Externally calculated fatigue life & fracture custody</h3>
+          <p>Permissible cycles N are supplied by the external KD-3 calculation. Native CORE curve evaluation is intentionally unavailable pending qualification.</p>
+        </div>
+        <span class="group-type">External N</span>
+      </div>
+
+      <div class="form-grid">
+        <label>N mode
+          <select id="fatigueCurveMode">
+            <option value="manual">User-supplied permissible cycles N</option>
+            <option value="core-curve" disabled>CORE fatigue-curve evaluation — not qualified</option>
+          </select>
+        </label>
+        <label>Fracture-mechanics review
+          <select id="fractureStatus">
+            <option value="unassessed">Unassessed - blocked</option>
+            <option value="cleared">Requirement reviewed - cleared</option>
+            <option value="kd4-approved">KD-4 completed / approved</option>
+            <option value="special">Outside automatic class qualification</option>
+          </select>
+        </label>
+        <label class="span-2">Fracture evidence ID<input id="fractureEvidence" placeholder="review / KD-4 evidence ID"></label>
+
+        <label hidden>Curve source / transcription reference<input id="fatigueCurveSourceRef" disabled></label>
+        <label hidden>Interpolation method<select id="fatigueInterpolation" disabled><option value="loglog">Legacy native input — blocked</option></select></label>
+        <label hidden class="checkbox-label"><input id="fatigueInterpolationApproved" type="checkbox" disabled> Legacy native interpolation approval</label>
+        <label hidden class="checkbox-label"><input id="fatigueCurveApproved" type="checkbox" disabled> Legacy native curve approval</label>
+        <label hidden class="span-2">Fatigue curve points<textarea id="fatigueCurveData" rows="2" disabled></textarea></label>
+      </div>
+      <div id="curveStatusBox" class="notice info">User-supplied N mode: each wall × cycle row requires the permissible cycle count from the external KD-3 calculation.</div>
+      <div class="mini-status"><span>Fracture / KD-4 gate</span><strong id="fractureStatusChip" class="status-chip blocked">Blocked</strong></div>
+    </div>
+
+    <div class="subsection-heading">
+      <div><h3>KD-2 pressure-only stress-state package</h3><p>Analytical mechanics benchmark per wall and cycle.</p></div>
+    </div>
+    <div class="table-wrap">
+      <table class="kd2-table">
+        <thead>
+          <tr>
+            <th>Wall<br>mm</th><th>Cycle block</th><th>Effective wall<br>mm</th>
+            <th>σz @ Pmin / Pmax<br>MPa</th><th>σθ @ Pmin / Pmax<br>MPa</th><th>σr @ Pmin / Pmax<br>MPa</th>
+            <th>Δσz / θ / r<br>MPa</th><th>Pressure-only ΔSI<br>MPa</th><th>KD-2 gate</th>
+          </tr>
+        </thead>
+        <tbody id="kd2Body"></tbody>
+      </table>
+    </div>
+
+    <div class="subsection-heading">
+      <div><h3>KD-3 wall × cycle external-result matrix</h3><p>Enter controlled external Seq and N. CORE derives Ui=n/N for review; the row approval checkbox records evidence review only.</p></div>
+    </div>
+    <div class="table-wrap">
+      <table class="fatigue-table">
+        <thead>
+          <tr>
+            <th>Wall<br>mm</th><th>Cycle</th><th>Avg T<br>°C</th><th>T-c<br>mm</th>
+            <th>Sp @ Pmin<br>MPa</th><th>Sp @ Pmax<br>MPa</th><th>ΔSp<br>MPa</th><th>CORE Salt descriptor<br>MPa</th>
+            <th>2Syt gate</th><th>User Seq<br>MPa</th><th>Seq authority</th><th>User N<br>cycles</th><th>N authority</th>
+            <th>External calc / source ID</th><th>Evidence reviewed</th><th>Ui=n/N</th>
+          </tr>
+        </thead>
+        <tbody id="fatigueBody"></tbody>
+      </table>
+    </div>
+    <div class="review-note">
+      <strong>Authority boundary</strong>
+      <span>USER_CALCULATED_KD3 is the only permitted fatigue route in this UI. Native CORE KD-3 and CORE fatigue-curve life evaluation remain blocked. A complete external result set may support engineering review, but cannot establish Code compliance or design authority in PR #531.</span>
+    </div>
+
+    <div class="page-actions split">
+      <button type="button" data-go-to="cycles">← Pressure Cycles</button>
+      <button class="next-step" type="button" data-go-to="envelope">Continue to Review Envelope →</button>
+    </div>
+  </section>
+
+  <section id="workflow-envelope" class="workflow-panel" data-workflow-panel="envelope" hidden>
+    <div class="panel-heading">
+      <div>
+        <p class="step-kicker">Step 5</p>
+        <h2>Review Envelope</h2>
+        <p>Bounded engineering-review summary. Native KD-3 design authority is not established in this application state.</p>
+      </div>
+      <div class="code-chip">REVIEW ONLY / STOP</div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="summary-table">
+        <thead>
+          <tr>
+            <th>Nominal wall<br>mm</th><th>Static gate</th><th>KD-2 gate</th><th>KD-3 source</th>
+            <th>Cycle blocks</th><th>KD-3 rows reviewed</th><th>Inelastic / special</th>
+            <th>Cumulative U</th><th>Fracture gate</th><th>Review status</th>
+          </tr>
+        </thead>
+        <tbody id="summaryBody"></tbody>
+      </table>
+    </div>
+
+    <div class="release-language">
+      <strong>Permitted claim after the review inputs close:</strong>
+      <p>External KD-3 fatigue results have been recorded and CORE has reproduced the bounded pressure-cycle bookkeeping and cumulative Miner usage for engineering review.</p>
+      <strong>Do not claim:</strong>
+      <p>CORE-qualified KD-3, ASME Code compliance, design authority, or universally fatigue-qualified piping class.</p>
+    </div>
+
+    <div class="page-actions split">
+      <button type="button" data-go-to="kd">← KD Review</button>
+      <div><button id="csvButton">Download review CSV</button><button id="printButton">Print</button></div>
+    </div>
+  </section>
+</main>
+
+<aside class="review-rail" aria-label="Reviewer status">
+  <div class="rail-sticky">
+    <p class="step-kicker">Reviewer rail</p>
+    <h3 id="railStageTitle">Design Basis</h3>
+    <p id="railContext" class="rail-context">Reference calculation</p>
+
+    <div class="rail-section">
+      <strong>Code path</strong>
+      <dl>
+        <div><dt>Design basis</dt><dd id="rail-design">Pending</dd></div>
+        <div><dt>Static wall</dt><dd id="rail-static">Pending</dd></div>
+        <div><dt>Pressure cycles</dt><dd id="rail-cycles">Pending</dd></div>
+        <div><dt>KD-2</dt><dd id="rail-kd2">Blocked</dd></div>
+        <div><dt>KD-3 source / external fatigue</dt><dd id="rail-kd3">External KD-3 · not authorized</dd></div>
+        <div><dt>Fracture / KD-4</dt><dd id="rail-fracture">Blocked</dd></div>
+      </dl>
+    </div>
+
+    <div class="rail-section">
+      <strong>Evidence</strong>
+      <ul class="evidence-list">
+        <li>Project VIII-3 <span id="evidence-viii3">Missing</span></li>
+        <li>Material/product <span id="evidence-material">Missing</span></li>
+        <li>KD-3 source <span id="evidence-kd3source">Missing</span></li>
+        <li>External KD-3 result custody <span id="evidence-kd3">Missing</span></li>
+      </ul>
+    </div>
+
+    <div class="rail-section blockers">
+      <strong>Review blockers <span id="blockerCount">1</span></strong>
+      <ul id="blockingReasons"><li data-native-kd3-blocker="true">Native CORE KD-3 is not qualified. USER_CALCULATED_KD3 remains review-only and cannot establish Code/design authority.</li></ul>
+    </div>
+  </div>
+</aside>
+</div>
+</div>
+
+<footer>
+  B31.3 source: Common commit 00f47512e96780ebab10416dcc9354f719346457.
+  KD-2 source: Common commit 4dd651abbc86310077eaace6caa8b6788c1a6697.
+  KD-3 source: Common commit f4d49f2a47d970ae0abf913b537193e324556177, blob e6abaddb7833eb0a61c9460ae39201e2252dc596.
+  Exact licensed Code text and approved project data control. Native CORE KD-3 remains unqualified.
+</footer>
+
+<script src="app.js"></script>
+<script src="fatigue-authority-guard.js"></script>
+<script src="ui.js"></script>
+</body>
+</html>

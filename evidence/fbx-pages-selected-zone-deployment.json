@@ -1,0 +1,15 @@
+{
+  "schema": "FbxPagesSelectedZoneDeploymentEvidence.v1",
+  "repositoryCommit": "83062fd0bd3ae44d59905761252719d2fe4a9b9b",
+  "pagesRoot": "https://reallaksh19.github.io/3D_Converters",
+  "converterRuntimeSha256": "665a23ae001c13109dee16bb6bbbb58819a22e1b6815587492e654d5893aef5b",
+  "selectedZoneRuntimeSha256": "26468e3d0699d1f355d38b4cb6bfdb93477fb6891798b6e4dee500910ce946cf",
+  "previewSelectorRuntimeSha256": "b88911e7cc0309db03d40ac77334db0e1d9fa1d4598030e6b218143a38315b91",
+  "previewRecommendationRuntimeSha256": "220339d63ebdf48d0725c20265a8d858633178b34ad9ad92aedd73d201119a7f",
+  "terminalStatus": "SELECTED_ZONE_EVIDENCE_PASS",
+  "defaultZoneAttemptLimit": "1",
+  "selectionPolicy": "FbxSelectedZoneAutoPipePolicy.v1",
+  "previewAutoSelection": "governed-selected-zone-once",
+  "convergenceAttempt": 1,
+  "verifiedAt": "2026-07-30T07:17:57Z"
+}

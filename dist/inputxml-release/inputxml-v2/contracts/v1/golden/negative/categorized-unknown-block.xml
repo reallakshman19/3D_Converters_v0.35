@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CategorizedInputXML schema="categorized-inputxml/v3" sourceName="negative.xml">
+  <Line id="L-001">
+    <LineBlock><Branchname>L-001</Branchname><LineNo>L-001</LineNo></LineBlock>
+    <Element fromNode="10" toNode="20" elementKey="10-&gt;20">
+      <UnknownEngineeringBlock/>
+      <OriginalElement><![CDATA[<PIPINGELEMENT FROM_NODE="10" TO_NODE="20"/>]]></OriginalElement>
+    </Element>
+  </Line>
+</CategorizedInputXML>

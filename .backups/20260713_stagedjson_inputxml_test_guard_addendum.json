@@ -1,0 +1,12 @@
+{
+  "schema": "source-blob-backup/v1",
+  "baseline": "8cfcc3717bdad85c545509937b70615ea49f135b",
+  "created": "2026-07-13",
+  "scope": "StagedJSON InputXML test and frozen-route guard corrections",
+  "files": {
+    "tests/xml-cii-standalone-source-mode-integration.test.js": "55cbd310caf04c8e90ac695888c59d00dcbf2090",
+    "converters/scripts/test_stagedjson_inputxml_workpack.py": "08e583d009e91b2bc0e58958bc190d2d08b824ab"
+  },
+  "reason": "The Mission J guard hashes whole shared files. This Work Pack changes only the stagedjson_to_inputxml conditional branches in invocation-builder.js and py-worker.js. The new support test also corrects six-slot validation from global to per-element semantics.",
+  "restore": "Fetch each immutable blob SHA and replace the corresponding path."
+}

@@ -1,0 +1,31 @@
+name: HP KD320 Q1 Qualification Contract
+
+on:
+  push:
+    branches:
+      - agent/hp-kd320-q1-semantic-contract
+  pull_request:
+    paths:
+      - 'engineering/hp-class-standardization/qualification/kd320-q1/**'
+      - 'engineering/hp-class-standardization/qualification/kd3-oracle/**'
+      - 'scripts/audit-b313-ch9-kd3-oracle.mjs'
+      - 'scripts/audit-b313-ch9-kd320-q1.mjs'
+      - 'scripts/verify-b313-ch9-kd320-q1.mjs'
+      - 'tests/b313-chapter-ix-kd3-qualification-oracle.test.mjs'
+      - 'tests/b313-chapter-ix-kd320-q1-contract.test.mjs'
+      - '.github/workflows/hp-kd320-q1-qualification.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  q1-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify KD320 Q1 contract and independent oracle boundary
+        run: node scripts/verify-b313-ch9-kd320-q1.mjs

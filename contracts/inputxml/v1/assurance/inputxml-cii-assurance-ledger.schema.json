@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:reallaksh19:inputxml:cii-assurance-ledger:v1",
+  "title": "InputXmlCiiAssuranceLedger.v1",
+  "type": "object",
+  "required": ["schema", "authority", "status", "chain", "gates", "summary", "records", "diagnostics", "assuranceHashSha256"],
+  "properties": {
+    "schema": {"const": "InputXmlCiiAssuranceLedger.v1"},
+    "authority": {
+      "type": "object",
+      "required": ["repository", "builder", "projectionPhase", "rule"],
+      "properties": {
+        "repository": {"const": "reallaksh19/3D_Converters"},
+        "builder": {"type": "string", "minLength": 1},
+        "projectionPhase": {"const": "PRE_WRITER_READINESS"},
+        "rule": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "status": {"enum": ["PASS", "BLOCKED"]},
+    "chain": {
+      "type": "object",
+      "required": ["sourceHashSha256", "canonicalHashSha256", "canonicalizationLedgerHashSha256", "canonicalValidationHashSha256", "fieldCatalogHashSha256", "projectionContractHashSha256", "topologyTraceLedgerHashSha256", "topologyParityReportHashSha256"],
+      "properties": {
+        "sourceHashSha256": {"type": ["string", "null"]},
+        "canonicalHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "canonicalizationLedgerHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "canonicalValidationHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "fieldCatalogHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "projectionContractHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "topologyTraceLedgerHashSha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+        "topologyParityReportHashSha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"}
+      },
+      "additionalProperties": false
+    },
+    "gates": {
+      "type": "object",
+      "required": ["canonicalization", "canonicalValidation", "topologyTrace", "topologyParity", "ciiProjectionReadiness"],
+      "properties": {
+        "canonicalization": {"enum": ["PASS", "BLOCKED"]},
+        "canonicalValidation": {"enum": ["PASS", "BLOCKED"]},
+        "topologyTrace": {"enum": ["PASS", "BLOCKED", "NOT_APPLICABLE"]},
+        "topologyParity": {"enum": ["PASS", "BLOCKED", "NOT_APPLICABLE"]},
+        "ciiProjectionReadiness": {"enum": ["PASS", "BLOCKED"]}
+      },
+      "additionalProperties": false
+    },
+    "summary": {
+      "type": "object",
+      "required": ["sourceRecordCount", "assuranceRecordCount", "topologyTraceRecordCount", "canonicalElementCount", "canonicalNodeCount", "readyRecordCount", "evidenceOnlyRecordCount", "blockedRecordCount", "diagnosticCount", "blockingDiagnosticCount"],
+      "additionalProperties": {"type": "integer", "minimum": 0}
+    },
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["assuranceRecordId", "sourceEntityId", "sourceType", "topology", "canonical", "projection", "confidence", "evidence", "diagnostics", "status"],
+        "properties": {
+          "assuranceRecordId": {"type": "string", "pattern": "^IXAL-[0-9]{7}$"},
+          "canonicalizationRecordId": {"type": ["string", "null"]},
+          "sourceRepository": {"type": ["string", "null"]},
+          "sourcePath": {"type": ["string", "null"]},
+          "producer": {"type": ["string", "null"]},
+          "dialect": {"type": ["string", "null"]},
+          "sourceEntityId": {"type": "string"},
+          "sourceType": {"type": ["string", "null"]},
+          "sourceFields": {},
+          "topology": {"type": ["object", "null"]},
+          "canonical": {
+            "type": "object",
+            "required": ["componentIds", "nodeIds", "elementIds", "inputXmlElementIds", "coverageMode"],
+            "properties": {
+              "componentIds": {"type": "array", "items": {"type": "string"}},
+              "nodeIds": {"type": "array", "items": {"type": "string"}},
+              "elementIds": {"type": "array", "items": {"type": "string"}},
+              "inputXmlElementIds": {"type": "array", "items": {"type": "string"}},
+              "coverageMode": {"enum": ["FIELD_LEVEL", "ENTITY_LEVEL", "EVIDENCE_ONLY", "UNTRACED"]}
+            },
+            "additionalProperties": false
+          },
+          "projection": {
+            "type": "object",
+            "required": ["sections", "ciiIndex", "indexStatus", "projectionCardinality", "disposition", "readiness"],
+            "properties": {
+              "sections": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+              "ciiIndex": {"type": "null"},
+              "indexStatus": {"enum": ["PENDING_WRITER_ADAPTER", "NOT_APPLICABLE"]},
+              "projectionCardinality": {"type": ["string", "null"]},
+              "disposition": {"type": ["string", "null"]},
+              "readiness": {"enum": ["READY", "EVIDENCE_ONLY", "BLOCKED"]}
+            },
+            "additionalProperties": false
+          },
+          "confidence": {"type": "object"},
+          "evidence": {"type": "array"},
+          "diagnostics": {"type": "array"},
+          "status": {"enum": ["READY", "EVIDENCE_ONLY", "BLOCKED"]}
+        },
+        "additionalProperties": false
+      }
+    },
+    "diagnostics": {"type": "array", "items": {"type": "object"}},
+    "assuranceHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "additionalProperties": false
+}

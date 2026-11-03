@@ -1,0 +1,26 @@
+[
+  {
+    "name": "/PR7/B1",
+    "type": "BRANCH",
+    "attributes": {"TYPE":"BRANCH","NAME":"/PR7/B1","OWNER":"/PR7","HPOS":{"x":0,"y":0,"z":0},"TPOS":{"x":1000,"y":0,"z":0},"HBOR":"100mm","TBOR":"100mm"},
+    "children": [
+      {
+        "name":"PIPE =PR7/PIPE/1","type":"PIPE",
+        "attributes":{"TYPE":"PIPE","NAME":"=PR7/PIPE/1","REF":"=PR7/PIPE/1","OWNER":"/PR7/B1","APOS":{"x":0,"y":0,"z":0},"LPOS":{"x":1000,"y":0,"z":0},"ABORE":"100mm","LBORE":"100mm","DTXR":"PIPE"},
+        "enrichedAttributes":{"nominalBoreMm":100,"pipeOdMm":114.3,"wallThicknessMm":6.02,"insulationThicknessMm":0,"corrosionAllowanceMm":0,"designTemperatureC":100,"designPressureMpa":1,"hydroPressure":1.5,"materialCode":106,"material":"A106 Grade B","materialDensityKgM3":7833,"insulationDensityKgM3":0,"fluidDensityOpeKgM3":965,"lineNo":"PR7-L-100"}
+      }
+    ]
+  },
+  {
+    "name": "/PR7/B2",
+    "type": "BRANCH",
+    "attributes": {"TYPE":"BRANCH","NAME":"/PR7/B2","OWNER":"/PR7","HPOS":{"x":0,"y":1000,"z":0},"TPOS":{"x":1000,"y":1000,"z":0},"HBOR":"80mm","TBOR":"80mm"},
+    "children": [
+      {
+        "name":"PIPE =PR7/PIPE/2","type":"PIPE",
+        "attributes":{"TYPE":"PIPE","NAME":"=PR7/PIPE/2","REF":"=PR7/PIPE/2","OWNER":"/PR7/B2","APOS":{"x":0,"y":1000,"z":0},"LPOS":{"x":1000,"y":1000,"z":0},"ABORE":"80mm","LBORE":"80mm","DTXR":"PIPE"},
+        "enrichedAttributes":{"nominalBoreMm":80,"pipeOdMm":88.9,"wallThicknessMm":5.49,"insulationThicknessMm":0,"corrosionAllowanceMm":0,"designTemperatureC":50,"designPressureMpa":0.5,"hydroPressure":0.75,"materialCode":106,"material":"A106 Grade B","materialDensityKgM3":7833,"insulationDensityKgM3":0,"fluidDensityOpeKgM3":900,"lineNo":"PR7-L-200"}
+      }
+    ]
+  }
+]

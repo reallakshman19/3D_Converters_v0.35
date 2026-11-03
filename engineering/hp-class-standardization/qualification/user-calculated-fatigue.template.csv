@@ -1,0 +1,2 @@
+cycleId,locationId,fromStateId,toStateId,userAlternatingStressIntensityMpa,equivalentAlternatingStressMpa,permissibleCycles,code,edition,methodRef,calculationRef,calculatedBy,checkedBy,checkedAt,associatedMeanStressMpa,beta,saPrimeMpa
+C1,WALL-13.4900,C1:A,C1:B,,95,20000,ASME BPVC VIII-3,2025,KD-3,HP-FAT-001,ENGINEER_A,ENGINEER_B,2026-08-16T00:00:00Z,,,

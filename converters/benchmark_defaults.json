@@ -1,0 +1,20 @@
+{
+  "_source": "B7410250 CII benchmark defaults (SYS-30-B7410250)",
+  "temperature1": 50.0,
+  "temperature2": 0.0,
+  "temperature3": 0.0,
+  "wall_thickness": 0.01,
+  "modulus": 203395424.0,
+  "hot_mod1": 201464896.0,
+  "poissons": 0.292,
+  "pipe_density": 0.007833,
+  "material_num": 1.0,
+  "material_name": "LOW CARBON",
+  "anchor_stiffness": 9.41952e+19,
+  "bend_type": 0.0,
+  "default_bend_angle": 90.0,
+  "version": "11.00",
+  "north_z": "0",
+  "north_y": "1",
+  "north_x": "0"
+}

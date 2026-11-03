@@ -1,0 +1,512 @@
+{
+  "benchmarkSetId": "VIBRATION-EI-AVIFF-MULTIMECHANISM-V1",
+  "authority": "WORKED_EXAMPLE_VALIDATION_ONLY",
+  "engineeringAuthority": "NONE",
+  "screeningAuthority": "NOT_AUTHORIZED",
+  "designAuthority": false,
+  "source": {
+    "repository": "reallaksh19/Common",
+    "commit": "fb549185b9b27edc2379734240320a85c5bef9f6",
+    "fullGuidance": {
+      "path": "EI - AVIFF Guidelines 2nd Edition.pdf",
+      "gitBlob": "9d3eccc56429411e17c07a579bdebbd13cb0bdc5"
+    },
+    "workedExamples": {
+      "path": "EI - AVIFF Guidelines 2nd Edition_Examples.pdf",
+      "gitBlob": "3e2517d0df527a051084fc02e69cb7afa31f8d47"
+    },
+    "workedExampleDocx": {
+      "path": "Energy-Institute-AVIFF---Worked-Examples.doc.docx",
+      "gitBlob": "ceee15ed5f7f320045d5f3979024e2e8664613f2"
+    },
+    "retainedMarkdown": "docs/Energy-Institute-AVIFF---Worked-Examples.md"
+  },
+  "cases": [
+    {
+      "id": "EI-D2-FIT-RECYCLE-SUCTION-6IN",
+      "mechanism": "FIT",
+      "mode": "FIT_CALCULATION_PARITY",
+      "sourceLocation": "D.2.1",
+      "input": {
+        "phase": "GAS",
+        "outsideDiameterM": 0.1683,
+        "wallThicknessM": 0.00711,
+        "insideDiameterM": 0.1541,
+        "maximumUnsupportedSpanM": 6.4,
+        "massFlowKgS": 14.856111111111112,
+        "densityKgM3": 18,
+        "gasDynamicViscosityPaS": 2e-05
+      },
+      "published": {
+        "rhoV2": 35294,
+        "fluidViscosityFactor": 0.141,
+        "standardFv": 18022,
+        "standardLof": 0.276,
+        "supportStiffness": "MEDIUM_STIFF"
+      }
+    },
+    {
+      "id": "EI-D2-FIT-RELIEF-UPSTREAM-4IN",
+      "mechanism": "FIT",
+      "mode": "FIT_CALCULATION_PARITY",
+      "sourceLocation": "D.2.1",
+      "input": {
+        "phase": "GAS",
+        "outsideDiameterM": 0.1143,
+        "wallThicknessM": 0.0111,
+        "insideDiameterM": 0.0921,
+        "maximumUnsupportedSpanM": 5.2,
+        "massFlowKgS": 14.856111111111112,
+        "densityKgM3": 62,
+        "gasDynamicViscosityPaS": 2e-05
+      },
+      "published": {
+        "rhoV2": 80203,
+        "fluidViscosityFactor": 0.141,
+        "standardFv": 33433,
+        "standardLof": 0.338,
+        "supportStiffness": "MEDIUM_STIFF"
+      }
+    },
+    {
+      "id": "EI-D2-FIT-RELIEF-DOWNSTREAM-6IN",
+      "mechanism": "FIT",
+      "mode": "FIT_CALCULATION_PARITY",
+      "sourceLocation": "D.2.1",
+      "input": {
+        "phase": "GAS",
+        "outsideDiameterM": 0.1683,
+        "wallThicknessM": 0.00711,
+        "insideDiameterM": 0.1541,
+        "maximumUnsupportedSpanM": 6.4,
+        "massFlowKgS": 14.856111111111112,
+        "densityKgM3": 4,
+        "gasDynamicViscosityPaS": 1e-05
+      },
+      "published": {
+        "rhoV2": 158823,
+        "fluidViscosityFactor": 0.1,
+        "standardFv": 18022,
+        "standardLof": 0.881,
+        "supportStiffness": "MEDIUM_STIFF"
+      }
+    },
+    {
+      "id": "EI-D4-FIT-SEPARATOR-INLET-20IN",
+      "mechanism": "FIT",
+      "mode": "FIT_CALCULATION_PARITY",
+      "sourceLocation": "D.4.1",
+      "input": {
+        "phase": "MULTIPHASE",
+        "outsideDiameterM": 0.508,
+        "wallThicknessM": 0.009525,
+        "maximumUnsupportedSpanM": 5,
+        "densityKgM3": 136,
+        "fluidVelocityMS": 9.3
+      },
+      "published": {
+        "rhoV2": 11763,
+        "fluidViscosityFactor": 1,
+        "standardFv": 45175,
+        "standardLof": 0.26,
+        "supportStiffness": "STIFF"
+      }
+    },
+    {
+      "id": "EI-D4-FIT-PRODUCED-WATER-10IN",
+      "mechanism": "FIT",
+      "mode": "FIT_CALCULATION_PARITY",
+      "sourceLocation": "D.4.1",
+      "input": {
+        "phase": "LIQUID",
+        "outsideDiameterM": 0.273,
+        "wallThicknessM": 0.009271,
+        "maximumUnsupportedSpanM": 18,
+        "densityKgM3": 988,
+        "fluidVelocityMS": 2.9
+      },
+      "published": {
+        "rhoV2": 8309,
+        "fluidViscosityFactor": 1,
+        "standardFv": 2636,
+        "standardLof": 3.15,
+        "supportStiffness": "FLEXIBLE"
+      }
+    },
+    {
+      "id": "EI-D2-MECH-STREAM-6",
+      "mechanism": "MECHANICAL_EXCITATION",
+      "mode": "MECHANICAL_T23_CALCULATION_PARITY",
+      "sourceLocation": "D.2.4 / retained record 3",
+      "input": {
+        "sources": [
+          {
+            "type": "ELECTRIC_MOTOR_ALTERNATOR",
+            "powerKw": 15
+          },
+          {
+            "type": "CENTRIFUGAL_COMPRESSOR"
+          }
+        ]
+      },
+      "published": {
+        "sourceLofs": [
+          0.4,
+          0.2
+        ],
+        "governingLof": 0.4
+      }
+    },
+    {
+      "id": "EI-D2-MECH-STREAM-7",
+      "mechanism": "MECHANICAL_EXCITATION",
+      "mode": "MECHANICAL_T23_CALCULATION_PARITY",
+      "sourceLocation": "D.2.4 / retained record 4",
+      "input": {
+        "sources": [
+          {
+            "type": "ELECTRIC_MOTOR_ALTERNATOR",
+            "powerKw": 15
+          },
+          {
+            "type": "CENTRIFUGAL_COMPRESSOR"
+          }
+        ]
+      },
+      "published": {
+        "sourceLofs": [
+          0.4,
+          0.2
+        ],
+        "governingLof": 0.4
+      }
+    },
+    {
+      "id": "EI-D2-MECH-RECYCLE-DISCHARGE",
+      "mechanism": "MECHANICAL_EXCITATION",
+      "mode": "MECHANICAL_T23_CALCULATION_PARITY",
+      "sourceLocation": "D.2.4 / retained record 5",
+      "input": {
+        "sources": [
+          {
+            "type": "ELECTRIC_MOTOR_ALTERNATOR",
+            "powerKw": 15
+          },
+          {
+            "type": "CENTRIFUGAL_COMPRESSOR"
+          }
+        ]
+      },
+      "published": {
+        "sourceLofs": [
+          0.4,
+          0.2
+        ],
+        "governingLof": 0.4
+      }
+    },
+    {
+      "id": "EI-D2-MECH-RELIEF-UPSTREAM",
+      "mechanism": "MECHANICAL_EXCITATION",
+      "mode": "MECHANICAL_T23_CALCULATION_PARITY",
+      "sourceLocation": "D.2.4 / retained record 7",
+      "input": {
+        "sources": [
+          {
+            "type": "ELECTRIC_MOTOR_ALTERNATOR",
+            "powerKw": 15
+          },
+          {
+            "type": "CENTRIFUGAL_COMPRESSOR"
+          }
+        ]
+      },
+      "published": {
+        "sourceLofs": [
+          0.4,
+          0.2
+        ],
+        "governingLof": 0.4
+      }
+    },
+    {
+      "id": "EI-D2-DEADLEG-RECYCLE-DISCHARGE",
+      "mechanism": "DEADLEG_PULSATION",
+      "mode": "DEADLEG_T26_CALCULATION_PARITY",
+      "sourceLocation": "D.2.2 sidebranch 1",
+      "input": {
+        "rhoV2Pa": 5191,
+        "densityKgM3": 62,
+        "velocityMS": 9.150180678632138,
+        "mainInsideDiameterMm": 182.55,
+        "branchInsideDiameterMm": 182.55,
+        "branchLengthM": 5.1,
+        "dynamicViscosityPaS": 2e-05,
+        "speedOfSoundMS": 456.4
+      },
+      "published": {
+        "excitationFrequencyHz": 52.2,
+        "acousticNaturalFrequencyHz": 18.4,
+        "frequencyRatio": 2.83,
+        "lof": 1.0
+      }
+    },
+    {
+      "id": "EI-D2-DEADLEG-PSV-BYPASS-UPSTREAM",
+      "mechanism": "DEADLEG_PULSATION",
+      "mode": "DEADLEG_T26_CALCULATION_PARITY",
+      "sourceLocation": "D.2.2 sidebranch 2",
+      "input": {
+        "rhoV2Pa": 80203,
+        "densityKgM3": 62,
+        "velocityMS": 35.96660637582518,
+        "mainInsideDiameterMm": 92.1,
+        "branchInsideDiameterMm": 42.85,
+        "branchLengthM": 0.3,
+        "dynamicViscosityPaS": 2e-05,
+        "speedOfSoundMS": 456.4
+      },
+      "published": {
+        "excitationFrequencyHz": 293.4,
+        "acousticNaturalFrequencyHz": 313.4,
+        "frequencyRatio": 0.94,
+        "lof": 0.29
+      }
+    },
+    {
+      "id": "EI-D2-DEADLEG-PSV-BYPASS-DOWNSTREAM",
+      "mechanism": "DEADLEG_PULSATION",
+      "mode": "DEADLEG_T26_CALCULATION_PARITY",
+      "sourceLocation": "D.2.2 sidebranch 3",
+      "input": {
+        "rhoV2Pa": 158823,
+        "densityKgM3": 4,
+        "velocityMS": 199.2630171406626,
+        "mainInsideDiameterMm": 154.1,
+        "branchInsideDiameterMm": 49.25,
+        "branchLengthM": 1.1,
+        "dynamicViscosityPaS": 1e-05,
+        "speedOfSoundMS": 428.4
+      },
+      "published": {
+        "excitationFrequencyHz": 1076.8,
+        "acousticNaturalFrequencyHz": 80.2,
+        "frequencyRatio": 13.42,
+        "lof": 1.0,
+        "advancedNonResonantLof": 5.37,
+        "advancedResonantLof": 268.35
+      }
+    },
+    {
+      "id": "EI-D2-AIV-RECYCLE-DISCHARGE",
+      "mechanism": "AIV",
+      "mode": "EXTERNAL_ACTIVE_PR",
+      "sourceLocation": "D.2.3 / retained record 5",
+      "external": {
+        "pr": 446,
+        "head": "92720d93da0d34fe817302c1f2b00187676c6c08",
+        "observedRawPwlDb": 159.36481554007995,
+        "observedEffectivePwlDb": 129.36481554007995,
+        "validatedCodeCommit": "64485a51ffe78102ba3b966d43ba68e13f511130",
+        "validationRecordPath": "docs/vibration/validation/AIV-D2.3-Product-Path-Validation-v1.json",
+        "validationRecordBlob": "6d3cd2f7d71ab47d2825d802628f18c0782ffdc7",
+        "validationReceiptStatus": "PASS"
+      },
+      "published": {
+        "effectivePwlDb": 129.36,
+        "lof": 0.29
+      }
+    },
+    {
+      "id": "EI-D2-AIV-RECYCLE-SUCTION",
+      "mechanism": "AIV",
+      "mode": "EXTERNAL_ACTIVE_PR",
+      "sourceLocation": "D.2.3 / retained record 6",
+      "external": {
+        "pr": 446,
+        "head": "92720d93da0d34fe817302c1f2b00187676c6c08",
+        "observedEffectivePwlDb": 129.02398009073715,
+        "validatedCodeCommit": "64485a51ffe78102ba3b966d43ba68e13f511130",
+        "validationRecordPath": "docs/vibration/validation/AIV-D2.3-Product-Path-Validation-v1.json",
+        "validationRecordBlob": "6d3cd2f7d71ab47d2825d802628f18c0782ffdc7",
+        "validationReceiptStatus": "PASS"
+      },
+      "published": {
+        "effectivePwlDb": 129.02,
+        "lof": 0.29
+      }
+    },
+    {
+      "id": "EI-D2-AIV-RELIEF",
+      "mechanism": "AIV",
+      "mode": "EXTERNAL_ACTIVE_PR",
+      "sourceLocation": "D.2.3 / retained record 8",
+      "external": {
+        "pr": 446,
+        "head": "92720d93da0d34fe817302c1f2b00187676c6c08",
+        "observedRawPwlDb": 164.6851759525391,
+        "validatedCodeCommit": "64485a51ffe78102ba3b966d43ba68e13f511130",
+        "validationRecordPath": "docs/vibration/validation/AIV-D2.3-Product-Path-Validation-v1.json",
+        "validationRecordBlob": "6d3cd2f7d71ab47d2825d802628f18c0782ffdc7",
+        "validationReceiptStatus": "PASS",
+        "observedLineCaseLof": 1.48
+      },
+      "published": {
+        "rawPwlDb": 164.69,
+        "lineCaseLof": 1.48
+      }
+    },
+    {
+      "id": "EI-D2-TRANSIENT-RELIEF-UPSTREAM",
+      "mechanism": "VALVE_TRANSIENT",
+      "mode": "DRY_GAS_T28_CALCULATION_PARITY",
+      "sourceLocation": "D.2.5 upstream of PSV",
+      "input": {
+        "massFlowKgS": 14.86,
+        "gamma": 1.33,
+        "gasConstantJPerKmolK": 8314,
+        "upstreamTemperatureK": 410,
+        "molecularWeightKgPerKmol": 21.75,
+        "outsideDiameterMm": 114.3,
+        "insideDiameterMm": 92.1,
+        "wallThicknessMm": 11.1,
+        "schedule40ThicknessMm": 6.02,
+        "supportStiffness": "MEDIUM_STIFF"
+      },
+      "published": {
+        "peakForceKn": 6.28,
+        "limitForceKn": 1.67,
+        "lof": 3.77
+      }
+    },
+    {
+      "id": "EI-D2-TRANSIENT-RELIEF-DOWNSTREAM",
+      "mechanism": "VALVE_TRANSIENT",
+      "mode": "DRY_GAS_T28_CALCULATION_PARITY",
+      "sourceLocation": "D.2.5 downstream of PSV",
+      "input": {
+        "massFlowKgS": 14.86,
+        "gamma": 1.33,
+        "gasConstantJPerKmolK": 8314,
+        "upstreamTemperatureK": 410,
+        "molecularWeightKgPerKmol": 21.75,
+        "outsideDiameterMm": 168.3,
+        "insideDiameterMm": 154.1,
+        "wallThicknessMm": 7.11,
+        "schedule40ThicknessMm": 7.11,
+        "supportStiffness": "MEDIUM_STIFF"
+      },
+      "published": {
+        "peakForceKn": 6.28,
+        "limitForceKn": 3.55,
+        "lof": 1.77
+      }
+    },
+    {
+      "id": "EI-D4-TRANSIENT-PRODUCED-WATER",
+      "mechanism": "VALVE_TRANSIENT",
+      "mode": "LIQUID_CLOSURE_SOURCE_DISCREPANCY",
+      "sourceLocation": "D.4.2 / retained record 12",
+      "input": {
+        "densityKgM3": 1000,
+        "bulkModulusPa": 2190000000,
+        "outsideDiameterMm": 273,
+        "wallThicknessMm": 9.271,
+        "youngsModulusPa": 207000000000,
+        "velocityMS": 2.9,
+        "insideDiameterMm": 254.5,
+        "upstreamLengthM": 2,
+        "upstreamPressurePa": 650000,
+        "closureTimeS": 5,
+        "supportStiffness": "FLEXIBLE",
+        "schedule40ThicknessMm": 9.271
+      },
+      "publishedPdf": {
+        "speedOfSoundMS": 1293,
+        "initialPressureSurgePa": 3749589,
+        "initialForceKn": 190.7,
+        "phi": -0.7732,
+        "omega": -0.0069,
+        "closureAdjustedSurgePa": 54084,
+        "closureAdjustedForceKn": 2.75,
+        "limitForceKn": 3.92,
+        "lof": 0.7
+      },
+      "retainedDocx": {
+        "lof": 0.06
+      }
+    },
+    {
+      "id": "EI-D2-THERMOWELL-TT-001",
+      "mechanism": "THERMOWELL",
+      "mode": "THERMOWELL_STEP_ARITHMETIC",
+      "sourceLocation": "retained ASME PTC 19.3 TW-2016 record 3",
+      "input": {
+        "densityKgM3": 23,
+        "velocityMS": 7.26,
+        "characteristicDiameterM": 0.018,
+        "dynamicViscosityPaS": 1e-05,
+        "strouhal": 0.2
+      },
+      "published": {
+        "reynolds": 300600,
+        "vortexFrequencyHz": 80.6,
+        "inSituResonantFrequencyHz": 424.6,
+        "frequencyRatio": 0.19,
+        "criticalVelocityMS": 17.4,
+        "cyclicDragStressMPa": 200.66,
+        "cyclicStressLimitMPa": 48.16,
+        "lof": 0.29,
+        "assessmentResult": "PASS"
+      }
+    },
+    {
+      "id": "EI-D5-SBC-PRESSURE-TAPPING",
+      "mechanism": "SMALL_BORE_CONNECTION",
+      "mode": "SBC_D5_STEP_ARITHMETIC",
+      "sourceLocation": "D.5 / retained record 4",
+      "input": {
+        "geometryScores": [
+          0.9,
+          0.7,
+          0.5,
+          0.5,
+          0.7
+        ],
+        "locationLof": 1.0,
+        "mainlineLof": 1.0,
+        "mainlineMultiplier": 1.42
+      },
+      "published": {
+        "geometryLof": 0.66,
+        "sbcModifier": 0.66,
+        "lof": 0.66
+      }
+    },
+    {
+      "id": "EI-NO-EXAMPLE-RECIP-PD",
+      "mechanism": "RECIPROCATING_PULSATION",
+      "mode": "NO_RETAINED_EXAMPLE"
+    },
+    {
+      "id": "EI-NO-EXAMPLE-ROTATING-STALL",
+      "mechanism": "ROTATING_STALL",
+      "mode": "NO_RETAINED_EXAMPLE"
+    },
+    {
+      "id": "EI-NO-EXAMPLE-CORRUGATION",
+      "mechanism": "CORRUGATION_PULSATION",
+      "mode": "NO_RETAINED_EXAMPLE"
+    },
+    {
+      "id": "EI-NO-EXAMPLE-SLUG",
+      "mechanism": "SLUG_FLOW",
+      "mode": "NO_RETAINED_EXAMPLE"
+    },
+    {
+      "id": "EI-NO-EXAMPLE-CAV-FLASH",
+      "mechanism": "CAVITATION_FLASHING",
+      "mode": "NO_RETAINED_EXAMPLE"
+    }
+  ]
+}

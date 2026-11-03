@@ -1,0 +1,37 @@
+name: ATT RVM Scope Tree
+
+on:
+  pull_request:
+    paths:
+      - 'tabs/model-converters-tab.js'
+      - 'tabs/model-converters/ModelConvertersTab.js'
+      - 'tabs/model-converters/index.js'
+      - 'tabs/model-converters/rvmattr-scope-tree-*.js'
+      - 'tests/model-converters/test-rvmattr-scope-tree.mjs'
+      - '.github/workflows/rvmattr-scope-tree.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scope-tree:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
+      - name: Validate ATT/RVM scope tree
+        run: |
+          node --check tabs/model-converters/rvmattr-scope-tree-model.js
+          node --check tabs/model-converters/rvmattr-scope-tree-addon.js
+          node --check tabs/model-converters/ModelConvertersTab.js
+          node --check tabs/model-converters/index.js
+          node --check tabs/model-converters-tab.js
+          node tests/model-converters/test-rvmattr-scope-tree.mjs

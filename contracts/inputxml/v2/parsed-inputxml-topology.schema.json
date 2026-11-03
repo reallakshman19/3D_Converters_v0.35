@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:reallaksh19:inputxml:parsed-inputxml-topology:v1",
+  "title": "ParsedInputXmlTopology.v1",
+  "type": "object",
+  "required": ["schema", "inputXmlHashSha256", "canonicalTopologyHashSha256", "nodes", "elements", "restraints", "rigids", "issues", "summary", "parsedInputXmlTopologyHashSha256"],
+  "properties": {
+    "schema": {"const": "ParsedInputXmlTopology.v1"},
+    "inputXmlHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "canonicalTopologyHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "nodes": {"type": "array", "items": {"type": "object"}},
+    "elements": {"type": "array", "items": {"type": "object"}},
+    "restraints": {"type": "array", "items": {"type": "object"}},
+    "rigids": {"type": "array", "items": {"type": "object"}},
+    "issues": {"type": "array", "items": {"type": "object"}},
+    "summary": {"type": "object"},
+    "parsedInputXmlTopologyHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "additionalProperties": false
+}

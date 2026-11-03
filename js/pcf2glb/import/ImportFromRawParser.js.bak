@@ -1,0 +1,490 @@
+/**
+ * ImportFromRawParser.js
+ *
+ * In-browser import orchestrator for ACCDB/MDB (binary Access database),
+ * CAESAR II XML, CAESAR II neutral text, and CAESAR II PDF input listings.
+ *
+ * Pipeline (matches "Load .PCF" path exactly):
+ *
+ *   File (binary or text)
+ *     │
+ *     ├─ .accdb / .mdb  → parseBinaryAccdb()
+ *     │                    ├─ embeddedText → parse() [auto XML / NEUTRAL / PDF]
+ *     │                    └─ elements     → use directly
+ *     │
+ *     ├─ .xml / .pdf    → parse() [auto-detect]
+ *     │
+ *     └─ parsed { elements, nodes, bends, restraints, ... }
+ *          │
+ *          ▼
+ *   buildUniversalCSV()
+ *          │
+ *          ▼
+ *   normalizeToPCFWithContinuity()  ← ContEngineMethod
+ *          │
+ *          ▼
+ *   buildPcfFromContinuity()        → PCF text
+ *          │
+ *          ▼
+ *   pcfxDocumentFromPcfText()       → canonical PCFX document
+ *          │
+ *          ▼
+ *   viewerComponentFromCanonicalItem()  → viewer component objects
+ *          │
+ *          ▼
+ *   directPcfData = { kind:'direct-pcf', fileName, components, ... }
+ */
+
+import { parseBinaryAccdb } from '../../../parser/accdb-mdb.js';
+import { parse }            from '../../../parser/caesar-parser.js';
+import { buildUniversalCSV, normalizeToPCFWithContinuity, buildPcfFromContinuity } from '../../../utils/accdb-to-pcf.js';
+import { pcfxDocumentFromPcfText }         from '../../../pcfx/Pcfx_PcfAdapter.js';
+import { viewerComponentFromCanonicalItem } from '../../../pcfx/Pcfx_GlbAdapter.js';
+import { buildXmlGraphData } from '../../../parser/xml-graph-builder.js';
+
+// ── Helpers ────────────────────────────────────────────────────────────────────
+
+function _ext(fileName) {
+  return String(fileName || '').toLowerCase().replace(/.*\./, '');
+}
+
+/**
+ * Read a File as an ArrayBuffer.
+ * @param {File} file
+ * @returns {Promise<ArrayBuffer>}
+ */
+function _readArrayBuffer(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload  = () => resolve(reader.result);
+    reader.onerror = () => reject(new Error(`FileReader failed for ${file.name}`));
+    reader.readAsArrayBuffer(file);
+  });
+}
+
+/**
+ * Read a File as UTF-8 text.
+ * @param {File} file
+ * @returns {Promise<string>}
+ */
+function _readText(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload  = () => resolve(reader.result);
+    reader.onerror = () => reject(new Error(`FileReader (text) failed for ${file.name}`));
+    reader.readAsText(file, 'utf-8');
+  });
+}
+
+function _normalizeRef(value) {
+  if (value === undefined || value === null) return '';
+  return String(value).trim().replace(/^=/, '');
+}
+
+function _pointDistance(a, b) {
+  if (!a || !b) return Number.POSITIVE_INFINITY;
+  const dx = Number(a.x || 0) - Number(b.x || 0);
+  const dy = Number(a.y || 0) - Number(b.y || 0);
+  const dz = Number(a.z || 0) - Number(b.z || 0);
+  return Math.sqrt((dx * dx) + (dy * dy) + (dz * dz));
+}
+
+function _bestMatchByGeometry(comp, candidates) {
+  const p1 = comp?.points && comp.points[0] ? comp.points[0] : null;
+  const p2 = comp?.points && comp.points[1] ? comp.points[1] : null;
+  if (!p1 || !p2) return null;
+
+  let best = null;
+  let bestScore = Number.POSITIVE_INFINITY;
+  for (const seg of candidates) {
+    if (!seg || !seg.EP1 || !seg.EP2) continue;
+    const direct = _pointDistance(p1, seg.EP1) + _pointDistance(p2, seg.EP2);
+    const reverse = _pointDistance(p1, seg.EP2) + _pointDistance(p2, seg.EP1);
+    const score = Math.min(direct, reverse);
+    if (score < bestScore) {
+      bestScore = score;
+      best = seg;
+    }
+  }
+  return bestScore <= 5 ? best : null;
+}
+
+function _deriveBendCentreFromEndpoints(p1, p2) {
+  if (!p1 || !p2) return null;
+
+  const candidates = [
+    { x: p1.x, y: p2.y, z: p1.z },
+    { x: p2.x, y: p1.y, z: p1.z },
+    { x: p1.x, y: p1.y, z: p2.z },
+    { x: p2.x, y: p1.y, z: p2.z },
+    { x: p1.x, y: p2.y, z: p2.z },
+    { x: p2.x, y: p2.y, z: p1.z },
+  ];
+
+  let best = null;
+  let bestErr = Number.POSITIVE_INFINITY;
+  for (const cp of candidates) {
+    const d1 = _pointDistance(cp, p1);
+    const d2 = _pointDistance(cp, p2);
+    if (d1 < 0.1 || d2 < 0.1) continue;
+    const err = Math.abs(d1 - d2);
+    if (err < bestErr) {
+      bestErr = err;
+      best = cp;
+    }
+  }
+
+  return (best && bestErr <= 1.0) ? best : null;
+}
+
+const SUPPORT_METADATA_KEYS = Object.freeze([
+  'SUPPORT_KIND',
+  'SUPPORT_NAME',
+  'SUPPORT_TAG',
+  'SUPPORT_DESC',
+  'SUPPORT_GUID',
+  'SUPPORT_DIRECTION',
+  'SUPPORT_DOFS',
+  'AXIS_COSINES',
+  'PIPE_AXIS_COSINES',
+  'SUPPORT_FRICTION',
+  'SUPPORT_GAP',
+]);
+
+function _copySupportMetadata(comp, segment) {
+  if (!comp || !segment) return;
+  if (!comp.source) comp.source = {};
+  if (!comp.attributes) comp.attributes = {};
+
+  for (const key of SUPPORT_METADATA_KEYS) {
+    const value = segment[key];
+    if (value === undefined || value === null || value === '') continue;
+    comp.source[key] = value;
+    comp.attributes[key] = value;
+    const hyphenKey = key.replace(/_/g, '-');
+    comp.attributes[hyphenKey] = value;
+  }
+
+  const supportName = String(comp.source.SUPPORT_NAME || comp.attributes.SUPPORT_NAME || '').trim();
+  if (supportName) {
+    comp.attributes.SKEY = comp.attributes.SKEY || supportName;
+    comp.attributes['<SUPPORT_NAME>'] = comp.attributes['<SUPPORT_NAME>'] || supportName;
+    comp.attributes['COMPONENT-ATTRIBUTE1'] = comp.attributes['COMPONENT-ATTRIBUTE1'] || supportName;
+  }
+}
+
+
+function _parsedXmlToDirectData(parsed, fileName, defaults) {
+  return buildXmlGraphData(parsed, fileName, {
+    syntheticGapMm: Number(defaults?.xmlLayout?.syntheticGapMm || 3500),
+    rootPlacements: defaults?.xmlLayout?.rootPlacements || null,
+    componentPlacements: defaults?.xmlLayout?.componentPlacements || null,
+    lineLabelText: defaults?.xmlLayout?.lineLabelText || '',
+    lineLabelPrefix: defaults?.xmlLayout?.lineLabelPrefix || 'ASSEMBLY',
+  });
+}
+
+/**
+ * Convert a parsed result (from caesar-parser or accdb-mdb) into a
+ * directPcfData object that can be assigned to _directPcfData in viewer3d-tab.
+ *
+ * @param {object} parsed   { elements, nodes, bends, restraints, forces, rigids, units }
+ * @param {string} fileName
+ * @param {object} defaults PCFX defaults from state.sticky.pcfxDefaults
+ * @returns {{ kind, fileName, components, parsed:null, messageCircleNodes, messageSquareNodes }}
+ */
+function _parsedToDirectPcfData(parsed, fileName, defaults) {
+  if (!parsed || !Array.isArray(parsed.elements) || parsed.elements.length === 0) {
+    throw new Error('No pipe elements could be extracted from the file.');
+  }
+
+  // Stage 1 – parsed elements → Universal CSV rows
+  const csvRows = buildUniversalCSV(parsed, {
+    supportMappings: (defaults && defaults.supportMappings) ? defaults.supportMappings : [],
+  });
+  if (!csvRows.length) {
+    throw new Error('Universal CSV conversion produced no rows — cannot build geometry.');
+  }
+
+  // Stage 2 – CSV rows → PCF segments (with absolute node positions)
+  const segments = normalizeToPCFWithContinuity(csvRows, {
+    method: 'ContEngineMethod',
+    sourceName: String(fileName || 'import').replace(/\.[^/.]+$/, ''),
+  });
+  if (!segments.length) {
+    throw new Error('PCF segment normalization produced no segments.');
+  }
+
+  // Stage 3 – PCF segments → PCF text
+  const pcfText = buildPcfFromContinuity(segments, {
+    decimals: 4,
+    sourceName: String(fileName || 'import').replace(/\.[^/.]+$/, ''),
+  });
+
+  // Stage 4 – PCF text → PCFX canonical document
+  const pcfxDoc = pcfxDocumentFromPcfText(pcfText, fileName, defaults || {}, null);
+  const canonicalItems = (pcfxDoc && pcfxDoc.canonical && pcfxDoc.canonical.items)
+    ? pcfxDoc.canonical.items
+    : [];
+
+  if (!canonicalItems.length) {
+    throw new Error('PCFX canonical conversion produced no items — cannot render geometry.');
+  }
+
+  // Stage 5 – canonical items → viewer components (same shape as _buildDirectPcfData)
+  const components = canonicalItems
+    .filter(item => {
+      const t = String(item.type || '').toUpperCase();
+      return t !== 'MESSAGE-CIRCLE' && t !== 'MESSAGE-SQUARE';
+    })
+    .map(item => viewerComponentFromCanonicalItem(item))
+    .filter(Boolean);
+
+  // Stage 5b – Patch BEND centre points and endpoints directly from source data.
+  // The PCF text round-trip (Stages 3-4) is lossy for bend centre-point geometry.
+  // We use two sources in priority order:
+  //   A) parsed.nodes — absolute node positions from the XML/ACCDB parser (most reliable)
+  //   B) segments EP1/EP2/CP — positions from the continuity engine (fallback)
+  const parsedNodes = (parsed && parsed.nodes) ? parsed.nodes : null;
+  const segmentByRef = new Map(segments.map(s => [_normalizeRef(s.REF_NO), s]));
+  const geometryCandidates = segments.filter((s) => !!(s && s.EP1 && s.EP2));
+
+  // Build a map from BEND segment REF_NO → control node number
+  // so we can look up the apex position from parsed.nodes
+  const bendControlNodes = new Map(
+    segments
+      .filter(s => s.COMPONENT_TYPE === 'BEND' && s.CONTROL_NODE)
+      .map(s => [_normalizeRef(s.REF_NO), s.CONTROL_NODE])
+  );
+
+  for (const comp of components) {
+    const refCandidates = [
+      comp?.id,
+      comp?.refNo,
+      comp?.source?.refNo,
+      comp?.source?.attrs?.CA97,
+      comp?.attributes?.['COMPONENT-ATTRIBUTE97'],
+      comp?.attributes?.COMPONENT_ATTRIBUTE97,
+    ].map(_normalizeRef).filter(Boolean);
+
+    let orig = null;
+    for (const ref of refCandidates) {
+      orig = segmentByRef.get(ref);
+      if (orig) break;
+    }
+    if (!orig) {
+      orig = _bestMatchByGeometry(comp, geometryCandidates);
+    }
+    if (!orig) continue;
+
+    const sourceType = String(orig.COMPONENT_TYPE || '').toUpperCase();
+    if (sourceType === 'BEND' || sourceType === 'ELBOW') {
+      comp.type = 'BEND';
+    }
+
+    // ── Geometry patch ──────────────────────────────────────────────────────
+    // Prefer parsed.nodes absolute positions → fall back to segment EP1/EP2/CP
+    const fromNode = orig.FROM_NODE;
+    const toNode   = orig.TO_NODE;
+    const ctrlNode = bendControlNodes.get(_normalizeRef(orig.REF_NO)) || orig.CONTROL_NODE;
+
+    const getNodePos = (nodeId) => {
+      if (parsedNodes && parsedNodes[nodeId]) return parsedNodes[nodeId];
+      return null;
+    };
+
+    const ep1 = getNodePos(fromNode) || orig.EP1;
+    const ep2 = getNodePos(toNode)   || orig.EP2;
+    const r   = (orig.DIAMETER || 0) / 2 || comp.bore;
+
+    if (ep1 && ep2) {
+      comp.points = [
+        { x: ep1.x, y: ep1.y, z: ep1.z, bore: r },
+        { x: ep2.x, y: ep2.y, z: ep2.z, bore: r },
+      ];
+    }
+
+    if (comp.type === 'BEND') {
+      // Control node is the corner-intersection (apex) of the bend
+      const cpPos = getNodePos(ctrlNode) || orig.CP;
+      if (cpPos) {
+        comp.centrePoint = { x: cpPos.x, y: cpPos.y, z: cpPos.z };
+      } else if (comp.points && comp.points[0] && comp.points[1]) {
+        const derived = _deriveBendCentreFromEndpoints(comp.points[0], comp.points[1]);
+        if (derived) {
+          comp.centrePoint = { x: derived.x, y: derived.y, z: derived.z };
+        }
+      }
+    }
+
+    // ── Heatmap/Legend attribute restore ───────────────────────────────────
+    if (!comp.source) comp.source = {};
+    comp.source.T1 = Number(orig.T1);
+    comp.source.T2 = Number(orig.T2);
+    comp.source.P1 = Number(orig.P1);
+    comp.source.P2 = Number(orig.P2);
+    comp.source.MATERIAL = orig.MATERIAL || orig.MATERIAL_NAME || comp.source.MATERIAL || '';
+
+    if (!comp.attributes) comp.attributes = {};
+    if (!comp.attributes.MATERIAL && comp.source.MATERIAL) {
+      comp.attributes.MATERIAL = String(comp.source.MATERIAL);
+    }
+    if (!Number.isFinite(Number(comp.attributes.T1)) && Number.isFinite(comp.source.T1)) {
+      comp.attributes.T1 = comp.source.T1;
+    }
+    if (!Number.isFinite(Number(comp.attributes.T2)) && Number.isFinite(comp.source.T2)) {
+      comp.attributes.T2 = comp.source.T2;
+    }
+    if (!Number.isFinite(Number(comp.attributes.P1)) && Number.isFinite(comp.source.P1)) {
+      comp.attributes.P1 = comp.source.P1;
+    }
+    if (!Number.isFinite(Number(comp.attributes.P2)) && Number.isFinite(comp.source.P2)) {
+      comp.attributes.P2 = comp.source.P2;
+    }
+
+    if (sourceType === 'SUPPORT' || String(comp.type || '').toUpperCase() === 'SUPPORT') {
+      _copySupportMetadata(comp, orig);
+    }
+  }
+
+  // Project MESSAGE-CIRCLE nodes from parsed.nodes (for Node No. overlay)
+  const messageCircleNodes = [];
+  if (parsed.nodes) {
+    for (const [id, pos] of Object.entries(parsed.nodes)) {
+      messageCircleNodes.push({
+        text: String(id),
+        pos: { x: Number(pos.x || 0), y: Number(pos.y || 0), z: Number(pos.z || 0) }
+      });
+    }
+  }
+
+  // Project MESSAGE-SQUARE nodes from parsed.elements (for Line No. overlay)
+  const messageSquareNodes = [];
+  const lineProcessed = new Set();
+  if (parsed.elements && parsed.nodes) {
+    for (const el of parsed.elements) {
+      if (!el.lineNo || lineProcessed.has(el.lineNo)) continue;
+      const a = parsed.nodes[el.from];
+      const b = parsed.nodes[el.to];
+      if (a && b) {
+        lineProcessed.add(el.lineNo);
+        messageSquareNodes.push({
+          text: String(el.lineNo),
+          pos: {
+            x: (Number(a.x || 0) + Number(b.x || 0)) / 2,
+            y: (Number(a.y || 0) + Number(b.y || 0)) / 2,
+            z: (Number(a.z || 0) + Number(b.z || 0)) / 2,
+          }
+        });
+      }
+    }
+  }
+
+  return {
+    kind:               'direct-pcf',
+    fileName,
+    parsed:             parsed,   // Retain parsed data for UI summaries
+    components,
+    messageCircleNodes,
+    messageSquareNodes,
+  };
+}
+
+// ── Main export ────────────────────────────────────────────────────────────────
+
+/**
+ * Import a raw ACCDB/MDB/XML/PDF file and convert it to a viewer directPcfData object.
+ *
+ * @param {File}     file        Browser File object from <input type="file">
+ * @param {object}   state       Viewer state (used for sticky.pcfxDefaults)
+ * @param {object[]} logArray    Mutable array; log entries are pushed here
+ * @returns {Promise<{ok:boolean, message:string, directPcfData:object|null}>}
+ */
+export async function importFromRawFile(file, state, logArray) {
+  const log = Array.isArray(logArray) ? logArray : [];
+  const fileName = String(file && file.name ? file.name : 'unknown');
+  const ext = _ext(fileName);
+  const defaults = (state && state.sticky && state.sticky.pcfxDefaults)
+    ? state.sticky.pcfxDefaults
+    : {};
+
+  log.push({ level: 'INFO', msg: `Import started: "${fileName}" (${ext})` });
+
+  try {
+    let parsed = null;
+
+    // ── ACCDB / MDB: binary Access database ────────────────────────────────
+    if (ext === 'accdb' || ext === 'mdb') {
+      const arrayBuffer = await _readArrayBuffer(file);
+      log.push({ level: 'INFO', msg: `Read ${arrayBuffer.byteLength} bytes from "${fileName}"` });
+
+      const accdbResult = await parseBinaryAccdb(arrayBuffer, fileName, log);
+
+      if (!accdbResult) {
+        return {
+          ok: false,
+          directPcfData: null,
+          message: `Failed to open "${fileName}" as an Access database. Check console/log for details.`,
+        };
+      }
+
+      if (accdbResult.embeddedText) {
+        // Embedded CAESAR II neutral / XML text found inside the database
+        log.push({ level: 'INFO', msg: 'Using embedded CAESAR II text extracted from ACCDB.' });
+        parsed = parse(accdbResult.embeddedText, fileName);
+      } else if (accdbResult.elements && accdbResult.elements.length > 0) {
+        // Direct table extraction — accdb-mdb already built elements
+        log.push({ level: 'INFO', msg: `Using ${accdbResult.elements.length} element(s) extracted directly from ACCDB tables.` });
+        parsed = accdbResult;   // already in the { elements, nodes, bends, ... } shape
+      } else {
+        return {
+          ok: false,
+          directPcfData: null,
+          message: `No pipe element data could be extracted from "${fileName}". The database may not contain a CAESAR II model, or is password-protected.`,
+        };
+      }
+
+    // ── XML / Neutral text / PDF: read as text and auto-detect ─────────────
+    } else if (ext === 'xml' || ext === 'pdf') {
+      const text = await _readText(file);
+      log.push({ level: 'INFO', msg: `Read ${text.length} chars from "${fileName}"` });
+      parsed = parse(text, fileName);
+
+    } else {
+      // Fallback: try text parse (treats unknown extension as Neutral/XML/PDF)
+      const text = await _readText(file);
+      log.push({ level: 'WARN', msg: `Extension ".${ext}" not explicitly handled — attempting auto-detect parse.` });
+      parsed = parse(text, fileName);
+    }
+
+    // ── Convert parsed result → directPcfData (via PCFX canonical layer) ───
+    if (!parsed || !Array.isArray(parsed.elements) || parsed.elements.length === 0) {
+      const detail = parsed && parsed.errors && parsed.errors.length
+        ? parsed.errors.map(e => e.msg || e).join('; ')
+        : 'No elements returned by parser.';
+      return {
+        ok: false,
+        directPcfData: null,
+        message: `"${fileName}": Parser returned no pipe elements. ${detail}`,
+      };
+    }
+
+    log.push({ level: 'INFO', msg: `Parser produced ${parsed.elements.length} element(s), ${Object.keys(parsed.nodes || {}).length} node(s). Converting via PCFX layer...` });
+
+    const directPcfData = String(parsed?.format || '').toUpperCase() === 'XML'
+      ? _parsedXmlToDirectData(parsed, fileName, defaults)
+      : _parsedToDirectPcfData(parsed, fileName, defaults);
+
+    log.push({
+      level: 'OK',
+      msg: `Import complete: ${directPcfData.components.length} viewer component(s) built from "${fileName}".`,
+    });
+
+    return { ok: true, directPcfData, message: '' };
+
+  } catch (err) {
+    const message = String(err && err.message ? err.message : err);
+    log.push({ level: 'ERROR', msg: `Import failed: ${message}` });
+    return { ok: false, directPcfData: null, message };
+  }
+}

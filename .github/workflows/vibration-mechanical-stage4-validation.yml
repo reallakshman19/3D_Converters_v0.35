@@ -1,0 +1,80 @@
+name: Vibration Production Freeze Validation
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - 'converters/vibration/**'
+      - 'tabs/vibration-integrity-**'
+      - 'tests/vibration-**'
+      - 'scripts/validate-vibration-mechanical-stage4-browser.mjs'
+      - 'scripts/validate-vibration-production-freeze-browser.mjs'
+      - '.github/workflows/vibration-mechanical-stage4-validation.yml'
+      - 'package.json'
+      - 'package-lock.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  node-and-chromium:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout exact PR head
+        uses: actions/checkout@v4
+
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install repository dependencies
+        run: npm ci
+
+      - name: Run Stage 4 repository-native tests
+        run: >-
+          node --test
+          tests/vibration-mechanical-t23-facility-stage4.test.mjs
+          tests/vibration-mechanical-t23-applicability-stage4.test.mjs
+          tests/vibration-mechanical-t23-ui-stage4.test.mjs
+          tests/vibration-mechanical-t23-module-boundaries-stage4.test.mjs
+          tests/vibration-mechanism-contract.test.mjs
+          tests/vibration-integrity-mechanism-matrix.test.mjs
+          tests/vibration-production-freeze-browser-contract.test.mjs
+
+      - name: Run full repository Node test suite
+        run: node --test tests/*.test.mjs
+
+      - name: Install Playwright Chromium
+        run: |
+          npm install --no-save --package-lock=false playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Start static application server
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/vibration-stage4-server.log 2>&1 &
+          echo $! > /tmp/vibration-stage4-server.pid
+          node -e "const u='http://127.0.0.1:4173'; let n=0; const p=async()=>{try{const r=await fetch(u); if(r.ok) return;}catch{} if(++n>60) process.exit(1); setTimeout(p,500)}; p();"
+
+      - name: Run benchmarked Chromium production-freeze journey
+        env:
+          VIBRATION_BROWSER_BASE_URL: http://127.0.0.1:4173
+          VIBRATION_FREEZE_ARTIFACT_DIR: artifacts/vibration-production-freeze
+        run: node scripts/validate-vibration-production-freeze-browser.mjs
+
+      - name: Upload production-freeze screenshots and receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vibration-production-freeze-${{ github.sha }}
+          path: |
+            artifacts/vibration-production-freeze/**
+            /tmp/vibration-stage4-server.log
+          if-no-files-found: warn
+
+      - name: Show server log on failure
+        if: failure()
+        run: cat /tmp/vibration-stage4-server.log || true

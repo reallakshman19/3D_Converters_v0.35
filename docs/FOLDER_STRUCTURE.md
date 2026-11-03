@@ -1,0 +1,29 @@
+# Folder Structure
+
+```text
+viewer/
+  tabs/
+    model-exchange-tab.js
+    model-exchange-tab.css
+  interchange/
+    canonical/
+    source/
+      xml/
+      pcf/
+      pcfx/
+      glb/
+    builders/
+      xml/
+      pcf/
+      pcfx/
+      glb/
+    validation/
+    export/
+      xml/
+      pcf/
+      pcfx/
+      glb/
+    view/
+    state/
+    docs/
+```

@@ -1,0 +1,201 @@
+<?xml version="1.0" ?>
+<xs:schema id="NewDataSet" targetNamespace="http://aveva.com/pipestress116.xsd" xmlns:psi="http://aveva.com/pipestress116.xsd"
+	xmlns="http://aveva.com/pipestress116.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" attributeFormDefault="qualified" elementFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>
+		Edited by Carl Purseglove 17 November 2022
+            Changes
+            Added Restrain Open Ends option
+            Added ConnectionType
+        Edited by Dave Midgley 16 January 2009
+            Changes
+            CorrosionAllowance added to Node
+		Edited by Elaine Weir 23 October 2006
+	        Changes
+	        Added Rigid element (1 -start, 2 -end of rigid)
+		Edited by Tim Sharrock/Elaine Weir 18 May 2006
+		    Changes
+		         18 May 2006 - allow PDMS alternative double formats
+		Edited by Elaine Weir 13 April 2006
+	        Changes
+				 13 Apr 2006 Added BendType element (1- single flanged, 2-double flanged, 0-welded)
+				 22 Feb 2006 Changed ModificationStatus element to Status so it can be handled in PML	
+	             8 Feb 2006 Added load case elements for stress data
+	    Edited by Tim Sharrock 6 Feb 2006
+	        Changes
+	             6 Feb 2006 add new types, particularly for optional values
+	   </xs:documentation>
+	</xs:annotation>
+	<xs:simpleType name="emptyStringType">
+		<xs:annotation>
+			<xs:documentation>may contain whitespace, which is trimmed in code</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse" />
+			<xs:pattern value="\s?" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="pdmsDouble">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[-+]?[0-9]*\.?[0-9]+([eE][xX]?[pP]?[-+]?[0-9]+)?" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="optionalDoubleType">
+		<xs:union memberTypes="psi:emptyStringType psi:pdmsDouble" />
+	</xs:simpleType>
+	<xs:simpleType name="optionalIntegerType">
+		<xs:union memberTypes="psi:emptyStringType xs:integer" />
+	</xs:simpleType>
+	<xs:simpleType name="DoubleListType">
+		<xs:list itemType="psi:pdmsDouble" />
+	</xs:simpleType>
+	<xs:simpleType name="Position">
+		<xs:restriction base="DoubleListType">
+			<xs:length value="3" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="PipeStressExport">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="LoadCaseList" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="LoadCaseNames" nillable="true" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:simpleContent msdata:ColumnName="LoadCaseNames_Text" msdata:Ordinal="0">
+										<xs:extension base="xs:string"></xs:extension>
+									</xs:simpleContent>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="StressDateTime" type="xs:string" minOccurs="0" />
+				<xs:element name="DateTime" type="xs:string" minOccurs="0" />
+				<xs:element name="Source" type="xs:string" minOccurs="0" />
+				<xs:element name="Version" type="xs:string" minOccurs="0" />
+				<xs:element name="UserName" type="xs:string" minOccurs="0" />
+				<xs:element name="Purpose" type="xs:string" minOccurs="0" />
+				<xs:element name="ProjectName" type="xs:string" minOccurs="0" />
+				<xs:element name="MDBName" type="xs:string" minOccurs="0" />
+				<xs:element name="TitleLine" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+				<xs:element name="Units" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="DistanceUnits" type="xs:string" minOccurs="0" />
+							<xs:element name="BoreUnits" type="xs:string" minOccurs="0" />
+							<xs:element name="PressureUnits" type="xs:string" minOccurs="0" />
+							<xs:element name="TemperatureUnits" type="xs:string" minOccurs="0" />
+							<xs:element name="WeightUnits" type="xs:string" minOccurs="0" />
+							<xs:element name="ForceUnits" type="xs:string" minOccurs="0" />
+							<xs:element name="WallThicknessUnits" type="xs:string" minOccurs="0" />
+							<xs:element name="FluidDensityUnits" type="xs:string" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="RestrainOpenEnds" type="xs:string" minOccurs="0" />
+				<xs:element name="AmbientTemperature" type="psi:optionalDoubleType" minOccurs="0" />
+				<xs:element name="Pipe" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="FullName" type="xs:string" minOccurs="0" />
+							<xs:element name="Ref" type="xs:string" minOccurs="0" />
+							<xs:element name="Branch" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Branchname" type="xs:string" minOccurs="0" />
+										<xs:element name="Temperature" minOccurs="0">
+											<xs:complexType mixed="true">
+												<xs:sequence>
+													<xs:element name="Temperature1" type="psi:optionalDoubleType" minOccurs="0" />
+													<xs:element name="Temperature2" type="psi:optionalDoubleType" minOccurs="0" />
+													<xs:element name="Temperature3" type="psi:optionalDoubleType" minOccurs="0" />
+													<xs:element name="Temperature4" type="psi:optionalDoubleType" minOccurs="0" />
+													<xs:element name="Temperature5" type="psi:optionalDoubleType" minOccurs="0" />
+													<xs:element name="Temperature6" type="psi:optionalDoubleType" minOccurs="0" />
+													<xs:element name="Temperature7" type="psi:optionalDoubleType" minOccurs="0" />
+													<xs:element name="Temperature8" type="psi:optionalDoubleType" minOccurs="0" />
+													<xs:element name="Temperature9" type="psi:optionalDoubleType" minOccurs="0" />
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="Pressure" minOccurs="0">
+											<xs:complexType mixed="true">
+												<xs:sequence>
+													<xs:element name="Pressure1" type="psi:optionalDoubleType" minOccurs="0" />
+													<xs:element name="Pressure2" type="psi:optionalDoubleType" minOccurs="0" />
+													<xs:element name="Pressure3" type="psi:optionalDoubleType" minOccurs="0" />
+													<xs:element name="Pressure4" type="psi:optionalDoubleType" minOccurs="0" />
+													<xs:element name="Pressure5" type="psi:optionalDoubleType" minOccurs="0" />
+													<xs:element name="Pressure6" type="psi:optionalDoubleType" minOccurs="0" />
+													<xs:element name="Pressure7" type="psi:optionalDoubleType" minOccurs="0" />
+													<xs:element name="Pressure8" type="psi:optionalDoubleType" minOccurs="0" />
+													<xs:element name="Pressure9" type="psi:optionalDoubleType" minOccurs="0" />
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="MaterialNumber" type="psi:optionalIntegerType" minOccurs="0" />
+										<xs:element name="InsulationDensity" type="psi:optionalDoubleType" minOccurs="0" />
+										<xs:element name="FluidDensity" type="psi:optionalDoubleType" minOccurs="0" />
+										<xs:element name="Node" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="NodeNumber" type="psi:optionalIntegerType" minOccurs="0" />
+													<xs:element name="NodeName" type="xs:string" minOccurs="0" />
+													<xs:element name="Endpoint" type="psi:optionalIntegerType" minOccurs="0" />
+													<xs:element name="Rigid" type="psi:optionalIntegerType" minOccurs="0" />
+													<xs:element name="ComponentType" type="xs:string" minOccurs="0" />
+													<xs:element name="Weight" type="psi:optionalDoubleType" minOccurs="0" />
+													<xs:element name="ComponentRefNo" type="xs:string" minOccurs="0" />
+													<xs:element name="ConnectionType" type="xs:string" minOccurs="0" />
+													<xs:element name="OutsideDiameter" type="psi:optionalDoubleType" minOccurs="0" />
+													<xs:element name="WallThickness" type="psi:optionalDoubleType" minOccurs="0" />
+													<xs:element name="CorrosionAllowance" type="psi:optionalDoubleType" minOccurs="0" />
+													<xs:element name="AlphaAngle" type="psi:optionalDoubleType" minOccurs="0" />
+													<xs:element name="InsulationThickness" type="psi:optionalDoubleType" minOccurs="0" />
+													<xs:element name="Position" minOccurs="0" type="Position"></xs:element>
+													<xs:element name="BendRadius" type="psi:optionalDoubleType" minOccurs="0" />
+													<xs:element name="BendType" type="psi:optionalIntegerType" minOccurs="0" />
+													<xs:element name="SIF" type="psi:optionalIntegerType" minOccurs="0" />
+													<xs:element name="Restraint" minOccurs="0" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="Type" type="xs:string" minOccurs="1" />
+																<xs:element name="Stiffness" type="psi:optionalDoubleType" minOccurs="0" />
+																<xs:element name="Gap" type="psi:optionalDoubleType" minOccurs="0" />
+																<xs:element name="Friction" type="psi:optionalDoubleType" minOccurs="0" />
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="NewPosition" minOccurs="0" type="Position"></xs:element>
+													<xs:element name="Status" type="xs:string" minOccurs="0" />
+													<xs:element name="Load" minOccurs="0" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="LoadCaseName" type="xs:string" minOccurs="0" />
+																<xs:element name="Translation" type="Position" minOccurs="0" />
+																<xs:element name="Rotation" type="Position" minOccurs="0" />
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:Locale="en-GB" msdata:EnforceConstraints="False">
+		<xs:complexType>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element ref="PipeStressExport" />
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

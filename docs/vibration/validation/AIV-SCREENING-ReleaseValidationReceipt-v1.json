@@ -1,0 +1,25 @@
+{
+  "schema": "AivReleaseValidationReceipt.v1",
+  "methodId": "VIB.AIV.ACOUSTIC",
+  "repository": "reallaksh19/3D_Converters",
+  "releaseTarget": "SCREENING",
+  "exactHeadSha": "613e1ec48335db3794e5208b0c3435d387683b04",
+  "exactHeadValidated": true,
+  "status": "PASS",
+  "executionSource": "LOCAL_CONTROLLED_CHECKOUT",
+  "validationGroupCount": 8,
+  "validationGroups": [
+    "AIV_FOCUSED_NODE_TESTS",
+    "AIV_CONTROLLED_BENCHMARK_PARITY",
+    "AIV_BROWSER_WORKSPACE_SMOKE",
+    "AIV_MODULE_BOUNDARY_CHECK",
+    "AIV_REAL_PRODUCT_PATH_PARITY",
+    "AIV_SINGLE_BATCH_PARITY",
+    "AIV_PROJECT_INPUT_BROWSER_FLOW",
+    "AIV_EXPORT_PROVENANCE"
+  ],
+  "authorityTransitionApplied": false,
+  "productionEquationAuthorized": false,
+  "screeningAuthority": "NOT_AUTHORIZED",
+  "designAuthority": false
+}

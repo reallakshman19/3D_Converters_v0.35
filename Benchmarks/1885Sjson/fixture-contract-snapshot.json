@@ -1,0 +1,125 @@
+{
+  "schema": "stagedjson-1885-contract-snapshot/v1",
+  "targetRefs": [
+    "=1006649732/51428",
+    "=1006649732/51494",
+    "=1006649732/51499"
+  ],
+  "branchNames": [
+    "/ASIM-1885-6&quot;-S8811951-91261M7-HC-01",
+    "/ASIM-1885-6&quot;-S8810112-91261M7-HC-01",
+    "/ASIM-1885-6&quot;-S8810111-91261M7-HC-01",
+    "/ASIM-1885-8&quot;-S8810103-91261M7-HC-01",
+    "/ASIM-1885-10&quot;-S8810101-91261M7-HC-01"
+  ],
+  "targets": {
+    "=1006649732/51428": {
+      "source": {
+        "name": "ELBO =1006649732/51428",
+        "type": "ELBO",
+        "owner": "/ASIM-1885-8\"-S8810103-91261M7-HC-01/B1"
+      },
+      "enrichment": {
+        "schema": "stagedjson-cii2019-enriched-attributes/v1",
+        "lineNo": "S8810103",
+        "pipingClass": "91261",
+        "pressureRating": "900",
+        "nominalBoreMm": 200,
+        "pipeOdMm": 219.1,
+        "schedule": "80",
+        "wallThicknessMm": 12.7,
+        "corrosionAllowanceMm": 1,
+        "insulationThicknessMm": 100,
+        "status": "resolved",
+        "needsReview": false,
+        "missing": []
+      },
+      "xml": {
+        "nodeNumber": "1570",
+        "nodeName": "",
+        "endpoint": "0",
+        "componentType": "ELBO",
+        "connectionType": "",
+        "outsideDiameter": "219.1",
+        "wallThickness": "12.7",
+        "corrosionAllowance": "1",
+        "insulationThickness": "100",
+        "bendRadius": "305",
+        "bendType": "0",
+        "alphaAngle": null
+      }
+    },
+    "=1006649732/51494": {
+      "source": {
+        "name": "TEE =1006649732/51494",
+        "type": "TEE",
+        "owner": "/ASIM-1885-10\"-S8810101-91261M7-HC-01/B7"
+      },
+      "enrichment": {
+        "schema": "stagedjson-cii2019-enriched-attributes/v1",
+        "lineNo": "S8810101",
+        "pipingClass": "91261",
+        "pressureRating": "900",
+        "nominalBoreMm": 250,
+        "pipeOdMm": 273,
+        "schedule": "80",
+        "wallThicknessMm": 15.09,
+        "corrosionAllowanceMm": 1,
+        "insulationThicknessMm": 120,
+        "status": "resolved",
+        "needsReview": false,
+        "missing": []
+      },
+      "xml": {
+        "nodeNumber": "2280",
+        "nodeName": "",
+        "endpoint": "1",
+        "componentType": "BRAN",
+        "connectionType": "TEE",
+        "outsideDiameter": "273",
+        "wallThickness": "15.09",
+        "corrosionAllowance": "1",
+        "insulationThickness": "120",
+        "bendRadius": "0",
+        "bendType": null,
+        "alphaAngle": null
+      }
+    },
+    "=1006649732/51499": {
+      "source": {
+        "name": "REDU =1006649732/51499",
+        "type": "REDU",
+        "owner": "/ASIM-1885-10\"-S8810101-91261M7-HC-01/B7"
+      },
+      "enrichment": {
+        "schema": "stagedjson-cii2019-enriched-attributes/v1",
+        "lineNo": "S8810101",
+        "pipingClass": "91261",
+        "pressureRating": "900",
+        "nominalBoreMm": 250,
+        "pipeOdMm": 273,
+        "schedule": "80",
+        "wallThicknessMm": 15.09,
+        "corrosionAllowanceMm": 1,
+        "insulationThicknessMm": 120,
+        "status": "resolved",
+        "needsReview": false,
+        "missing": []
+      },
+      "xml": {
+        "nodeNumber": "2370",
+        "nodeName": "",
+        "endpoint": "2",
+        "componentType": "REDU",
+        "connectionType": "",
+        "outsideDiameter": "273",
+        "wallThickness": "15.09",
+        "corrosionAllowance": "1",
+        "insulationThickness": "120",
+        "bendRadius": "0",
+        "bendType": null,
+        "alphaAngle": "16.389"
+      }
+    }
+  }
+}

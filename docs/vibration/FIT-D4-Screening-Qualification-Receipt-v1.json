@@ -1,0 +1,101 @@
+{
+  "schema": "FitD4ScreeningQualificationReceipt.v1",
+  "calculationId": "VIB.FIV.FLOW_TURBULENCE",
+  "qualificationDecision": "QUALIFIED_BOUNDED_SCREENING",
+  "engineeringAuthority": "SCREENING",
+  "screeningAuthority": "AUTHORIZED_BOUNDED",
+  "designAuthority": false,
+  "fullMultiMechanismScreeningAuthority": false,
+  "ownerPolicy": {
+    "policy": "WORKED_EXAMPLE_BENCHMARK_SUFFICIENT",
+    "independentVibrationEngineerReviewRequired": false,
+    "source": {
+      "repository": "reallaksh19/Common",
+      "commit": "7bfead910f6bca91b10748ead009e40f20c82219",
+      "path": "Energy-Institute-AVIFF---Worked-Examples.doc.docx",
+      "gitBlob": "ceee15ed5f7f320045d5f3979024e2e8664613f2"
+    }
+  },
+  "qualificationExample": {
+    "id": "EI-D4-FIT-PRODUCED-WATER-10IN",
+    "phase": "LIQUID",
+    "outsideDiameterM": 0.273,
+    "wallThicknessM": 0.009271,
+    "maximumUnsupportedSpanM": 18,
+    "densityKgM3": 988,
+    "fluidVelocityMS": 2.9,
+    "published": {
+      "supportCategory": "FLEXIBLE_LARGE",
+      "standardFvPa": 2636,
+      "standardFvTolerancePa": 0.7,
+      "standardLof": 3.15,
+      "standardLofTolerance": 0.007,
+      "referenceBand": "LOF_GE_1"
+    }
+  },
+  "executedValidation": {
+    "centralAdapterKernel": {
+      "status": "PASS",
+      "benchmarkStandardLof": 3.151946898828706,
+      "screeningStandardLof": 3.151946898828706,
+      "screeningStandardFvPa": 2636.1738527662806,
+      "supportCategory": "FLEXIBLE_LARGE",
+      "referenceBand": "LOF_GE_1",
+      "screeningCandidateStatus": "QUALIFIED_BOUNDED_SCREENING_FURTHER_ASSESSMENT_REQUIRED",
+      "continuationRequired": true,
+      "qualification": "SCREENING",
+      "designAuthority": false,
+      "benchmarkScreeningNumericalIdentity": "PASS"
+    },
+    "qst003NegativeProbe": {
+      "status": "PASS",
+      "outsideDiameterMm": 250,
+      "expected": "INPUT_OUTSIDE_APPLICABILITY",
+      "actual": "INPUT_OUTSIDE_APPLICABILITY"
+    },
+    "facilityPlanResultRegisterWorkspace": {
+      "status": "PASS",
+      "layers": [
+        "facility-plan",
+        "central-engineering-calculation-api",
+        "fit-adapter-kernel",
+        "facility-result",
+        "facility-register",
+        "workspace-model"
+      ],
+      "screeningStandardLof": 3.151946898828706,
+      "engineeringAuthority": "SCREENING",
+      "designAuthority": false
+    },
+    "renderedAppContract": {
+      "status": "PASS_SOURCE_CONTRACT",
+      "requiredVisibleSemantics": [
+        "SCREENING",
+        "DESIGN AUTHORITY FALSE",
+        "LOF_GE_1",
+        "Further assessment required"
+      ]
+    }
+  },
+  "releaseAcceptance": {
+    "repositoryNativeD4ProductPath24Check": "NOT_RUN_ENVIRONMENT_BLOCKED",
+    "exact51FileReleaseSuite": "NOT_RUN_ENVIRONMENT_BLOCKED",
+    "realBrowserAcceptance": "NOT_RUN",
+    "realFiveSheetXlsxAcceptance": "NOT_RUN"
+  },
+  "scope": {
+    "diameterMm": {
+      "qualifiedSmall": "60 <= OD <= 219.1",
+      "excludedGap": "219.1 < OD < 273",
+      "qualifiedLarge": "273 <= OD <= 762"
+    },
+    "phases": ["LIQUID", "GAS", "MULTIPHASE_AGGREGATE_EFFECTIVE", "MULTIPHASE_COMPONENT_DERIVED"],
+    "advanced": "FLEXIBLE_SMALL/FLEXIBLE_LARGE; standard LOF >= 1; 1 Hz < fn <= 3 Hz",
+    "resultSemantics": "SCREENING_ONLY_NO_DESIGN_ACCEPTANCE"
+  },
+  "notes": [
+    "The D4 worked example qualifies FIT engineering screening under the Owner-approved worked-example policy.",
+    "The D4 result itself requires further assessment because standard LOF is at or above 1 and no qualified advanced natural-frequency refinement was supplied.",
+    "This receipt does not claim complete all-mechanism vibration screening, design authority, browser acceptance, or the full 51-file release suite as PASS."
+  ]
+}

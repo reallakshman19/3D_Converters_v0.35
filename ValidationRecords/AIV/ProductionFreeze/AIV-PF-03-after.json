@@ -1,0 +1,115 @@
+{
+  "schema": "AivProductionFreezeValidation.v1",
+  "sliceId": "PF-03",
+  "issueId": 513,
+  "initialBaseSha": "d659e670a2f8fe0a35fc8072382512f6493898cf",
+  "reconciledMainSha": "5ad2288d41e031ef23df0cb3e600763081b4ac62",
+  "candidateCodeHead": "8cd30a464435658e833ddf297c5727e68e979d4d",
+  "branch": "agent/aiv-pf03-simultaneous-source-semantics-20260815",
+  "ownerChromiumWaiver": {
+    "issueCommentId": 5302589137,
+    "scope": "PF03_CHROMIUM_ONLY",
+    "fullBrowserPassGranted": false,
+    "mergeGranted": false
+  },
+  "mainAdvanceReconciliation": {
+    "from": "d659e670a2f8fe0a35fc8072382512f6493898cf",
+    "to": "5ad2288d41e031ef23df0cb3e600763081b4ac62",
+    "aheadBy": 2,
+    "classification": "DISJOINT_FROM_PF03_ENGINEERING_PATHS",
+    "changedAreas": [
+      "vibration product workflow/activity/FIT validation"
+    ],
+    "pf03CriticalPathOverlap": false,
+    "branchMergeCommit": "8cd30a464435658e833ddf297c5727e68e979d4d"
+  },
+  "implementation": {
+    "path": "converters/vibration/aiv/aiv-kernel-candidate.js",
+    "preFixBlob": "647cbf5bd19e2015dbc28708d8b6740269f1e5b4",
+    "postFixBlob": "b0967c4c2e9fb98c90b6a3e9028ce9851e9bbcbb",
+    "behavior": "Reject mixed simultaneousSourceGroup tokens inside one Assessment+Case combination.",
+    "errorCode": "AIV_MULTIPLE_SIMULTANEOUS_GROUPS_UNSUPPORTED",
+    "newGoverningGroupAlgorithm": false,
+    "equationChange": false,
+    "toleranceChange": false
+  },
+  "regression": {
+    "path": "tests/vibration-aiv-canvas-integration.test.mjs",
+    "preFixBlob": "9f101f0092ec2c3a2ce148e92b3dead0c7209442",
+    "postFixBlob": "36d983018d6e7ef3fc7cd7bda60bdab5bfe3097d",
+    "registeredPublicApiNegativeCaseAdded": true
+  },
+  "backupCustody": [
+    {
+      "command": "node utils/backup.js save converters/vibration/aiv/aiv-kernel-candidate.js \"Issue #513 PF-03 pre-fix backup\"",
+      "status": "PASS",
+      "localBackupId": 1,
+      "preFixGitBlobMatched": true
+    },
+    {
+      "command": "node utils/backup.js save tests/vibration-aiv-canvas-integration.test.mjs \"Issue #513 PF-03 regression-test backup\"",
+      "status": "PASS",
+      "localBackupId": 2,
+      "preFixGitBlobMatched": true
+    }
+  ],
+  "localValidation": {
+    "classification": "LOCAL_EXACT_SOURCE_REGISTERED_ENGINE_AND_PRODUCT_MODULE_EXECUTION",
+    "nativeCheckout": false,
+    "reason": "Container shell cannot resolve github.com; exact Git blobs were reconstructed through the connected GitHub source and verified by git hash-object.",
+    "nodeVersion": "v22.16.0",
+    "browserUsed": false,
+    "applicableBenchmarks": [
+      "B1",
+      "B2",
+      "B3",
+      "B4",
+      "B5",
+      "B6",
+      "B8"
+    ],
+    "applicableBenchmarksStatus": "PASS",
+    "b2ObservedDb": 163.0102999566398,
+    "b3ObservedDb": 160.41392685158226,
+    "distinctGroupsAccepted": false,
+    "distinctGroupErrorCode": "AIV_MULTIPLE_SIMULTANEOUS_GROUPS_UNSUPPORTED",
+    "twoRvCombinedPointPwlDb": 149.56302572849327,
+    "screeningResultScope": "ASSESSMENT",
+    "lineCaseSummaryAuthoritative": false,
+    "designAuthority": false,
+    "svgPixelsEngineeringDistanceAuthority": false
+  },
+  "ci": [
+    {
+      "runId": 31888612904,
+      "name": "Vibration Production Freeze Validation",
+      "conclusion": "failure",
+      "productStepsExecuted": false,
+      "classification": "NOT_RUN_INFRASTRUCTURE_ZERO_STEP"
+    },
+    {
+      "runId": 31888613032,
+      "name": "Vibration AIV Controlled Source Qualification",
+      "conclusion": "failure",
+      "productStepsExecuted": false,
+      "classification": "NOT_RUN_INFRASTRUCTURE_ZERO_STEP"
+    }
+  ],
+  "browser": {
+    "status": "NOT_RUN_OWNER_WAIVED",
+    "fullBrowserPass": false,
+    "reason": "Explicit Owner waiver issue comment 5302589137."
+  },
+  "authorityChecks": {
+    "tablesAreEngineeringSourceOfTruth": true,
+    "svgGeometryIsEngineeringDistanceAuthority": false,
+    "screeningResultScope": "ASSESSMENT",
+    "lineCaseSummaryAuthoritative": false,
+    "designAuthority": false
+  },
+  "qualificationDisposition": "PF03_COMPLETE_UNDER_OWNER_CHROMIUM_WAIVER",
+  "mergeReady": false,
+  "mergeReason": "Owner has not authorized merge.",
+  "nextSliceEligible": true,
+  "recordedAt": "2026-08-15T18:08:38+04:00"
+}

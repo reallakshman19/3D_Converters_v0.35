@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reallaksh19.github.io/3D_Converters/schemas/topo-enriched-xml/topo-enriched-xml-contracts.schema.json",
+  "title": "TopoEnrichedXML Contract Catalog",
+  "$defs": {
+    "PsiSerializationPlan.v1": { "$ref": "./PsiSerializationPlan.v1.schema.json" },
+    "PsiWriterOccurrence.v1": { "$ref": "./PsiWriterOccurrence.v1.schema.json" },
+    "PsiWriterOccurrencePlan.v1": { "$ref": "./PsiWriterOccurrencePlan.v1.schema.json" },
+    "PsiWriterParityReport.v2": { "$ref": "./PsiWriterParityReport.v2.schema.json" },
+    "TopoEnrichedXmlValidationReport.v1": { "$ref": "./TopoEnrichedXmlValidationReport.v1.schema.json" },
+    "TopoLogicalGraph.v1": { "$ref": "./TopoLogicalGraph.v1.schema.json" },
+    "TopoNodeAllocationResult.v1": { "$ref": "./TopoNodeAllocationResult.v1.schema.json" },
+    "TopoNodeHistoryMatchResult.v1": { "$ref": "./TopoNodeHistoryMatchResult.v1.schema.json" },
+    "TopoNodePlan.v1": { "$ref": "./TopoNodePlan.v1.schema.json" },
+    "TopoNodeRegistryPatch.v1": { "$ref": "./TopoNodeRegistryPatch.v1.schema.json" },
+    "TopoNodeTopologyNormalization.v1": { "$ref": "./TopoNodeTopologyNormalization.v1.schema.json" },
+    "TopoPreprocessAudit.v1": { "$ref": "./TopoPreprocessAudit.v1.schema.json" },
+    "TopoSequencePlan.v1": { "$ref": "./TopoSequencePlan.v1.schema.json" },
+    "TopoSourceInventory.v1": { "$ref": "./TopoSourceInventory.v1.schema.json" },
+    "TopoTopologyIndex.v1": { "$ref": "./TopoTopologyIndex.v1.schema.json" }
+  }
+}

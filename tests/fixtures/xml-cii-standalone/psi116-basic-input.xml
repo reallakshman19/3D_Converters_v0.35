@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PipeStressExport>
+  <Pipeline Name="PSI116-BASIC">
+    <PipingElement FROM_NODE="10" TO_NODE="20" LINE_ID="/PSI116-BASIC" />
+  </Pipeline>
+</PipeStressExport>

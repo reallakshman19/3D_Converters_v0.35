@@ -1,0 +1,14 @@
+/* Generic vertical-scroll contract for application modules.
+ * The app shell bounds .app-content; module content may grow naturally inside it.
+ * This file is loaded after app-shell-header-fix.css so the equal-specificity
+ * body .app-content rule intentionally overrides the shell's overflow:hidden.
+ * Legacy persistent tab panels receive the same default behavior.
+ */
+body .app-content,
+#tab-content > [data-tab-panel] {
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-gutter: stable;
+}

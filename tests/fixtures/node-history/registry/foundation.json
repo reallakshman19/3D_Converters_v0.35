@@ -1,0 +1,154 @@
+{
+  "zoneRegistry": {
+    "schema": "PsiNodeZoneRegistry.v1",
+    "registryVersion": "1.0.0",
+    "projectId": "PROJECT-TE005",
+    "zoneId": "ZONE-01",
+    "policyVersion": "POLICY-1",
+    "configVersion": "CONFIG-1",
+    "namespace": {"minimum": 0, "maximum": 9990, "defaultStep": 10},
+    "leases": [
+      {
+        "leaseId": "LEASE-LINE-A",
+        "mainLineKey": "/LINE-A",
+        "status": "ACTIVE",
+        "ranges": [
+          {"start": 100, "end": 190, "step": 10},
+          {"start": 300, "end": 390, "step": 10}
+        ],
+        "firstObservedRevision": "REV-001",
+        "lastObservedRevision": "REV-002",
+        "evidence": {"authority": "APPROVED_REGISTRY", "revisionId": "REV-002"}
+      },
+      {
+        "leaseId": "LEASE-LINE-B",
+        "mainLineKey": "/LINE-B",
+        "status": "ACTIVE",
+        "ranges": [{"start": 500, "end": 590, "step": 10}],
+        "firstObservedRevision": "REV-001",
+        "lastObservedRevision": "REV-002",
+        "evidence": {"authority": "APPROVED_REGISTRY", "revisionId": "REV-002"}
+      }
+    ],
+    "lineHistoryRefs": [
+      {
+        "mainLineKey": "/LINE-A",
+        "path": "node-history/registry/lines/LINE-A.json",
+        "lineHistoryHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      {
+        "mainLineKey": "/LINE-B",
+        "path": "node-history/registry/lines/LINE-B.json",
+        "lineHistoryHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      }
+    ],
+    "coordinateRegistrationRefs": ["COORD-REG-01"],
+    "validation": {"status": "PASS", "blockers": [], "reviewItems": [], "warnings": []},
+    "zoneRegistryHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+    "audit": {"evaluatedAt": "2026-07-20T06:30:00Z"}
+  },
+  "lineHistories": [
+    {
+      "schema": "PsiNodeLineHistory.v1",
+      "registryVersion": "1.0.0",
+      "projectId": "PROJECT-TE005",
+      "zoneId": "ZONE-01",
+      "mainLineKey": "/LINE-A",
+      "coordinateRegistrationRef": "COORD-REG-01",
+      "historyNodes": [
+        {
+          "historyNodeId": "HN-A-100",
+          "engineeringNodeNumber": 100,
+          "lifecycleStatus": "ACTIVE",
+          "sourceAliases": ["SRC-A-100"],
+          "identityEvidence": [{"kind": "SOURCE_REF", "value": "SRC-A-100", "authority": "SOURCE"}],
+          "immutableFacts": {
+            "historyNodeId": "HN-A-100",
+            "engineeringNodeNumber": 100,
+            "mainLineKey": "/LINE-A",
+            "firstObservedRevision": "REV-001"
+          },
+          "firstObservedRevision": "REV-001",
+          "lastObservedRevision": "REV-002",
+          "retirementEvidence": null,
+          "reactivationEvidence": null,
+          "supersessionEvidence": null,
+          "supersededByHistoryNodeId": null
+        },
+        {
+          "historyNodeId": "HN-A-110",
+          "engineeringNodeNumber": 110,
+          "lifecycleStatus": "RETIRED",
+          "sourceAliases": ["SRC-A-110"],
+          "identityEvidence": [{"kind": "SOURCE_REF", "value": "SRC-A-110", "authority": "SOURCE"}],
+          "immutableFacts": {
+            "historyNodeId": "HN-A-110",
+            "engineeringNodeNumber": 110,
+            "mainLineKey": "/LINE-A",
+            "firstObservedRevision": "REV-001"
+          },
+          "firstObservedRevision": "REV-001",
+          "lastObservedRevision": "REV-001",
+          "retirementEvidence": {"authority": "FULL_LINE_REVIEW", "revisionId": "REV-002", "reason": "Removed from authoritative revision"},
+          "reactivationEvidence": null,
+          "supersessionEvidence": null,
+          "supersededByHistoryNodeId": null
+        },
+        {
+          "historyNodeId": "HN-A-300",
+          "engineeringNodeNumber": 300,
+          "lifecycleStatus": "ACTIVE",
+          "sourceAliases": ["SRC-A-300"],
+          "identityEvidence": [{"kind": "SOURCE_REF", "value": "SRC-A-300", "authority": "SOURCE"}],
+          "immutableFacts": {
+            "historyNodeId": "HN-A-300",
+            "engineeringNodeNumber": 300,
+            "mainLineKey": "/LINE-A",
+            "firstObservedRevision": "REV-002"
+          },
+          "firstObservedRevision": "REV-002",
+          "lastObservedRevision": "REV-002",
+          "retirementEvidence": null,
+          "reactivationEvidence": null,
+          "supersessionEvidence": null,
+          "supersededByHistoryNodeId": null
+        }
+      ],
+      "validation": {"status": "PASS", "blockers": [], "reviewItems": [], "warnings": []},
+      "lineHistoryHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "audit": {"evaluatedAt": "2026-07-20T06:30:00Z"}
+    },
+    {
+      "schema": "PsiNodeLineHistory.v1",
+      "registryVersion": "1.0.0",
+      "projectId": "PROJECT-TE005",
+      "zoneId": "ZONE-01",
+      "mainLineKey": "/LINE-B",
+      "coordinateRegistrationRef": "COORD-REG-01",
+      "historyNodes": [
+        {
+          "historyNodeId": "HN-B-500",
+          "engineeringNodeNumber": 500,
+          "lifecycleStatus": "ACTIVE",
+          "sourceAliases": ["SRC-B-500"],
+          "identityEvidence": [{"kind": "SOURCE_REF", "value": "SRC-B-500", "authority": "SOURCE"}],
+          "immutableFacts": {
+            "historyNodeId": "HN-B-500",
+            "engineeringNodeNumber": 500,
+            "mainLineKey": "/LINE-B",
+            "firstObservedRevision": "REV-001"
+          },
+          "firstObservedRevision": "REV-001",
+          "lastObservedRevision": "REV-002",
+          "retirementEvidence": null,
+          "reactivationEvidence": null,
+          "supersessionEvidence": null,
+          "supersededByHistoryNodeId": null
+        }
+      ],
+      "validation": {"status": "PASS", "blockers": [], "reviewItems": [], "warnings": []},
+      "lineHistoryHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "audit": {"evaluatedAt": "2026-07-20T06:30:00Z"}
+    }
+  ]
+}

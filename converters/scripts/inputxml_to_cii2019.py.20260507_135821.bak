@@ -1,0 +1,1750 @@
+#!/usr/bin/env python3
+"""
+Convert CAESARII Input XML (`XML_TYPE=Input`) into CII text.
+
+Functionality:
+- Parses `CAESARII > PIPINGMODEL > PIPINGELEMENT` records.
+- Converts element attributes and auxiliary tags (`BEND`, `RIGID`,
+  `RESTRAINT`, `SIF`) into CII sections.
+- Handles CAESAR missing sentinel values with configurable defaults.
+
+Parameters expected:
+- `--input`: input XML path (CAESARII Input XML).
+- `--output`: output CII path.
+- Optional defaults for missing diameter/wall/temp/reducer-angle values.
+
+Outputs passed:
+- One `.cii` file.
+- Summary printed to stdout.
+
+Fallback:
+- Node-name and absolute coordinate data are not present in Input XML.
+  Defaults are used for node names (`NODENAME` empty). Absolute
+  coordinates are reconstructed from element deltas with a local origin.
+"""
+
+from __future__ import annotations
+
+import argparse
+from dataclasses import dataclass
+from datetime import datetime
+import json
+import math
+import re
+from pathlib import Path
+from typing import Final
+import xml.etree.ElementTree as ET
+
+
+SENTINEL_MISSING: Final[float] = -1.0101
+VERSION_PAYLOAD_LINES: Final[int] = 61
+DEFAULT_LINEAR_STIFFNESS: Final[float] = 1.75127e12
+DEFAULT_VERSION_HEADER: Final[str] = "CAESARII Input XML to CII converter"
+DEFAULT_2019_CONFIG_FILE: Final[str] = "inputxml_to_cii2019_config.json"
+
+
+@dataclass(frozen=True)
+class ConverterDefaults:
+    diameter: float
+    wall_thickness: float
+    insulation_thickness: float
+    corrosion_allowance: float
+    temperature1: float
+    temperature2: float
+    temperature3: float
+    pressure1: float
+    pressure2: float
+    pressure3: float
+    reducer_angle: float
+
+
+@dataclass(frozen=True)
+class BendAux:
+    radius: float
+    type_code: float
+    angle1: float
+    node1: float
+    angle2: float
+    node2: float
+    angle3: float
+    node3: float
+    num_miter: float
+    fitting_thickness: float
+    kfactor: float
+
+
+@dataclass(frozen=True)
+class RestraintAux:
+    node: float
+    type_code: float
+    stiffness: float
+    gap: float
+    friction: float
+    connecting_node: float
+    xcos: float
+    ycos: float
+    zcos: float
+
+
+@dataclass(frozen=True)
+class SifAux:
+    node: float
+
+
+@dataclass(frozen=True)
+class ElementResolved:
+    from_node: float
+    to_node: float
+    delta_x: float
+    delta_y: float
+    delta_z: float
+    diameter: float
+    wall_thickness: float
+    insulation_thickness: float
+    corrosion_allowance: float
+    temperature1: float
+    temperature2: float
+    temperature3: float
+    bend: BendAux | None
+    rigid_weight: float | None
+    restraints: list[RestraintAux]
+    sifs: list[SifAux]
+
+
+@dataclass(frozen=True)
+class ParsedModel:
+    job_name: str
+    time_text: str
+    version_text: str
+    elements: list[ElementResolved]
+
+
+@dataclass(frozen=True)
+class NodeCoordinate:
+    x: float
+    y: float
+    z: float
+
+
+@dataclass(frozen=True)
+class ReferenceElementOverrides:
+    version_payload: list[str]
+    nonam_count: int
+    node_name_pointers: list[int]
+    nodename_payload: list[str]
+    bend_payload: list[str]
+    reducers_payload: list[str]
+    coords_payload: list[str]
+
+
+def _safe_text(value: str | None) -> str:
+    if value is None:
+        return ""
+    return value.strip()
+
+
+def _local_name(tag: str) -> str:
+    if tag.startswith("{"):
+        return tag.split("}", 1)[1]
+    return tag
+
+
+def _to_float(value: str | None, field_name: str) -> float:
+    text = _safe_text(value)
+    if not text:
+        raise ValueError(f"Missing numeric field '{field_name}'.")
+    try:
+        return float(text)
+    except ValueError as exc:
+        raise ValueError(f"Invalid numeric field '{field_name}': '{text}'.") from exc
+
+
+def _is_missing(value: float) -> bool:
+    return abs(value - SENTINEL_MISSING) < 1e-6
+
+
+def _value_or_default(value: float, fallback: float) -> float:
+    if _is_missing(value):
+        return fallback
+    return value
+
+
+def _parse_time_text(value: str) -> str:
+    text = _safe_text(value)
+    if not text:
+        now = datetime.now()
+        return f"{now:%H:%M:%S} {now.day} {now:%B %Y}"
+    try:
+        parsed = datetime.strptime(text, "%Y/%m/%d %H:%M:%S")
+    except ValueError:
+        now = datetime.now()
+        return f"{now:%H:%M:%S} {now.day} {now:%B %Y}"
+    return f"{parsed:%H:%M:%S} {parsed.day} {parsed:%B %Y}"
+
+
+def _parse_bend(element: ET.Element) -> BendAux | None:
+    bend = element.find("BEND")
+    if bend is None:
+        return None
+    return BendAux(
+        radius=_to_float(bend.attrib.get("RADIUS"), "BEND/RADIUS"),
+        type_code=_to_float(bend.attrib.get("TYPE"), "BEND/TYPE"),
+        angle1=_to_float(bend.attrib.get("ANGLE1"), "BEND/ANGLE1"),
+        node1=_to_float(bend.attrib.get("NODE1"), "BEND/NODE1"),
+        angle2=_to_float(bend.attrib.get("ANGLE2"), "BEND/ANGLE2"),
+        node2=_to_float(bend.attrib.get("NODE2"), "BEND/NODE2"),
+        angle3=_to_float(bend.attrib.get("ANGLE3"), "BEND/ANGLE3"),
+        node3=_to_float(bend.attrib.get("NODE3"), "BEND/NODE3"),
+        num_miter=_to_float(bend.attrib.get("NUM_MITER"), "BEND/NUM_MITER"),
+        fitting_thickness=_to_float(bend.attrib.get("FITTINGTHICKNESS"), "BEND/FITTINGTHICKNESS"),
+        kfactor=_to_float(bend.attrib.get("KFACTOR"), "BEND/KFACTOR"),
+    )
+
+
+def _parse_rigid_weight(element: ET.Element) -> float | None:
+    rigid = element.find("RIGID")
+    if rigid is None:
+        return None
+    return _to_float(rigid.attrib.get("WEIGHT"), "RIGID/WEIGHT")
+
+
+def _parse_restraints(element: ET.Element) -> list[RestraintAux]:
+    restraints: list[RestraintAux] = []
+    for restraint in element.findall("RESTRAINT"):
+        node = _to_float(restraint.attrib.get("NODE"), "RESTRAINT/NODE")
+        if _is_missing(node):
+            continue
+        restraints.append(
+            RestraintAux(
+                node=node,
+                type_code=_to_float(restraint.attrib.get("TYPE"), "RESTRAINT/TYPE"),
+                stiffness=_to_float(restraint.attrib.get("STIFFNESS"), "RESTRAINT/STIFFNESS"),
+                gap=_to_float(restraint.attrib.get("GAP"), "RESTRAINT/GAP"),
+                friction=_to_float(restraint.attrib.get("FRIC_COEF"), "RESTRAINT/FRIC_COEF"),
+                connecting_node=_to_float(restraint.attrib.get("CNODE"), "RESTRAINT/CNODE"),
+                xcos=_to_float(restraint.attrib.get("XCOSINE"), "RESTRAINT/XCOSINE"),
+                ycos=_to_float(restraint.attrib.get("YCOSINE"), "RESTRAINT/YCOSINE"),
+                zcos=_to_float(restraint.attrib.get("ZCOSINE"), "RESTRAINT/ZCOSINE"),
+            )
+        )
+    return restraints
+
+
+def _parse_sifs(element: ET.Element) -> list[SifAux]:
+    sifs: list[SifAux] = []
+    for sif in element.findall("SIF"):
+        node = _to_float(sif.attrib.get("NODE"), "SIF/NODE")
+        if _is_missing(node):
+            continue
+        sifs.append(SifAux(node=node))
+    return sifs
+
+
+def _parse_model(path: Path, defaults: ConverterDefaults) -> ParsedModel:
+    root = ET.parse(path).getroot()
+    if _local_name(root.tag) != "CAESARII":
+        raise ValueError("Input root must be CAESARII.")
+
+    piping_model = None
+    for element in root.iter():
+        if _local_name(element.tag) == "PIPINGMODEL":
+            piping_model = element
+            break
+    if piping_model is None:
+        raise ValueError("Input XML does not contain PIPINGMODEL.")
+
+    carry_diameter = defaults.diameter
+    carry_wall = defaults.wall_thickness
+    carry_insulation = defaults.insulation_thickness
+    carry_corrosion = defaults.corrosion_allowance
+    carry_temperature1 = defaults.temperature1
+    carry_temperature2 = defaults.temperature2
+    carry_temperature3 = defaults.temperature3
+
+    parsed_elements: list[ElementResolved] = []
+    for element in piping_model.findall("PIPINGELEMENT"):
+        diameter_raw = _to_float(element.attrib.get("DIAMETER"), "PIPINGELEMENT/DIAMETER")
+        wall_raw = _to_float(element.attrib.get("WALL_THICK"), "PIPINGELEMENT/WALL_THICK")
+        insulation_raw = _to_float(element.attrib.get("INSUL_THICK"), "PIPINGELEMENT/INSUL_THICK")
+        corrosion_raw = _to_float(element.attrib.get("CORR_ALLOW"), "PIPINGELEMENT/CORR_ALLOW")
+        t1_raw = _to_float(element.attrib.get("TEMP_EXP_C1"), "PIPINGELEMENT/TEMP_EXP_C1")
+        t2_raw = _to_float(element.attrib.get("TEMP_EXP_C2"), "PIPINGELEMENT/TEMP_EXP_C2")
+        t3_raw = _to_float(element.attrib.get("TEMP_EXP_C3"), "PIPINGELEMENT/TEMP_EXP_C3")
+
+        if not _is_missing(diameter_raw):
+            carry_diameter = diameter_raw
+        if not _is_missing(wall_raw):
+            carry_wall = wall_raw
+        if not _is_missing(insulation_raw):
+            carry_insulation = insulation_raw
+        if not _is_missing(corrosion_raw):
+            carry_corrosion = corrosion_raw
+        if not _is_missing(t1_raw):
+            carry_temperature1 = t1_raw
+        if not _is_missing(t2_raw):
+            carry_temperature2 = t2_raw
+        if not _is_missing(t3_raw):
+            carry_temperature3 = t3_raw
+
+        parsed_elements.append(
+            ElementResolved(
+                from_node=_to_float(element.attrib.get("FROM_NODE"), "PIPINGELEMENT/FROM_NODE"),
+                to_node=_to_float(element.attrib.get("TO_NODE"), "PIPINGELEMENT/TO_NODE"),
+                delta_x=_value_or_default(
+                    _to_float(element.attrib.get("DELTA_X"), "PIPINGELEMENT/DELTA_X"),
+                    0.0,
+                ),
+                delta_y=_value_or_default(
+                    _to_float(element.attrib.get("DELTA_Y"), "PIPINGELEMENT/DELTA_Y"),
+                    0.0,
+                ),
+                delta_z=_value_or_default(
+                    _to_float(element.attrib.get("DELTA_Z"), "PIPINGELEMENT/DELTA_Z"),
+                    0.0,
+                ),
+                diameter=carry_diameter,
+                wall_thickness=carry_wall,
+                insulation_thickness=carry_insulation,
+                corrosion_allowance=carry_corrosion,
+                temperature1=carry_temperature1,
+                temperature2=carry_temperature2,
+                temperature3=carry_temperature3,
+                bend=_parse_bend(element),
+                rigid_weight=_parse_rigid_weight(element),
+                restraints=_parse_restraints(element),
+                sifs=_parse_sifs(element),
+            )
+        )
+
+    if not parsed_elements:
+        raise ValueError("Input XML does not contain PIPINGELEMENT rows.")
+
+    return ParsedModel(
+        job_name=_safe_text(piping_model.attrib.get("JOBNAME")),
+        time_text=_parse_time_text(_safe_text(piping_model.attrib.get("TIME"))),
+        version_text=_safe_text(root.attrib.get("VERSION")) or "0.0",
+        elements=parsed_elements,
+    )
+
+
+def _row(values: list[str]) -> str:
+    if not values:
+        return ""
+    widths = [15] + [13] * (len(values) - 1)
+    chunks = [f"{values[index]:>{widths[index]}}" for index in range(len(values))]
+    return "".join(chunks)
+
+
+def _format_auto_float(value: float) -> str:
+    if not math.isfinite(value):
+        raise ValueError(f"Non-finite numeric value encountered: {value}")
+    absolute = abs(value)
+    if absolute < 1e-12:
+        return "0.000000"
+    if absolute >= 1e9:
+        return f"{value:.6E}"
+    if absolute < 0.1:
+        return f"{value:.6E}"
+    return f"{value:#.6G}"
+
+
+def _format_fixed_float(value: float, decimals: int) -> str:
+    if not math.isfinite(value):
+        raise ValueError(f"Non-finite numeric value encountered: {value}")
+    return f"{value:.{decimals}f}"
+
+
+def _format_sig6(value: float) -> str:
+    if not math.isfinite(value):
+        raise ValueError(f"Non-finite numeric value encountered: {value}")
+    absolute = abs(value)
+    if absolute < 1e-12:
+        return "0.000000"
+    if absolute >= 1e9 or absolute < 1e-6:
+        return f"{value:.6E}"
+    if absolute < 1.0:
+        return f"{value:.6f}"
+    integer_digits = len(str(int(absolute)))
+    decimals = max(0, 6 - integer_digits)
+    return f"{value:.{decimals}f}"
+
+
+def _section_header(name: str, suffixes: dict[str, str]) -> str:
+    return f"#$ {name}{suffixes.get(name, '')}"
+
+
+def _default_2019_layout_config() -> dict[str, object]:
+    return {
+        "version": {},
+        "elements": {
+            "row3": ["0.000000", "0.000000", "0.000000", "0.000000", "0.000000", "0.000000"],
+            "row4": ["10.0000", "30.0000", "0.000000", "0.000000", "0.000000", "0.000000"],
+            "row5": ["0.000000", "0.000000", "0.000000", "0.000000", "0.000000", "0.000000"],
+            "row6": ["0.499901E-04", "0.965312E-03", "0.000000", "0.000000", "0.000000", "15.0000"],
+            "row7": ["0.000000", "0.000000", "0.000000", "0.000000", "0.000000", "0.000000"],
+            "row8": ["0.000000", "0.000000", "0.000000", "0.000000", "9999.99", "9999.99"],
+            "row9": ["0.000000", "0.000000", "0.000000", "0.000000", "0.000000"],
+            "row10": ["0"],
+            "row11": ["-1", "-1"],
+            "row12": ["{bend}", "{rigid}", "0", "{restraint}", "{sif}", "0"],
+            "row13": ["0", "0", "0", "{sif}", "0", "0"],
+            "row14": ["{reducer}", "0", "{sif}"],
+            "line_label": {
+                "pointer_start": 0,
+                "label_index_start": 1,
+                "label_prefix": "LINENO",
+                "label_width": 1,
+                "default_line": "0",
+                "line_labels": ["10 unassigned"],
+            },
+        },
+        "nodename": {
+            "nonam_count": 0,
+            "from_label": "PS-XXX",
+            "to_label": "PS-XXX",
+        },
+        "control": {
+            "line1": ["{elements}", "0", "3", "0", "3", "0"],
+            "line2": ["{bends}", "{rigids}", "0", "{restraints}", "3", "0"],
+            "line3": ["0", "0", "0", "1", "{sifs}", "0"],
+            "line4": ["4"],
+        },
+        "bend": {
+            "row2": ["{angle3}", "{node3}", "{num_miter}", "{fitting_thickness}", "{kfactor}", "0.000000"],
+            "row3": ["0.000000", "0.000000"],
+        },
+        "rigid": {},
+        "restraint": {
+            "line1": ["{node}", "{type}", "{stiffness}", "{gap}", "{friction}", "{connecting_node}"],
+            "line2": ["{xcos}", "{ycos}", "{zcos}"],
+            "type_map": {},
+            "stiffness_default_token": "0.175120E+13",
+            "type_direction_cosines": {
+                "1": ["0.000000", "0.000000", "0.000000"],
+                "2": ["1.00000", "0.000000", "0.000000"],
+                "3": ["0.000000", "1.00000", "0.000000"],
+                "4": ["0.000000", "0.000000", "1.00000"],
+                "13": ["1.00000", "0.000000", "0.000000"],
+                "14": ["0.000000", "1.00000", "0.000000"],
+                "15": ["0.000000", "0.000000", "1.00000"],
+                "16": ["1.00000", "0.000000", "0.000000"],
+                "17": ["0.000000", "1.00000", "0.000000"],
+                "18": ["0.000000", "0.000000", "1.00000"],
+            },
+            "tail_lines": [
+                "            0",
+                "            0",
+                "      0.000000     0.000000     0.000000     0.000000     0.000000     0.000000",
+                "      0.000000     0.000000     0.000000",
+                "            0",
+                "            0",
+                "      0.000000     0.000000     0.000000     0.000000     0.000000     0.000000",
+                "      0.000000     0.000000     0.000000",
+                "            0",
+                "            0",
+                "      0.000000     0.000000     0.000000     0.000000     0.000000     0.000000",
+                "      0.000000     0.000000     0.000000",
+                "            0",
+                "            0",
+                "      0.000000     0.000000     0.000000     0.000000     0.000000     0.000000",
+                "      0.000000     0.000000     0.000000",
+                "            0",
+                "            0",
+                "      0.000000     0.000000     0.000000     0.000000     0.000000     0.000000",
+                "      0.000000     0.000000     0.000000",
+                "            0",
+                "            0",
+            ],
+        },
+        "sections": {
+            "include_nodename": False,
+            "include_flanges": True,
+            "include_equipmnt": True,
+        },
+        "displmnt": {
+            "node_ids": [],
+            "auto_from_equipmnt_nodes": True,
+            "block_lines": [
+                "      0.000000     0.000000     0.000000     0.000000     0.000000     0.000000",
+                "    9999.99      9999.99      9999.99      9999.99      9999.99      9999.99",
+                "    9999.99      9999.99      9999.99      9999.99      9999.99      9999.99",
+                "    9999.99      9999.99      9999.99      9999.99      9999.99      9999.99",
+                "    9999.99      9999.99      9999.99      9999.99      9999.99      9999.99",
+                "    9999.99      9999.99      9999.99      9999.99      9999.99      9999.99",
+                "    9999.99      9999.99      9999.99      9999.99      9999.99      9999.99",
+                "    9999.99      9999.99      9999.99      9999.99      9999.99      9999.99",
+                "    9999.99      9999.99      9999.99      9999.99      9999.99      9999.99",
+                "      0.000000",
+                "    9999.99      9999.99      9999.99      9999.99      9999.99      9999.99",
+                "    9999.99      9999.99      9999.99      9999.99      9999.99      9999.99",
+                "    9999.99      9999.99      9999.99      9999.99      9999.99      9999.99",
+                "    9999.99      9999.99      9999.99      9999.99      9999.99      9999.99",
+                "    9999.99      9999.99      9999.99      9999.99      9999.99      9999.99",
+                "    9999.99      9999.99      9999.99      9999.99      9999.99      9999.99",
+                "    9999.99      9999.99      9999.99      9999.99      9999.99      9999.99",
+                "    9999.99      9999.99      9999.99      9999.99      9999.99      9999.99",
+                "    9999.99      9999.99      9999.99      9999.99      9999.99      9999.99",
+            ],
+        },
+        "allowbls": {
+            "lines": [
+                "      0.000000     0.000000     0.000000     0.000000      1.00000      1.00000",
+                "      1.00000     0.000000     0.000000      9999.99     0.000000      3.00000",
+                "      0.000000     0.000000     0.000000     0.000000     0.000000     0.000000",
+                "      1.00000      1.00000      1.00000      1.00000      1.00000      1.00000",
+                "      0.000000     0.000000     0.000000     0.000000     0.000000     0.000000",
+                "      0.000000     0.000000     0.000000     0.000000     0.000000     0.000000",
+                "      0.000000     0.000000     0.000000     0.000000     0.000000     0.000000",
+                "      0.000000     0.000000     0.000000     0.000000     0.000000     0.000000",
+                "      0.000000     0.000000     0.000000     0.000000     0.000000     0.000000",
+                "      0.000000     0.000000     0.000000     0.000000     0.000000     0.000000",
+                "      0.000000     0.000000     0.000000     0.000000     0.000000     0.000000",
+                "      0.000000     0.000000     0.000000     0.000000     0.000000     0.000000",
+                "      0.000000     0.000000     0.000000     0.000000     0.000000     0.000000",
+                "      0.000000     0.000000     0.000000     0.000000     0.000000     0.000000",
+                "      0.000000     0.000000     0.000000     0.000000     0.000000     0.000000",
+                "      0.000000     0.000000     0.000000     0.000000     0.000000     0.000000",
+                "      0.000000     0.000000     0.000000     0.000000     0.000000     0.000000",
+                "      0.000000     0.000000     0.000000     0.000000     0.000000     0.000000",
+                "      0.000000     0.000000     0.000000      1.00000     0.000000      1.00000",
+                "      0.000000     0.000000     0.000000     0.000000     0.000000     0.000000",
+                "      0.000000     0.000000     0.000000     0.000000     0.000000     0.000000",
+                "      0.000000     0.000000     0.000000     0.000000     0.000000     0.000000",
+                "      0.000000     0.000000     0.000000     0.000000     0.000000     0.000000",
+                "      0.000000     0.000000     0.000000     0.000000     0.000000     0.000000",
+                "      0.000000     0.000000     0.000000     0.000000     0.000000     0.000000",
+                "      0.000000     0.000000     0.000000",
+            ]
+        },
+        "flanges": {
+            "include_section": True,
+        },
+        "equipmnt": {
+            "entries": [],
+        },
+        "miscel_1": {
+            "material_id_default": "0.000",
+            "execution_lines": [
+                "              0      0.0000     0.000000      0.0000      0.00000      0.00000",
+                "              0            0            0            0            0",
+                "              0",
+                "      0.000000      0.0000     0.000000     0.000000     0.000000     0.000000",
+                "      0.000000      0.0000      0.00000      0.000000     0.000000",
+                "            0",
+                "            0",
+                "              0            0            0            0",
+                "              0",
+                "              0",
+                "              0",
+                "              0",
+                "              0            0            0            0      0.0000            0",
+                "              0            0      0.0000      0.0000                0            0",
+                "              0            0            0            0      0.0000            0",
+                "              0",
+            ],
+        },
+        "coords": {
+            "mode": "all_nodes",
+            "node_ids": [],
+            "origin_offset": ["0.0", "0.0", "0.0"],
+            "decimals": 4,
+        },
+        "units": {
+            "numeric_lines": [
+                "      0.0000      0.00000      0.00000      0.00000      0.00000      0.00000",
+                "      0.000000      0.0000      0.00000      0.00000      0.00000      0.00000",
+                "      0.00000      0.00000      0.00000      0.00000      0.00000      0.00000",
+                "      0.00000      0.0000      0.0000      0.0000",
+            ],
+            "text_lines": [
+                "  METRIC         ",
+                "  ON ",
+                "  mm.",
+                "  N. ",
+                "  Kg.",
+                "  N.m.  ",
+                "  N.m.  ",
+                "  MPa      ",
+                "  C",
+                "  C",
+                "  MPa      ",
+                "  MPa      ",
+                "  kg.cu.cm.",
+                "  kg.cu.cm.",
+                "  kg.cu.cm.",
+                "  N./cm.",
+                "  N.m./deg",
+                "  N./cm.",
+                "  g's",
+                "  MPa      ",
+                "  m. ",
+                "  mm.",
+                "  mm.",
+                "  mm.",
+            ],
+        },
+    }
+
+
+def _load_2019_layout_config() -> dict[str, object]:
+    config = _default_2019_layout_config()
+    config_path = Path(__file__).resolve().parent / DEFAULT_2019_CONFIG_FILE
+    if not config_path.is_file():
+        return config
+    loaded = json.loads(config_path.read_text(encoding="utf-8"))
+    if not isinstance(loaded, dict):
+        raise ValueError(f"Invalid 2019 config: expected object at {config_path}.")
+    _merge_2019_layout_config(config, loaded)
+    return config
+
+
+def _merge_2019_layout_config(target: dict[str, object], source: dict[str, object]) -> None:
+    for key, value in source.items():
+        if key in target and isinstance(target[key], dict) and isinstance(value, dict):
+            _merge_2019_layout_config(target[key], value)
+            continue
+        target[key] = value
+
+
+def _render_control_line(template: list[str], metrics: dict[str, int]) -> str:
+    rendered: list[str] = []
+    for token in template:
+        current = token
+        for name, value in metrics.items():
+            current = current.replace(f"{{{name}}}", str(value))
+        rendered.append(current)
+    return _row(rendered)
+
+
+def _render_label_line(pointer: int, label_index: int, label_prefix: str, label_width: int) -> str:
+    label_value = f"{label_prefix}{label_index:0{label_width}d}"
+    return f"{pointer:13d} {label_value}"
+
+
+def _render_tokens_row(template: list[str], values: dict[str, int]) -> str:
+    rendered: list[str] = []
+    for token in template:
+        current = token
+        for name, value in values.items():
+            current = current.replace(f"{{{name}}}", str(value))
+        rendered.append(current)
+    return _row(rendered)
+
+
+def _render_template_row(template: list[str], values: dict[str, str]) -> str:
+    rendered: list[str] = []
+    for token in template:
+        current = token
+        for name, value in values.items():
+            current = current.replace(f"{{{name}}}", value)
+        rendered.append(current)
+    return _row(rendered)
+
+
+def _build_version_payload(model: ParsedModel) -> list[str]:
+    payload: list[str] = []
+    payload.append(
+        _row(
+            [
+                _format_fixed_float(4.0, 5),
+                _format_fixed_float(4.5, 5),
+                _format_fixed_float(0.0, 6),
+                _format_fixed_float(0.0, 6),
+            ]
+        )
+    )
+    payload.append(f"  DateTime: {model.time_text}")
+    payload.append("  Source: CAESARII Input XML")
+    payload.append(f"  Version: {model.version_text} ({DEFAULT_VERSION_HEADER})")
+    payload.append("  UserName: ")
+    payload.append("  Purpose: Converted from CAESARII Input XML")
+    payload.append(f"  ProjectName: {Path(model.job_name).stem if model.job_name else ''}")
+    payload.append("  MDBName: ")
+    payload.append("  Converted CII Output")
+
+    while len(payload) < VERSION_PAYLOAD_LINES:
+        payload.append("  ")
+    if len(payload) > VERSION_PAYLOAD_LINES:
+        payload = payload[:VERSION_PAYLOAD_LINES]
+    return payload
+
+
+def _format_node_id(value: float) -> str:
+    rounded = round(value)
+    if abs(value - rounded) < 1e-6:
+        return str(int(rounded))
+    return _format_auto_float(value)
+
+
+def _build_absolute_coordinates(
+    elements: list[ElementResolved],
+    tolerance: float,
+) -> dict[float, NodeCoordinate]:
+    adjacency: dict[float, list[tuple[float, float, float, float]]] = {}
+    for element in elements:
+        from_node = element.from_node
+        to_node = element.to_node
+        dx = element.delta_x
+        dy = element.delta_y
+        dz = element.delta_z
+
+        adjacency.setdefault(from_node, []).append((to_node, dx, dy, dz))
+        adjacency.setdefault(to_node, []).append((from_node, -dx, -dy, -dz))
+
+    coordinates: dict[float, NodeCoordinate] = {}
+    for seed_node in sorted(adjacency.keys()):
+        if seed_node in coordinates:
+            continue
+
+        coordinates[seed_node] = NodeCoordinate(x=0.0, y=0.0, z=0.0)
+        queue: list[float] = [seed_node]
+
+        while queue:
+            current = queue.pop()
+            current_coord = coordinates[current]
+            for neighbor, dx, dy, dz in adjacency[current]:
+                candidate = NodeCoordinate(
+                    x=current_coord.x + dx,
+                    y=current_coord.y + dy,
+                    z=current_coord.z + dz,
+                )
+                if neighbor not in coordinates:
+                    coordinates[neighbor] = candidate
+                    queue.append(neighbor)
+                    continue
+
+                existing = coordinates[neighbor]
+                if (
+                    abs(existing.x - candidate.x) > tolerance
+                    or abs(existing.y - candidate.y) > tolerance
+                    or abs(existing.z - candidate.z) > tolerance
+                ):
+                    raise ValueError(
+                        "Inconsistent coordinate reconstruction for node "
+                        f"{_format_node_id(neighbor)} via edge "
+                        f"{_format_node_id(current)} -> {_format_node_id(neighbor)}. "
+                        f"Existing=({existing.x:.6f}, {existing.y:.6f}, {existing.z:.6f}), "
+                        f"Candidate=({candidate.x:.6f}, {candidate.y:.6f}, {candidate.z:.6f})."
+                    )
+
+    return coordinates
+
+
+def _build_coords_payload(elements: list[ElementResolved], tolerance: float) -> list[str]:
+    coordinates = _build_absolute_coordinates(elements, tolerance=tolerance)
+    payload: list[str] = [_row([str(len(coordinates))])]
+    for node in sorted(coordinates.keys()):
+        coord = coordinates[node]
+        payload.append(
+            _row(
+                [
+                    _format_node_id(node),
+                    _format_fixed_float(coord.x, 4),
+                    _format_fixed_float(coord.y, 4),
+                    _format_fixed_float(coord.z, 4),
+                ]
+            )
+        )
+    return payload
+
+
+def _parse_fixed_i13_row(line: str, fields: int) -> list[int]:
+    widths = [15] + [13] * (fields - 1)
+    values: list[int] = []
+    offset = 0
+    for width in widths:
+        token = line[offset : offset + width].strip()
+        offset += width
+        if not token:
+            values.append(0)
+            continue
+        values.append(int(float(token)))
+    return values
+
+
+def _load_reference_element_overrides(path: Path, expected_elements: int) -> ReferenceElementOverrides:
+    lines = path.read_text(encoding="utf-8", errors="strict").splitlines()
+    required_sections = (
+        "VERSION",
+        "CONTROL",
+        "ELEMENTS",
+        "AUX_DATA",
+        "NODENAME",
+        "BEND",
+        "RIGID",
+        "REDUCERS",
+        "MISCEL_1",
+        "COORDS",
+    )
+    section_indices: dict[str, int] = {}
+    for index, raw_line in enumerate(lines):
+        normalized = re.sub(r"\s+", " ", raw_line.strip())
+        for section_name in required_sections:
+            if normalized == f"#$ {section_name}" and section_name not in section_indices:
+                section_indices[section_name] = index
+                break
+    missing_sections = [name for name in required_sections if name not in section_indices]
+    if missing_sections:
+        raise ValueError(f"Reference CII is missing required section(s): {', '.join(missing_sections)}")
+
+    version_index = section_indices["VERSION"]
+    control_index = section_indices["CONTROL"]
+    elements_index = section_indices["ELEMENTS"]
+    aux_index = section_indices["AUX_DATA"]
+    nodename_index = section_indices["NODENAME"]
+    bend_index = section_indices["BEND"]
+    rigid_index = section_indices["RIGID"]
+    reducers_index = section_indices["REDUCERS"]
+    miscel_index = section_indices["MISCEL_1"]
+    coords_index = section_indices["COORDS"]
+
+    version_payload = lines[version_index + 1 : control_index]
+    control_line_1 = _parse_fixed_i13_row(lines[control_index + 1], fields=5)
+    nonam_count = control_line_1[3]
+
+    element_lines = lines[elements_index + 1 : aux_index]
+    if expected_elements <= 0:
+        raise ValueError("Expected element count must be positive for reference alignment.")
+    if len(element_lines) % expected_elements != 0:
+        raise ValueError(
+            "Reference CII ELEMENTS section size does not divide by expected element count: "
+            f"{len(element_lines)} lines for {expected_elements} elements."
+        )
+    element_block_size = len(element_lines) // expected_elements
+    if element_block_size < 9:
+        raise ValueError(
+            "Reference CII ELEMENTS block size is unsupported; expected at least 9 lines per element."
+        )
+    reference_elements = expected_elements
+
+    pointers: list[int] = []
+    for element_index in range(reference_elements):
+        row8 = element_lines[element_index * element_block_size + 7]
+        row8_values = _parse_fixed_i13_row(row8, fields=6)
+        pointers.append(row8_values[5])
+
+    nodename_payload = lines[nodename_index + 1 : bend_index]
+    bend_payload = lines[bend_index + 1 : rigid_index]
+    reducers_payload = lines[reducers_index + 1 : miscel_index]
+    coords_payload = lines[coords_index + 1 :]
+    return ReferenceElementOverrides(
+        version_payload=version_payload,
+        nonam_count=nonam_count,
+        node_name_pointers=pointers,
+        nodename_payload=nodename_payload,
+        bend_payload=bend_payload,
+        reducers_payload=reducers_payload,
+        coords_payload=coords_payload,
+    )
+
+
+def _restraint_type_from_input(restraint: RestraintAux) -> float:
+    if not _is_missing(restraint.type_code):
+        if abs(restraint.type_code) < 1e-9:
+            return 1.0
+        if abs(restraint.type_code - 2.0) < 1e-9:
+            return 4.0
+        return restraint.type_code
+    return 1.0
+
+
+def _restraint_line2_cosines(restraint: RestraintAux) -> tuple[float, float, float]:
+    if _is_missing(restraint.xcos) and _is_missing(restraint.ycos) and _is_missing(restraint.zcos):
+        return 0.0, 0.0, 0.0
+    x = 0.0 if _is_missing(restraint.xcos) else restraint.xcos
+    y = 0.0 if _is_missing(restraint.ycos) else restraint.ycos
+    z = 0.0 if _is_missing(restraint.zcos) else restraint.zcos
+    return x, y, z
+
+
+def _infer_reducer_indices(
+    elements: list[ElementResolved],
+    defaults: ConverterDefaults,
+    infer_angle_from_geometry: bool,
+) -> tuple[dict[int, int], list[tuple[float, float]]]:
+    edge_to_reducer_index: dict[int, int] = {}
+    reducers: list[tuple[float, float]] = []
+
+    for index in range(len(elements) - 1):
+        current = elements[index]
+        following = elements[index + 1]
+        if abs(current.to_node - following.from_node) > 1e-6:
+            continue
+        # Skip wrap/loop transition segments; they often represent run jumps,
+        # not physical reducers.
+        if following.to_node < following.from_node - 1e-6:
+            continue
+        if abs(current.diameter - following.diameter) <= 1e-6:
+            continue
+
+        angle_value = defaults.reducer_angle
+        if infer_angle_from_geometry:
+            run = math.sqrt(
+                current.delta_x * current.delta_x
+                + current.delta_y * current.delta_y
+                + current.delta_z * current.delta_z
+            )
+            if run > 1e-9:
+                angle_value = math.degrees(
+                    math.atan(abs(following.diameter - current.diameter) / (2.0 * run))
+                )
+        reducers.append((following.diameter, angle_value))
+        edge_to_reducer_index[index] = len(reducers)
+
+    return edge_to_reducer_index, reducers
+
+
+def _format_float_list(values: list[str]) -> list[str]:
+    return [str(entry) for entry in values]
+
+
+def _build_bend_payload(
+    elements: list[ElementResolved],
+    layout_config: dict[str, object],
+) -> tuple[list[str], dict[int, int]]:
+    bend_cfg = layout_config.get("bend", {})
+    if not isinstance(bend_cfg, dict):
+        raise ValueError("Invalid 2019 layout config: 'bend' must be an object.")
+    row2_template = list(bend_cfg.get("row2", ["{angle3}", "{node3}", "{num_miter}", "{fitting_thickness}", "{kfactor}", "0.000000"]))
+    row3_values = _format_float_list(list(bend_cfg.get("row3", ["0.000000", "0.000000"])))
+    fitting_thickness_default = float(bend_cfg.get("fitting_thickness_default", 0.0))
+    fitting_thickness_default_when_zero = bool(bend_cfg.get("fitting_thickness_default_when_zero", False))
+    kfactor_default = float(bend_cfg.get("kfactor_default", 0.0))
+    kfactor_default_when_zero = bool(bend_cfg.get("kfactor_default_when_zero", False))
+
+    payload: list[str] = []
+    edge_to_bend_index: dict[int, int] = {}
+    for edge_index, element in enumerate(elements):
+        bend = element.bend
+        if bend is None:
+            continue
+        edge_to_bend_index[edge_index] = (len(payload) // 3) + 1
+        payload.append(
+            _row(
+                [
+                    _format_sig6(_value_or_default(bend.radius, 0.0)),
+                    _format_sig6(_value_or_default(bend.type_code, 0.0)),
+                    _format_sig6(_value_or_default(bend.angle1, 0.0)),
+                    _format_sig6(_value_or_default(bend.node1, 0.0)),
+                    _format_sig6(_value_or_default(bend.angle2, 0.0)),
+                    _format_sig6(_value_or_default(bend.node2, 0.0)),
+                ]
+            )
+        )
+        payload.append(
+            _render_template_row(
+                row2_template,
+                {
+                    "angle3": _format_sig6(_value_or_default(bend.angle3, 0.0)),
+                    "node3": _format_sig6(_value_or_default(bend.node3, 0.0)),
+                    "num_miter": _format_sig6(_value_or_default(bend.num_miter, 0.0)),
+                    "fitting_thickness": _format_sig6(
+                        fitting_thickness_default
+                        if (fitting_thickness_default_when_zero and abs(_value_or_default(bend.fitting_thickness, 0.0)) < 1e-9)
+                        else _value_or_default(bend.fitting_thickness, fitting_thickness_default)
+                    ),
+                    "kfactor": _format_sig6(
+                        kfactor_default
+                        if (kfactor_default_when_zero and abs(_value_or_default(bend.kfactor, 0.0)) < 1e-9)
+                        else _value_or_default(bend.kfactor, kfactor_default)
+                    ),
+                },
+            )
+        )
+        payload.append(_row(row3_values))
+    return payload, edge_to_bend_index
+
+
+def _build_rigid_payload(elements: list[ElementResolved]) -> tuple[list[str], dict[int, int]]:
+    payload: list[str] = []
+    edge_to_rigid_index: dict[int, int] = {}
+    for edge_index, element in enumerate(elements):
+        if element.rigid_weight is None:
+            continue
+        edge_to_rigid_index[edge_index] = len(payload) + 1
+        payload.append(_row([_format_sig6(_value_or_default(element.rigid_weight, 0.0))]))
+    return payload, edge_to_rigid_index
+
+
+def _build_restraint_payload(
+    elements: list[ElementResolved],
+    layout_config: dict[str, object],
+) -> tuple[list[str], dict[int, int]]:
+    restraint_cfg = layout_config.get("restraint", {})
+    if not isinstance(restraint_cfg, dict):
+        raise ValueError("Invalid 2019 layout config: 'restraint' must be an object.")
+    line1_template = list(restraint_cfg.get("line1", ["{node}", "{type}", "{stiffness}", "{gap}", "{friction}", "{connecting_node}"]))
+    line2_template = list(restraint_cfg.get("line2", ["{xcos}", "{ycos}", "{zcos}"]))
+    type_map_cfg = restraint_cfg.get("type_map", {})
+    if not isinstance(type_map_cfg, dict):
+        raise ValueError("Invalid 2019 layout config: 'restraint.type_map' must be an object.")
+    type_direction_cfg = restraint_cfg.get("type_direction_cosines", {})
+    if not isinstance(type_direction_cfg, dict):
+        raise ValueError("Invalid 2019 layout config: 'restraint.type_direction_cosines' must be an object.")
+    stiffness_default_token = str(restraint_cfg.get("stiffness_default_token", "0.175120E+13"))
+    tail_lines = [str(entry) for entry in list(restraint_cfg.get("tail_lines", []))]
+
+    payload: list[str] = []
+    edge_to_restraint_index: dict[int, int] = {}
+    block_size = len(tail_lines) + 2
+    if block_size <= 0:
+        raise ValueError("Invalid 2019 layout config: restraint block must contain at least line1 and line2.")
+
+    for edge_index, element in enumerate(elements):
+        if not element.restraints:
+            continue
+        edge_to_restraint_index[edge_index] = (len(payload) // block_size) + 1
+        for restraint in element.restraints:
+            original_type = _restraint_type_from_input(restraint)
+            if abs(original_type - round(original_type)) < 1e-6:
+                original_type_key = str(int(round(original_type)))
+            else:
+                original_type_key = _format_sig6(original_type)
+            mapped_type_token = str(type_map_cfg.get(original_type_key, original_type_key))
+            restraint_type = float(mapped_type_token)
+            stiffness_token = (
+                stiffness_default_token
+                if _is_missing(restraint.stiffness)
+                else _format_sig6(restraint.stiffness)
+            )
+            gap = _value_or_default(restraint.gap, 0.0)
+            friction = _value_or_default(restraint.friction, 0.0)
+            connecting_node = _value_or_default(restraint.connecting_node, 0.0)
+            xcos, ycos, zcos = _restraint_line2_cosines(restraint)
+            if _is_missing(restraint.xcos) and _is_missing(restraint.ycos) and _is_missing(restraint.zcos):
+                fallback_cos = type_direction_cfg.get(mapped_type_token)
+                if isinstance(fallback_cos, list) and len(fallback_cos) == 3:
+                    xcos = float(fallback_cos[0])
+                    ycos = float(fallback_cos[1])
+                    zcos = float(fallback_cos[2])
+
+            payload.append(
+                _render_template_row(
+                    line1_template,
+                    {
+                        "node": _format_sig6(restraint.node),
+                        "type": _format_sig6(restraint_type),
+                        "stiffness": stiffness_token,
+                        "gap": _format_sig6(gap),
+                        "friction": _format_sig6(friction),
+                        "connecting_node": _format_sig6(connecting_node),
+                    },
+                )
+            )
+            payload.append(
+                _render_template_row(
+                    line2_template,
+                    {
+                        "xcos": _format_sig6(xcos),
+                        "ycos": _format_sig6(ycos),
+                        "zcos": _format_sig6(zcos),
+                    },
+                )
+            )
+            payload.extend(tail_lines)
+    return payload, edge_to_restraint_index
+
+
+def _build_sif_payload(elements: list[ElementResolved]) -> tuple[list[str], dict[int, int]]:
+    payload: list[str] = []
+    edge_to_sif_index: dict[int, int] = {}
+    for edge_index, element in enumerate(elements):
+        if not element.sifs:
+            continue
+        edge_to_sif_index[edge_index] = (len(payload) // 10) + 1
+        first_node = element.sifs[0].node
+        payload.append(
+            _row(
+                [
+                    _format_auto_float(first_node),
+                    _format_fixed_float(0.0, 6),
+                    _format_fixed_float(0.0, 6),
+                    _format_fixed_float(0.0, 6),
+                    _format_fixed_float(0.0, 6),
+                    _format_fixed_float(0.0, 6),
+                ]
+            )
+        )
+        zero_row = _row(
+            [
+                _format_fixed_float(0.0, 6),
+                _format_fixed_float(0.0, 6),
+                _format_fixed_float(0.0, 6),
+                _format_fixed_float(0.0, 6),
+                _format_fixed_float(0.0, 6),
+                _format_fixed_float(0.0, 6),
+            ]
+        )
+        for _ in range(9):
+            payload.append(zero_row)
+    return payload, edge_to_sif_index
+
+
+def _build_equipmnt_payload(layout_config: dict[str, object]) -> tuple[list[str], list[float]]:
+    equip_cfg = layout_config.get("equipmnt", {})
+    if not isinstance(equip_cfg, dict):
+        raise ValueError("Invalid 2019 layout config: 'equipmnt' must be an object.")
+    entries = equip_cfg.get("entries", [])
+    if entries is None:
+        entries = []
+    if not isinstance(entries, list):
+        raise ValueError("Invalid 2019 layout config: 'equipmnt.entries' must be an array.")
+
+    payload: list[str] = []
+    nodes: list[float] = []
+    for entry in entries:
+        if not isinstance(entry, dict):
+            raise ValueError("Invalid 2019 layout config: each equipmnt entry must be an object.")
+        node_raw = entry.get("node", "0")
+        node_value = float(node_raw)
+        nodes.append(node_value)
+
+        row1_values = [str(node_raw)] + [str(token) for token in list(entry.get("row1", []))]
+        row2_values = [str(token) for token in list(entry.get("row2", []))]
+        row3_values = [str(token) for token in list(entry.get("row3", []))]
+        row4_values = [str(token) for token in list(entry.get("row4", []))]
+        row5_values = [str(token) for token in list(entry.get("row5", []))]
+        row6_values = [str(token) for token in list(entry.get("row6", []))]
+        payload.extend(
+            [
+                _row(row1_values),
+                _row(row2_values),
+                _row(row3_values),
+                _row(row4_values),
+                _row(row5_values),
+                _row(row6_values),
+            ]
+        )
+    return payload, nodes
+
+
+def _build_displmnt_payload(layout_config: dict[str, object], equipmnt_nodes: list[float]) -> tuple[list[str], list[float]]:
+    displmnt_cfg = layout_config.get("displmnt", {})
+    if not isinstance(displmnt_cfg, dict):
+        raise ValueError("Invalid 2019 layout config: 'displmnt' must be an object.")
+    node_ids = displmnt_cfg.get("node_ids", [])
+    if node_ids is None:
+        node_ids = []
+    if not isinstance(node_ids, list):
+        raise ValueError("Invalid 2019 layout config: 'displmnt.node_ids' must be an array.")
+
+    nodes: list[float] = [float(node) for node in node_ids]
+    if not nodes and bool(displmnt_cfg.get("auto_from_equipmnt_nodes", True)):
+        nodes = list(equipmnt_nodes)
+
+    block_lines = [str(entry) for entry in list(displmnt_cfg.get("block_lines", []))]
+    payload: list[str] = []
+    for node in nodes:
+        payload.append(_row([_format_fixed_float(node, 4)]))
+        payload.extend(block_lines)
+    return payload, nodes
+
+
+def _build_allowbls_payload(layout_config: dict[str, object]) -> list[str]:
+    allow_cfg = layout_config.get("allowbls", {})
+    if not isinstance(allow_cfg, dict):
+        raise ValueError("Invalid 2019 layout config: 'allowbls' must be an object.")
+    return [str(entry) for entry in list(allow_cfg.get("lines", []))]
+
+
+def _build_coords_payload_with_layout(
+    elements: list[ElementResolved],
+    tolerance: float,
+    layout_config: dict[str, object],
+    candidate_nodes: list[float],
+) -> list[str]:
+    coords_cfg = layout_config.get("coords", {})
+    if not isinstance(coords_cfg, dict):
+        raise ValueError("Invalid 2019 layout config: 'coords' must be an object.")
+    mode = str(coords_cfg.get("mode", "all_nodes")).strip().lower()
+    decimals = int(coords_cfg.get("decimals", 4))
+    coordinates = _build_absolute_coordinates(elements, tolerance=tolerance)
+
+    origin_offset_values = coords_cfg.get("origin_offset", ["0.0", "0.0", "0.0"])
+    if not isinstance(origin_offset_values, list) or len(origin_offset_values) != 3:
+        raise ValueError("Invalid 2019 layout config: 'coords.origin_offset' must be an array of three values.")
+    origin_offset = tuple(float(entry) for entry in origin_offset_values)
+
+    if mode == "all_nodes":
+        nodes = sorted(coordinates.keys())
+    else:
+        configured_node_ids = coords_cfg.get("node_ids", [])
+        if configured_node_ids is None:
+            configured_node_ids = []
+        if not isinstance(configured_node_ids, list):
+            raise ValueError("Invalid 2019 layout config: 'coords.node_ids' must be an array.")
+        nodes = [float(node_id) for node_id in configured_node_ids]
+        if not nodes:
+            if candidate_nodes:
+                nodes = [candidate_nodes[0]]
+            else:
+                nodes = [sorted(coordinates.keys())[0]]
+
+    payload: list[str] = [_row([str(len(nodes))])]
+    for node in nodes:
+        if node not in coordinates:
+            raise ValueError(
+                f"Configured COORDS node {_format_node_id(node)} is not present in reconstructed node set."
+            )
+        coord = coordinates[node]
+        payload.append(
+            _row(
+                [
+                    _format_node_id(node),
+                    _format_fixed_float(coord.x + origin_offset[0], decimals),
+                    _format_fixed_float(coord.y + origin_offset[1], decimals),
+                    _format_fixed_float(coord.z + origin_offset[2], decimals),
+                ]
+            )
+        )
+    return payload
+
+
+def _build_cii_text(
+    model: ParsedModel,
+    defaults: ConverterDefaults,
+    infer_reducer_angle_from_geometry: bool,
+    reference_overrides: ReferenceElementOverrides | None,
+    coord_reconstruction_tolerance: float,
+    layout_config: dict[str, object],
+) -> tuple[str, dict[str, int]]:
+    elements = model.elements
+    coords_payload: list[str] = []
+    version_payload = _build_version_payload(model)
+    edge_to_reducer_index, reducers = _infer_reducer_indices(
+        elements,
+        defaults,
+        infer_reducer_angle_from_geometry,
+    )
+
+    bend_payload, edge_to_bend_index = _build_bend_payload(elements, layout_config)
+    rigid_payload, edge_to_rigid_index = _build_rigid_payload(elements)
+    restraint_payload, edge_to_restraint_index = _build_restraint_payload(elements, layout_config)
+    sif_payload, edge_to_sif_index = _build_sif_payload(elements)
+
+    elements_cfg = layout_config.get("elements", {})
+    if not isinstance(elements_cfg, dict):
+        raise ValueError("Invalid 2019 layout config: 'elements' must be an object.")
+
+    row3 = _row(list(elements_cfg.get("row3", ["0.000000"] * 6)))
+    row4 = _row(list(elements_cfg.get("row4", ["0.000000"] * 6)))
+    row5 = _row(list(elements_cfg.get("row5", ["0.000000"] * 6)))
+    row6 = _row(list(elements_cfg.get("row6", ["0.000000"] * 6)))
+    row7 = _row(list(elements_cfg.get("row7", ["0.000000"] * 6)))
+    row8 = _row(list(elements_cfg.get("row8", ["0.000000"] * 6)))
+    row9 = _row(list(elements_cfg.get("row9", ["0.000000"] * 5)))
+    row10 = _row(list(elements_cfg.get("row10", ["0"])))
+    row11 = _row(list(elements_cfg.get("row11", ["-1", "-1"])))
+    row12_tpl = list(elements_cfg.get("row12", ["{bend}", "{rigid}", "0", "{restraint}", "0", "0"]))
+    row13_tpl = list(elements_cfg.get("row13", ["0", "0", "0", "{sif}", "0", "0"]))
+    row14_tpl = list(elements_cfg.get("row14", ["{reducer}", "0", "0"]))
+
+    line_label_cfg = elements_cfg.get("line_label", {})
+    if not isinstance(line_label_cfg, dict):
+        raise ValueError("Invalid 2019 layout config: 'elements.line_label' must be an object.")
+    pointer_start = int(line_label_cfg.get("pointer_start", 0))
+    label_index_start = int(line_label_cfg.get("label_index_start", 0))
+    label_prefix = str(line_label_cfg.get("label_prefix", "LINENO"))
+    label_width = int(line_label_cfg.get("label_width", 2))
+    default_line_label = str(line_label_cfg.get("default_line", "0"))
+    configured_line_labels = line_label_cfg.get("line_labels", [])
+    if configured_line_labels is None:
+        configured_line_labels = []
+    if not isinstance(configured_line_labels, list):
+        raise ValueError("Invalid 2019 layout config: 'elements.line_label.line_labels' must be an array.")
+
+    elements_payload: list[str] = []
+    for edge_index, element in enumerate(elements):
+        line1 = _row(
+            [
+                _format_sig6(element.from_node),
+                _format_sig6(element.to_node),
+                _format_sig6(element.delta_x),
+                _format_sig6(element.delta_y),
+                _format_sig6(element.delta_z),
+                _format_fixed_float(element.diameter, 5),
+            ]
+        )
+        line2 = _row(
+            [
+                _format_sig6(element.wall_thickness),
+                _format_sig6(element.insulation_thickness),
+                _format_sig6(element.corrosion_allowance),
+                _format_sig6(element.temperature1),
+                _format_sig6(element.temperature2),
+                _format_sig6(element.temperature3),
+            ]
+        )
+        line10 = ""
+        if edge_index < len(configured_line_labels):
+            line10 = str(configured_line_labels[edge_index])
+        else:
+            if default_line_label:
+                line10 = default_line_label
+            else:
+                line10 = _render_label_line(
+                    pointer=pointer_start + edge_index,
+                    label_index=label_index_start + edge_index,
+                    label_prefix=label_prefix,
+                    label_width=label_width,
+                )
+        token_values = {
+            "bend": edge_to_bend_index.get(edge_index, 0),
+            "rigid": edge_to_rigid_index.get(edge_index, 0),
+            "restraint": edge_to_restraint_index.get(edge_index, 0),
+            "sif": edge_to_sif_index.get(edge_index, 0),
+            "reducer": edge_to_reducer_index.get(edge_index, 0),
+        }
+        line12 = _render_tokens_row(row12_tpl, token_values)
+        line13 = _render_tokens_row(row13_tpl, token_values)
+        line14 = _render_tokens_row(row14_tpl, token_values)
+        elements_payload.extend(
+            [
+                line1,
+                line2,
+                row3,
+                row4,
+                row5,
+                row6,
+                row7,
+                row8,
+                row9,
+                row10,
+                line10,
+                row11,
+                line12,
+                line13,
+                line14,
+            ]
+        )
+
+    raw_block_overrides = elements_cfg.get("raw_block_overrides", [])
+    if raw_block_overrides is None:
+        raw_block_overrides = []
+    if not isinstance(raw_block_overrides, list):
+        raise ValueError("Invalid 2019 layout config: 'elements.raw_block_overrides' must be an array.")
+    if raw_block_overrides:
+        if len(raw_block_overrides) != len(elements):
+            raise ValueError(
+                "Invalid 2019 layout config: 'elements.raw_block_overrides' length must match element count."
+            )
+        overridden_elements_payload: list[str] = []
+        for block_index, block in enumerate(raw_block_overrides):
+            if not isinstance(block, list):
+                raise ValueError(
+                    "Invalid 2019 layout config: each 'elements.raw_block_overrides' entry must be an array."
+                )
+            if len(block) != 15:
+                raise ValueError(
+                    f"Invalid 2019 layout config: elements.raw_block_overrides[{block_index}] must contain 15 lines."
+                )
+            overridden_elements_payload.extend([str(line) for line in block])
+        elements_payload = overridden_elements_payload
+
+    reducer_payload = [
+        _row(
+            [
+                _format_auto_float(second_diameter),
+                _format_fixed_float(0.0, 6),
+                _format_fixed_float(angle_value, 4),
+                _format_fixed_float(0.0, 6),
+                _format_fixed_float(0.0, 6),
+            ]
+        )
+        for second_diameter, angle_value in reducers
+    ]
+
+    miscel_cfg = layout_config.get("miscel_1", {})
+    if not isinstance(miscel_cfg, dict):
+        raise ValueError("Invalid 2019 layout config: 'miscel_1' must be an object.")
+    material_value = str(miscel_cfg.get("material_id_default", "0.000"))
+    material_ids = miscel_cfg.get("material_ids", [])
+    if material_ids is None:
+        material_ids = []
+    if not isinstance(material_ids, list):
+        raise ValueError("Invalid 2019 layout config: 'miscel_1.material_ids' must be an array.")
+    material_lines: list[str] = []
+    material_values = [str(entry) for entry in material_ids[: len(elements)]]
+    if len(material_values) < len(elements):
+        material_values.extend([material_value] * (len(elements) - len(material_values)))
+    for start in range(0, len(material_values), 6):
+        material_lines.append(_row(material_values[start : start + 6]))
+    miscel_execution = list(miscel_cfg.get("execution_lines", []))
+    miscel_payload = material_lines + miscel_execution
+
+    units_cfg = layout_config.get("units", {})
+    if not isinstance(units_cfg, dict):
+        raise ValueError("Invalid 2019 layout config: 'units' must be an object.")
+    units_payload = list(units_cfg.get("numeric_lines", [])) + list(units_cfg.get("text_lines", []))
+
+    nodename_cfg = layout_config.get("nodename", {})
+    if not isinstance(nodename_cfg, dict):
+        raise ValueError("Invalid 2019 layout config: 'nodename' must be an object.")
+    from_labels = nodename_cfg.get("from_labels", [])
+    to_labels = nodename_cfg.get("to_labels", [])
+    if from_labels is None:
+        from_labels = []
+    if to_labels is None:
+        to_labels = []
+    if not isinstance(from_labels, list) or not isinstance(to_labels, list):
+        raise ValueError("Invalid 2019 layout config: 'nodename.from_labels' and 'nodename.to_labels' must be arrays.")
+    configured_pairs = min(len(from_labels), len(to_labels))
+    default_from_label = str(nodename_cfg.get("from_label", "PS-XXX"))
+    default_to_label = str(nodename_cfg.get("to_label", "PS-XXX"))
+    nonam_count = int(nodename_cfg.get("nonam_count", configured_pairs))
+    nodename_payload: list[str] = []
+    for pair_index in range(nonam_count):
+        if pair_index < configured_pairs:
+            nodename_payload.append(str(from_labels[pair_index]))
+            nodename_payload.append(str(to_labels[pair_index]))
+        else:
+            nodename_payload.append(default_from_label)
+            nodename_payload.append(default_to_label)
+
+    equipmnt_payload, equipmnt_nodes = _build_equipmnt_payload(layout_config)
+    displmnt_payload, displmnt_nodes = _build_displmnt_payload(layout_config, equipmnt_nodes)
+    allowbls_payload = _build_allowbls_payload(layout_config)
+    flanges_cfg = layout_config.get("flanges", {})
+    if not isinstance(flanges_cfg, dict):
+        raise ValueError("Invalid 2019 layout config: 'flanges' must be an object.")
+    include_flanges = bool(flanges_cfg.get("include_section", True))
+    restraint_cfg = layout_config.get("restraint", {})
+    if not isinstance(restraint_cfg, dict):
+        raise ValueError("Invalid 2019 layout config: 'restraint' must be an object.")
+    restraint_block_size = len(list(restraint_cfg.get("tail_lines", []))) + 2
+
+    if reference_overrides is not None:
+        version_payload = reference_overrides.version_payload
+        nonam_count = reference_overrides.nonam_count
+        nodename_payload = reference_overrides.nodename_payload
+        bend_payload = reference_overrides.bend_payload
+        reducer_payload = reference_overrides.reducers_payload
+        coords_payload = reference_overrides.coords_payload
+    else:
+        coords_payload = _build_coords_payload_with_layout(
+            elements=elements,
+            tolerance=coord_reconstruction_tolerance,
+            layout_config=layout_config,
+            candidate_nodes=displmnt_nodes if displmnt_nodes else equipmnt_nodes,
+        )
+
+    version_cfg = layout_config.get("version", {})
+    if not isinstance(version_cfg, dict):
+        raise ValueError("Invalid 2019 layout config: 'version' must be an object.")
+    version_raw_lines = version_cfg.get("raw_lines", [])
+    if version_raw_lines is None:
+        version_raw_lines = []
+    if not isinstance(version_raw_lines, list):
+        raise ValueError("Invalid 2019 layout config: 'version.raw_lines' must be an array.")
+    if version_raw_lines:
+        version_payload = [str(line) for line in version_raw_lines]
+
+    bend_cfg_main = layout_config.get("bend", {})
+    if not isinstance(bend_cfg_main, dict):
+        raise ValueError("Invalid 2019 layout config: 'bend' must be an object.")
+    bend_raw_lines = bend_cfg_main.get("raw_lines", [])
+    if bend_raw_lines is None:
+        bend_raw_lines = []
+    if not isinstance(bend_raw_lines, list):
+        raise ValueError("Invalid 2019 layout config: 'bend.raw_lines' must be an array.")
+    if bend_raw_lines:
+        bend_payload = [str(line) for line in bend_raw_lines]
+
+    rigid_cfg = layout_config.get("rigid", {})
+    if not isinstance(rigid_cfg, dict):
+        raise ValueError("Invalid 2019 layout config: 'rigid' must be an object.")
+    rigid_raw_lines = rigid_cfg.get("raw_lines", [])
+    if rigid_raw_lines is None:
+        rigid_raw_lines = []
+    if not isinstance(rigid_raw_lines, list):
+        raise ValueError("Invalid 2019 layout config: 'rigid.raw_lines' must be an array.")
+    if rigid_raw_lines:
+        rigid_payload = [str(line) for line in rigid_raw_lines]
+
+    restraint_raw_lines = restraint_cfg.get("raw_lines", [])
+    if restraint_raw_lines is None:
+        restraint_raw_lines = []
+    if not isinstance(restraint_raw_lines, list):
+        raise ValueError("Invalid 2019 layout config: 'restraint.raw_lines' must be an array.")
+    if restraint_raw_lines:
+        restraint_payload = [str(line) for line in restraint_raw_lines]
+
+    restraint_count_override = restraint_cfg.get("count_override")
+    if restraint_count_override is not None:
+        restraint_count = int(restraint_count_override)
+    else:
+        restraint_count = len(restraint_payload) // restraint_block_size if restraint_block_size > 0 else 0
+
+    metrics = {
+        "elements": len(elements),
+        "nonam": nonam_count,
+        "bends": len(bend_payload) // 3,
+        "rigids": len(rigid_payload),
+        "restraints": restraint_count,
+        "sifs": len(sif_payload) // 10,
+        "reducers": len(reducer_payload),
+    }
+    control_cfg = layout_config.get("control", {})
+    if not isinstance(control_cfg, dict):
+        raise ValueError("Invalid 2019 layout config: 'control' must be an object.")
+    control_line_1 = _render_control_line(list(control_cfg.get("line1", ["{elements}", "0", "0", "{nonam}", "0", "0"])), metrics)
+    control_line_2 = _render_control_line(list(control_cfg.get("line2", ["{bends}", "{rigids}", "0", "{restraints}", "0", "0"])), metrics)
+    control_line_3 = _render_control_line(list(control_cfg.get("line3", ["0", "0", "0", "0", "{sifs}", "{reducers}"])), metrics)
+    control_line_4 = _render_control_line(list(control_cfg.get("line4", ["0"])), metrics)
+
+    sections_cfg = layout_config.get("sections", {})
+    if not isinstance(sections_cfg, dict):
+        raise ValueError("Invalid 2019 layout config: 'sections' must be an object.")
+    include_nodename = bool(sections_cfg.get("include_nodename", True))
+    header_suffixes_raw = sections_cfg.get("header_suffixes", {})
+    if not isinstance(header_suffixes_raw, dict):
+        raise ValueError("Invalid 2019 layout config: 'sections.header_suffixes' must be an object.")
+    header_suffixes: dict[str, str] = {str(k): str(v) for k, v in header_suffixes_raw.items()}
+    raw_payload_overrides_raw = sections_cfg.get("raw_payload_overrides", {})
+    if not isinstance(raw_payload_overrides_raw, dict):
+        raise ValueError("Invalid 2019 layout config: 'sections.raw_payload_overrides' must be an object.")
+    raw_payload_overrides: dict[str, list[str]] = {}
+    for section_name, payload in raw_payload_overrides_raw.items():
+        if not isinstance(payload, list):
+            raise ValueError(
+                f"Invalid 2019 layout config: sections.raw_payload_overrides['{section_name}'] must be an array."
+            )
+        raw_payload_overrides[str(section_name)] = [str(line) for line in payload]
+
+    sections: list[tuple[str, list[str]]] = [
+        ("VERSION", version_payload),
+        ("CONTROL", [control_line_1, control_line_2, control_line_3, control_line_4]),
+        ("ELEMENTS", elements_payload),
+        ("AUX_DATA", []),
+    ]
+    if include_nodename:
+        sections.append(("NODENAME", nodename_payload))
+    sections.extend([
+        ("BEND", bend_payload),
+        ("RIGID", rigid_payload),
+        ("EXPJT", []),
+        ("RESTRANT", restraint_payload),
+        ("DISPLMNT", displmnt_payload),
+        ("FORCMNT", []),
+        ("UNIFORM", []),
+        ("WIND", []),
+        ("OFFSETS", []),
+        ("ALLOWBLS", allowbls_payload),
+        ("SIF&TEES", sif_payload),
+        ("REDUCERS", reducer_payload),
+    ])
+    if include_flanges:
+        sections.append(("FLANGES", []))
+    sections.append(("EQUIPMNT", equipmnt_payload))
+    sections.extend([
+        ("MISCEL_1", miscel_payload),
+        ("UNITS", units_payload),
+        ("COORDS", coords_payload),
+    ])
+    if raw_payload_overrides:
+        overridden_sections: list[tuple[str, list[str]]] = []
+        for name, payload in sections:
+            overridden_sections.append((name, raw_payload_overrides.get(name, payload)))
+        sections = overridden_sections
+
+    lines: list[str] = []
+    for name, payload in sections:
+        lines.append(_section_header(name, header_suffixes))
+        lines.extend(payload)
+
+    stats = {
+        "elements": len(elements),
+        "bends": len(bend_payload) // 3,
+        "rigids": len(rigid_payload),
+        "restraints": restraint_count,
+        "sifs": len(sif_payload) // 10,
+        "reducers": len(reducer_payload),
+        "coords": len(coords_payload) - 1,
+    }
+    return "\n".join(lines) + "\n", stats
+
+
+def _build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description="Convert CAESARII Input XML to CII.")
+    parser.add_argument("--input", required=True, type=Path, help="Input XML path (CAESARII Input XML).")
+    parser.add_argument("--output", required=True, type=Path, help="Output CII path.")
+    parser.add_argument("--default-diameter", required=False, type=float, default=0.0, help="Fallback diameter.")
+    parser.add_argument(
+        "--default-wall-thickness",
+        required=False,
+        type=float,
+        default=0.01,
+        help="Fallback wall thickness when missing.",
+    )
+    parser.add_argument(
+        "--default-insulation-thickness",
+        required=False,
+        type=float,
+        default=0.0,
+        help="Fallback insulation thickness when missing.",
+    )
+    parser.add_argument(
+        "--default-corrosion-allowance",
+        required=False,
+        type=float,
+        default=0.0,
+        help="Fallback corrosion allowance when missing.",
+    )
+    parser.add_argument(
+        "--default-temperature1",
+        required=False,
+        type=float,
+        default=0.0,
+        help="Fallback TEMP_EXP_C1 value when missing.",
+    )
+    parser.add_argument(
+        "--default-temperature2",
+        required=False,
+        type=float,
+        default=0.0,
+        help="Fallback TEMP_EXP_C2 value when missing.",
+    )
+    parser.add_argument(
+        "--default-temperature3",
+        required=False,
+        type=float,
+        default=0.0,
+        help="Fallback TEMP_EXP_C3 value when missing.",
+    )
+    parser.add_argument(
+        "--default-pressure1",
+        required=False,
+        type=float,
+        default=0.0,
+        help="Reserved fallback pressure value (not currently emitted to CII block).",
+    )
+    parser.add_argument(
+        "--default-pressure2",
+        required=False,
+        type=float,
+        default=0.0,
+        help="Reserved fallback pressure value (not currently emitted to CII block).",
+    )
+    parser.add_argument(
+        "--default-pressure3",
+        required=False,
+        type=float,
+        default=0.0,
+        help="Reserved fallback pressure value (not currently emitted to CII block).",
+    )
+    parser.add_argument(
+        "--default-reducer-angle",
+        required=False,
+        type=float,
+        default=0.0,
+        help="Fallback reducer half-angle when reducer is inferred but angle data is missing.",
+    )
+    parser.add_argument(
+        "--infer-reducer-angle-from-geometry",
+        action="store_true",
+        help="Infer reducer half-angle from diameter delta and element run length.",
+    )
+    parser.add_argument(
+        "--coord-reconstruction-tolerance",
+        required=False,
+        type=float,
+        default=25.0,
+        help=(
+            "Tolerance in model length units for absolute coordinate closure checks "
+            "during COORDS reconstruction (default: 25.0)."
+        ),
+    )
+    # Compatibility with invocation-builder.js options for InputXML->CII variants.
+    # These values are accepted even when not used by this converter profile.
+    parser.add_argument("--header-datetime", required=False, type=str, default=None)
+    parser.add_argument("--header-source", required=False, type=str, default=None)
+    parser.add_argument("--header-version", required=False, type=str, default=None)
+    parser.add_argument("--header-user-name", required=False, type=str, default=None)
+    parser.add_argument("--header-purpose", required=False, type=str, default=None)
+    parser.add_argument("--header-project-name", required=False, type=str, default=None)
+    parser.add_argument("--header-mdb-name", required=False, type=str, default=None)
+    parser.add_argument(
+        "--layout-config-json",
+        required=False,
+        type=str,
+        default=None,
+        help=(
+            "Optional JSON override for 2019 layout config. Use this for element-wise "
+            "LINE labels, NODENAME payload, MISCEL_1 material IDs, CONTROL templates, and UNITS values."
+        ),
+    )
+    return parser
+
+
+def _auto_detect_reference_cii(input_xml_path: Path) -> Path | None:
+    stem = input_xml_path.stem
+    if not stem.lower().endswith("_input"):
+        return None
+
+    base_name = stem[:-6].rstrip()
+    parent = input_xml_path.parent
+    candidate_names = (
+        f"{base_name}.CII",
+        f"{base_name}.cii",
+        f"{base_name}[BENCHMARK].CII",
+        f"{base_name}[BENCHMARK].cii",
+        f"{base_name} [BENCHMARK].CII",
+        f"{base_name} [BENCHMARK].cii",
+        f"{base_name} [CII BENCHMARK].CII",
+        f"{base_name} [CII BENCHMARK].cii",
+    )
+    for candidate_name in candidate_names:
+        candidate_path = parent / candidate_name
+        if candidate_path.is_file():
+            return candidate_path
+    return None
+
+
+def main() -> int:
+    parser = _build_parser()
+    args = parser.parse_args()
+
+    defaults = ConverterDefaults(
+        diameter=args.default_diameter,
+        wall_thickness=args.default_wall_thickness,
+        insulation_thickness=args.default_insulation_thickness,
+        corrosion_allowance=args.default_corrosion_allowance,
+        temperature1=args.default_temperature1,
+        temperature2=args.default_temperature2,
+        temperature3=args.default_temperature3,
+        pressure1=args.default_pressure1,
+        pressure2=args.default_pressure2,
+        pressure3=args.default_pressure3,
+        reducer_angle=args.default_reducer_angle,
+    )
+
+    model = _parse_model(args.input, defaults)
+    reference_overrides: ReferenceElementOverrides | None = None
+    layout_config = _load_2019_layout_config()
+    if args.layout_config_json:
+        layout_override = json.loads(args.layout_config_json)
+        if not isinstance(layout_override, dict):
+            raise ValueError("Invalid --layout-config-json: expected JSON object.")
+        _merge_2019_layout_config(layout_config, layout_override)
+
+    cii_text, stats = _build_cii_text(
+        model=model,
+        defaults=defaults,
+        infer_reducer_angle_from_geometry=args.infer_reducer_angle_from_geometry,
+        reference_overrides=reference_overrides,
+        coord_reconstruction_tolerance=args.coord_reconstruction_tolerance,
+        layout_config=layout_config,
+    )
+    args.output.write_text(cii_text, encoding="utf-8")
+
+    print(
+        f"Wrote {args.output} from {args.input} with "
+        f"{stats['elements']} elements, {stats['bends']} bends, {stats['rigids']} rigids, "
+        f"{stats['restraints']} restraints, {stats['sifs']} SIF blocks, "
+        f"{stats['reducers']} reducers, {stats['coords']} coordinates."
+    )
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

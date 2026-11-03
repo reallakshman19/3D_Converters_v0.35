@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "b313-ch9-master-store/v1",
+  "authorityCeiling": "ENGINEERING_SANDBOX",
+  "canUseForDesignAuthority": false,
+  "metadata": {
+    "libraryId": "B313-CH9-PRODUCTION-MASTERS",
+    "revision": "R2-CANONICAL-RUNTIME-SOURCE-PENDING",
+    "migrationState": "SOURCE_PENDING",
+    "runtimeRole": "CANONICAL_RUNTIME_MASTER_STORE",
+    "legacyDocsPolicy": "CSV_TSV_ARE_INGESTION_AUTHORING_ONLY",
+    "sourceRef": "reallaksh19/Advanced_Analysis@951798864e6f557691d0d4388368b7805e425f0d/docs/High Pr",
+    "docsCatalog": "docs/Masters/HP_Piping_Class/library-catalog.csv",
+    "dimensionDependency": "docs/Masters/NPS_OD_BORE_SCHEDULE_MASTER.tsv",
+    "dimensionDependencyGitBlob": "7e83f7283b4ca9f35a86a45c008ca0b52a053fcc",
+    "note": "Canonical runtime store. Legacy docs CSV/TSV are ingestion/authoring evidence only. No material/product/tolerance runtime record is published until controlled source identity, exact sha256 custody and independent checking are established."
+  },
+  "collections": {
+    "sources": [],
+    "materialAllowable": [],
+    "pipeProduct": [],
+    "pipeDimension": [],
+    "manufacturingTolerance": []
+  },
+  "quarantine": [
+    {
+      "quarantineId": "Q-MATERIAL-DATASET-PENDING",
+      "collection": "materialAllowable",
+      "candidate": {
+        "relativePath": "docs/Masters/HP_Piping_Class/material-properties.csv",
+        "status": "HEADER_ONLY",
+        "sourceVersion": "TEMPLATE-V1"
+      },
+      "reasons": [
+        "MATERIAL_DATASET_HAS_NO_CONTROLLED_ROWS",
+        "B313_ALLOWABLE_STRESS_SOURCE_REQUIRED",
+        "B313_EDITION_AND_SHA256_CUSTODY_REQUIRED"
+      ],
+      "canUseForDesignAuthority": false
+    },
+    {
+      "quarantineId": "Q-PRODUCT-OVERLAY-PENDING",
+      "collection": "pipeProduct",
+      "candidate": {
+        "relativePath": "docs/Masters/HP_Piping_Class/pipe-product-overrides.csv",
+        "status": "HEADER_ONLY",
+        "sourceVersion": "TEMPLATE-V1",
+        "dimensionDependency": "docs/Masters/NPS_OD_BORE_SCHEDULE_MASTER.tsv",
+        "dimensionDependencyGitBlob": "7e83f7283b4ca9f35a86a45c008ca0b52a053fcc"
+      },
+      "reasons": [
+        "PURCHASE_PRODUCT_DATASET_HAS_NO_CONTROLLED_ROWS",
+        "PRODUCT_MATERIAL_AND_MANUFACTURING_PROCESS_REQUIRED",
+        "SEPARATE_PRODUCT_TOLERANCE_SOURCE_REQUIRED"
+      ],
+      "canUseForDesignAuthority": false
+    }
+  ]
+}

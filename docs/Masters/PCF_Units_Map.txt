@@ -1,0 +1,32 @@
+* Intergraph CAS   PCF / CAESAR II Units Mapping Designations
+*
+* This mapping file defines the units conversion filters used with the
+* PCF -> CAESAR II interface.  The numeric constants are defined such
+* that (the internal CAESAR II unit) * constant = (PCF unit).
+*
+* Example:  psi * 0.68947 = bars
+*
+*
+*   CAESAR II      PCF               Conversion from
+*   Unit           Unit              CAESAR II -> PCF
+*
+    PSI            [PSI]                  1.0               *PRESSURE
+    PSI            [BARg]                 0.068946          *PRESSURE
+    PSI            [KPA]                  6.894757          *PRESSURE
+    PSI            [KPAg]                 6.894757          *PRESSURE
+    PSI            [MPA]                  0.0068947         *PRESSURE
+    PSI            [N/MM^2]               0.0068947         *PRESSURE
+    F              [C]                    0.55560           *TEMPERATURE
+    IN             [MM]                   25.4              *THICKNESS
+    LB             [N]                    4.4480            *WEIGHT
+    LB             [KG]                   0.453592          *WEIGHT
+    LB./CU.IN.     [KG./CU.M.]            27680.0           *DENSITY
+    LB./CU.IN.     [KG./M^3]              27680.0           *DENSITY
+    LB./CU.IN.     [KG./CU.CM.]           0.02768           *DENSITY
+    LB./CU.IN.     [KG./CM^3]             0.02768           *DENSITY
+    LB./CU.IN.     [KG./DM^3]             27.68             *DENSITY
+    LB./CU.IN.     [KG/CU.M.]             27680.0           *DENSITY
+    LB./CU.IN.     [KG/M^3]               27680.0           *DENSITY
+    LB./CU.IN.     [KG/CU.CM.]            0.02768           *DENSITY
+    LB./CU.IN.     [KG/CM^3]              0.02768           *DENSITY
+    LB./CU.IN.     [KG/DM^3]              27.68             *DENSITY

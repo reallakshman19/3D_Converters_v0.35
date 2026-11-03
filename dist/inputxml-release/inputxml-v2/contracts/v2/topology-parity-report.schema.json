@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:reallaksh19:inputxml:topology-parity-report:v2",
+  "title": "TopologyParityReport.v2",
+  "type": "object",
+  "required": ["schema", "status", "canonicalTopologyHashSha256", "topoNodePlanHashSha256", "numberedTopologyProjectionHashSha256", "inputXmlHashSha256", "parsedInputXmlTopologyHashSha256", "svgSceneHash", "summary", "mismatches", "topologyParityReportHashSha256"],
+  "properties": {
+    "schema": {"const": "TopologyParityReport.v2"},
+    "status": {"enum": ["PASS", "BLOCKED"]},
+    "canonicalTopologyHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "topoNodePlanHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "numberedTopologyProjectionHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "inputXmlHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "parsedInputXmlTopologyHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "svgSceneHash": {"type": "string", "minLength": 1},
+    "summary": {"type": "object", "required": ["topologyMismatchCount"], "properties": {"topologyMismatchCount": {"type": "integer", "minimum": 0}}, "additionalProperties": true},
+    "mismatches": {"type": "array", "items": {"type": "object"}},
+    "topologyParityReportHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "additionalProperties": false
+}

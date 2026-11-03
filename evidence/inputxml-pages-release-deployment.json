@@ -1,0 +1,87 @@
+{
+  "schema": "InputXmlPagesReleaseDeploymentEvidence.v1",
+  "repositoryCommit": "54c147f9dc60e968751726d165961d07af66c1a8",
+  "pagesRoot": "https://reallaksh19.github.io/3D_Converters",
+  "manifestUrl": "https://reallaksh19.github.io/3D_Converters/converters/inputxml-runtime-manifest.json?commit=54c147f9dc60e968751726d165961d07af66c1a8",
+  "runtime": {
+    "schema": "InputXmlBrowserRuntimeManifest.v1",
+    "sourceRevision": "sha256:a705d8f46e7f4114f23f4702dc98100f15a04f7b886745cefe19f43c2a79f91a",
+    "manifestHashSha256": "f26c50c9d02f058bb959566eae885532c20d1f3ee5e6ee4c0f5c55e59c4e4917",
+    "assetCount": 207,
+    "packageCount": 9,
+    "deliveryAttempts": 208
+  },
+  "passRelease": {
+    "sourceSha256": "5b85a64587c496a20dfe98615ed701d559ff2e094a3ea5016f6cf491dddb9d82",
+    "preflightStatus": "PASS",
+    "ciiFileName": "released.cii",
+    "ciiSha256": "19bec8fd478eefbfdf38a37ff68171267a48c0dd6cf8ec53d4def76481728057",
+    "ciiBytes": 2858,
+    "selectedManifestHashSha256": "7a7c0f522f0de94f69c238b3fe16d1abc9f006b6f07015e1f3d85cb8bea15e97",
+    "selectedArtifactCount": 18
+  },
+  "blockedRelease": {
+    "sourceSha256": "0403ee12d71df11c29879cca34bf00ca2c4782ae24fbd718b06011b2c8d4674d",
+    "preflightStatus": "BLOCKED",
+    "released": false,
+    "diagnosticCode": "STRUCTURAL_COMPILER_BLOCKED",
+    "diagnosticMessage": "Structural compiler status must be PASS.",
+    "diagnosticCount": 7
+  },
+  "verifiedAt": "2026-07-29T04:30:06.529Z",
+  "convergenceAttempt": 1,
+  "deployedApplicationFiles": {
+    "core/app-standalone-runtime.js": {
+      "sha256": "72bd5e7176bd65ebd7c15761f8f1d23c13bcac20a6f74b5521f208b459d4ca51",
+      "bytes": 13572
+    },
+    "tabs/model-converters-tab.js": {
+      "sha256": "aea55c9e1dba24e9755d9c0621def723888d737ca19cc17347fb91239636175c",
+      "bytes": 2406
+    },
+    "tabs/model-converters/index.js": {
+      "sha256": "a4c5c936f8f1628e3ed4a86bc44b2cabc65aab4f1bcd221add6c76967fc70141",
+      "bytes": 850
+    },
+    "tabs/model-converters/ModelConvertersTab.js": {
+      "sha256": "812eeab7e4767e5aabeaa6321dbffa522ea1af572f0af134072350cc9fe0aeb5",
+      "bytes": 9009
+    },
+    "tabs/model-converters/xml-cii-workflow-bridge.js": {
+      "sha256": "c9af0d7028d7f16623c761fb0c194610f4f578d3b6ef9ef976d0531da5e9950e",
+      "bytes": 7897
+    },
+    "tabs/model-converters/xml-cii-rich-worker-cache-bust.js": {
+      "sha256": "d095ef88b3b27a5d7e8e2f24883c34b2ed1ef1679ff08f89c10033b9e505f88f",
+      "bytes": 1565
+    },
+    "tabs/model-converters/converter-registry.js": {
+      "sha256": "394b9210867d3301d7280dc1dfeb36a90ae8ed9191f0262d217104fbaecba7d0",
+      "bytes": 39701
+    },
+    "tabs/model-converters/legacy-adapter.js": {
+      "sha256": "4b01a7eed06aeb5c664f11ba70e676ac0e5e0b131246dffff2151a86cf64f7e3",
+      "bytes": 483445
+    },
+    "tabs/model-converters/converters/inputxml-to-cii2019.js": {
+      "sha256": "1462c58be3c5040ec1db50b07cdb89b0866d750df64275b12750df6702dd2087",
+      "bytes": 18276
+    },
+    "tabs/model-converters/converters/inputxml-blocked-diagnostics.js": {
+      "sha256": "d4f62af4bf87662b45b3b4b7af53fb32c75e089aa4b36f6f3b03620e4d29f1f5",
+      "bytes": 8078
+    },
+    "converters/BrowserConverterExecutor.js": {
+      "sha256": "18779e33b48e83d48dfc5548c30b3371707f0add4679c838b2614b49a4124763",
+      "bytes": 6100
+    },
+    "converters/py-worker.js": {
+      "sha256": "06978bb846a64f4622617007dcd16529ad562a77d68b7f27d8afc7890d881e33",
+      "bytes": 26209
+    },
+    "converters/inputxml-runtime-cache.js": {
+      "sha256": "5f7dd1bf29e5e50f3b266534202eeceaeaed5e314eff0a6750145edd5fa01dad",
+      "bytes": 984
+    }
+  }
+}

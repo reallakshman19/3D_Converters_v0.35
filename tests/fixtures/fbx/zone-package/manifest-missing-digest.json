@@ -1,0 +1,49 @@
+{
+  "schema": "FbxSelectedZoneGeometryManifest.v1",
+  "completeSourceGraphSha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "selectedZoneDigest": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+  "sourceIdentity": {
+    "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "byteLength": 1024,
+    "fbxVersion": 7500
+  },
+  "geometries": [
+    {
+      "geometryId": "1",
+      "sourceObjectId": "1",
+      "occurrenceId": "occ:1",
+      "controlPointCount": 4,
+      "polygonCount": 1,
+      "packagePath": "geometries/1/geometry.json",
+      "buffers": [
+        {
+          "role": "control-points-mm",
+          "scalarType": "Float64",
+          "componentCount": 3,
+          "count": 4,
+          "byteLength": 96,
+          "sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+          "packagePath": "geometries/1/control-points-mm.bin"
+        },
+        {
+          "role": "polygon-offsets",
+          "scalarType": "Uint32",
+          "componentCount": 1,
+          "count": 2,
+          "byteLength": 8,
+          "sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+          "packagePath": "geometries/1/polygon-offsets.bin"
+        },
+        {
+          "role": "polygon-vertex-indices",
+          "scalarType": "Uint32",
+          "componentCount": 1,
+          "count": 4,
+          "byteLength": 16,
+          "sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "packagePath": "geometries/1/polygon-vertex-indices.bin"
+        }
+      ]
+    }
+  ]
+}

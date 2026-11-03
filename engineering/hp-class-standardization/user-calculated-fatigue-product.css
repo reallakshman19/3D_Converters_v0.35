@@ -1,0 +1,16 @@
+#userKd3Surface{margin-top:20px}
+#userKd3Surface .page-actions{justify-content:flex-start;gap:8px;flex-wrap:wrap}
+#userKd3Surface .review-note{display:block;line-height:1.55}
+.user-kd3-table{min-width:1550px}
+.user-kd3-table th,.user-kd3-table td{vertical-align:top}
+.user-kd3-table .table-input{min-width:88px}
+.user-kd3-provenance{min-width:210px}
+.user-kd3-provenance summary{cursor:pointer;font-weight:600;margin-top:6px}
+.user-kd3-provenance label{display:grid;gap:3px;margin-top:7px;font-size:.78rem;color:var(--muted)}
+.user-kd3-provenance input{min-width:190px;border:1px solid #aeb9c4;border-radius:6px;padding:6px 7px;font:inherit;color:var(--text);background:var(--surface,#fff)}
+#userKd3ExchangeStatus{margin:12px 0}
+#userKd3WallSelect{min-width:160px}
+@media(max-width:900px){
+  #userKd3Surface .form-grid{grid-template-columns:1fr}
+  .user-kd3-table{min-width:1350px}
+}

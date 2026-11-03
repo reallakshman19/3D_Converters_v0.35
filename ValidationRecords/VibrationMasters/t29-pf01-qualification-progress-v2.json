@@ -1,0 +1,104 @@
+{
+  "schema": "T29QualificationProgress.v2",
+  "methodId": "VIB.CAVITATION.FLASHING",
+  "sourceIssue": 545,
+  "baselineContract": "ValidationRecords/VibrationMasters/t29-pf01-source-contract-v1.json",
+  "latestMainChecked": "08314a2632384cb69cd6e43efba6f02d1772e121",
+  "mainDriftAssessment": {
+    "commitsBehind": 3,
+    "netChangedPathsSinceOriginalBase": [
+      "Benchmarks/v11-v14.zip"
+    ],
+    "t29Overlap": false,
+    "benchmarkZipInspection": "UNRELATED_CII_V11_V14_CONTENT"
+  },
+  "evidenceAdded": [
+    "scripts/locate-vibration-t29-controlled-source.mjs",
+    "ValidationRecords/VibrationMasters/t29-pf01-source-extraction-request-v1.json",
+    "ValidationRecords/VibrationMasters/t29-pf01-reconciliation-matrix-v1.json",
+    "ValidationRecords/VibrationMasters/t29-pf01-benchmark-matrix-v1.json",
+    "tests/vibration-t29-pf01-contract.test.mjs",
+    "tests/vibration-t29-controlled-source-ci.test.mjs",
+    "Benchmarks/VibrationIntegrity/ei-aviff-multimechanism-worked-examples-v1.json"
+  ],
+  "sourceGateHardening": {
+    "locatorCandidateGate": "EXPLICIT_T2_9_IDENTIFIER_OR_CAVITATION_FLASHING_PAIR",
+    "genericPressureRecoveryAloneAccepted": false,
+    "locatorRankingDeterministic": true,
+    "ciPublishesControlledSourceText": false,
+    "ciPublicEvidence": "HASH_COUNT_AND_SELECTION_METADATA_ONLY",
+    "provisionalTableAnchors": [
+      "T2.9.2",
+      "Ball",
+      "Butterfly",
+      "Globe",
+      "Gate"
+    ],
+    "localSyntaxValidation": "PASS",
+    "localPureLocatorBehavior": "PASS",
+    "controlledPdfIntegration": "NOT_RUN_ENVIRONMENT_BLOCKED"
+  },
+  "workedExampleAssessment": {
+    "path": "Benchmarks/VibrationIntegrity/ei-aviff-multimechanism-worked-examples-v1.json",
+    "gitBlobSha1": "sha1:cb945296ea86186afc1cbb45f50ee94c017adca4",
+    "authority": "WORKED_EXAMPLE_VALIDATION_ONLY",
+    "t29CaseId": "EI-NO-EXAMPLE-CAV-FLASH",
+    "t29Mode": "NO_RETAINED_EXAMPLE",
+    "branchOracleAvailable": false,
+    "scoreImpact": "NONE"
+  },
+  "appendixA": {
+    "A1": {
+      "score": 19,
+      "reason": "Exact source identity, current register state, candidate lineage, conflicting synthesis lineage, overlap and execution routes are pinned; exact controlled page/hash execution remains missing."
+    },
+    "A2": {
+      "score": 15,
+      "reason": "Candidate and synthesis algorithms are isolated down to equation/table/branch conflicts, but the controlled T2.9 predicates and equality directions are still not source-executed."
+    },
+    "A3": {
+      "score": 20,
+      "reason": "Pressure/Pv/FL custody, candidate-vs-active, unknown-valve, AIV/T2.8 separation and authority invariants are explicit and fail closed."
+    },
+    "A4": {
+      "score": 17,
+      "reason": "Independent arithmetic replay, unit-invariance pair, lookup/failure vectors and reserved branch/boundary matrix exist; the repository benchmark set explicitly has no retained cavitation/flashing example, so branch outcome oracles remain pending controlled source."
+    },
+    "A5": {
+      "score": 19,
+      "reason": "PF01 remains limited to evidence, locator/request, reconciliation, benchmark and anti-drift tests; no family UI, master activation, numerical kernel or authority promotion is included."
+    },
+    "total": 90,
+    "requiredTotal": 92,
+    "requiredMinimumEach": 17,
+    "mandatory": {
+      "A1Minimum": 18,
+      "A2Minimum": 18
+    }
+  },
+  "gateEvaluation": {
+    "totalPass": false,
+    "minimumEachPass": false,
+    "A1Pass": true,
+    "A2Pass": false,
+    "controlledSourceExecutionPass": false,
+    "reviewDisposition": "NOT_QUALIFIED_FOR_T29_CANDIDATE_IMPLEMENTATION"
+  },
+  "remainingBlockers": [
+    "CONTROLLED_T29_DOCUMENT_EVIDENCE_NOT_EXECUTED",
+    "EXACT_T29_BRANCH_PREDICATES_UNRESOLVED",
+    "EXACT_EQUALITY_DIRECTIONS_UNRESOLVED",
+    "PRESSURE_BASIS_AND_TAPPING_LOCATIONS_UNRESOLVED",
+    "FL_TAXONOMY_CONFLICT_UNRESOLVED",
+    "PRESSURE_DROP_EQUATION_CONFLICT_UNRESOLVED",
+    "DECISION_BRANCH_ORACLES_PENDING_CONTROLLED_SOURCE"
+  ],
+  "authority": {
+    "engineeringAuthority": "NONE",
+    "screeningAuthority": "NOT_AUTHORIZED",
+    "designAuthority": false,
+    "masterValuesPublished": false,
+    "candidateKernelAuthorized": false
+  },
+  "exactNextAction": "Execute the exact pinned Common PDF against the provisional T2.9 page selection, update the selection from the deterministic locator if required, reconcile T2.9.2 table/equation/Flowchart T2-9 predicates, freeze branch/boundary oracles, then rescore A2 and the total before any numerical kernel implementation."
+}

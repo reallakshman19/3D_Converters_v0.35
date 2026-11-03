@@ -1,0 +1,4900 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipeStressExport xmlns="http://aveva.com/pipeStress116.xsd">
+<DateTime>15/07/2026, 10:25:29</DateTime>
+<Source>StagedJSON→EnrichXML</Source>
+<Version>1.0</Version>
+<Purpose>StagedJSON enrichment output</Purpose>
+<ProjectName></ProjectName>
+<MDBName>/</MDBName>
+<TitleLine>StagedJSON Enriched Export</TitleLine>
+<Units>
+  <DistanceUnits>mm</DistanceUnits>
+  <BoreUnits>mm</BoreUnits>
+  <PressureUnits>pascal</PressureUnits>
+  <TemperatureUnits>degC</TemperatureUnits>
+  <WeightUnits>kg</WeightUnits>
+  <ForceUnits>newton</ForceUnits>
+  <WallThicknessUnits>mm</WallThicknessUnits>
+  <FluidDensityUnits>kg/m3</FluidDensityUnits>
+</Units>
+<RestrainOpenEnds>Yes</RestrainOpenEnds>
+<AmbientTemperature>21</AmbientTemperature>
+<Pipe>
+<FullName>/STAGEDJSON-EXPORT</FullName>
+<Branch>
+<Branchname>/ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B2</Branchname>
+<Temperature>
+  <Temperature1>325</Temperature1>
+  <Temperature2>309</Temperature2>
+  <Temperature3>5</Temperature3>
+  <Temperature4>-100000</Temperature4>
+  <Temperature5>-100000</Temperature5>
+  <Temperature6>-100000</Temperature6>
+  <Temperature7>-100000</Temperature7>
+  <Temperature8>-100000</Temperature8>
+  <Temperature9>-100000</Temperature9>
+</Temperature>
+<Pressure>
+  <Pressure1>11600000000</Pressure1>
+  <Pressure2>0</Pressure2>
+  <Pressure3>0</Pressure3>
+  <Pressure4>0</Pressure4>
+  <Pressure5>0</Pressure5>
+  <Pressure6>0</Pressure6>
+  <Pressure7>0</Pressure7>
+  <Pressure8>0</Pressure8>
+  <Pressure9>0</Pressure9>
+</Pressure>
+<MaterialNumber>0</MaterialNumber>
+<InsulationDensity>0</InsulationDensity>
+<FluidDensity>0</FluidDensity>
+<Node>
+  <NodeNumber>10</NodeNumber>
+  <NodeName>ELBO =1006649732/51228</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ELBO</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51228</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>421773.221 -1141354.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <AlphaAngle>90</AlphaAngle>
+  <SIF>0</SIF>
+  <DTXR_POS>ELBOW 90 DEG LR BW Sch 80</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>20</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ELBO</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51228</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>422002.221 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>ELBOW 90 DEG LR BW Sch 80</DTXR_POS>
+</Node>
+<Node>
+  <NodeNumber>30</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B2 1</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B2 1</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>422002.221 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>40</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B2 1</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>422420.992 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>50</NodeNumber>
+  <NodeName>OLET =1006649732/51229</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>OLET</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51229</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>422420.992 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <AlphaAngle>90</AlphaAngle>
+  <SIF>0</SIF>
+  <DTXR_POS>Branch fitting PLAIN Sch 80</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>60</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>OLET</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51229</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>422420.992 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>Branch fitting PLAIN Sch 80</DTXR_POS>
+</Node>
+<Node>
+  <NodeNumber>70</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B2 2</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B2 2</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>422420.992 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>80</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B2 2</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>423170.992 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>90</NodeNumber>
+  <NodeName>PS-12244</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ATTA</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51230</ComponentRefNo>
+  <ConnectionType>SUPPORT</ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>423170.971 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <Restraint>
+    <Type>+Y</Type>
+    <Friction>0.3</Friction>
+  </Restraint>
+  <DTXR_PS>PS-12244/DATUM</DTXR_PS>
+  <DTXR_SOURCE>staged-json-ps-fallback</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>100</NodeNumber>
+  <NodeName>OLET =1006649732/51233</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>OLET</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51233</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>423170.992 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <AlphaAngle>90</AlphaAngle>
+  <SIF>0</SIF>
+  <DTXR_POS>Branch Outlet BW Sch 80</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>110</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>OLET</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51233</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>423170.992 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>Branch Outlet BW Sch 80</DTXR_POS>
+</Node>
+<Node>
+  <NodeNumber>120</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B2 3</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B2 3</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>423170.992 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>130</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B2 3</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>423970.992 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>140</NodeNumber>
+  <NodeName>FLAN =1006649732/51234</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>FLAN</ComponentType>
+  <Weight>38.00</Weight>
+  <ComponentRefNo>=1006649732/51234</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>423970.992 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>WELDING NECK FLANGE Sch 80 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>150</NodeNumber>
+  <NodeName>GASK =1006649732/51235</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>GASK</ComponentType>
+  <Weight>2.50</Weight>
+  <ComponentRefNo>=1006649732/51235</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>424117.992 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>GASKET SPIRAL WOUND 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>160</NodeNumber>
+  <NodeName>VALV /88-VGT-25050</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>VALV</ComponentType>
+  <Weight>207.00</Weight>
+  <ComponentRefNo>=1006649732/51236</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>424121.192 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>GATE VALVE FLGD 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>170</NodeNumber>
+  <NodeName>GASK =1006649732/51237</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>GASK</ComponentType>
+  <Weight>2.50</Weight>
+  <ComponentRefNo>=1006649732/51237</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>424731.192 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>GASKET SPIRAL WOUND 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>180</NodeNumber>
+  <NodeName>FLAN =1006649732/51238</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>FLAN</ComponentType>
+  <Weight>38.00</Weight>
+  <ComponentRefNo>=1006649732/51238</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>424734.392 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>WELDING NECK FLANGE Sch 80 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>190</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B2 4</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B2 4</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>424881.392 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>200</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B2 4</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>425681.392 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>210</NodeNumber>
+  <NodeName>OLET =1006649732/51239</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>OLET</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51239</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>425681.392 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <AlphaAngle>90</AlphaAngle>
+  <SIF>0</SIF>
+  <DTXR_POS>Branch Outlet BW Sch 80</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>220</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>OLET</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51239</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>425681.392 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>Branch Outlet BW Sch 80</DTXR_POS>
+</Node>
+<Node>
+  <NodeNumber>230</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B2 5</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B2 5</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>425681.392 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>240</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B2 5</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>426511.660 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>250</NodeNumber>
+  <NodeName>PS-12246</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ATTA</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51240</ComponentRefNo>
+  <ConnectionType>SUPPORT</ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>425680.971 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <Restraint>
+    <Type>+Y</Type>
+    <Friction>0.3</Friction>
+  </Restraint>
+  <DTXR_PS>PS-12246/DATUM</DTXR_PS>
+  <DTXR_SOURCE>staged-json-ps-fallback</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>260</NodeNumber>
+  <NodeName>OLET =1006649732/51244</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>OLET</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51244</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>426511.660 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <AlphaAngle>90</AlphaAngle>
+  <SIF>0</SIF>
+  <DTXR_POS>Branch Outlet BW Sch 80</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>270</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>OLET</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51244</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>426511.660 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>Branch Outlet BW Sch 80</DTXR_POS>
+</Node>
+<Node>
+  <NodeNumber>280</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B2 6</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B2 6</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>426511.660 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>290</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B2 6</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>427890.392 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>300</NodeNumber>
+  <NodeName>PS-12247</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ATTA</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51245</ComponentRefNo>
+  <ConnectionType>SUPPORT</ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>427515.392 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <Restraint>
+    <Type>+Y</Type>
+    <Friction>0.3</Friction>
+  </Restraint>
+  <DTXR_PS>PS-12247.5</DTXR_PS>
+  <DTXR_SOURCE>staged-json-ps-fallback</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>310</NodeNumber>
+  <NodeName>FLAN =1006649732/51248</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>FLAN</ComponentType>
+  <Weight>38.00</Weight>
+  <ComponentRefNo>=1006649732/51248</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>427890.392 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>WELDING NECK FLANGE Sch 80 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>320</NodeNumber>
+  <NodeName>GASK =1006649732/51249</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>GASK</ComponentType>
+  <Weight>2.50</Weight>
+  <ComponentRefNo>=1006649732/51249</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>428037.392 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>GASKET SPIRAL WOUND 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>330</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B2 7</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B2 7</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>428040.592 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>340</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B2 7</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>428650.592 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>350</NodeNumber>
+  <NodeName>INST /88-UZV-11951</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>VALV</ComponentType>
+  <Weight>207.00</Weight>
+  <ComponentRefNo>=1006649732/51250</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>428040.592 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>88-UZV-11951 900# RF</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>360</NodeNumber>
+  <NodeName>=1006649732/51254</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ATTA</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51254</ComponentRefNo>
+  <ConnectionType>SUPPORT</ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>428650.592 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <Restraint>
+    <Type>+Y</Type>
+    <Friction>0.3</Friction>
+  </Restraint>
+  <DTXR_PS>=1006649732/51254</DTXR_PS>
+  <DTXR_SOURCE>staged-json-ps-fallback</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>370</NodeNumber>
+  <NodeName>GASK =1006649732/51255</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>GASK</ComponentType>
+  <Weight>2.50</Weight>
+  <ComponentRefNo>=1006649732/51255</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>428650.592 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>GASKET SPIRAL WOUND 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>380</NodeNumber>
+  <NodeName>FLAN =1006649732/51256</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>FLAN</ComponentType>
+  <Weight>38.00</Weight>
+  <ComponentRefNo>=1006649732/51256</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>428653.792 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>WELDING NECK FLANGE Sch 80 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>390</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B2 8</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B2 8</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>428800.792 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>400</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B2 8</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>431556.792 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>410</NodeNumber>
+  <NodeName>PS-12248</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ATTA</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51257</ComponentRefNo>
+  <ConnectionType>SUPPORT</ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>430800.971 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <Restraint>
+    <Type>+Y</Type>
+    <Friction>0.3</Friction>
+  </Restraint>
+  <Restraint>
+    <Type>LIM</Type>
+  </Restraint>
+  <Restraint>
+    <Type>GUI</Type>
+  </Restraint>
+  <DTXR_PS>PS-12248/DATUM</DTXR_PS>
+  <DTXR_SOURCE>staged-json-ps-fallback</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>420</NodeNumber>
+  <NodeName>FLAN =1006649732/51263</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>FLAN</ComponentType>
+  <Weight>38.00</Weight>
+  <ComponentRefNo>=1006649732/51263</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>431556.792 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>WELDING NECK FLANGE Sch 80 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>430</NodeNumber>
+  <NodeName>GASK =1006649732/51264</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>GASK</ComponentType>
+  <Weight>2.50</Weight>
+  <ComponentRefNo>=1006649732/51264</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>431703.792 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>GASKET SPIRAL WOUND 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>440</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B2 9</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B2 9</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>431706.992 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>450</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B2 9</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>431732.392 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>460</NodeNumber>
+  <NodeName>GASK =1006649732/51266</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>GASK</ComponentType>
+  <Weight>2.50</Weight>
+  <ComponentRefNo>=1006649732/51266</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>431732.392 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>GASKET SPIRAL WOUND 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>470</NodeNumber>
+  <NodeName>FLAN =1006649732/51267</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>FLAN</ComponentType>
+  <Weight>38.00</Weight>
+  <ComponentRefNo>=1006649732/51267</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>431735.592 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>WELDING NECK FLANGE Sch 80 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>480</NodeNumber>
+  <NodeName>REDU =1006649732/51268</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>REDU</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51268</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>431882.592 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>REDUCER ECCENTRIC BW - HOLD</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>490</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>REDU</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51268</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>432022.592 -1141125.000 1144.450</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>REDUCER ECCENTRIC BW - HOLD</DTXR_POS>
+</Node>
+<Node>
+  <NodeNumber>500</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B2 10</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B2 10</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>88.9</OutsideDiameter>
+  <WallThickness>5.49</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>432022.592 -1141125.000 1144.450</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>510</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B2 10</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>88.9</OutsideDiameter>
+  <WallThickness>5.49</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>434123.600 -1141125.000 1144.450</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>520</NodeNumber>
+  <NodeName>PS-12249</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ATTA</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51269</ComponentRefNo>
+  <ConnectionType>SUPPORT</ConnectionType>
+  <OutsideDiameter>88.9</OutsideDiameter>
+  <WallThickness>5.49</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>432932.594 -1141125.000 1144.450</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <Restraint>
+    <Type>+Y</Type>
+    <Friction>0.3</Friction>
+  </Restraint>
+  <DTXR_PS>PS-12249/DATUM</DTXR_PS>
+  <DTXR_SOURCE>staged-json-ps-fallback</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>530</NodeNumber>
+  <NodeName>FLAN =1006649732/51272</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>FLAN</ComponentType>
+  <Weight>14.00</Weight>
+  <ComponentRefNo>=1006649732/51272</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>88.9</OutsideDiameter>
+  <WallThickness>5.49</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>434123.600 -1141125.000 1144.450</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>WELDING NECK FLANGE 900# - HOLD</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>540</NodeNumber>
+  <NodeName>GASK =1006649732/51273</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>GASK</ComponentType>
+  <Weight>1.00</Weight>
+  <ComponentRefNo>=1006649732/51273</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>88.9</OutsideDiameter>
+  <WallThickness>5.49</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>434232.600 -1141125.000 1144.450</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>GASKET 900# -HOLD</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>550</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B2 11</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B2 11</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>88.9</OutsideDiameter>
+  <WallThickness>5.49</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>434235.800 -1141125.000 1144.450</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>560</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B2 11</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>88.9</OutsideDiameter>
+  <WallThickness>5.49</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>434635.800 -1141125.000 1144.450</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>570</NodeNumber>
+  <NodeName>INST /88-FI-11360</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>VALV</ComponentType>
+  <Weight>60.00</Weight>
+  <ComponentRefNo>=1006649732/51274</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>88.9</OutsideDiameter>
+  <WallThickness>5.49</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>434235.800 -1141125.000 1144.450</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>ULTRA SONIC FLOW METER 900# RF</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>580</NodeNumber>
+  <NodeName>GASK =1006649732/51276</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>GASK</ComponentType>
+  <Weight>1.00</Weight>
+  <ComponentRefNo>=1006649732/51276</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>88.9</OutsideDiameter>
+  <WallThickness>5.49</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>434635.800 -1141125.000 1144.450</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>GASKET 900# -HOLD</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>590</NodeNumber>
+  <NodeName>FLAN =1006649732/51277</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>FLAN</ComponentType>
+  <Weight>14.00</Weight>
+  <ComponentRefNo>=1006649732/51277</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>88.9</OutsideDiameter>
+  <WallThickness>5.49</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>434639.000 -1141125.000 1144.450</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>WELDING NECK FLANGE 900# - HOLD</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>600</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B2 12</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B2 12</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>88.9</OutsideDiameter>
+  <WallThickness>5.49</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>434748.000 -1141125.000 1144.450</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>610</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B2 12</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>88.9</OutsideDiameter>
+  <WallThickness>5.49</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>437433.021 -1141125.000 1144.450</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>620</NodeNumber>
+  <NodeName>PS-12250</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ATTA</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51278</ComponentRefNo>
+  <ConnectionType>SUPPORT</ConnectionType>
+  <OutsideDiameter>88.9</OutsideDiameter>
+  <WallThickness>5.49</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>436573.021 -1141125.000 1144.450</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <Restraint>
+    <Type>+Y</Type>
+    <Friction>0.3</Friction>
+  </Restraint>
+  <DTXR_PS>PS-12250/DATUM</DTXR_PS>
+  <DTXR_SOURCE>staged-json-ps-fallback</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>630</NodeNumber>
+  <NodeName>REDU =1006649732/51281</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>REDU</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51281</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>88.9</OutsideDiameter>
+  <WallThickness>5.49</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>437433.021 -1141125.000 1144.450</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>REDUCER ECCENTRIC BW - HOLD</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>640</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>REDU</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51281</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>88.9</OutsideDiameter>
+  <WallThickness>5.49</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>437573.021 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>REDUCER ECCENTRIC BW - HOLD</DTXR_POS>
+</Node>
+<Node>
+  <NodeNumber>650</NodeNumber>
+  <NodeName>FLAN =1006649732/51282</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>FLAN</ComponentType>
+  <Weight>38.00</Weight>
+  <ComponentRefNo>=1006649732/51282</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>437573.021 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>WELDING NECK FLANGE Sch 80 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>660</NodeNumber>
+  <NodeName>GASK =1006649732/51283</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>GASK</ComponentType>
+  <Weight>2.50</Weight>
+  <ComponentRefNo>=1006649732/51283</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>437720.021 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>GASKET SPIRAL WOUND 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>670</NodeNumber>
+  <NodeName>INST /88-HCV-11067</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>VALV</ComponentType>
+  <Weight>290.00</Weight>
+  <ComponentRefNo>=1006649732/51284</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>437723.221 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>ANGLE CONTROL VALVE-HOLD</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>680</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B2 TAIL</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B2 TAIL</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>437723.221 -1141125.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>690</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B2 TAIL</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>438023.221 -1140825.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+</Branch>
+<Branch>
+<Branchname>/ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B7</Branchname>
+<Temperature>
+  <Temperature1>325</Temperature1>
+  <Temperature2>309</Temperature2>
+  <Temperature3>5</Temperature3>
+  <Temperature4>-100000</Temperature4>
+  <Temperature5>-100000</Temperature5>
+  <Temperature6>-100000</Temperature6>
+  <Temperature7>-100000</Temperature7>
+  <Temperature8>-100000</Temperature8>
+  <Temperature9>-100000</Temperature9>
+</Temperature>
+<Pressure>
+  <Pressure1>11600000000</Pressure1>
+  <Pressure2>0</Pressure2>
+  <Pressure3>0</Pressure3>
+  <Pressure4>0</Pressure4>
+  <Pressure5>0</Pressure5>
+  <Pressure6>0</Pressure6>
+  <Pressure7>0</Pressure7>
+  <Pressure8>0</Pressure8>
+  <Pressure9>0</Pressure9>
+</Pressure>
+<MaterialNumber>0</MaterialNumber>
+<InsulationDensity>0</InsulationDensity>
+<FluidDensity>0</FluidDensity>
+<Node>
+  <NodeNumber>700</NodeNumber>
+  <NodeName>GASK =1006649732/51343</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>GASK</ComponentType>
+  <Weight>2.50</Weight>
+  <ComponentRefNo>=1006649732/51343</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>438023.221 -1140825.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>GASKET SPIRAL WOUND 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>710</NodeNumber>
+  <NodeName>FLAN =1006649732/51344</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>FLAN</ComponentType>
+  <Weight>38.00</Weight>
+  <ComponentRefNo>=1006649732/51344</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>438023.221 -1140821.800 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>WELDING NECK FLANGE Sch 80 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>720</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B7 1</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B7 1</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>438023.221 -1140674.800 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>730</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B7 1</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>438023.221 -1139222.202 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>740</NodeNumber>
+  <NodeName>PS-12231</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ATTA</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51345</ComponentRefNo>
+  <ConnectionType>SUPPORT</ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>438023.221 -1140070.762 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <Restraint>
+    <Type>+Y</Type>
+    <Friction>0.3</Friction>
+  </Restraint>
+  <Restraint>
+    <Type>LIM</Type>
+  </Restraint>
+  <DTXR_PS>PS-12231/DATUM</DTXR_PS>
+  <DTXR_SOURCE>staged-json-ps-fallback</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>750</NodeNumber>
+  <NodeName>OLET =1006649732/51350</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>OLET</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51350</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>438023.221 -1139222.202 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <AlphaAngle>90</AlphaAngle>
+  <SIF>0</SIF>
+  <DTXR_POS>Branch fitting PLAIN Sch 80</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>760</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>OLET</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51350</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>438023.221 -1139222.202 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>Branch fitting PLAIN Sch 80</DTXR_POS>
+</Node>
+<Node>
+  <NodeNumber>770</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B7 2</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B7 2</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>438023.221 -1139222.202 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>780</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B7 2</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>438023.221 -1138422.001 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>790</NodeNumber>
+  <NodeName>OLET =1006649732/51351</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>OLET</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51351</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>438023.221 -1138422.001 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <AlphaAngle>90</AlphaAngle>
+  <SIF>0</SIF>
+  <DTXR_POS>Branch Outlet BW Sch 80</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>800</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>OLET</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51351</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>438023.221 -1138422.001 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>Branch Outlet BW Sch 80</DTXR_POS>
+</Node>
+<Node>
+  <NodeNumber>810</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B7 3</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B7 3</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>438023.221 -1138422.001 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>820</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B7 3</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>438023.221 -1137841.118 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>830</NodeNumber>
+  <NodeName>OLET =1006649732/51352</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>OLET</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51352</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>438023.221 -1137841.118 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <AlphaAngle>90</AlphaAngle>
+  <SIF>0</SIF>
+  <DTXR_POS>Branch Outlet BW Sch 80</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>840</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>OLET</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51352</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>438023.221 -1137841.118 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>Branch Outlet BW Sch 80</DTXR_POS>
+</Node>
+<Node>
+  <NodeNumber>850</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B7 4</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B7 4</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>438023.221 -1137841.118 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>860</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B7 4</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>438023.221 -1135304.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>870</NodeNumber>
+  <NodeName>PS-12311</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ATTA</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51353</ComponentRefNo>
+  <ConnectionType>SUPPORT</ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>438023.221 -1136824.031 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <Restraint>
+    <Type>+Y</Type>
+    <Friction>0.3</Friction>
+  </Restraint>
+  <DTXR_PS>PS-12311/DATUM</DTXR_PS>
+  <DTXR_SOURCE>staged-json-ps-fallback</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>880</NodeNumber>
+  <NodeName>ELBO =1006649732/51356</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ELBO</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51356</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>438023.221 -1135304.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <AlphaAngle>90</AlphaAngle>
+  <SIF>0</SIF>
+  <DTXR_POS>ELBOW 90 DEG LR BW Sch 80</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>890</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ELBO</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51356</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>438252.221 -1135075.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>ELBOW 90 DEG LR BW Sch 80</DTXR_POS>
+</Node>
+<Node>
+  <NodeNumber>900</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B7 5</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B7 5</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>438252.221 -1135075.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>910</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B7 5</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>445286.151 -1135075.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>920</NodeNumber>
+  <NodeName>PS-12321</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ATTA</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51357</ComponentRefNo>
+  <ConnectionType>SUPPORT</ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>438688.250 -1135075.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <Restraint>
+    <Type>+Y</Type>
+    <Friction>0.3</Friction>
+  </Restraint>
+  <Restraint>
+    <Type>LIM</Type>
+  </Restraint>
+  <DTXR_PS>PS-12321/DATUM</DTXR_PS>
+  <DTXR_SOURCE>staged-json-ps-fallback</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>930</NodeNumber>
+  <NodeName>PS-12295</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ATTA</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51362</ComponentRefNo>
+  <ConnectionType>SUPPORT</ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>443023.151 -1135075.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <Restraint>
+    <Type>+Y</Type>
+    <Friction>0.3</Friction>
+  </Restraint>
+  <DTXR_PS>PS-12295.2</DTXR_PS>
+  <DTXR_SOURCE>staged-json-ps-fallback</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>940</NodeNumber>
+  <NodeName>ELBO =1006649732/51366</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ELBO</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51366</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>445286.151 -1135075.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <AlphaAngle>90</AlphaAngle>
+  <SIF>0</SIF>
+  <DTXR_POS>ELBOW 90 DEG LR BW Sch 80</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>950</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ELBO</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51366</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>445515.151 -1134846.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>ELBOW 90 DEG LR BW Sch 80</DTXR_POS>
+</Node>
+<Node>
+  <NodeNumber>960</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B7 6</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B7 6</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>445515.151 -1134846.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>970</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8811951-91261M7-HC-01/B7 6</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>445515.151 -1130152.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>980</NodeNumber>
+  <NodeName>PS-12267</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ATTA</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51367</ComponentRefNo>
+  <ConnectionType>SUPPORT</ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>445515.151 -1134225.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <Restraint>
+    <Type>+Y</Type>
+    <Friction>0.3</Friction>
+  </Restraint>
+  <DTXR_PS>PS-12267.6</DTXR_PS>
+  <DTXR_SOURCE>staged-json-ps-fallback</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>990</NodeNumber>
+  <NodeName>PS-12268</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ATTA</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51371</ComponentRefNo>
+  <ConnectionType>SUPPORT</ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>445515.151 -1131525.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <Restraint>
+    <Type>+Y</Type>
+    <Friction>0.3</Friction>
+  </Restraint>
+  <Restraint>
+    <Type>LIM</Type>
+  </Restraint>
+  <Restraint>
+    <Type>GUI</Type>
+  </Restraint>
+  <DTXR_PS>PS-12268.2</DTXR_PS>
+  <DTXR_SOURCE>staged-json-ps-fallback</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1000</NodeNumber>
+  <NodeName>=1006649732/51378</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ATTA</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51378</ComponentRefNo>
+  <ConnectionType>SUPPORT</ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>0</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>445515.151 -1130505.016 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <Restraint>
+    <Type>+Y</Type>
+    <Friction>0.3</Friction>
+  </Restraint>
+  <DTXR_PS>=1006649732/51378</DTXR_PS>
+  <DTXR_SOURCE>staged-json-ps-fallback</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1010</NodeNumber>
+  <NodeName>FLAN =1006649732/51379</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>FLAN</ComponentType>
+  <Weight>38.00</Weight>
+  <ComponentRefNo>=1006649732/51379</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>445515.151 -1130152.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>WELDING NECK FLANGE Sch 80 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1020</NodeNumber>
+  <NodeName>GASK =1006649732/51380</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>GASK</ComponentType>
+  <Weight>2.50</Weight>
+  <ComponentRefNo>=1006649732/51380</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>445515.151 -1130005.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>GASKET SPIRAL WOUND 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+</Branch>
+<Branch>
+<Branchname>/ASIM-1885-6&quot;-S8810112-91261M7-HC-01/B6</Branchname>
+<Temperature>
+  <Temperature1>325</Temperature1>
+  <Temperature2>309</Temperature2>
+  <Temperature3>5</Temperature3>
+  <Temperature4>-100000</Temperature4>
+  <Temperature5>-100000</Temperature5>
+  <Temperature6>-100000</Temperature6>
+  <Temperature7>-100000</Temperature7>
+  <Temperature8>-100000</Temperature8>
+  <Temperature9>-100000</Temperature9>
+</Temperature>
+<Pressure>
+  <Pressure1>11600000000</Pressure1>
+  <Pressure2>0</Pressure2>
+  <Pressure3>0</Pressure3>
+  <Pressure4>0</Pressure4>
+  <Pressure5>0</Pressure5>
+  <Pressure6>0</Pressure6>
+  <Pressure7>0</Pressure7>
+  <Pressure8>0</Pressure8>
+  <Pressure9>0</Pressure9>
+</Pressure>
+<MaterialNumber>0</MaterialNumber>
+<InsulationDensity>0</InsulationDensity>
+<FluidDensity>0</FluidDensity>
+<Node>
+  <NodeNumber>1030</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-6&quot;-S8810112-91261M7-HC-01/B6 HEAD</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8810112-91261M7-HC-01/B6 HEAD</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>440660.219 -1159925.000 1300.200</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>1040</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8810112-91261M7-HC-01/B6 HEAD</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>440660.219 -1159925.000 2885.000</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>1050</NodeNumber>
+  <NodeName>ELBO =1006657924/39695</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ELBO</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006657924/39695</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>440660.219 -1159925.000 2885.000</Position>
+  <BendRadius>0</BendRadius>
+  <AlphaAngle>90</AlphaAngle>
+  <SIF>0</SIF>
+  <DTXR_POS>ELBOW 90 DEG LR BW Sch 80</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1060</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ELBO</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006657924/39695</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>440660.219 -1160154.000 3114.000</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>ELBOW 90 DEG LR BW Sch 80</DTXR_POS>
+</Node>
+<Node>
+  <NodeNumber>1070</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-6&quot;-S8810112-91261M7-HC-01/B6 1</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8810112-91261M7-HC-01/B6 1</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>440660.219 -1160154.000 3114.000</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>1080</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8810112-91261M7-HC-01/B6 1</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>440660.219 -1165598.000 3114.000</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>1090</NodeNumber>
+  <NodeName>PS-12228</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ATTA</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006657924/39570</ComponentRefNo>
+  <ConnectionType>SUPPORT</ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>440660.219 -1160775.000 3114.000</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <Restraint>
+    <Type>+Y</Type>
+    <Friction>0.3</Friction>
+  </Restraint>
+  <DTXR_PS>PS-12295/DATUM</DTXR_PS>
+  <DTXR_SOURCE>staged-json-ps-fallback</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1100</NodeNumber>
+  <NodeName>PS-12034</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ATTA</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006657924/39574</ComponentRefNo>
+  <ConnectionType>SUPPORT</ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>440660.219 -1163935.927 3114.000</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <Restraint>
+    <Type>+Y</Type>
+    <Friction>0.3</Friction>
+  </Restraint>
+  <Restraint>
+    <Type>LIM</Type>
+  </Restraint>
+  <Restraint>
+    <Type>GUI</Type>
+  </Restraint>
+  <DTXR_PS>PS-12295/DATUM</DTXR_PS>
+  <DTXR_SOURCE>staged-json-ps-fallback</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1110</NodeNumber>
+  <NodeName>=1006657924/39580</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ATTA</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006657924/39580</ComponentRefNo>
+  <ConnectionType>SUPPORT</ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>0</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>440660.219 -1165244.984 3114.000</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <Restraint>
+    <Type>+Y</Type>
+    <Friction>0.3</Friction>
+  </Restraint>
+  <DTXR_PS>=1006657924/39580</DTXR_PS>
+  <DTXR_SOURCE>staged-json-ps-fallback</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1120</NodeNumber>
+  <NodeName>FLAN =1006657924/39581</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>FLAN</ComponentType>
+  <Weight>38.00</Weight>
+  <ComponentRefNo>=1006657924/39581</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>440660.219 -1165598.000 3114.000</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>WELDING NECK FLANGE Sch 80 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1130</NodeNumber>
+  <NodeName>GASK =1006657924/39582</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>GASK</ComponentType>
+  <Weight>2.50</Weight>
+  <ComponentRefNo>=1006657924/39582</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>440660.219 -1165745.000 3114.000</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>GASKET SPIRAL WOUND 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+</Branch>
+<Branch>
+<Branchname>/ASIM-1885-6&quot;-S8810111-91261M7-HC-01/B1</Branchname>
+<Temperature>
+  <Temperature1>325</Temperature1>
+  <Temperature2>309</Temperature2>
+  <Temperature3>5</Temperature3>
+  <Temperature4>-100000</Temperature4>
+  <Temperature5>-100000</Temperature5>
+  <Temperature6>-100000</Temperature6>
+  <Temperature7>-100000</Temperature7>
+  <Temperature8>-100000</Temperature8>
+  <Temperature9>-100000</Temperature9>
+</Temperature>
+<Pressure>
+  <Pressure1>11600000000</Pressure1>
+  <Pressure2>0</Pressure2>
+  <Pressure3>0</Pressure3>
+  <Pressure4>0</Pressure4>
+  <Pressure5>0</Pressure5>
+  <Pressure6>0</Pressure6>
+  <Pressure7>0</Pressure7>
+  <Pressure8>0</Pressure8>
+  <Pressure9>0</Pressure9>
+</Pressure>
+<MaterialNumber>0</MaterialNumber>
+<InsulationDensity>0</InsulationDensity>
+<FluidDensity>0</FluidDensity>
+<Node>
+  <NodeNumber>1140</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-6&quot;-S8810111-91261M7-HC-01/B1 HEAD</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8810111-91261M7-HC-01/B1 HEAD</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>437294.219 -1144825.000 2184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>1150</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8810111-91261M7-HC-01/B1 HEAD</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>423502.221 -1144825.000 2184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>1160</NodeNumber>
+  <NodeName>PS-12061</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ATTA</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51400</ComponentRefNo>
+  <ConnectionType>SUPPORT</ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>436479.221 -1144825.000 2184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <Restraint>
+    <Type>+Y</Type>
+    <Friction>0.3</Friction>
+  </Restraint>
+  <DTXR_PS>PS-12061/DATUM</DTXR_PS>
+  <DTXR_SOURCE>staged-json-ps-fallback</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1170</NodeNumber>
+  <NodeName>PS-12240</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ATTA</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51403</ComponentRefNo>
+  <ConnectionType>SUPPORT</ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>431723.221 -1144825.000 2184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <Restraint>
+    <Type>+Y</Type>
+    <Friction>0.3</Friction>
+  </Restraint>
+  <DTXR_PS>PS-12240/DATUM</DTXR_PS>
+  <DTXR_SOURCE>staged-json-ps-fallback</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1180</NodeNumber>
+  <NodeName>PS-12242</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ATTA</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51406</ComponentRefNo>
+  <ConnectionType>SUPPORT</ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>427073.221 -1144825.000 2184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <Restraint>
+    <Type>+Y</Type>
+    <Friction>0.3</Friction>
+  </Restraint>
+  <DTXR_PS>PS-12241/DATUM</DTXR_PS>
+  <DTXR_SOURCE>staged-json-ps-fallback</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1190</NodeNumber>
+  <NodeName>PS-12263</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ATTA</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51412</ComponentRefNo>
+  <ConnectionType>SUPPORT</ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>424045.970 -1144825.000 2184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <Restraint>
+    <Type>+Y</Type>
+    <Friction>0.3</Friction>
+  </Restraint>
+  <DTXR_PS>PS-12242/DATUM</DTXR_PS>
+  <DTXR_SOURCE>staged-json-ps-fallback</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1200</NodeNumber>
+  <NodeName>ELBO =1006657924/39632</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ELBO</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006657924/39632</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>423502.221 -1144825.000 2184.150</Position>
+  <BendRadius>0</BendRadius>
+  <AlphaAngle>90</AlphaAngle>
+  <SIF>0</SIF>
+  <DTXR_POS>ELBOW 90 DEG LR BW Sch 80</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1210</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ELBO</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006657924/39632</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>423273.221 -1144596.000 2184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>ELBOW 90 DEG LR BW Sch 80</DTXR_POS>
+</Node>
+<Node>
+  <NodeNumber>1220</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-6&quot;-S8810111-91261M7-HC-01/B1 1</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8810111-91261M7-HC-01/B1 1</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>423273.221 -1144596.000 2184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>1230</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8810111-91261M7-HC-01/B1 1</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>423273.221 -1143954.000 2184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>1240</NodeNumber>
+  <NodeName>ELBO =1006657924/39631</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ELBO</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006657924/39631</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>423273.221 -1143954.000 2184.150</Position>
+  <BendRadius>0</BendRadius>
+  <AlphaAngle>90</AlphaAngle>
+  <SIF>0</SIF>
+  <DTXR_POS>ELBOW 90 DEG LR BW Sch 80</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1250</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ELBO</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006657924/39631</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>423044.221 -1143725.000 2184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>ELBOW 90 DEG LR BW Sch 80</DTXR_POS>
+</Node>
+<Node>
+  <NodeNumber>1260</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-6&quot;-S8810111-91261M7-HC-01/B1 2</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8810111-91261M7-HC-01/B1 2</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>423044.221 -1143725.000 2184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>1270</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8810111-91261M7-HC-01/B1 2</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>422002.221 -1143725.000 2184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>1280</NodeNumber>
+  <NodeName>ELBO =1006649732/51415</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ELBO</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51415</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>422002.221 -1143725.000 2184.150</Position>
+  <BendRadius>0</BendRadius>
+  <AlphaAngle>90</AlphaAngle>
+  <SIF>0</SIF>
+  <DTXR_POS>ELBOW 90 DEG LR BW Sch 80</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1290</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ELBO</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51415</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>421773.221 -1143725.000 1955.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>ELBOW 90 DEG LR BW Sch 80</DTXR_POS>
+</Node>
+<Node>
+  <NodeNumber>1300</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-6&quot;-S8810111-91261M7-HC-01/B1 3</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8810111-91261M7-HC-01/B1 3</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>421773.221 -1143725.000 1955.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>1310</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8810111-91261M7-HC-01/B1 3</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>421773.221 -1143725.000 1413.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>1320</NodeNumber>
+  <NodeName>ELBO =1006690692/2</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ELBO</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006690692/2</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>421773.221 -1143725.000 1413.150</Position>
+  <BendRadius>0</BendRadius>
+  <AlphaAngle>90</AlphaAngle>
+  <SIF>0</SIF>
+  <DTXR_POS>ELBOW 90 DEG LR BW Sch 80</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1330</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ELBO</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006690692/2</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>421773.221 -1143496.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>ELBOW 90 DEG LR BW Sch 80</DTXR_POS>
+</Node>
+<Node>
+  <NodeNumber>1340</NodeNumber>
+  <NodeName>PS-12243</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ATTA</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51417</ComponentRefNo>
+  <ConnectionType>SUPPORT</ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>421773.221 -1142982.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <Restraint>
+    <Type>+Y</Type>
+    <Friction>0.3</Friction>
+  </Restraint>
+  <DTXR_PS>PS-12243/DATUM</DTXR_PS>
+  <DTXR_SOURCE>staged-json-ps-fallback</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1350</NodeNumber>
+  <NodeName>=1006649732/51422</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ATTA</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51422</ComponentRefNo>
+  <ConnectionType>SUPPORT</ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>421773.221 -1141354.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <Restraint>
+    <Type>+Y</Type>
+    <Friction>0.3</Friction>
+  </Restraint>
+  <DTXR_PS>=1006649732/51422</DTXR_PS>
+  <DTXR_SOURCE>staged-json-ps-fallback</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1360</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-6&quot;-S8810111-91261M7-HC-01/B1 TAIL</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8810111-91261M7-HC-01/B1 TAIL</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>421773.221 -1143496.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>1370</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8810111-91261M7-HC-01/B1 TAIL</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>421773.221 -1141354.000 1184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+</Branch>
+<Branch>
+<Branchname>/ASIM-1885-6&quot;-S8810111-91261M7-HC-01/B2</Branchname>
+<Temperature>
+  <Temperature1>325</Temperature1>
+  <Temperature2>309</Temperature2>
+  <Temperature3>5</Temperature3>
+  <Temperature4>-100000</Temperature4>
+  <Temperature5>-100000</Temperature5>
+  <Temperature6>-100000</Temperature6>
+  <Temperature7>-100000</Temperature7>
+  <Temperature8>-100000</Temperature8>
+  <Temperature9>-100000</Temperature9>
+</Temperature>
+<Pressure>
+  <Pressure1>11600000000</Pressure1>
+  <Pressure2>0</Pressure2>
+  <Pressure3>0</Pressure3>
+  <Pressure4>0</Pressure4>
+  <Pressure5>0</Pressure5>
+  <Pressure6>0</Pressure6>
+  <Pressure7>0</Pressure7>
+  <Pressure8>0</Pressure8>
+  <Pressure9>0</Pressure9>
+</Pressure>
+<MaterialNumber>0</MaterialNumber>
+<InsulationDensity>0</InsulationDensity>
+<FluidDensity>0</FluidDensity>
+<Node>
+  <NodeNumber>1380</NodeNumber>
+  <NodeName>TEE =1006690692/1</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>TEE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006690692/1</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>440803.219 -1159925.000 1157.200</Position>
+  <BendRadius>0</BendRadius>
+  <AlphaAngle>90</AlphaAngle>
+  <SIF>0</SIF>
+  <DTXR_POS>TEE EQUAL BW Sch 80</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1390</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>TEE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006690692/1</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>440517.219 -1159925.000 1157.200</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>TEE EQUAL BW Sch 80</DTXR_POS>
+</Node>
+<Node>
+  <NodeNumber>1400</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-6&quot;-S8810111-91261M7-HC-01/B2 1</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8810111-91261M7-HC-01/B2 1</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>440517.219 -1159925.000 1157.200</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>1410</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8810111-91261M7-HC-01/B2 1</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>437752.219 -1159925.000 1157.200</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>1420</NodeNumber>
+  <NodeName>PS-12156</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ATTA</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51204</ComponentRefNo>
+  <ConnectionType>SUPPORT</ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>438667.219 -1159925.000 1157.200</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <Restraint>
+    <Type>+Y</Type>
+    <Friction>0.3</Friction>
+  </Restraint>
+  <DTXR_PS>PS-12156/DATUM</DTXR_PS>
+  <DTXR_SOURCE>staged-json-ps-fallback</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1430</NodeNumber>
+  <NodeName>ELBO =1006649732/51207</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ELBO</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51207</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>437752.219 -1159925.000 1157.200</Position>
+  <BendRadius>0</BendRadius>
+  <AlphaAngle>90</AlphaAngle>
+  <SIF>0</SIF>
+  <DTXR_POS>ELBOW 90 DEG LR BW Sch 80</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1440</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ELBO</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51207</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>437523.219 -1159925.000 1386.200</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>ELBOW 90 DEG LR BW Sch 80</DTXR_POS>
+</Node>
+<Node>
+  <NodeNumber>1450</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-6&quot;-S8810111-91261M7-HC-01/B2 2</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8810111-91261M7-HC-01/B2 2</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>437523.219 -1159925.000 1386.200</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>1460</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8810111-91261M7-HC-01/B2 2</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>437523.219 -1159925.000 1955.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>1470</NodeNumber>
+  <NodeName>ELBO =1006649732/51208</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ELBO</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51208</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>437523.219 -1159925.000 1955.150</Position>
+  <BendRadius>0</BendRadius>
+  <AlphaAngle>90</AlphaAngle>
+  <SIF>0</SIF>
+  <DTXR_POS>ELBOW 90 DEG LR BW Sch 80</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1480</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ELBO</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51208</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>437523.219 -1159696.000 2184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>ELBOW 90 DEG LR BW Sch 80</DTXR_POS>
+</Node>
+<Node>
+  <NodeNumber>1490</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-6&quot;-S8810111-91261M7-HC-01/B2 3</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8810111-91261M7-HC-01/B2 3</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>437523.219 -1159696.000 2184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>1500</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-6&quot;-S8810111-91261M7-HC-01/B2 3</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>437523.219 -1145054.000 2184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>1510</NodeNumber>
+  <NodeName>PS-12170</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ATTA</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51209</ComponentRefNo>
+  <ConnectionType>SUPPORT</ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>437523.219 -1158821.227 2184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <Restraint>
+    <Type>+Y</Type>
+    <Friction>0.3</Friction>
+  </Restraint>
+  <DTXR_PS>PS-12170/DATUM</DTXR_PS>
+  <DTXR_SOURCE>staged-json-ps-fallback</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1520</NodeNumber>
+  <NodeName>PS-12169</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ATTA</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51213</ComponentRefNo>
+  <ConnectionType>SUPPORT</ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>437523.219 -1152235.000 2184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <Restraint>
+    <Type>+Y</Type>
+    <Friction>0.3</Friction>
+  </Restraint>
+  <Restraint>
+    <Type>GUI</Type>
+  </Restraint>
+  <Restraint>
+    <Type>LIM</Type>
+  </Restraint>
+  <DTXR_PS>PS-12169/DATUM</DTXR_PS>
+  <DTXR_SOURCE>staged-json-ps-fallback</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1530</NodeNumber>
+  <NodeName>PS-12165</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ATTA</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51218</ComponentRefNo>
+  <ConnectionType>SUPPORT</ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>437523.219 -1147621.200 2184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <Restraint>
+    <Type>+Y</Type>
+    <Friction>0.3</Friction>
+  </Restraint>
+  <DTXR_PS>PS-12165/DATUM</DTXR_PS>
+  <DTXR_SOURCE>staged-json-ps-fallback</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1540</NodeNumber>
+  <NodeName>PS-12297/SREF</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ATTA</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51225</ComponentRefNo>
+  <ConnectionType>SUPPORT</ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>7.11</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>437523.219 -1145574.800 2184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <Restraint>
+    <Type>+Y</Type>
+    <Friction>0.3</Friction>
+  </Restraint>
+  <DTXR_PS>PS-12297/SREF</DTXR_PS>
+  <DTXR_SOURCE>staged-json-ps-fallback</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1550</NodeNumber>
+  <NodeName>ELBO =1006649732/51226</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ELBO</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51226</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>437523.219 -1145054.000 2184.150</Position>
+  <BendRadius>0</BendRadius>
+  <AlphaAngle>90</AlphaAngle>
+  <SIF>0</SIF>
+  <DTXR_POS>ELBOW 90 DEG LR BW Sch 80</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1560</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ELBO</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51226</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>168.3</OutsideDiameter>
+  <WallThickness>10.97</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>80</InsulationThickness>
+  <Position>437294.219 -1144825.000 2184.150</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>ELBOW 90 DEG LR BW Sch 80</DTXR_POS>
+</Node>
+</Branch>
+<Branch>
+<Branchname>/ASIM-1885-8&quot;-S8810103-91261M7-HC-01/B1</Branchname>
+<Temperature>
+  <Temperature1>325</Temperature1>
+  <Temperature2>309</Temperature2>
+  <Temperature3>5</Temperature3>
+  <Temperature4>-100000</Temperature4>
+  <Temperature5>-100000</Temperature5>
+  <Temperature6>-100000</Temperature6>
+  <Temperature7>-100000</Temperature7>
+  <Temperature8>-100000</Temperature8>
+  <Temperature9>-100000</Temperature9>
+</Temperature>
+<Pressure>
+  <Pressure1>11600000000</Pressure1>
+  <Pressure2>0</Pressure2>
+  <Pressure3>0</Pressure3>
+  <Pressure4>0</Pressure4>
+  <Pressure5>0</Pressure5>
+  <Pressure6>0</Pressure6>
+  <Pressure7>0</Pressure7>
+  <Pressure8>0</Pressure8>
+  <Pressure9>0</Pressure9>
+</Pressure>
+<MaterialNumber>0</MaterialNumber>
+<InsulationDensity>0</InsulationDensity>
+<FluidDensity>0</FluidDensity>
+<Node>
+  <NodeNumber>1570</NodeNumber>
+  <NodeName>ELBO =1006649732/51428</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ELBO</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51428</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>219.1</OutsideDiameter>
+  <WallThickness>8.18</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>100</InsulationThickness>
+  <Position>445275.151 -1159925.000 1182.651</Position>
+  <BendRadius>0</BendRadius>
+  <AlphaAngle>90</AlphaAngle>
+  <SIF>0</SIF>
+  <DTXR_POS>ELBOW 90 DEG LR BW Sch 100</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1580</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ELBO</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51428</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>219.1</OutsideDiameter>
+  <WallThickness>8.18</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>100</InsulationThickness>
+  <Position>445580.151 -1159925.000 1487.651</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>ELBOW 90 DEG LR BW Sch 100</DTXR_POS>
+</Node>
+<Node>
+  <NodeNumber>1590</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-8&quot;-S8810103-91261M7-HC-01/B1 1</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-8&quot;-S8810103-91261M7-HC-01/B1 1</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>219.1</OutsideDiameter>
+  <WallThickness>8.18</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>445580.151 -1159925.000 1487.651</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>1600</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-8&quot;-S8810103-91261M7-HC-01/B1 1</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>219.1</OutsideDiameter>
+  <WallThickness>8.18</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>445580.151 -1159925.000 2904.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>1610</NodeNumber>
+  <NodeName>ELBO =1006649732/51429</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ELBO</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51429</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>219.1</OutsideDiameter>
+  <WallThickness>8.18</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>100</InsulationThickness>
+  <Position>445580.151 -1159925.000 2904.550</Position>
+  <BendRadius>0</BendRadius>
+  <AlphaAngle>90</AlphaAngle>
+  <SIF>0</SIF>
+  <DTXR_POS>ELBOW 90 DEG LR BW Sch 100</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1620</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ELBO</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51429</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>219.1</OutsideDiameter>
+  <WallThickness>8.18</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>100</InsulationThickness>
+  <Position>445580.151 -1160230.000 3209.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>ELBOW 90 DEG LR BW Sch 100</DTXR_POS>
+</Node>
+<Node>
+  <NodeNumber>1630</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-8&quot;-S8810103-91261M7-HC-01/B1 2</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-8&quot;-S8810103-91261M7-HC-01/B1 2</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>219.1</OutsideDiameter>
+  <WallThickness>8.18</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>445580.151 -1160230.000 3209.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>1640</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-8&quot;-S8810103-91261M7-HC-01/B1 2</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>219.1</OutsideDiameter>
+  <WallThickness>8.18</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>445580.151 -1165631.000 3209.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>1650</NodeNumber>
+  <NodeName>PS-12228</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ATTA</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51430</ComponentRefNo>
+  <ConnectionType>SUPPORT</ConnectionType>
+  <OutsideDiameter>219.1</OutsideDiameter>
+  <WallThickness>8.18</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>100</InsulationThickness>
+  <Position>445580.151 -1160775.000 3209.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <Restraint>
+    <Type>+Y</Type>
+    <Friction>0.3</Friction>
+  </Restraint>
+  <DTXR_PS>PS-12228.1</DTXR_PS>
+  <DTXR_SOURCE>staged-json-ps-fallback</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1660</NodeNumber>
+  <NodeName>PS-12034</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ATTA</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51434</ComponentRefNo>
+  <ConnectionType>SUPPORT</ConnectionType>
+  <OutsideDiameter>219.1</OutsideDiameter>
+  <WallThickness>8.18</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>100</InsulationThickness>
+  <Position>445580.151 -1163935.927 3209.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <Restraint>
+    <Type>+Y</Type>
+    <Friction>0.3</Friction>
+  </Restraint>
+  <Restraint>
+    <Type>LIM</Type>
+  </Restraint>
+  <DTXR_PS>PS-12034.1</DTXR_PS>
+  <DTXR_SOURCE>staged-json-ps-fallback</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1670</NodeNumber>
+  <NodeName>FLAN =1006649732/51439</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>FLAN</ComponentType>
+  <Weight>65.00</Weight>
+  <ComponentRefNo>=1006649732/51439</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>219.1</OutsideDiameter>
+  <WallThickness>8.18</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>100</InsulationThickness>
+  <Position>445580.151 -1165631.000 3209.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>WELDING NECK FLANGE Sch 100 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1680</NodeNumber>
+  <NodeName>GASK =1006649732/51440</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>GASK</ComponentType>
+  <Weight>3.80</Weight>
+  <ComponentRefNo>=1006649732/51440</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>219.1</OutsideDiameter>
+  <WallThickness>8.18</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>100</InsulationThickness>
+  <Position>445580.151 -1165800.000 3209.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>GASKET SPIRAL WOUND 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+</Branch>
+<Branch>
+<Branchname>/ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B1</Branchname>
+<Temperature>
+  <Temperature1>325</Temperature1>
+  <Temperature2>309</Temperature2>
+  <Temperature3>5</Temperature3>
+  <Temperature4>-100000</Temperature4>
+  <Temperature5>-100000</Temperature5>
+  <Temperature6>-100000</Temperature6>
+  <Temperature7>-100000</Temperature7>
+  <Temperature8>-100000</Temperature8>
+  <Temperature9>-100000</Temperature9>
+</Temperature>
+<Pressure>
+  <Pressure1>11600000000</Pressure1>
+  <Pressure2>0</Pressure2>
+  <Pressure3>0</Pressure3>
+  <Pressure4>0</Pressure4>
+  <Pressure5>0</Pressure5>
+  <Pressure6>0</Pressure6>
+  <Pressure7>0</Pressure7>
+  <Pressure8>0</Pressure8>
+  <Pressure9>0</Pressure9>
+</Pressure>
+<MaterialNumber>0</MaterialNumber>
+<InsulationDensity>0</InsulationDensity>
+<FluidDensity>0</FluidDensity>
+<Node>
+  <NodeNumber>1690</NodeNumber>
+  <NodeName>GASK =1006649732/51443</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>GASK</ComponentType>
+  <Weight>5.70</Weight>
+  <ComponentRefNo>=1006649732/51443</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>273</OutsideDiameter>
+  <WallThickness>9.27</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>120</InsulationThickness>
+  <Position>442973.151 -1165803.200 3209.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>GASKET SPIRAL WOUND 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1700</NodeNumber>
+  <NodeName>FLAN =1006649732/51444</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>FLAN</ComponentType>
+  <Weight>100.00</Weight>
+  <ComponentRefNo>=1006649732/51444</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>273</OutsideDiameter>
+  <WallThickness>9.27</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>120</InsulationThickness>
+  <Position>442973.151 -1165800.000 3209.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>WELDING NECK FLANGE Sch 100 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1710</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B1 1</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B1 1</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>273</OutsideDiameter>
+  <WallThickness>9.27</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>442973.151 -1165609.000 3209.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>1720</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B1 1</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>273</OutsideDiameter>
+  <WallThickness>9.27</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>442973.151 -1160306.000 3209.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>1730</NodeNumber>
+  <NodeName>PS-12060</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ATTA</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51445</ComponentRefNo>
+  <ConnectionType>SUPPORT</ConnectionType>
+  <OutsideDiameter>273</OutsideDiameter>
+  <WallThickness>9.27</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>120</InsulationThickness>
+  <Position>442973.151 -1163710.000 3209.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <Restraint>
+    <Type>+Y</Type>
+    <Friction>0.3</Friction>
+  </Restraint>
+  <Restraint>
+    <Type>LIM</Type>
+  </Restraint>
+  <Restraint>
+    <Type>GUI</Type>
+    <Gap>25</Gap>
+  </Restraint>
+  <DTXR_PS>PS-12060/DATUM</DTXR_PS>
+  <DTXR_SOURCE>staged-json-ps-fallback</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1740</NodeNumber>
+  <NodeName>PS-12059</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ATTA</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51451</ComponentRefNo>
+  <ConnectionType>SUPPORT</ConnectionType>
+  <OutsideDiameter>273</OutsideDiameter>
+  <WallThickness>9.27</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>120</InsulationThickness>
+  <Position>442973.151 -1161085.000 3209.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <Restraint>
+    <Type>+Y</Type>
+    <Friction>0.3</Friction>
+  </Restraint>
+  <DTXR_PS>PS-12059/DATUM</DTXR_PS>
+  <DTXR_SOURCE>staged-json-ps-fallback</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1750</NodeNumber>
+  <NodeName>ELBO =1006649732/51454</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ELBO</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51454</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>273</OutsideDiameter>
+  <WallThickness>9.27</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>120</InsulationThickness>
+  <Position>442973.151 -1160306.000 3209.550</Position>
+  <BendRadius>0</BendRadius>
+  <AlphaAngle>90</AlphaAngle>
+  <SIF>0</SIF>
+  <DTXR_POS>ELBOW 90 DEG LR BW Sch 100</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1760</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ELBO</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51454</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>273</OutsideDiameter>
+  <WallThickness>9.27</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>120</InsulationThickness>
+  <Position>442973.151 -1159925.000 2828.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>ELBOW 90 DEG LR BW Sch 100</DTXR_POS>
+</Node>
+<Node>
+  <NodeNumber>1770</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B1 2</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B1 2</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>273</OutsideDiameter>
+  <WallThickness>9.27</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>442973.151 -1159925.000 2828.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>1780</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B1 2</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>273</OutsideDiameter>
+  <WallThickness>9.27</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>442973.151 -1159925.000 1775.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>1790</NodeNumber>
+  <NodeName>OLET =1006649732/51455</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>OLET</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51455</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>273</OutsideDiameter>
+  <WallThickness>15.09</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>120</InsulationThickness>
+  <Position>442973.151 -1159925.000 1775.550</Position>
+  <BendRadius>0</BendRadius>
+  <AlphaAngle>90</AlphaAngle>
+  <SIF>0</SIF>
+  <DTXR_POS>Branch Fitting Plain Sch 80</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1800</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>OLET</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51455</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>273</OutsideDiameter>
+  <WallThickness>15.09</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>120</InsulationThickness>
+  <Position>442973.151 -1159925.000 1775.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>Branch Fitting Plain Sch 80</DTXR_POS>
+</Node>
+<Node>
+  <NodeNumber>1810</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B1 3</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B1 3</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>273</OutsideDiameter>
+  <WallThickness>9.27</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>442973.151 -1159925.000 1775.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>1820</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B1 3</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>273</OutsideDiameter>
+  <WallThickness>9.27</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>442973.151 -1159925.000 1625.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>1830</NodeNumber>
+  <NodeName>OLET =1006649732/51456</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>OLET</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51456</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>273</OutsideDiameter>
+  <WallThickness>15.09</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>120</InsulationThickness>
+  <Position>442973.151 -1159925.000 1625.550</Position>
+  <BendRadius>0</BendRadius>
+  <AlphaAngle>90</AlphaAngle>
+  <SIF>0</SIF>
+  <DTXR_POS>Branch Outlet BW Sch 80</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1840</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>OLET</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51456</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>273</OutsideDiameter>
+  <WallThickness>15.09</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>120</InsulationThickness>
+  <Position>442973.151 -1159925.000 1625.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>Branch Outlet BW Sch 80</DTXR_POS>
+</Node>
+<Node>
+  <NodeNumber>1850</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B1 TAIL</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B1 TAIL</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>273</OutsideDiameter>
+  <WallThickness>9.27</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>442973.151 -1159925.000 1625.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>1860</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B1 TAIL</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>273</OutsideDiameter>
+  <WallThickness>9.27</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>442973.151 -1159925.000 1425.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+</Branch>
+<Branch>
+<Branchname>/ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B2</Branchname>
+<Temperature>
+  <Temperature1>325</Temperature1>
+  <Temperature2>309</Temperature2>
+  <Temperature3>5</Temperature3>
+  <Temperature4>-100000</Temperature4>
+  <Temperature5>-100000</Temperature5>
+  <Temperature6>-100000</Temperature6>
+  <Temperature7>-100000</Temperature7>
+  <Temperature8>-100000</Temperature8>
+  <Temperature9>-100000</Temperature9>
+</Temperature>
+<Pressure>
+  <Pressure1>11600000000</Pressure1>
+  <Pressure2>0</Pressure2>
+  <Pressure3>0</Pressure3>
+  <Pressure4>0</Pressure4>
+  <Pressure5>0</Pressure5>
+  <Pressure6>0</Pressure6>
+  <Pressure7>0</Pressure7>
+  <Pressure8>0</Pressure8>
+  <Pressure9>0</Pressure9>
+</Pressure>
+<MaterialNumber>0</MaterialNumber>
+<InsulationDensity>0</InsulationDensity>
+<FluidDensity>0</FluidDensity>
+<Node>
+  <NodeNumber>1870</NodeNumber>
+  <NodeName>FLAN =1006649732/51458</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>FLAN</ComponentType>
+  <Weight>7.50</Weight>
+  <ComponentRefNo>=1006649732/51458</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>60.3</OutsideDiameter>
+  <WallThickness>5.54</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>70</InsulationThickness>
+  <Position>442798.551 -1159925.000 1625.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>WELDING NECK FLANGE Sch 80 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1880</NodeNumber>
+  <NodeName>GASK =1006649732/51459</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>GASK</ComponentType>
+  <Weight>0.60</Weight>
+  <ComponentRefNo>=1006649732/51459</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>60.3</OutsideDiameter>
+  <WallThickness>3.91</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>70</InsulationThickness>
+  <Position>442689.551 -1159925.000 1625.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>GASKET SPIRAL WOUND 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1890</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B2 1</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B2 1</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>60.3</OutsideDiameter>
+  <WallThickness>3.91</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>442686.351 -1159925.000 1625.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>1900</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B2 1</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>60.3</OutsideDiameter>
+  <WallThickness>3.91</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>442666.351 -1159925.000 1625.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>1910</NodeNumber>
+  <NodeName>GASK =1006649732/51461</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>GASK</ComponentType>
+  <Weight>0.60</Weight>
+  <ComponentRefNo>=1006649732/51461</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>60.3</OutsideDiameter>
+  <WallThickness>3.91</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>70</InsulationThickness>
+  <Position>442666.351 -1159925.000 1625.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>GASKET SPIRAL WOUND 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1920</NodeNumber>
+  <NodeName>FLAN =1006649732/51462</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>FLAN</ComponentType>
+  <Weight>7.50</Weight>
+  <ComponentRefNo>=1006649732/51462</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>60.3</OutsideDiameter>
+  <WallThickness>3.91</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>70</InsulationThickness>
+  <Position>442663.151 -1159925.000 1625.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>LAP JOINT FLANGE 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1930</NodeNumber>
+  <NodeName>INST /88-TG-10052</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>VALV</ComponentType>
+  <Weight>32.00</Weight>
+  <ComponentRefNo>=1006649732/51463</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>60.3</OutsideDiameter>
+  <WallThickness>3.91</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>70</InsulationThickness>
+  <Position>442606.151 -1159925.000 1625.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>TEMPERATURE INSTRUMENT</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+</Branch>
+<Branch>
+<Branchname>/ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B3</Branchname>
+<Temperature>
+  <Temperature1>325</Temperature1>
+  <Temperature2>309</Temperature2>
+  <Temperature3>5</Temperature3>
+  <Temperature4>-100000</Temperature4>
+  <Temperature5>-100000</Temperature5>
+  <Temperature6>-100000</Temperature6>
+  <Temperature7>-100000</Temperature7>
+  <Temperature8>-100000</Temperature8>
+  <Temperature9>-100000</Temperature9>
+</Temperature>
+<Pressure>
+  <Pressure1>11600000000</Pressure1>
+  <Pressure2>0</Pressure2>
+  <Pressure3>0</Pressure3>
+  <Pressure4>0</Pressure4>
+  <Pressure5>0</Pressure5>
+  <Pressure6>0</Pressure6>
+  <Pressure7>0</Pressure7>
+  <Pressure8>0</Pressure8>
+  <Pressure9>0</Pressure9>
+</Pressure>
+<MaterialNumber>0</MaterialNumber>
+<InsulationDensity>0</InsulationDensity>
+<FluidDensity>0</FluidDensity>
+<Node>
+  <NodeNumber>1940</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B3 HEAD</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B3 HEAD</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>26.7</OutsideDiameter>
+  <WallThickness>2.87</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>443198.681 -1159925.000 1775.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>1950</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B3 HEAD</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>26.7</OutsideDiameter>
+  <WallThickness>2.87</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>443340.432 -1159925.031 1775.547</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>1960</NodeNumber>
+  <NodeName>=1006649732/51465</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ATTA</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51465</ComponentRefNo>
+  <ConnectionType>SUPPORT</ConnectionType>
+  <OutsideDiameter>26.7</OutsideDiameter>
+  <WallThickness>2.87</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>443198.681 -1159925.000 1775.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <Restraint>
+    <Type>+Y</Type>
+    <Friction>0.3</Friction>
+  </Restraint>
+  <DTXR_PS>=1006649732/51465</DTXR_PS>
+  <DTXR_SOURCE>staged-json-ps-fallback</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1970</NodeNumber>
+  <NodeName>FLAN =1006649732/51466</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>FLAN</ComponentType>
+  <Weight>3.80</Weight>
+  <ComponentRefNo>=1006649732/51466</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>26.7</OutsideDiameter>
+  <WallThickness>3.91</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>443340.432 -1159925.031 1775.547</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>WELDING NECK FLANGE Sch 80 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1980</NodeNumber>
+  <NodeName>GASK =1006649732/51467</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>GASK</ComponentType>
+  <Weight>0.30</Weight>
+  <ComponentRefNo>=1006649732/51467</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>26.7</OutsideDiameter>
+  <WallThickness>2.87</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>443417.432 -1159925.031 1775.547</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>GASKET SPIRAL WOUND 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>1990</NodeNumber>
+  <NodeName>VALV =1006649732/51468</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>VALV</ComponentType>
+  <Weight>17.00</Weight>
+  <ComponentRefNo>=1006649732/51468</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>26.7</OutsideDiameter>
+  <WallThickness>2.87</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>443420.632 -1159925.031 1775.547</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>GLOBE VALVE FLGD 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>2000</NodeNumber>
+  <NodeName>GASK =1006649732/51469</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>GASK</ComponentType>
+  <Weight>0.30</Weight>
+  <ComponentRefNo>=1006649732/51469</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>26.7</OutsideDiameter>
+  <WallThickness>2.87</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>443649.632 -1159925.031 1775.547</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>GASKET SPIRAL WOUND 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>2010</NodeNumber>
+  <NodeName>FLAN =1006649732/51470</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>FLAN</ComponentType>
+  <Weight>3.80</Weight>
+  <ComponentRefNo>=1006649732/51470</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>26.7</OutsideDiameter>
+  <WallThickness>3.91</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>443652.832 -1159925.031 1775.547</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>WELDING NECK FLANGE Sch 80 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>2020</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B3 1</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B3 1</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>26.7</OutsideDiameter>
+  <WallThickness>2.87</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>443729.832 -1159925.031 1775.547</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>2030</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B3 1</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>26.7</OutsideDiameter>
+  <WallThickness>2.87</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>443804.832 -1159925.031 1775.547</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>2040</NodeNumber>
+  <NodeName>TEE =1006649732/51471</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>TEE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51471</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>26.7</OutsideDiameter>
+  <WallThickness>3.91</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>443804.832 -1159925.031 1775.547</Position>
+  <BendRadius>0</BendRadius>
+  <AlphaAngle>90</AlphaAngle>
+  <SIF>0</SIF>
+  <DTXR_POS>TEE EQUAL BW Sch 80</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>2050</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>TEE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51471</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>26.7</OutsideDiameter>
+  <WallThickness>3.91</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>443833.832 -1159925.031 1804.547</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>TEE EQUAL BW Sch 80</DTXR_POS>
+</Node>
+<Node>
+  <NodeNumber>2060</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B3 2</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B3 2</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>26.7</OutsideDiameter>
+  <WallThickness>2.87</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>443833.832 -1159925.031 1804.547</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>2070</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B3 2</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>26.7</OutsideDiameter>
+  <WallThickness>2.87</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>443833.832 -1159925.031 1879.547</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>2080</NodeNumber>
+  <NodeName>FLAN =1006649732/51472</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>FLAN</ComponentType>
+  <Weight>3.80</Weight>
+  <ComponentRefNo>=1006649732/51472</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>26.7</OutsideDiameter>
+  <WallThickness>3.91</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>443833.832 -1159925.031 1879.547</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>WELDING NECK FLANGE Sch 80 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>2090</NodeNumber>
+  <NodeName>GASK =1006649732/51473</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>GASK</ComponentType>
+  <Weight>0.30</Weight>
+  <ComponentRefNo>=1006649732/51473</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>26.7</OutsideDiameter>
+  <WallThickness>2.87</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>443833.832 -1159925.031 1956.547</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>GASKET SPIRAL WOUND 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>2100</NodeNumber>
+  <NodeName>VALV =1006649732/51474</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>VALV</ComponentType>
+  <Weight>17.00</Weight>
+  <ComponentRefNo>=1006649732/51474</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>26.7</OutsideDiameter>
+  <WallThickness>2.87</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>443833.832 -1159925.031 1959.747</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>GLOBE VALVE FLGD 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>2110</NodeNumber>
+  <NodeName>GASK =1006649732/51475</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>GASK</ComponentType>
+  <Weight>0.30</Weight>
+  <ComponentRefNo>=1006649732/51475</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>26.7</OutsideDiameter>
+  <WallThickness>2.87</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>443833.832 -1159925.031 2188.747</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>GASKET SPIRAL WOUND 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>2120</NodeNumber>
+  <NodeName>FLAN =1006649732/51476</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>FLAN</ComponentType>
+  <Weight>3.80</Weight>
+  <ComponentRefNo>=1006649732/51476</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>26.7</OutsideDiameter>
+  <WallThickness>2.87</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>443833.832 -1159925.031 2191.947</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>BLIND FLANGE 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+</Branch>
+<Branch>
+<Branchname>/ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B4</Branchname>
+<Temperature>
+  <Temperature1>325</Temperature1>
+  <Temperature2>309</Temperature2>
+  <Temperature3>5</Temperature3>
+  <Temperature4>-100000</Temperature4>
+  <Temperature5>-100000</Temperature5>
+  <Temperature6>-100000</Temperature6>
+  <Temperature7>-100000</Temperature7>
+  <Temperature8>-100000</Temperature8>
+  <Temperature9>-100000</Temperature9>
+</Temperature>
+<Pressure>
+  <Pressure1>11600000000</Pressure1>
+  <Pressure2>0</Pressure2>
+  <Pressure3>0</Pressure3>
+  <Pressure4>0</Pressure4>
+  <Pressure5>0</Pressure5>
+  <Pressure6>0</Pressure6>
+  <Pressure7>0</Pressure7>
+  <Pressure8>0</Pressure8>
+  <Pressure9>0</Pressure9>
+</Pressure>
+<MaterialNumber>0</MaterialNumber>
+<InsulationDensity>0</InsulationDensity>
+<FluidDensity>0</FluidDensity>
+<Node>
+  <NodeNumber>2130</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B4 HEAD</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B4 HEAD</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>26.7</OutsideDiameter>
+  <WallThickness>2.87</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>443862.832 -1159925.031 1775.547</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>2140</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B4 HEAD</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>26.7</OutsideDiameter>
+  <WallThickness>2.87</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>444112.832 -1159925.031 1775.547</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>2150</NodeNumber>
+  <NodeName>=1006649732/51478</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ATTA</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51478</ComponentRefNo>
+  <ConnectionType>SUPPORT</ConnectionType>
+  <OutsideDiameter>26.7</OutsideDiameter>
+  <WallThickness>2.87</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>443962.832 -1159925.031 1775.547</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <Restraint>
+    <Type>+Y</Type>
+    <Friction>0.3</Friction>
+  </Restraint>
+  <DTXR_PS>=1006649732/51478</DTXR_PS>
+  <DTXR_SOURCE>staged-json-ps-fallback</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>2160</NodeNumber>
+  <NodeName>FLAN =1006649732/51479</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>FLAN</ComponentType>
+  <Weight>3.80</Weight>
+  <ComponentRefNo>=1006649732/51479</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>26.7</OutsideDiameter>
+  <WallThickness>3.91</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>444112.832 -1159925.031 1775.547</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>WELDING NECK FLANGE Sch 80 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>2170</NodeNumber>
+  <NodeName>GASK =1006649732/51480</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>GASK</ComponentType>
+  <Weight>0.30</Weight>
+  <ComponentRefNo>=1006649732/51480</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>26.7</OutsideDiameter>
+  <WallThickness>2.87</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>444189.832 -1159925.031 1775.547</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>GASKET SPIRAL WOUND 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>2180</NodeNumber>
+  <NodeName>VALV =1006649732/51481</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>VALV</ComponentType>
+  <Weight>17.00</Weight>
+  <ComponentRefNo>=1006649732/51481</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>26.7</OutsideDiameter>
+  <WallThickness>2.87</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>444193.032 -1159925.031 1775.547</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>GLOBE VALVE FLGD 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>2190</NodeNumber>
+  <NodeName>GASK =1006649732/51482</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>GASK</ComponentType>
+  <Weight>0.30</Weight>
+  <ComponentRefNo>=1006649732/51482</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>26.7</OutsideDiameter>
+  <WallThickness>2.87</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>444422.032 -1159925.031 1775.547</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>GASKET SPIRAL WOUND 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>2200</NodeNumber>
+  <NodeName>FLAN =1006649732/51483</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>FLAN</ComponentType>
+  <Weight>3.80</Weight>
+  <ComponentRefNo>=1006649732/51483</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>26.7</OutsideDiameter>
+  <WallThickness>2.87</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>444425.232 -1159925.031 1775.547</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>BLIND FLANGE 900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+</Branch>
+<Branch>
+<Branchname>/ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B5</Branchname>
+<Temperature>
+  <Temperature1>325</Temperature1>
+  <Temperature2>309</Temperature2>
+  <Temperature3>5</Temperature3>
+  <Temperature4>-100000</Temperature4>
+  <Temperature5>-100000</Temperature5>
+  <Temperature6>-100000</Temperature6>
+  <Temperature7>-100000</Temperature7>
+  <Temperature8>-100000</Temperature8>
+  <Temperature9>-100000</Temperature9>
+</Temperature>
+<Pressure>
+  <Pressure1>11600000000</Pressure1>
+  <Pressure2>0</Pressure2>
+  <Pressure3>0</Pressure3>
+  <Pressure4>0</Pressure4>
+  <Pressure5>0</Pressure5>
+  <Pressure6>0</Pressure6>
+  <Pressure7>0</Pressure7>
+  <Pressure8>0</Pressure8>
+  <Pressure9>0</Pressure9>
+</Pressure>
+<MaterialNumber>0</MaterialNumber>
+<InsulationDensity>0</InsulationDensity>
+<FluidDensity>0</FluidDensity>
+<Node>
+  <NodeNumber>2210</NodeNumber>
+  <NodeName>INST /88-PG-10052</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>2</Rigid>
+  <ComponentType>VALV</ComponentType>
+  <Weight>12.00</Weight>
+  <ComponentRefNo>=1006649732/51485</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>21.3</OutsideDiameter>
+  <WallThickness>2.77</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>444425.232 -1159925.031 1775.547</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>PRESSURE GAUGE RF900#</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+</Branch>
+<Branch>
+<Branchname>/ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B6</Branchname>
+<Temperature>
+  <Temperature1>325</Temperature1>
+  <Temperature2>309</Temperature2>
+  <Temperature3>5</Temperature3>
+  <Temperature4>-100000</Temperature4>
+  <Temperature5>-100000</Temperature5>
+  <Temperature6>-100000</Temperature6>
+  <Temperature7>-100000</Temperature7>
+  <Temperature8>-100000</Temperature8>
+  <Temperature9>-100000</Temperature9>
+</Temperature>
+<Pressure>
+  <Pressure1>11600000000</Pressure1>
+  <Pressure2>0</Pressure2>
+  <Pressure3>0</Pressure3>
+  <Pressure4>0</Pressure4>
+  <Pressure5>0</Pressure5>
+  <Pressure6>0</Pressure6>
+  <Pressure7>0</Pressure7>
+  <Pressure8>0</Pressure8>
+  <Pressure9>0</Pressure9>
+</Pressure>
+<MaterialNumber>0</MaterialNumber>
+<InsulationDensity>0</InsulationDensity>
+<FluidDensity>0</FluidDensity>
+<Node>
+  <NodeNumber>2220</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B6 HEAD</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B6 HEAD</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>273</OutsideDiameter>
+  <WallThickness>9.27</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>443189.151 -1159925.000 1209.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>2230</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B6 HEAD</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>273</OutsideDiameter>
+  <WallThickness>9.27</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>445097.151 -1159925.000 1209.601</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>2240</NodeNumber>
+  <NodeName>PS-12171</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ATTA</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51487</ComponentRefNo>
+  <ConnectionType>SUPPORT</ConnectionType>
+  <OutsideDiameter>273</OutsideDiameter>
+  <WallThickness>9.27</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>120</InsulationThickness>
+  <Position>444039.151 -1159925.000 1209.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <Restraint>
+    <Type>+Y</Type>
+    <Friction>0.3</Friction>
+  </Restraint>
+  <DTXR_PS>PS-12171/DATUM</DTXR_PS>
+  <DTXR_SOURCE>staged-json-ps-fallback</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>2250</NodeNumber>
+  <NodeName>REDU =1006649732/51492</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>REDU</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51492</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>273</OutsideDiameter>
+  <WallThickness>9.27</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>120</InsulationThickness>
+  <Position>445097.151 -1159925.000 1209.601</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>REDUCER ECCENTRIC BW Sch 100</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>2260</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>REDU</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51492</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>273</OutsideDiameter>
+  <WallThickness>9.27</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>120</InsulationThickness>
+  <Position>445275.151 -1159925.000 1182.651</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>REDUCER ECCENTRIC BW Sch 100</DTXR_POS>
+</Node>
+</Branch>
+<Branch>
+<Branchname>/ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B7</Branchname>
+<Temperature>
+  <Temperature1>325</Temperature1>
+  <Temperature2>309</Temperature2>
+  <Temperature3>5</Temperature3>
+  <Temperature4>-100000</Temperature4>
+  <Temperature5>-100000</Temperature5>
+  <Temperature6>-100000</Temperature6>
+  <Temperature7>-100000</Temperature7>
+  <Temperature8>-100000</Temperature8>
+  <Temperature9>-100000</Temperature9>
+</Temperature>
+<Pressure>
+  <Pressure1>11600000000</Pressure1>
+  <Pressure2>0</Pressure2>
+  <Pressure3>0</Pressure3>
+  <Pressure4>0</Pressure4>
+  <Pressure5>0</Pressure5>
+  <Pressure6>0</Pressure6>
+  <Pressure7>0</Pressure7>
+  <Pressure8>0</Pressure8>
+  <Pressure9>0</Pressure9>
+</Pressure>
+<MaterialNumber>0</MaterialNumber>
+<InsulationDensity>0</InsulationDensity>
+<FluidDensity>0</FluidDensity>
+<Node>
+  <NodeNumber>2270</NodeNumber>
+  <NodeName>TEE =1006649732/51494</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>TEE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51494</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>273</OutsideDiameter>
+  <WallThickness>9.27</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>120</InsulationThickness>
+  <Position>442973.151 -1159925.000 1425.550</Position>
+  <BendRadius>0</BendRadius>
+  <AlphaAngle>90</AlphaAngle>
+  <SIF>0</SIF>
+  <DTXR_POS>TEE EQUAL BW Sch 100</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>2280</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>TEE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51494</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>273</OutsideDiameter>
+  <WallThickness>9.27</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>120</InsulationThickness>
+  <Position>442757.151 -1159925.000 1209.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>TEE EQUAL BW Sch 100</DTXR_POS>
+</Node>
+<Node>
+  <NodeNumber>2290</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B7 1</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B7 1</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>273</OutsideDiameter>
+  <WallThickness>9.27</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>442757.151 -1159925.000 1209.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>2300</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B7 1</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>273</OutsideDiameter>
+  <WallThickness>9.27</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>442423.411 -1159925.000 1209.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>2310</NodeNumber>
+  <NodeName>OLET =1006649732/51495</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>OLET</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51495</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>273</OutsideDiameter>
+  <WallThickness>15.09</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>120</InsulationThickness>
+  <Position>442423.411 -1159925.000 1209.550</Position>
+  <BendRadius>0</BendRadius>
+  <AlphaAngle>90</AlphaAngle>
+  <SIF>0</SIF>
+  <DTXR_POS>Branch Outlet BW Sch 80</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>2320</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>OLET</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51495</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>273</OutsideDiameter>
+  <WallThickness>15.09</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>120</InsulationThickness>
+  <Position>442423.411 -1159925.000 1209.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>Branch Outlet BW Sch 80</DTXR_POS>
+</Node>
+<Node>
+  <NodeNumber>2330</NodeNumber>
+  <NodeName>PIPE AUTO /ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B7 2</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B7 2</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>273</OutsideDiameter>
+  <WallThickness>9.27</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>442423.411 -1159925.000 1209.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>2340</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>PIPE</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>PIPE AUTO /ASIM-1885-10&quot;-S8810101-91261M7-HC-01/B7 2</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>273</OutsideDiameter>
+  <WallThickness>9.27</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>0</InsulationThickness>
+  <Position>440981.219 -1159925.000 1209.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+</Node>
+<Node>
+  <NodeNumber>2350</NodeNumber>
+  <NodeName>PS-12166</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>ATTA</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51496</ComponentRefNo>
+  <ConnectionType>SUPPORT</ConnectionType>
+  <OutsideDiameter>273</OutsideDiameter>
+  <WallThickness>9.27</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>120</InsulationThickness>
+  <Position>441437.500 -1159925.000 1209.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <Restraint>
+    <Type>+Y</Type>
+    <Friction>0.3</Friction>
+  </Restraint>
+  <DTXR_PS>PS-12166/DATUM</DTXR_PS>
+  <DTXR_SOURCE>staged-json-ps-fallback</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>2360</NodeNumber>
+  <NodeName>REDU =1006649732/51499</NodeName>
+  <Endpoint>1</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>REDU</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51499</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>273</OutsideDiameter>
+  <WallThickness>9.27</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>120</InsulationThickness>
+  <Position>440981.219 -1159925.000 1209.550</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>REDUCER ECCENTRIC BW Sch 100 X Sch 80</DTXR_POS>
+  <DTXR_SOURCE>staged-json-position-group</DTXR_SOURCE>
+</Node>
+<Node>
+  <NodeNumber>2370</NodeNumber>
+  <NodeName></NodeName>
+  <Endpoint>2</Endpoint>
+  <Rigid>0</Rigid>
+  <ComponentType>REDU</ComponentType>
+  <Weight>0</Weight>
+  <ComponentRefNo>=1006649732/51499</ComponentRefNo>
+  <ConnectionType></ConnectionType>
+  <OutsideDiameter>273</OutsideDiameter>
+  <WallThickness>9.27</WallThickness>
+  <CorrosionAllowance>1.5</CorrosionAllowance>
+  <InsulationThickness>120</InsulationThickness>
+  <Position>440803.219 -1159925.000 1157.200</Position>
+  <BendRadius>0</BendRadius>
+  <SIF>0</SIF>
+  <DTXR_POS>REDUCER ECCENTRIC BW Sch 100 X Sch 80</DTXR_POS>
+</Node>
+</Branch>
+</Pipe>
+</PipeStressExport>

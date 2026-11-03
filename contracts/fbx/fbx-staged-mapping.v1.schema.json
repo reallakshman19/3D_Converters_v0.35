@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "FbxStagedMapping.v1",
+  "title": "FbxStagedMapping.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "inScopeSourceObjectIds", "entries"],
+  "properties": {
+    "schema": { "const": "FbxStagedMapping.v1" },
+    "inScopeSourceObjectIds": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "entries": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/promotedEntry" }
+    },
+    "exclusions": {
+      "type": "array",
+      "default": [],
+      "items": { "$ref": "#/$defs/exclusion" }
+    }
+  },
+  "$defs": {
+    "connection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mappingEntryId", "port"],
+      "properties": {
+        "mappingEntryId": { "type": "string", "minLength": 1 },
+        "port": { "enum": ["A", "B"] }
+      }
+    },
+    "port": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["authority", "geometryObjectId", "connections"],
+      "properties": {
+        "authority": { "enum": ["mesh-vertex", "nurbs-control-point"] },
+        "geometryObjectId": { "type": "string", "minLength": 1 },
+        "vertexIndex": { "type": "integer", "minimum": 0 },
+        "controlPointIndex": { "type": "integer", "minimum": 0 },
+        "connections": { "type": "array", "items": { "$ref": "#/$defs/connection" } }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "authority": { "const": "mesh-vertex" } } },
+          "then": { "required": ["vertexIndex"], "not": { "required": ["controlPointIndex"] } }
+        },
+        {
+          "if": { "properties": { "authority": { "const": "nurbs-control-point" } } },
+          "then": { "required": ["controlPointIndex"], "not": { "required": ["vertexIndex"] } }
+        }
+      ]
+    },
+    "promotedEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mappingEntryId", "logicalComponentId", "sourceModelObjectId", "sourceOccurrenceId", "componentType", "scopeDisposition", "portA", "portB"],
+      "properties": {
+        "mappingEntryId": { "type": "string", "minLength": 1 },
+        "logicalComponentId": { "type": "string", "minLength": 1 },
+        "sourceModelObjectId": { "type": "string", "minLength": 1 },
+        "sourceOccurrenceId": { "type": "string", "minLength": 1 },
+        "componentType": { "const": "PIPE" },
+        "scopeDisposition": { "const": "promote" },
+        "portA": { "$ref": "#/$defs/port" },
+        "portB": { "$ref": "#/$defs/port" }
+      }
+    },
+    "exclusion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sourceModelObjectId", "scopeDisposition", "reason"],
+      "properties": {
+        "sourceModelObjectId": { "type": "string", "minLength": 1 },
+        "scopeDisposition": { "const": "exclude-with-reason" },
+        "reason": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

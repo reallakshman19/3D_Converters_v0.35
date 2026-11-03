@@ -1,0 +1,54 @@
+name: FBX Live UI Cache Chain
+
+on:
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'main-rhbg-fitguard.js'
+      - 'core/app.js'
+      - 'tabs/model-converters-tab.js'
+      - 'tabs/model-converters/**'
+      - 'tests/fbx/test-fbx2-runtime-cache-chain.mjs'
+      - 'tests/fbx/test-fbx-secondary-preview-authority.mjs'
+      - 'tests/fbx/test-fbx-multifamily-selected-zone-release.mjs'
+      - '.github/workflows/fbx-live-ui-cache-chain.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  live-ui:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax checks
+        run: |
+          node --check core/app.js
+          node --check main-rhbg-fitguard.js
+          node --check tabs/model-converters-tab.js
+          node --check tabs/model-converters/ModelConvertersTab-fbx2-managed-reference.js
+          node --check tabs/model-converters/fbx-review-ui-addon.js
+          node --check tabs/model-converters/fbx-live-runner-addon.js
+          node --check tabs/model-converters/fbx-multifamily-release-addon.js
+          node --check tabs/model-converters/fbx-selected-zone-preview-bridge.js
+          node --check tabs/model-converters/fbx-preview-zone-selector.js
+          node --check tabs/model-converters/fbx-staged-json-zone-export.js
+          node --check tabs/model-converters/converters/fbx/zone-geometry/mapped-stage-output.js
+          node --check tabs/model-converters/converters/fbx/zone-geometry/mapped-stage-capture.js
+          node --check tabs/model-converters/converters/fbx/zone-geometry/mapped-stage-scope.js
+          node --check tabs/model-converters/converters/fbx/zone-geometry/zone-downloads.js
+          node --check tabs/model-converters/converters/fbx/zone-geometry/zone-review-panels.js
+          node --check tabs/model-converters/converters/fbx/zone-geometry/zone-toolbar.js
+          node --check tests/fbx/test-fbx-multifamily-selected-zone-release.mjs
+          node --check tests/fbx/test-fbx2-runtime-cache-chain.mjs
+      - name: Multi-family selected-zone release
+        run: node tests/fbx/test-fbx-multifamily-selected-zone-release.mjs
+      - name: Live UI chain regression
+        run: node tests/fbx/test-fbx2-runtime-cache-chain.mjs
+      - name: Secondary input and preview authority
+        run: node tests/fbx/test-fbx-secondary-preview-authority.mjs

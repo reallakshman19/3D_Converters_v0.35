@@ -1,0 +1,1476 @@
+{
+  "schema": "InputXmlBrowserRuntimeManifest.v1",
+  "runtimeVersion": "1.0.0",
+  "pyodideVersion": "0.27.2",
+  "sourceRevision": "sha256:a705d8f46e7f4114f23f4702dc98100f15a04f7b886745cefe19f43c2a79f91a",
+  "assets": [
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/assurance/inputxml-cii-assurance-ledger.schema.json",
+      "target": "/repo/contracts/inputxml/v1/assurance/inputxml-cii-assurance-ledger.schema.json",
+      "bytes": 5489,
+      "sha256": "4a5ddef032dd493d92f2146591fd69de32799b2f6f57b2df71ab7c37fba345b1"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/assurance/inputxml-cii-projection-ledger.schema.json",
+      "target": "/repo/contracts/inputxml/v1/assurance/inputxml-cii-projection-ledger.schema.json",
+      "bytes": 6188,
+      "sha256": "410563c44f348f92c172a29cf918cc14184045db2da595bc8437a703b85e981a"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/assurance/PROJECTION.md",
+      "target": "/repo/contracts/inputxml/v1/assurance/PROJECTION.md",
+      "bytes": 4426,
+      "sha256": "758c4462ad999183b302cae096ddc84c0690fd22432136709ead4d69ef29ab7f"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/assurance/README.md",
+      "target": "/repo/contracts/inputxml/v1/assurance/README.md",
+      "bytes": 2477,
+      "sha256": "d4e300ea686a36306bc2bd9c2a23d3c0292706a6af24c616c35242afa4616302"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/catalogs/inputxml-alias-registry.json",
+      "target": "/repo/contracts/inputxml/v1/catalogs/inputxml-alias-registry.json",
+      "bytes": 4074,
+      "sha256": "a1c957fd076e7cb26ca8127fa917ba6afe37a3e38d16fdc6eb2fad5aa41fc95f"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/catalogs/inputxml-cii-projection-contract.json",
+      "target": "/repo/contracts/inputxml/v1/catalogs/inputxml-cii-projection-contract.json",
+      "bytes": 4959,
+      "sha256": "93a3d70081a87fa0c04cb5648e1db5a5be201d0de45b04a8d4c45f90833b30eb"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/catalogs/inputxml-component-contract-catalog.json",
+      "target": "/repo/contracts/inputxml/v1/catalogs/inputxml-component-contract-catalog.json",
+      "bytes": 10637,
+      "sha256": "69a1da1683037a79e31085b503f96856af684c8e0a337ac2118447a557aef128"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/catalogs/inputxml-field-catalog.json",
+      "target": "/repo/contracts/inputxml/v1/catalogs/inputxml-field-catalog.json",
+      "bytes": 14866,
+      "sha256": "f7306e878438cd76a1fdae37d0cd5a3e525ed59d1576cf5bd4722af4da14cd82"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/catalogs/README.md",
+      "target": "/repo/contracts/inputxml/v1/catalogs/README.md",
+      "bytes": 2312,
+      "sha256": "b29234117909b0558e649eb86713b01eff1d9ea3b42edbc5d7d2f43dc00fb606"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/categorized-inputxml-v3.xsd",
+      "target": "/repo/contracts/inputxml/v1/categorized-inputxml-v3.xsd",
+      "bytes": 7650,
+      "sha256": "03e3a6d3c8a25a7342639716ff6ba52372ed0a5182cc0a093992cf220ee75295"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/compiler/inputxml-compiler-adapters.json",
+      "target": "/repo/contracts/inputxml/v1/compiler/inputxml-compiler-adapters.json",
+      "bytes": 3205,
+      "sha256": "b20e2d3bb0981ac86e3d60eae534c42e2925054d4c50abcba0d317547b1dee94"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/compiler/inputxml-deterministic-serialization.json",
+      "target": "/repo/contracts/inputxml/v1/compiler/inputxml-deterministic-serialization.json",
+      "bytes": 8202,
+      "sha256": "b0a9804a0ec75c6beae6633375ec04861d25f9bb7db0c6ed94c1267dccae7a7f"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/compiler/managed-stage-canonical-number-vectors.json",
+      "target": "/repo/contracts/inputxml/v1/compiler/managed-stage-canonical-number-vectors.json",
+      "bytes": 3473,
+      "sha256": "4b7d2eaf803a1b38c1e9c0cddbf4ecb9e976ce348ae0e4bf069f3c5e988f9547"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/compiler/README.md",
+      "target": "/repo/contracts/inputxml/v1/compiler/README.md",
+      "bytes": 10981,
+      "sha256": "431555c0e4dbae5aa62c8fa63d8a2b40363b7efb1cd17b6a9c6b2d9415227835"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/golden/family/manifest.json",
+      "target": "/repo/contracts/inputxml/v1/golden/family/manifest.json",
+      "bytes": 11168,
+      "sha256": "dd443f1246ffcddb92fde516601b1aca14c7dd3f951ab329a5186e81dbc4b281"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/golden/managed-stage/blocked-with-candidate/bend-projection-gap.json",
+      "target": "/repo/contracts/inputxml/v1/golden/managed-stage/blocked-with-candidate/bend-projection-gap.json",
+      "bytes": 877,
+      "sha256": "6f086483536e02903ea3bbe185ec3788c9080a39ace160fa0f731d188934690d"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/golden/managed-stage/blocked-with-candidate/unsupported-valve.json",
+      "target": "/repo/contracts/inputxml/v1/golden/managed-stage/blocked-with-candidate/unsupported-valve.json",
+      "bytes": 874,
+      "sha256": "734d7d60e93b25ee8d1680489629faba06d5352a194fd92c7f34a37684f00627"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/golden/managed-stage/blocked-without-candidate/ambiguous-wrapper.json",
+      "target": "/repo/contracts/inputxml/v1/golden/managed-stage/blocked-without-candidate/ambiguous-wrapper.json",
+      "bytes": 428,
+      "sha256": "5ca2cf3a89ddbf2c5956b0a75aa22d6116c058281c42f00da37e28ebc8ab7e71"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/golden/managed-stage/manifest.json",
+      "target": "/repo/contracts/inputxml/v1/golden/managed-stage/manifest.json",
+      "bytes": 4689,
+      "sha256": "8c870f646a9c4f317553b46cea1620aa5418aaeaf693dc16faff9edf9e0779ef"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/golden/managed-stage/negative/duplicate-key.json",
+      "target": "/repo/contracts/inputxml/v1/golden/managed-stage/negative/duplicate-key.json",
+      "bytes": 111,
+      "sha256": "723de0d2ceb1625517f3732aea69dcd02867a0fb1e937cb850d2767ffcddd96d"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/golden/managed-stage/positive/multiple-branches.json",
+      "target": "/repo/contracts/inputxml/v1/golden/managed-stage/positive/multiple-branches.json",
+      "bytes": 1717,
+      "sha256": "b30ace1ebe235949be18d17f260b22cb6fbd99c13f4d21a3bbab2c4033d6c8fd"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/golden/managed-stage/positive/safe-deferred-attachment.json",
+      "target": "/repo/contracts/inputxml/v1/golden/managed-stage/positive/safe-deferred-attachment.json",
+      "bytes": 1172,
+      "sha256": "08292ab55ba674220d136008e53a0e0e1a4dc90b0683057be9b4a5dfe6570689"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/golden/managed-stage/positive/straight-pipe.json",
+      "target": "/repo/contracts/inputxml/v1/golden/managed-stage/positive/straight-pipe.json",
+      "bytes": 1244,
+      "sha256": "db1add9cb6e88e169903321ee754a101100187db8bce5298ef9d5b5b7c6b66ac"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/golden/manifest.json",
+      "target": "/repo/contracts/inputxml/v1/golden/manifest.json",
+      "bytes": 1200,
+      "sha256": "12d983c77a5c5d948b19005c70fdc82e8b8c619d242436c0f6f4171bfbe7e82a"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/golden/negative/alias-pressure1.xml",
+      "target": "/repo/contracts/inputxml/v1/golden/negative/alias-pressure1.xml",
+      "bytes": 534,
+      "sha256": "85b8cb15ca1f2b1465a083702c60e3af6f48fa980328f2c3f9c6ac045471ab2e"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/golden/negative/categorized-unknown-block.xml",
+      "target": "/repo/contracts/inputxml/v1/golden/negative/categorized-unknown-block.xml",
+      "bytes": 462,
+      "sha256": "7e3f3358c179a4fb0abfce58cf038525cea688b0e81b42169b775a6bba35360a"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/golden/negative/count-mismatch.xml",
+      "target": "/repo/contracts/inputxml/v1/golden/negative/count-mismatch.xml",
+      "bytes": 517,
+      "sha256": "9e26cae24ae95179b2b0db868777a21e0214ac2bdbd375d1f98c4be78a8f2579"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/golden/negative/missing-pipingmodel.xml",
+      "target": "/repo/contracts/inputxml/v1/golden/negative/missing-pipingmodel.xml",
+      "bytes": 98,
+      "sha256": "4b5a504ea28ce602a4fd34ecccb6cf7bad34e805d79b70d34b8fa6a724e98be8"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/golden/negative/restraint-overflow.xml",
+      "target": "/repo/contracts/inputxml/v1/golden/negative/restraint-overflow.xml",
+      "bytes": 1541,
+      "sha256": "0403ee12d71df11c29879cca34bf00ca2c4782ae24fbd718b06011b2c8d4674d"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/golden/negative/sentinel-geometry.xml",
+      "target": "/repo/contracts/inputxml/v1/golden/negative/sentinel-geometry.xml",
+      "bytes": 526,
+      "sha256": "1b1f93e29210ca1dbced4ef8b3332c302cbdeedbcaf1a5ed27d79f7b0a5a9131"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/golden/negative/unsupported-extension.xml",
+      "target": "/repo/contracts/inputxml/v1/golden/negative/unsupported-extension.xml",
+      "bytes": 912,
+      "sha256": "8f6bcabb60331f0e4db3d4e8221fa7d7b7434916d0e6d77b7f9d29fb8f2acf74"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/golden/positive/auxiliaries.canonical.input.xml",
+      "target": "/repo/contracts/inputxml/v1/golden/positive/auxiliaries.canonical.input.xml",
+      "bytes": 1298,
+      "sha256": "6f2bf11b1185a6fc85e95b4400c25b76deb4e50d8a31b7630b816d57c68cfe98"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/golden/positive/categorized-v3.xml",
+      "target": "/repo/contracts/inputxml/v1/golden/positive/categorized-v3.xml",
+      "bytes": 1305,
+      "sha256": "71098c83d666a726ba6238b62cc788b31d7937afa7531f4d9da1038d983fb7da"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/golden/positive/minimal.canonical.input.xml",
+      "target": "/repo/contracts/inputxml/v1/golden/positive/minimal.canonical.input.xml",
+      "bytes": 1286,
+      "sha256": "5b85a64587c496a20dfe98615ed701d559ff2e094a3ea5016f6cf491dddb9d82"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/golden/topology/manifest.json",
+      "target": "/repo/contracts/inputxml/v1/golden/topology/manifest.json",
+      "bytes": 4750,
+      "sha256": "47cca6a89c0e37dd27b7850f412095069a07e06a9752d62cd52c8f88410cb69e"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/golden/topology/selectionjson/adversarial/misleading_seljson_to_inputxml.xml",
+      "target": "/repo/contracts/inputxml/v1/golden/topology/selectionjson/adversarial/misleading_seljson_to_inputxml.xml",
+      "bytes": 1193,
+      "sha256": "19dca7cbbb1cd7bb97c1c6a4089a2a672e55b6efdaf00f5360a10db661a99d2d"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/golden/topology/selectionjson/blocked-with-candidate/valve.xml",
+      "target": "/repo/contracts/inputxml/v1/golden/topology/selectionjson/blocked-with-candidate/valve.xml",
+      "bytes": 1340,
+      "sha256": "6765c77270a3d104a95c2a26259c6bbf7deb4e8d2552b71e33655f538b0d4296"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/golden/topology/selectionjson/blocked-without-candidate/contradictory-producer.xml",
+      "target": "/repo/contracts/inputxml/v1/golden/topology/selectionjson/blocked-without-candidate/contradictory-producer.xml",
+      "bytes": 1356,
+      "sha256": "90d033ab627010fc0c2241cb10dd2034ef224548aaea9493d581438d5e423cfc"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/golden/topology/selectionjson/negative/malformed.xml",
+      "target": "/repo/contracts/inputxml/v1/golden/topology/selectionjson/negative/malformed.xml",
+      "bytes": 66,
+      "sha256": "7b28ef9e8a32ccfbd38b42e8fc773d7c2ca1de5512910d6341afd8f476c0b708"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/golden/topology/selectionjson/positive/explicit-route.xml",
+      "target": "/repo/contracts/inputxml/v1/golden/topology/selectionjson/positive/explicit-route.xml",
+      "bytes": 1481,
+      "sha256": "f30bc4665647043f7ef225df6df2f212aa9124d5b5352e09f2076d32be21390c"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/golden/topology/xml-builder/adversarial/duplicate-node.xml",
+      "target": "/repo/contracts/inputxml/v1/golden/topology/xml-builder/adversarial/duplicate-node.xml",
+      "bytes": 1197,
+      "sha256": "c254a02c8136862978bed75efeb8f8f4183f2aae75f1cbcc2a951b31c81ff1f8"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/golden/topology/xml-builder/adversarial/line-id-conflict.xml",
+      "target": "/repo/contracts/inputxml/v1/golden/topology/xml-builder/adversarial/line-id-conflict.xml",
+      "bytes": 1242,
+      "sha256": "0fbe20734d097a0b31b7ec0733a62522632c273e0750f7862bb5f2ad69696b95"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/golden/topology/xml-builder/adversarial/restraint-overflow.xml",
+      "target": "/repo/contracts/inputxml/v1/golden/topology/xml-builder/adversarial/restraint-overflow.xml",
+      "bytes": 2663,
+      "sha256": "0ff74bf45f34a19549fb4317384d70da6f104cfdb2c42d8caafdb81edc166a24"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/golden/topology/xml-builder/adversarial/same-coordinate-distinct-node.xml",
+      "target": "/repo/contracts/inputxml/v1/golden/topology/xml-builder/adversarial/same-coordinate-distinct-node.xml",
+      "bytes": 1190,
+      "sha256": "c293538498b5af9af4c6705c7e68023e1a73f7852903f3d1245f7441895d2d0c"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/golden/topology/xml-builder/adversarial/unresolved-junction.xml",
+      "target": "/repo/contracts/inputxml/v1/golden/topology/xml-builder/adversarial/unresolved-junction.xml",
+      "bytes": 1214,
+      "sha256": "57404f37c8b21f69d5bb7b789d0c2da23671c64e37c1ec2e02a249f9201af722"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/golden/topology/xml-builder/adversarial/unresolved-sif.xml",
+      "target": "/repo/contracts/inputxml/v1/golden/topology/xml-builder/adversarial/unresolved-sif.xml",
+      "bytes": 1195,
+      "sha256": "1d006f73b2902bafc7a3712acec439c0897c8c17a6e1268a64c1286fedb7f5c8"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/golden/topology/xml-builder/blocked-with-candidate/gasket.xml",
+      "target": "/repo/contracts/inputxml/v1/golden/topology/xml-builder/blocked-with-candidate/gasket.xml",
+      "bytes": 1264,
+      "sha256": "4a954ab16f42fd6e3f0f5a652cc6f8318575b326de9aefa8796a5e2fe559545c"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/golden/topology/xml-builder/blocked-without-candidate/missing-position.xml",
+      "target": "/repo/contracts/inputxml/v1/golden/topology/xml-builder/blocked-without-candidate/missing-position.xml",
+      "bytes": 1231,
+      "sha256": "ba5ceb237cf848cfc63976475aae73cbd9d3e60c902aa6142f9dcda77514ac84"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/golden/topology/xml-builder/negative/malformed.xml",
+      "target": "/repo/contracts/inputxml/v1/golden/topology/xml-builder/negative/malformed.xml",
+      "bytes": 37,
+      "sha256": "788ac0e1bcab083800f9b1cee400f478d5b118db5f982a03f3bdb4e7bced0213"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/golden/topology/xml-builder/positive/multi-branch.xml",
+      "target": "/repo/contracts/inputxml/v1/golden/topology/xml-builder/positive/multi-branch.xml",
+      "bytes": 2374,
+      "sha256": "5956d45fd6107cd8713a21b8fc39e0a56319e6111894071d19976f8257948baa"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/golden/topology/xml-builder/positive/producer-shaped-repeated-line.xml",
+      "target": "/repo/contracts/inputxml/v1/golden/topology/xml-builder/positive/producer-shaped-repeated-line.xml",
+      "bytes": 2522,
+      "sha256": "c7bec22256f51953532de2fa29f2d3039fe9250fbefec61be1aa0d9bbdf06087"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/golden/topology/xml-builder/positive/straight-route.xml",
+      "target": "/repo/contracts/inputxml/v1/golden/topology/xml-builder/positive/straight-route.xml",
+      "bytes": 1260,
+      "sha256": "f88871c6bb4bda8a5c17324a00cb350e0202181e34defa9d1ab7669c21b63445"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/inputxml-canonical-v1.xsd",
+      "target": "/repo/contracts/inputxml/v1/inputxml-canonical-v1.xsd",
+      "bytes": 12655,
+      "sha256": "03acdfe3fb46d0c43c0588fc727d4eb948c07b5f153a9289e7124df481587819"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/inputxml-dialect-registry.json",
+      "target": "/repo/contracts/inputxml/v1/inputxml-dialect-registry.json",
+      "bytes": 4316,
+      "sha256": "65b24e7d0cca9c00cd115d9b9996c4870586ac340037b366a9cca316a5d3edf8"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/inputxml-extension-v1.xsd",
+      "target": "/repo/contracts/inputxml/v1/inputxml-extension-v1.xsd",
+      "bytes": 2669,
+      "sha256": "d10231d6fd2d5725eafda8ad8d27e0cd68ac0a56dcfb81a8d9d05a4ee007080b"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/inputxml-semantic-rules-v1.sch",
+      "target": "/repo/contracts/inputxml/v1/inputxml-semantic-rules-v1.sch",
+      "bytes": 6611,
+      "sha256": "012840538a545f908767336c4085a0ee81c721cc8f31399cf1223a204cf50f79"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/inventory/inputxml-component-shapes.json",
+      "target": "/repo/contracts/inputxml/v1/inventory/inputxml-component-shapes.json",
+      "bytes": 12614,
+      "sha256": "3dd6e62ffbe355d962d899954dc3308012438cf06f0689270470d5b21ae450cd"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/inventory/inputxml-consumer-inventory.json",
+      "target": "/repo/contracts/inputxml/v1/inventory/inputxml-consumer-inventory.json",
+      "bytes": 18612,
+      "sha256": "5fd44cacb608fc54b5a75fd46af9028fbffa5c750d7de3816f664c3b98c5075e"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/inventory/inputxml-dialect-inventory.json",
+      "target": "/repo/contracts/inputxml/v1/inventory/inputxml-dialect-inventory.json",
+      "bytes": 8137,
+      "sha256": "b11f04a216e65a924b1fa1923490f2dd1df9b879d97be9317a9bd54993f0740c"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/inventory/inputxml-field-occurrence.csv",
+      "target": "/repo/contracts/inputxml/v1/inventory/inputxml-field-occurrence.csv",
+      "bytes": 9724,
+      "sha256": "6c145d3044084fc1c2ce9dc55d9f95b140c05b9df382f74af58dc4ae3dd07943"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/inventory/inputxml-producer-inventory.json",
+      "target": "/repo/contracts/inputxml/v1/inventory/inputxml-producer-inventory.json",
+      "bytes": 16624,
+      "sha256": "99df19622fde13fa4b4e048f66bbd3ff9b53cd10d9727d07fc2db2436ee2b90b"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/inventory/README.md",
+      "target": "/repo/contracts/inputxml/v1/inventory/README.md",
+      "bytes": 4569,
+      "sha256": "d82d79a94bb6e6b4d143c291d3f69185ff0b550bbee4e5aae2eb761b3fdd91e2"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v1/README.md",
+      "target": "/repo/contracts/inputxml/v1/README.md",
+      "bytes": 3497,
+      "sha256": "2f1fab336ede0bd977e6b4b78e8686e001644f87f9dd9eec7865298e7712d932"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v2/approvals/README.md",
+      "target": "/repo/contracts/inputxml/v2/approvals/README.md",
+      "bytes": 309,
+      "sha256": "ab6c141f2076e2ae9e3e509ea39772c40e66aecb1496df8ea4be84204826f2c8"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v2/approved-semantic-split-candidate.schema.json",
+      "target": "/repo/contracts/inputxml/v2/approved-semantic-split-candidate.schema.json",
+      "bytes": 1392,
+      "sha256": "4e97c7fc6a5766bb5819b3c5abd7298fab6ee0c3249037cf6026e4b1b6ab7bda"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v2/approved-semantic-split.schema.json",
+      "target": "/repo/contracts/inputxml/v2/approved-semantic-split.schema.json",
+      "bytes": 1797,
+      "sha256": "aa991fcbccd42a5df24ae66754e3091392b49ffcbbd8e234b75a094d431bb90c"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v2/canonical-source-model.schema.json",
+      "target": "/repo/contracts/inputxml/v2/canonical-source-model.schema.json",
+      "bytes": 1052,
+      "sha256": "ff6fcf1311840c461edf1ae24f0de6f8e285a59de7f11218320a53d9f5997a90"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v2/canonical-topology.schema.json",
+      "target": "/repo/contracts/inputxml/v2/canonical-topology.schema.json",
+      "bytes": 2135,
+      "sha256": "316b8e093152ce59b2d72fb6ed4f081d68e8bcdc043ecfda47ba34494982963f"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v2/inputxml-cii-assurance-ledger.schema.json",
+      "target": "/repo/contracts/inputxml/v2/inputxml-cii-assurance-ledger.schema.json",
+      "bytes": 1989,
+      "sha256": "52eb77e88166d46ad04e57f0d8a6f6698f1019420d61955c2d27694eef791813"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v2/inputxml-compatibility-policy.schema.json",
+      "target": "/repo/contracts/inputxml/v2/inputxml-compatibility-policy.schema.json",
+      "bytes": 1173,
+      "sha256": "dcab49bbfdc3316f381311234b860f4590205bd1388ed33931b4761d04c044ef"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v2/inputxml-compatibility-request.schema.json",
+      "target": "/repo/contracts/inputxml/v2/inputxml-compatibility-request.schema.json",
+      "bytes": 1417,
+      "sha256": "6e0befa1fd07b188bc01625be96e43d41317f9b2e8cb8f0c49e3bb422869c364"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v2/inputxml-diagnostic-catalog.json",
+      "target": "/repo/contracts/inputxml/v2/inputxml-diagnostic-catalog.json",
+      "bytes": 1061,
+      "sha256": "1dcad63bbfa248c1e5bed0680c52a20da258a41e1a48677ca47c15370141d080"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v2/inputxml-diagnostic.schema.json",
+      "target": "/repo/contracts/inputxml/v2/inputxml-diagnostic.schema.json",
+      "bytes": 1752,
+      "sha256": "25c2545a928e7dfd1cecb47ffdd20d777e1c0cb506691dc12376e1632a858ccc"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v2/inputxml-normalization-plan.schema.json",
+      "target": "/repo/contracts/inputxml/v2/inputxml-normalization-plan.schema.json",
+      "bytes": 1594,
+      "sha256": "bb76237162a4e1b402b599bd0bc4db812679b0f802131fc2e426e4892ab99fe0"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v2/inputxml-resolver-trace.schema.json",
+      "target": "/repo/contracts/inputxml/v2/inputxml-resolver-trace.schema.json",
+      "bytes": 1685,
+      "sha256": "e10c540c91576000530f17449a28c88071a95773230b44a7c625ed8005035883"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v2/numbered-topology-projection.schema.json",
+      "target": "/repo/contracts/inputxml/v2/numbered-topology-projection.schema.json",
+      "bytes": 1109,
+      "sha256": "959ab563db1e92550d9a3de757c5e039a7a0060792fa891d6186630f3d5317fc"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v2/parsed-inputxml-topology.schema.json",
+      "target": "/repo/contracts/inputxml/v2/parsed-inputxml-topology.schema.json",
+      "bytes": 1077,
+      "sha256": "1c9a78fd8f5f3399e224251a44787ae728eed43f28702f0aa4145d81251ad7ec"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v2/README.md",
+      "target": "/repo/contracts/inputxml/v2/README.md",
+      "bytes": 922,
+      "sha256": "05eba75a06473bdfb7ced233694475482a57f276250dcf04aac806c94c5b6fbb"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v2/resolved-relationship.schema.json",
+      "target": "/repo/contracts/inputxml/v2/resolved-relationship.schema.json",
+      "bytes": 933,
+      "sha256": "f6dfa222122dd8fa74d52b0a8df539886c19822b2a1b32c1d8b6a3c8ec48d19d"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v2/selected-output-manifest.schema.json",
+      "target": "/repo/contracts/inputxml/v2/selected-output-manifest.schema.json",
+      "bytes": 2974,
+      "sha256": "ef4b59f968d90bd87ec011542e8ecf8b8fd61aefb1d854badb06723532f79585"
+    },
+    {
+      "kind": "contract",
+      "url": "../contracts/inputxml/v2/topology-parity-report.schema.json",
+      "target": "/repo/contracts/inputxml/v2/topology-parity-report.schema.json",
+      "bytes": 1412,
+      "sha256": "b4d83b6f97aa4e253a7d77500b87cd337c52e6754159a7c654f268eb1e10ffa1"
+    },
+    {
+      "kind": "runtime",
+      "url": "../converters/scripts/cii_syntax_check_2019.py",
+      "target": "/repo/converters/scripts/cii_syntax_check_2019.py",
+      "bytes": 43963,
+      "sha256": "c2e4cc8014da54ed1ea6a516d11d778de60d304feef181dcfe3397e031b6dc74"
+    },
+    {
+      "kind": "runtime",
+      "url": "../converters/scripts/cii2019_hanger_miscel_control.py",
+      "target": "/repo/converters/scripts/cii2019_hanger_miscel_control.py",
+      "bytes": 24424,
+      "sha256": "e96b63b35f0535f901af063061f34fa970b325759ca3c517f7e9cd695205e3d7"
+    },
+    {
+      "kind": "runtime",
+      "url": "../converters/scripts/cii2019_section_rules.py",
+      "target": "/repo/converters/scripts/cii2019_section_rules.py",
+      "bytes": 21246,
+      "sha256": "877eba71cb8ee2dbcdeb4946e56eb6a0491f91b3fedb513043bc44edd5600696"
+    },
+    {
+      "kind": "runtime",
+      "url": "../converters/scripts/inputxml_release_preflight.py",
+      "target": "/repo/converters/scripts/inputxml_release_preflight.py",
+      "bytes": 15777,
+      "sha256": "c25e6d6454e0d696059a8df5521905e344c13b547cba05724cd8abdc2240187f"
+    },
+    {
+      "kind": "runtime",
+      "url": "../converters/scripts/inputxml_to_cii2019_assured.py",
+      "target": "/repo/converters/scripts/inputxml_to_cii2019_assured.py",
+      "bytes": 29750,
+      "sha256": "48bede3df3dd5df6ef7bb9eed8c02919dbef7f293c2410a4f953ff3889b20dc4"
+    },
+    {
+      "kind": "runtime",
+      "url": "../converters/scripts/inputxml_to_cii2019_config.json",
+      "target": "/repo/converters/scripts/inputxml_to_cii2019_config.json",
+      "bytes": 12099,
+      "sha256": "c2af652012978f9f2e0abbba90d48f1ce675c6b6df7d4a3136a49b6059f0b743"
+    },
+    {
+      "kind": "runtime",
+      "url": "../converters/scripts/inputxml_to_cii2019_release.py",
+      "target": "/repo/converters/scripts/inputxml_to_cii2019_release.py",
+      "bytes": 6750,
+      "sha256": "4183faa34d6088119926c9d55c36293bbb30a27322f09f0439db662f24f65095"
+    },
+    {
+      "kind": "runtime",
+      "url": "../converters/scripts/inputxml_to_cii2019.py",
+      "target": "/repo/converters/scripts/inputxml_to_cii2019.py",
+      "bytes": 163955,
+      "sha256": "1ff407e0370dd9bafde57c26f201cf20d3e97517812e640a45d5dbbf6f44533a"
+    },
+    {
+      "kind": "runtime",
+      "url": "../converters/scripts/pdf_to_inputxml_profiles.json",
+      "target": "/repo/converters/scripts/pdf_to_inputxml_profiles.json",
+      "bytes": 1104,
+      "sha256": "2fbed5c4f3b88fe8171e8a2e906f7ad91951fa029258c52f6585a522aaa26bef"
+    },
+    {
+      "kind": "runtime",
+      "url": "../converters/scripts/pdf_to_inputxml.py",
+      "target": "/repo/converters/scripts/pdf_to_inputxml.py",
+      "bytes": 43901,
+      "sha256": "c965c36e8a2412ba09d65451f60c3141c98c9e2cda92dbf0c0ab72f800dd0af4"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_approved_semantic_split.py",
+      "target": "/repo/scripts/inputxml_approved_semantic_split.py",
+      "bytes": 8367,
+      "sha256": "849ccf21f423ef9f5f163189baaf2812ead129aaa2b891743d557ec430480f81"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_assurance_ledger_v2.py",
+      "target": "/repo/scripts/inputxml_assurance_ledger_v2.py",
+      "bytes": 13754,
+      "sha256": "1cc826dc79365ccc594e1bb5da158437ca978883d30b77b37f7e79f14467bf9c"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_assurance_ledger.py",
+      "target": "/repo/scripts/inputxml_assurance_ledger.py",
+      "bytes": 27886,
+      "sha256": "2c3f4ef9ac52789bfce11efab513ccc485cb1063cdc3ee44a2e4a15b1a82e1d3"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compatibility_request.py",
+      "target": "/repo/scripts/inputxml_compatibility_request.py",
+      "bytes": 3218,
+      "sha256": "889fe4ada82a503b61f11585c51374286ff3436492c854e2d3a7ba355237f4f6"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/__init__.py",
+      "target": "/repo/scripts/inputxml_compiler/__init__.py",
+      "bytes": 345,
+      "sha256": "ca5422f56447d4fc11e26b4028a6ab7abca76f3973471758728a5b0eca55ec82"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/base.py",
+      "target": "/repo/scripts/inputxml_compiler/base.py",
+      "bytes": 7257,
+      "sha256": "24f2403763b52e6b30c7cf9f6ee7daad618345e01151608bf2d3f17163d2ae27"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/categorized.py",
+      "target": "/repo/scripts/inputxml_compiler/categorized.py",
+      "bytes": 7029,
+      "sha256": "8cdf852ee62d8a3383ce35017fbfded1a03ac5b3f6de27478069633adb9ae27f"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/children.py",
+      "target": "/repo/scripts/inputxml_compiler/children.py",
+      "bytes": 7966,
+      "sha256": "7dfb2577c000dbd5fa63bbed6035623b59dbdcbaba6d672b6f3d5ceff0c06ac4"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/cli.py",
+      "target": "/repo/scripts/inputxml_compiler/cli.py",
+      "bytes": 4035,
+      "sha256": "278faa1d3b9726913607502fcdc38361269e4bf326ccbf5ebf15c4328b9b2ab5"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/compiler.py",
+      "target": "/repo/scripts/inputxml_compiler/compiler.py",
+      "bytes": 17188,
+      "sha256": "c8b03bbb0dedb5375bbf3ae53d5c0e3544ff6515e3da5156b15e7d298b44316b"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/contract_bundle.py",
+      "target": "/repo/scripts/inputxml_compiler/contract_bundle.py",
+      "bytes": 10395,
+      "sha256": "cf0a1b34d06e4e1a4838f68459f6a7dd5e20aa427293b82a3b9d0d9646e3b2e5"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/counts.py",
+      "target": "/repo/scripts/inputxml_compiler/counts.py",
+      "bytes": 3783,
+      "sha256": "c9bcd1adaa6bae76fc328ef2e039d4cd9556f0750ecdd5c18a68b4d6f9cdea92"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/dispatcher.py",
+      "target": "/repo/scripts/inputxml_compiler/dispatcher.py",
+      "bytes": 9442,
+      "sha256": "843e534edf62c7bbbadba1727255cd51a427b6955e5ca23c9be1bd5fbc236ac3"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/elements.py",
+      "target": "/repo/scripts/inputxml_compiler/elements.py",
+      "bytes": 9905,
+      "sha256": "cb9965cde4fb1054db73d9d273c36671b1872807af4ef196c22234120ae40490"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/extension.py",
+      "target": "/repo/scripts/inputxml_compiler/extension.py",
+      "bytes": 6852,
+      "sha256": "e9c99c23da572dfd74d8dff372d31943a843d6eb1a501d94b9dd97e47e1a96b8"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/family_accounting.py",
+      "target": "/repo/scripts/inputxml_compiler/family_accounting.py",
+      "bytes": 11873,
+      "sha256": "ebd72ae8cef62d94f3f26f2646d85b1a74791dbb37761badf495707affc929ad"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/family_auxiliary.py",
+      "target": "/repo/scripts/inputxml_compiler/family_auxiliary.py",
+      "bytes": 11768,
+      "sha256": "b30bdb13418cbe5902ba0a27e5bd7900f5b1526e1afcd9d2cd1fe11457d7f423"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/family_categorized.py",
+      "target": "/repo/scripts/inputxml_compiler/family_categorized.py",
+      "bytes": 20563,
+      "sha256": "9fffc12e646d0927e2930f52b2a16c109a00148b50eb8a64537124d325a61045"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/family_counts.py",
+      "target": "/repo/scripts/inputxml_compiler/family_counts.py",
+      "bytes": 4649,
+      "sha256": "3e136889b2a98ca8e3dca685533ecea10478342e6162ddc5676d22612d281348"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/family_element.py",
+      "target": "/repo/scripts/inputxml_compiler/family_element.py",
+      "bytes": 21920,
+      "sha256": "7fd3faa85061087d0d37a534cd769058d7bbfd85ea219fa95c1e233d85aceb1e"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/family_profiles.py",
+      "target": "/repo/scripts/inputxml_compiler/family_profiles.py",
+      "bytes": 12335,
+      "sha256": "569c86d11e5d9d6d26398fc5b651764465e47752650e43514e24c8e3515b7509"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/family_resolution.py",
+      "target": "/repo/scripts/inputxml_compiler/family_resolution.py",
+      "bytes": 10854,
+      "sha256": "0a541ff6408895310cccb2be5ad7e9ff23aaa030b1833d9944d4f3d13ac6e3d0"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/family_resolver.py",
+      "target": "/repo/scripts/inputxml_compiler/family_resolver.py",
+      "bytes": 11011,
+      "sha256": "534c3576fc21575605f7dede803f6106dc149462ce7042808ea86566a0a85376"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/family.py",
+      "target": "/repo/scripts/inputxml_compiler/family.py",
+      "bytes": 6055,
+      "sha256": "326f277ead5c9e60d67f4995608a16fafaadbcec6296a322131047d6dea71240"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/ledger_reconciliation.py",
+      "target": "/repo/scripts/inputxml_compiler/ledger_reconciliation.py",
+      "bytes": 9006,
+      "sha256": "19821a9368dc77e25140c4b7d4f3fc14156ad08befc001205f951c92817a8727"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/managed_stage_accounting.py",
+      "target": "/repo/scripts/inputxml_compiler/managed_stage_accounting.py",
+      "bytes": 14003,
+      "sha256": "80232c6990c4f586460a784268e75f5ae2de1191a82be256d0db9aed25907d19"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/managed_stage_bridge_io.py",
+      "target": "/repo/scripts/inputxml_compiler/managed_stage_bridge_io.py",
+      "bytes": 5486,
+      "sha256": "84159200bd843ed5a30ccda796d571d5b87768f734b4b39bc70dc67a09e486a3"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/managed_stage_component_closure.py",
+      "target": "/repo/scripts/inputxml_compiler/managed_stage_component_closure.py",
+      "bytes": 18365,
+      "sha256": "b9a40dcf714c2cb1969d0004de19df1d9640dfb484fc161fab8dc23ea9d1ea09"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/managed_stage_diagnostics.py",
+      "target": "/repo/scripts/inputxml_compiler/managed_stage_diagnostics.py",
+      "bytes": 5685,
+      "sha256": "6fc12a9fa98b0d42bad89b886be47bd1b0382c8473f0b8d9e089fd864e4a5e95"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/managed_stage_engineering.py",
+      "target": "/repo/scripts/inputxml_compiler/managed_stage_engineering.py",
+      "bytes": 11184,
+      "sha256": "a4a687ab9a6ddc03fcbe323bdcda97f5eb703ed78e9a3486dc1b7a033e996abd"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/managed_stage_entities.py",
+      "target": "/repo/scripts/inputxml_compiler/managed_stage_entities.py",
+      "bytes": 11129,
+      "sha256": "af09354e2c544e8345da6711f36402f3ea1c8cd648a859a357126db903081904"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/managed_stage_hashes.py",
+      "target": "/repo/scripts/inputxml_compiler/managed_stage_hashes.py",
+      "bytes": 6316,
+      "sha256": "7a069deb39f7648420bdba9974ad6e0b09fde4bb52137ecb750e8cb759d7d76d"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/managed_stage_identity.py",
+      "target": "/repo/scripts/inputxml_compiler/managed_stage_identity.py",
+      "bytes": 10205,
+      "sha256": "c05189e9f5aa12e025f59ab23383854984cb1b4da78d24b21bd4fb59bf57dbdd"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/managed_stage_inputxml_control.py",
+      "target": "/repo/scripts/inputxml_compiler/managed_stage_inputxml_control.py",
+      "bytes": 7369,
+      "sha256": "f9664ffe43499ee13174c6f28c98e67b78079842a9349a347a05df0a8ead620c"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/managed_stage_inputxml_elements.py",
+      "target": "/repo/scripts/inputxml_compiler/managed_stage_inputxml_elements.py",
+      "bytes": 12353,
+      "sha256": "f627fbb6e5972be46eb8a735c1cf6bcfb7bd2666d791d62e40db9485a2e91684"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/managed_stage_inputxml_relations.py",
+      "target": "/repo/scripts/inputxml_compiler/managed_stage_inputxml_relations.py",
+      "bytes": 8964,
+      "sha256": "913eb6922b00d8d2fa808e0e38898064377641da2680e447262a1af9092b45a6"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/managed_stage_inputxml.py",
+      "target": "/repo/scripts/inputxml_compiler/managed_stage_inputxml.py",
+      "bytes": 4740,
+      "sha256": "6b08e038f6eef5cb29fec23bd714ebcee1acf84c4182cbed23f2791cb06e5f15"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/managed_stage_intake.py",
+      "target": "/repo/scripts/inputxml_compiler/managed_stage_intake.py",
+      "bytes": 12916,
+      "sha256": "48e7ab33570a4adf9e7625422afdbf32d18f93fa0c8500f1ffae69a907333619"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/managed_stage_parity_closure.py",
+      "target": "/repo/scripts/inputxml_compiler/managed_stage_parity_closure.py",
+      "bytes": 777,
+      "sha256": "0ec1d0b2a613fe335d4f93223d232b9e75f3363c9319ddc54a85f7de81a4d989"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/managed_stage_parity.py",
+      "target": "/repo/scripts/inputxml_compiler/managed_stage_parity.py",
+      "bytes": 14732,
+      "sha256": "9448461508624de3d22eb0af4b6ace390bcc52ff4bdb1c465fb5a8c76025166c"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/managed_stage_policy.py",
+      "target": "/repo/scripts/inputxml_compiler/managed_stage_policy.py",
+      "bytes": 6373,
+      "sha256": "51823d0ce27c85a8c5c57aa75b572f30b7812e91ea9530fe72ef93437c22ed73"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/managed_stage_port_coverage.py",
+      "target": "/repo/scripts/inputxml_compiler/managed_stage_port_coverage.py",
+      "bytes": 4435,
+      "sha256": "6a0fcf65fe6728e8cf5513b1643be9c9149a368e2d390a8f826e57e4d466012c"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/managed_stage_process.py",
+      "target": "/repo/scripts/inputxml_compiler/managed_stage_process.py",
+      "bytes": 3948,
+      "sha256": "8c24843d6627cb78a66e7c401edccf78f86d85ec1eb77517161b9faab3642180"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/managed_stage_source_decisions.py",
+      "target": "/repo/scripts/inputxml_compiler/managed_stage_source_decisions.py",
+      "bytes": 8537,
+      "sha256": "7cbeda2cdb0d2876c93c8949dcdf688246d34076788f7e4e93ebedb675329c2c"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/managed_stage_topology.py",
+      "target": "/repo/scripts/inputxml_compiler/managed_stage_topology.py",
+      "bytes": 21463,
+      "sha256": "bc85663bc4fbfe166bad47a5b622a014297301242c54017e58bf641e555796fa"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/managed_stage_trace_relations.py",
+      "target": "/repo/scripts/inputxml_compiler/managed_stage_trace_relations.py",
+      "bytes": 10563,
+      "sha256": "6dbeb8b24a252f0647faf18ed1cf742d1d5e5768d5fd74714e5f2d276a641aef"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/managed_stage.py",
+      "target": "/repo/scripts/inputxml_compiler/managed_stage.py",
+      "bytes": 2939,
+      "sha256": "5d138136b1915adf87e4a8fb3d732f7abb9e0748c9484e6d5bba04d2a1d7f82a"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/model.py",
+      "target": "/repo/scripts/inputxml_compiler/model.py",
+      "bytes": 2985,
+      "sha256": "099aa0c6087036a5275f4b0aad3439be5e471411efeb526273b84138f6362bb5"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/node_managed_stage_bridge.mjs",
+      "target": "/repo/scripts/inputxml_compiler/node_managed_stage_bridge.mjs",
+      "bytes": 9173,
+      "sha256": "b0605166841fb22ba56f038c61daad854a04fb1d1d3b65a3bc5c665f6e304e11"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/node_uxml_rvm_bridge.mjs",
+      "target": "/repo/scripts/inputxml_compiler/node_uxml_rvm_bridge.mjs",
+      "bytes": 4813,
+      "sha256": "797a702170441cc228309c51f3602e66593823589931580295ec3684cefb3337"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/node_xml_builder_bridge.cjs",
+      "target": "/repo/scripts/inputxml_compiler/node_xml_builder_bridge.cjs",
+      "bytes": 825,
+      "sha256": "05b1d4d4504177e2ba733bfbb8b358b2fdeab1b34b468247cdf12c1f9caa489e"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/pdf_input_echo_accounting_state.py",
+      "target": "/repo/scripts/inputxml_compiler/pdf_input_echo_accounting_state.py",
+      "bytes": 17481,
+      "sha256": "83282e46cf5bbdb341941ad880c163084a92972ebfee9b9f9a1fd472637acf90"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/pdf_input_echo_accounting.py",
+      "target": "/repo/scripts/inputxml_compiler/pdf_input_echo_accounting.py",
+      "bytes": 11776,
+      "sha256": "ba4eb3169a384b5bafcc41c992a31a9a42a6222cc2f9e4f591a3906a538bb743"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/pdf_input_echo_auxiliary.py",
+      "target": "/repo/scripts/inputxml_compiler/pdf_input_echo_auxiliary.py",
+      "bytes": 8925,
+      "sha256": "e0e4125bdd690208e807c24366b722d195c6d137b6f0e56f67f9f402034a5778"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/pdf_input_echo_bindings.py",
+      "target": "/repo/scripts/inputxml_compiler/pdf_input_echo_bindings.py",
+      "bytes": 6746,
+      "sha256": "df69c6a78678fec7beca45cb0cd2a9b11dc00a4a92cc6274a1fcef09887659a4"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/pdf_input_echo_elements.py",
+      "target": "/repo/scripts/inputxml_compiler/pdf_input_echo_elements.py",
+      "bytes": 6110,
+      "sha256": "60744b83b2e5b5b2b646bb4c3c3338983546c8c3d61a7340534fb34cb13ae796"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/pdf_input_echo_provenance.py",
+      "target": "/repo/scripts/inputxml_compiler/pdf_input_echo_provenance.py",
+      "bytes": 10429,
+      "sha256": "8a35a37a6a4021a3062fd202c0a917452f8214d82811134143af2d97c47a2b36"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/pdf_input_echo_runtime.py",
+      "target": "/repo/scripts/inputxml_compiler/pdf_input_echo_runtime.py",
+      "bytes": 9901,
+      "sha256": "fd7cc04e760de08552e77ec4a3db620aad30d64788b198ec5e780d1cdac16ae8"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/pdf_input_echo_scopes.py",
+      "target": "/repo/scripts/inputxml_compiler/pdf_input_echo_scopes.py",
+      "bytes": 6107,
+      "sha256": "ad6d30ef113268b9468081dcb11472f0f124360bf3c284352a7da702517c1ca3"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/pdf_input_echo_state_fields.py",
+      "target": "/repo/scripts/inputxml_compiler/pdf_input_echo_state_fields.py",
+      "bytes": 4933,
+      "sha256": "afba3df0fdb251fa8dad2abf0f968b568c0a09ac42334b88aae7bc7e46756878"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/pdf_input_echo_state.py",
+      "target": "/repo/scripts/inputxml_compiler/pdf_input_echo_state.py",
+      "bytes": 7961,
+      "sha256": "3bcc7f23d273f1be3564ea9846de6dd413657dc7917631d31e277c21df6328d6"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/pdf_input_echo.py",
+      "target": "/repo/scripts/inputxml_compiler/pdf_input_echo.py",
+      "bytes": 679,
+      "sha256": "efd72ab71b38d84ced8e1141550394b7645de539ac401ea6e84fa74a941a70d0"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/psi116_accounting.py",
+      "target": "/repo/scripts/inputxml_compiler/psi116_accounting.py",
+      "bytes": 7369,
+      "sha256": "b8ee178d6b9b935f413980f65111c18b0bfbf0a0ce8bd71acd08271a7cad7a91"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/psi116_adapter_v2.py",
+      "target": "/repo/scripts/inputxml_compiler/psi116_adapter_v2.py",
+      "bytes": 18953,
+      "sha256": "95028a3790ea8d63161cc922324cbb27ed7a4470b8588c29ca77410a3dc274cb"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/psi116_adapter.py",
+      "target": "/repo/scripts/inputxml_compiler/psi116_adapter.py",
+      "bytes": 204,
+      "sha256": "6ef71cbf889da052ca0450057dc1b3b9f0d49d1cc05ae4be4ea4199e6c25db93"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/psi116_common.py",
+      "target": "/repo/scripts/inputxml_compiler/psi116_common.py",
+      "bytes": 7468,
+      "sha256": "f903243c5e2a6edefed3f1ee3002a2305ea65820bffe400a90270e442887b88d"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/psi116_intake.py",
+      "target": "/repo/scripts/inputxml_compiler/psi116_intake.py",
+      "bytes": 22368,
+      "sha256": "fc70920df037ea9868c36758f68ebc08e3812a08735631a72d2ec2c64e157592"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/psi116_projection_ownership.py",
+      "target": "/repo/scripts/inputxml_compiler/psi116_projection_ownership.py",
+      "bytes": 12507,
+      "sha256": "1e63ba786d6b4950b0fc42f3359ba13b7fa8ab5d766524139336103049c8dfc2"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/psi116_te013_evidence.py",
+      "target": "/repo/scripts/inputxml_compiler/psi116_te013_evidence.py",
+      "bytes": 19958,
+      "sha256": "ea3e989c19a0a27164a0c4200b7e349982a24fb18a271fcc51b09557005d4444"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/publication_contract.py",
+      "target": "/repo/scripts/inputxml_compiler/publication_contract.py",
+      "bytes": 10096,
+      "sha256": "a2dd633e41152ea027c33325cdc2136b9837215d07467bfc42c1a3d9889b2b53"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/publication_io.py",
+      "target": "/repo/scripts/inputxml_compiler/publication_io.py",
+      "bytes": 9541,
+      "sha256": "e3dbdc222e5184d5089dc57f4fcb33fc84b7d89c338eb149a2c67ea500ebc7fa"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/publication_state.py",
+      "target": "/repo/scripts/inputxml_compiler/publication_state.py",
+      "bytes": 3084,
+      "sha256": "bffe75ca57b59f200c4af4706c1d2dd1c529dfc49de9ec8f9aac881368e8d3d9"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/publication_verify.py",
+      "target": "/repo/scripts/inputxml_compiler/publication_verify.py",
+      "bytes": 10722,
+      "sha256": "33b10a7bdb58253a8b9327625bd0f54dbc3d08733797b4e62fa55cc462bc99ab"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/publication.py",
+      "target": "/repo/scripts/inputxml_compiler/publication.py",
+      "bytes": 6047,
+      "sha256": "36ce58993b3480d2ffcf009ca7904a6260b882786b1ab3afdd34119e99734753"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/resolver_contract.py",
+      "target": "/repo/scripts/inputxml_compiler/resolver_contract.py",
+      "bytes": 1750,
+      "sha256": "5b31946236af9e765e4369fe7ab07da6cb09dd185b99c0ad9753d840895c2124"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/seljson.py",
+      "target": "/repo/scripts/inputxml_compiler/seljson.py",
+      "bytes": 757,
+      "sha256": "c918f9a367e642e89c384517d6fef9101179d5c9061586c2112246a1744db010"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/serialization_policy.py",
+      "target": "/repo/scripts/inputxml_compiler/serialization_policy.py",
+      "bytes": 8554,
+      "sha256": "089e6f2a4ffb5a2300c4bdb415a2b5c58aa80b01a3f286464d46a260ef7d580d"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/serialization.py",
+      "target": "/repo/scripts/inputxml_compiler/serialization.py",
+      "bytes": 6737,
+      "sha256": "f272b6a0ccc90b4f86936a0831f47cc00a46069f3a76a631211d56818db91518"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/state_machine.py",
+      "target": "/repo/scripts/inputxml_compiler/state_machine.py",
+      "bytes": 3827,
+      "sha256": "bd68a24d05b9ae30f168e88f80a0f52df82f6e97b0c511409bcaa475c5ffa6e1"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/strict_json_request.mjs",
+      "target": "/repo/scripts/inputxml_compiler/strict_json_request.mjs",
+      "bytes": 4487,
+      "sha256": "76e49c322292fccd998a651585268f4a0018643741c4943df2641c19a8d755a7"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/strict_root_topology.cjs",
+      "target": "/repo/scripts/inputxml_compiler/strict_root_topology.cjs",
+      "bytes": 12493,
+      "sha256": "3b42a3319b4d78c3e594fa6d49dec3e1188ccb168c60ad88522f2a080445f902"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/topology_accounting.py",
+      "target": "/repo/scripts/inputxml_compiler/topology_accounting.py",
+      "bytes": 12294,
+      "sha256": "5d8f17249c5767deac0d0215a74d841cadb76ef64ed1950d0ac4cf156fd24d74"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/topology_bridge_evidence.py",
+      "target": "/repo/scripts/inputxml_compiler/topology_bridge_evidence.py",
+      "bytes": 4963,
+      "sha256": "04176ef5443b3870232aa15f6ed9283f5dfb9c5cd7572fcd0fa978d5b92d5643"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/topology_bridge_io.py",
+      "target": "/repo/scripts/inputxml_compiler/topology_bridge_io.py",
+      "bytes": 5004,
+      "sha256": "f2c885f57951b84021a604c2111df0ba6af7f62cb9ff433f14e9a8676287660f"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/topology_bridge_relations.py",
+      "target": "/repo/scripts/inputxml_compiler/topology_bridge_relations.py",
+      "bytes": 10447,
+      "sha256": "95c90438208e9c772ade531c9ba32c9c6e883e0c23329582cf6fed5a5ed42fbc"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/topology_bridge.py",
+      "target": "/repo/scripts/inputxml_compiler/topology_bridge.py",
+      "bytes": 6077,
+      "sha256": "958cf04a10701a0a495587260bd42d9b76b9b6a119a43e239b94183d67116704"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/topology_candidate_policy.py",
+      "target": "/repo/scripts/inputxml_compiler/topology_candidate_policy.py",
+      "bytes": 1328,
+      "sha256": "2e3487848b9fcea1311e63db834212f83212c4d4286aaf1710b31b95bb7a3048"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/topology_candidate.py",
+      "target": "/repo/scripts/inputxml_compiler/topology_candidate.py",
+      "bytes": 11156,
+      "sha256": "81323e75598fd0012dc02d50de5caa01cb3495edaa798dfcc045280a9ce81a85"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/topology_components.py",
+      "target": "/repo/scripts/inputxml_compiler/topology_components.py",
+      "bytes": 9894,
+      "sha256": "db5d3bf001367f21904984eafc321445b96ec8482e6c45e1d447e537bd70b93c"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/topology_diagnostics.py",
+      "target": "/repo/scripts/inputxml_compiler/topology_diagnostics.py",
+      "bytes": 5338,
+      "sha256": "12a3f81cd4209a6911dd18fedde667a05967361aa8ea9a4f252efa84fbc81f6e"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/topology_engineering.py",
+      "target": "/repo/scripts/inputxml_compiler/topology_engineering.py",
+      "bytes": 11364,
+      "sha256": "91a012f895bc2a5079c589833b9442bd38e2852ed63aa5421a50e293d139ed54"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/topology_inventory.py",
+      "target": "/repo/scripts/inputxml_compiler/topology_inventory.py",
+      "bytes": 2395,
+      "sha256": "7766c3c516ca6d2c694ba51aa73e6f57a439b47a553e6e69b9d84fc0b4d558de"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/topology_profiles.py",
+      "target": "/repo/scripts/inputxml_compiler/topology_profiles.py",
+      "bytes": 12614,
+      "sha256": "a4f45471d0b98f0131151da1b9dbf014b9af43124cc53547762bcd3b3e6adf1d"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/topology_resolver.py",
+      "target": "/repo/scripts/inputxml_compiler/topology_resolver.py",
+      "bytes": 2078,
+      "sha256": "62c76f5e9b6e36d5db30657f8e086de02a659b4e4503508c85772c07d79d1fac"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/topology_restraints.py",
+      "target": "/repo/scripts/inputxml_compiler/topology_restraints.py",
+      "bytes": 6619,
+      "sha256": "783d6710f60c10ce501f7d19d021dca2ee6256167c14844bfb544968d5ec621a"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/topology_source_decisions.py",
+      "target": "/repo/scripts/inputxml_compiler/topology_source_decisions.py",
+      "bytes": 7713,
+      "sha256": "29aa6103f3d68338a095dce30d95400f00e1dd3f8a97ad6876204528a103df05"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/topology_source_model.py",
+      "target": "/repo/scripts/inputxml_compiler/topology_source_model.py",
+      "bytes": 3789,
+      "sha256": "f60a3cd9e395c7fa14e61437d133c839ce938dffbb656f9efdb4d2c152e543e1"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/topology_source.py",
+      "target": "/repo/scripts/inputxml_compiler/topology_source.py",
+      "bytes": 12547,
+      "sha256": "1971ca18837edf4b7002c9f0e316108dea933466e837f8deeaa85d75496a6037"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/uxml_rvm.py",
+      "target": "/repo/scripts/inputxml_compiler/uxml_rvm.py",
+      "bytes": 25948,
+      "sha256": "9c9a0a7937c84c9b647273ed0e31b480e03e8c1f18bea3490cc3f3dcd0148864"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/validation.py",
+      "target": "/repo/scripts/inputxml_compiler/validation.py",
+      "bytes": 976,
+      "sha256": "605974f9ee59d799fe9462ab3ef371f77616ddca5fc2a2da37e88958ae5261ce"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/xml_builder.py",
+      "target": "/repo/scripts/inputxml_compiler/xml_builder.py",
+      "bytes": 776,
+      "sha256": "2178966d1166efab3433ec61c5d62deb27ca4b88a2a3519cf155560703ffe0cc"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_compiler/xml.py",
+      "target": "/repo/scripts/inputxml_compiler/xml.py",
+      "bytes": 9156,
+      "sha256": "8c5975f0e9a5956569098de34451f403eb3d399f0904260db8eccf93af3c8e4e"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_diagnostics.py",
+      "target": "/repo/scripts/inputxml_diagnostics.py",
+      "bytes": 4223,
+      "sha256": "cb81ce9d1253736e0d61a292471d450624e1419880386d50e2d13773f6ae9f93"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_import_topology.py",
+      "target": "/repo/scripts/inputxml_import_topology.py",
+      "bytes": 14237,
+      "sha256": "4e573844efa688582620651434ded8426734240eda9f08bbcb295aec06db9859"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_release_policy.py",
+      "target": "/repo/scripts/inputxml_release_policy.py",
+      "bytes": 5983,
+      "sha256": "876cfb20cd124e3bb570a0e21eb8ad7772feb3f744a145b22e00c37787ef5ec4"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_resolver_trace.py",
+      "target": "/repo/scripts/inputxml_resolver_trace.py",
+      "bytes": 3546,
+      "sha256": "a0d9293d404953674a9ffbbd523954403a54ab362b8e15f2a7bb16eae0e5b69f"
+    },
+    {
+      "kind": "runtime",
+      "url": "../scripts/inputxml_selected_output_manifest.py",
+      "target": "/repo/scripts/inputxml_selected_output_manifest.py",
+      "bytes": 6652,
+      "sha256": "d2424347764295410a694604211247293ece14c5c72774dc5440b8d077d92771"
+    },
+    {
+      "kind": "python-package",
+      "url": "../vendor/pyodide/attrs-23.2.0-py3-none-any.whl",
+      "target": "/repo/vendor/pyodide/attrs-23.2.0-py3-none-any.whl",
+      "bytes": 209507,
+      "sha256": "a23f168e4d416843171974929b5a9d546bd4a6dd9f7632cc8b1a46fa43236fc9",
+      "name": "attrs",
+      "version": "23.2.0"
+    },
+    {
+      "kind": "python-package",
+      "url": "../vendor/pyodide/jsonschema-4.21.1-py3-none-any.whl",
+      "target": "/repo/vendor/pyodide/jsonschema-4.21.1-py3-none-any.whl",
+      "bytes": 279581,
+      "sha256": "119305091e05dd548496debb4b13474049790bbff15450b41eea4c44d09a7141",
+      "name": "jsonschema",
+      "version": "4.21.1"
+    },
+    {
+      "kind": "python-package",
+      "url": "../vendor/pyodide/jsonschema_specifications-2023.12.1-py3-none-any.whl",
+      "target": "/repo/vendor/pyodide/jsonschema_specifications-2023.12.1-py3-none-any.whl",
+      "bytes": 51191,
+      "sha256": "b4a840c945a4af3580c086935b1f0ada771752a72044d86a86175f6bfb88d32d",
+      "name": "jsonschema-specifications",
+      "version": "2023.12.1"
+    },
+    {
+      "kind": "python-package",
+      "url": "../vendor/pyodide/lxml-5.2.1-cp312-cp312-pyodide_2024_0_wasm32.whl",
+      "target": "/repo/vendor/pyodide/lxml-5.2.1-cp312-cp312-pyodide_2024_0_wasm32.whl",
+      "bytes": 6322970,
+      "sha256": "2fd139897daa910923b79a42e7e7496dd36a1ca5806b2d12e42ca41baf6a27d7",
+      "name": "lxml",
+      "version": "5.2.1"
+    },
+    {
+      "kind": "python-package",
+      "url": "../vendor/pyodide/pyrsistent-0.20.0-cp312-cp312-pyodide_2024_0_wasm32.whl",
+      "target": "/repo/vendor/pyodide/pyrsistent-0.20.0-cp312-cp312-pyodide_2024_0_wasm32.whl",
+      "bytes": 217557,
+      "sha256": "a8c1ffcbbc2d2cb0e874ab125228436d1feab02a25b19fa55ca9c906fa684062",
+      "name": "pyrsistent",
+      "version": "0.20.0"
+    },
+    {
+      "kind": "python-package",
+      "url": "../vendor/pyodide/referencing-0.34.0-py3-none-any.whl",
+      "target": "/repo/vendor/pyodide/referencing-0.34.0-py3-none-any.whl",
+      "bytes": 60038,
+      "sha256": "85a54b89cffad1552bb4c7f5c2cb5a69e8476cb1f331fe7b816bcf61361cd421",
+      "name": "referencing",
+      "version": "0.34.0"
+    },
+    {
+      "kind": "python-package",
+      "url": "../vendor/pyodide/rpds_py-0.18.0-cp312-cp312-pyodide_2024_0_wasm32.whl",
+      "target": "/repo/vendor/pyodide/rpds_py-0.18.0-cp312-cp312-pyodide_2024_0_wasm32.whl",
+      "bytes": 426963,
+      "sha256": "a3f26d0f7a2eb06781e2d2c6cc4c13bca3a66d667601620c679c6978e661a07f",
+      "name": "rpds-py",
+      "version": "0.18.0"
+    },
+    {
+      "kind": "python-package",
+      "url": "../vendor/pyodide/six-1.16.0-py2.py3-none-any.whl",
+      "target": "/repo/vendor/pyodide/six-1.16.0-py2.py3-none-any.whl",
+      "bytes": 38737,
+      "sha256": "9a9c3ac3a9305de225a2c8001171387acca73aa0a5c355a2ad49a8adbc6170db",
+      "name": "six",
+      "version": "1.16.0"
+    },
+    {
+      "kind": "python-package",
+      "url": "../vendor/pyodide/pypdf-6.14.2-py3-none-any.whl",
+      "target": "/repo/vendor/pyodide/pypdf-6.14.2-py3-none-any.whl",
+      "bytes": 349514,
+      "sha256": "3f07891af76dc002657e04993ab9b4de81de29f9013b9761d0b7968bff12e946",
+      "name": "pypdf",
+      "version": "6.14.2"
+    }
+  ],
+  "manifestHashSha256": "f26c50c9d02f058bb959566eae885532c20d1f3ee5e6ee4c0f5c55e59c4e4917"
+}

@@ -1,0 +1,256 @@
+{
+  "schema": "UfbxWasmReproducibility.v1",
+  "upstreamRevision": "729ab835444f5f229e5f7cff332692ce6c00415d",
+  "sourceSha256": "c1f2d11ca64e20d18d9fd86ca05112c8faefb9fbe30e2b560d7cda8fb072823f",
+  "buildSourceSha256": "4c1e847069f72f2230c4e74b787ed6ecf24f4705e12f020b917705013e8e9245",
+  "compiler": {
+    "command": "wasi-sdk/bin/clang.exe",
+    "sha256": "99a29ab34998a6914bf3f93b50f564f50a7669142d312b1f4990bba294695196",
+    "version": "clang version 18.1.2"
+  },
+  "linker": {
+    "command": "wasi-sdk/bin/wasm-ld.exe",
+    "sha256": "5721490a452a30de0942557cfe9e28b2e72aed6ba56b5dc8a6d9e33c0970435f",
+    "version": "LLD 18.1.2"
+  },
+  "wasiSysroot": {
+    "archive": "wasi-sdk-22.0.m-mingw64.tar.gz",
+    "archiveSha256": "723f2c4d00b37cb3d1039c080184c58e8bad71aa6dd1a700ead88a07e0f1f446",
+    "distribution": "wasi-sdk",
+    "release": "22.0+m",
+    "sha256": "d035e882d7707263314e13c9f49428797ed379590752e3bd8d43b28553d32cee"
+  },
+  "builds": [
+    {
+      "sha256": "982b8387fac47b05588e39c5afdbb92659883e316a8fcd14079bde158a9c25d5",
+      "byteLength": 454082,
+      "target": "wasm32-wasi",
+      "exports": [
+        [
+          "fbx_attribute_buffer_count",
+          "function"
+        ],
+        [
+          "fbx_attribute_buffer_len",
+          "function"
+        ],
+        [
+          "fbx_attribute_buffer_ptr",
+          "function"
+        ],
+        [
+          "fbx_attribute_error_len",
+          "function"
+        ],
+        [
+          "fbx_attribute_error_ptr",
+          "function"
+        ],
+        [
+          "fbx_attribute_parse",
+          "function"
+        ],
+        [
+          "fbx_attribute_result_len",
+          "function"
+        ],
+        [
+          "fbx_attribute_result_ptr",
+          "function"
+        ],
+        [
+          "fbx_error_len",
+          "function"
+        ],
+        [
+          "fbx_error_ptr",
+          "function"
+        ],
+        [
+          "fbx_geometry_buffer_count",
+          "function"
+        ],
+        [
+          "fbx_geometry_buffer_len",
+          "function"
+        ],
+        [
+          "fbx_geometry_buffer_ptr",
+          "function"
+        ],
+        [
+          "fbx_geometry_parse",
+          "function"
+        ],
+        [
+          "fbx_geometry_result_len",
+          "function"
+        ],
+        [
+          "fbx_geometry_result_ptr",
+          "function"
+        ],
+        [
+          "fbx_parse",
+          "function"
+        ],
+        [
+          "fbx_result_len",
+          "function"
+        ],
+        [
+          "fbx_result_ptr",
+          "function"
+        ],
+        [
+          "free",
+          "function"
+        ],
+        [
+          "malloc",
+          "function"
+        ],
+        [
+          "memory",
+          "memory"
+        ]
+      ],
+      "imports": [
+        [
+          "wasi_snapshot_preview1",
+          "fd_close",
+          "function"
+        ],
+        [
+          "wasi_snapshot_preview1",
+          "fd_seek",
+          "function"
+        ],
+        [
+          "wasi_snapshot_preview1",
+          "fd_write",
+          "function"
+        ]
+      ]
+    },
+    {
+      "sha256": "982b8387fac47b05588e39c5afdbb92659883e316a8fcd14079bde158a9c25d5",
+      "byteLength": 454082,
+      "target": "wasm32-wasi",
+      "exports": [
+        [
+          "fbx_attribute_buffer_count",
+          "function"
+        ],
+        [
+          "fbx_attribute_buffer_len",
+          "function"
+        ],
+        [
+          "fbx_attribute_buffer_ptr",
+          "function"
+        ],
+        [
+          "fbx_attribute_error_len",
+          "function"
+        ],
+        [
+          "fbx_attribute_error_ptr",
+          "function"
+        ],
+        [
+          "fbx_attribute_parse",
+          "function"
+        ],
+        [
+          "fbx_attribute_result_len",
+          "function"
+        ],
+        [
+          "fbx_attribute_result_ptr",
+          "function"
+        ],
+        [
+          "fbx_error_len",
+          "function"
+        ],
+        [
+          "fbx_error_ptr",
+          "function"
+        ],
+        [
+          "fbx_geometry_buffer_count",
+          "function"
+        ],
+        [
+          "fbx_geometry_buffer_len",
+          "function"
+        ],
+        [
+          "fbx_geometry_buffer_ptr",
+          "function"
+        ],
+        [
+          "fbx_geometry_parse",
+          "function"
+        ],
+        [
+          "fbx_geometry_result_len",
+          "function"
+        ],
+        [
+          "fbx_geometry_result_ptr",
+          "function"
+        ],
+        [
+          "fbx_parse",
+          "function"
+        ],
+        [
+          "fbx_result_len",
+          "function"
+        ],
+        [
+          "fbx_result_ptr",
+          "function"
+        ],
+        [
+          "free",
+          "function"
+        ],
+        [
+          "malloc",
+          "function"
+        ],
+        [
+          "memory",
+          "memory"
+        ]
+      ],
+      "imports": [
+        [
+          "wasi_snapshot_preview1",
+          "fd_close",
+          "function"
+        ],
+        [
+          "wasi_snapshot_preview1",
+          "fd_seek",
+          "function"
+        ],
+        [
+          "wasi_snapshot_preview1",
+          "fd_write",
+          "function"
+        ]
+      ]
+    }
+  ],
+  "byteIdentical": true,
+  "workingDirectoryIndependent": true,
+  "committed": {
+    "sha256": "982b8387fac47b05588e39c5afdbb92659883e316a8fcd14079bde158a9c25d5",
+    "byteLength": 454082,
+    "matchesBuilds": true
+  }
+}

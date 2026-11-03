@@ -1,0 +1,66 @@
+{
+  "_instructions": [
+    "Provide Seq and N from a licensed/external KD-3 calculation for every governed cycle.",
+    "userAlternatingStressIntensityMpa is optional; when supplied CORE cross-checks it against the pressure-cycle Salt.",
+    "associatedMeanStressMpa, beta and saPrimeMpa are optional evidence fields only; CORE does not use them to calculate Seq.",
+    "checkedBy/checkedAt may be left null until independent checking is completed.",
+    "This input path never promotes Code/design authority by itself."
+  ],
+  "geometry": {
+    "outsideDiameterMm": null,
+    "effectiveWallMm": null
+  },
+  "spectrum": {
+    "spectrumId": "SPEC-ID",
+    "designLifeYears": null
+  },
+  "states": [
+    {
+      "spectrumId": "SPEC-ID",
+      "stateId": "STATE-A",
+      "pressureMpa": null,
+      "materialTemperatureC": null,
+      "structuralTemperatureC": null
+    },
+    {
+      "spectrumId": "SPEC-ID",
+      "stateId": "STATE-B",
+      "pressureMpa": null,
+      "materialTemperatureC": null,
+      "structuralTemperatureC": null
+    }
+  ],
+  "transitions": [
+    {
+      "spectrumId": "SPEC-ID",
+      "cycleId": "TR-001",
+      "fromStateId": "STATE-A",
+      "toStateId": "STATE-B",
+      "totalCycles": null,
+      "category": "PROCESS_CYCLE"
+    }
+  ],
+  "externalResults": [
+    {
+      "cycleId": "TR-001",
+      "locationId": "BORE_INNER_SURFACE",
+      "fromStateId": "STATE-A",
+      "toStateId": "STATE-B",
+      "userAlternatingStressIntensityMpa": null,
+      "equivalentAlternatingStressMpa": null,
+      "associatedMeanStressMpa": null,
+      "beta": null,
+      "saPrimeMpa": null,
+      "permissibleCycles": null,
+      "calculationBasis": {
+        "code": "ASME BPVC VIII-3",
+        "edition": "<licensed edition>",
+        "methodRef": "KD-3",
+        "calculationRef": "<calculation/document reference>",
+        "calculatedBy": "<engineer>",
+        "checkedBy": null,
+        "checkedAt": null
+      }
+    }
+  ]
+}

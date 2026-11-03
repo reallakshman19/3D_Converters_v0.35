@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:reallaksh19:inputxml:normalization-plan:v1",
+  "title": "InputXmlNormalizationPlan.v1",
+  "type": "object",
+  "required": ["schema", "status", "sourceHashSha256", "canonicalHashSha256", "compatibilityPolicyHashSha256", "operations", "diagnostics", "normalizationPlanHashSha256"],
+  "properties": {
+    "schema": {"const": "InputXmlNormalizationPlan.v1"},
+    "status": {"enum": ["PASS", "BLOCKED", "DIAGNOSTIC"]},
+    "sourceHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "canonicalHashSha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+    "compatibilityPolicyHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "operations": {"type": "array", "items": {"type": "object", "required": ["operationId", "code", "sourceIdentity", "disposition", "beforeHashSha256", "afterHashSha256", "approvalId"], "properties": {"operationId": {"type": "string", "minLength": 1}, "code": {"type": "string", "minLength": 1}, "sourceIdentity": {"type": "string", "minLength": 1}, "disposition": {"enum": ["RETAIN", "NORMALIZE", "APPROVED_REPLACEMENT", "BLOCK"]}, "beforeHashSha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"}, "afterHashSha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"}, "approvalId": {"type": ["string", "null"]}}, "additionalProperties": false}},
+    "diagnostics": {"type": "array", "items": {"type": "object"}},
+    "normalizationPlanHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "additionalProperties": false
+}

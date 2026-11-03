@@ -1,0 +1,44 @@
+{
+  "scripts": {
+    "build:topology-browser-core": "node scripts/build-topology-browser-core.mjs ../XML_Compare_Utilities/vendor/3d-converters/topology-browser-core.mjs ../XML_Compare_Utilities/vendor/3d-converters/topology-browser-core.manifest.json",
+    "vendor:inputxml-pyodide": "node scripts/vendor-inputxml-pyodide-packages.mjs",
+    "build:inputxml-runtime-manifest": "node scripts/build-inputxml-runtime-manifest.mjs",
+    "build:inputxml-contract-bundle": "node scripts/build-inputxml-contract-bundle.mjs",
+    "verify:inputxml-release": "node scripts/verify-inputxml-release.mjs",
+    "verify:hp-chapter-ix": "node --test tests/b313-chapter-ix-core.test.mjs tests/b313-chapter-ix-master-resolvers.test.mjs tests/b313-chapter-ix-master-storage.test.mjs tests/b313-chapter-ix-seed-migration-cli.test.mjs tests/b313-chapter-ix-legacy-evidence-intake.test.mjs tests/engineering-calculation-core.test.mjs",
+    "verify:hp-chapter-ix-fatigue": "node --test tests/b313-chapter-ix-fatigue-benchmarks.test.mjs tests/b313-chapter-ix-fatigue-foundation.test.mjs tests/b313-chapter-ix-fatigue-master-resolver.test.mjs tests/b313-chapter-ix-fatigue-reference-runner.test.mjs tests/b313-chapter-ix-user-calculated-fatigue.test.mjs tests/b313-chapter-ix-fatigue-ui-authority.test.mjs tests/b313-chapter-ix-user-calculated-fatigue-product.test.mjs tests/b313-chapter-ix-user-calculated-fatigue-package-roundtrip.test.mjs",
+    "migrate:hp-chapter-ix-masters": "node scripts/migrate-b313-ch9-seed-masters.mjs",
+    "audit:hp-chapter-ix-evidence": "node scripts/audit-b313-ch9-legacy-evidence.mjs",
+    "verify:vibration-fit-release": "node scripts/verify-vibration-fit-release.mjs",
+    "verify:vibration-stage5c-evidence": "node --test tests/vibration-stage5c-document-evidence.test.mjs tests/vibration-stage5c-recovery.test.mjs",
+    "recover:vibration-stage5c-evidence": "node scripts/recover-vibration-stage5c-via-document-evidence.mjs",
+    "verify:aiv-input-model": "node --test tests/vibration-aiv-master-db.test.mjs tests/vibration-aiv-master-db-bundled.test.mjs tests/vibration-aiv-master-db-ui.test.mjs tests/vibration-aiv-readiness.test.mjs tests/vibration-aiv-input-workspace.test.mjs tests/vibration-aiv-result-contracts.test.mjs tests/vibration-aiv-d23-qualification-solve.test.mjs tests/vibration-aiv-independent-qualification-solve.test.mjs tests/vibration-aiv-qualification-parity-manifest.test.mjs tests/vibration-aiv-kernel-contract.test.mjs tests/vibration-aiv-benchmark-comparison.test.mjs tests/vibration-aiv-kernel-candidate.test.mjs tests/vibration-aiv-kernel-candidate-parity.test.mjs tests/vibration-aiv-assumption-profile.test.mjs tests/vibration-aiv-stage8-evidence-gate.test.mjs tests/vibration-aiv-post-discontinuity-evidence-gate.test.mjs tests/vibration-aiv-benchmark-kernel-qualification.test.mjs tests/vibration-aiv-auto-stage-plan.test.mjs tests/vibration-aiv-auto-product-path.test.mjs tests/vibration-aiv-validated-result-export.test.mjs tests/vibration-aiv-screening-release.test.mjs tests/vibration-aiv-screening-runtime-bridge.test.mjs tests/vibration-aiv-release-plan.test.mjs tests/vibration-aiv-release-validation.test.mjs tests/vibration-aiv-topology-view.test.mjs tests/vibration-module-boundaries.test.mjs",
+    "verify:aiv-screening-release": "node --test tests/vibration-aiv-screening-release.test.mjs tests/vibration-aiv-screening-runtime-bridge.test.mjs",
+    "verify:aiv-canvas": "node --test tests/vibration-aiv-canvas-filter-runtime.test.mjs tests/vibration-aiv-pf01-ui-guard.test.mjs tests/vibration-aiv-runtime-cache-chain.test.mjs tests/vibration-aiv-canvas-projection.test.mjs tests/vibration-aiv-canvas-layout.test.mjs tests/vibration-aiv-canvas-view.test.mjs tests/vibration-aiv-canvas-interaction.test.mjs tests/vibration-aiv-canvas-selection.test.mjs tests/vibration-aiv-canvas-relationship-edit.test.mjs tests/vibration-aiv-canvas-assumptions.test.mjs tests/vibration-aiv-canvas-results.test.mjs tests/vibration-aiv-canvas-multisource.test.mjs tests/vibration-aiv-canvas-export.test.mjs tests/vibration-aiv-canvas-hardening.test.mjs tests/vibration-aiv-canvas-integration.test.mjs tests/vibration-aiv-canvas-dod.test.mjs",
+    "verify:aiv-flare-network": "node --test tests/vibration-aiv-flare-network.test.mjs tests/vibration-aiv-flare-network-authoring.test.mjs tests/vibration-aiv-flare-network-canvas-mode.test.mjs tests/vibration-aiv-flare-network-svg.test.mjs tests/vibration-aiv-flare-network-readiness.test.mjs tests/vibration-aiv-flare-network-multisource.test.mjs tests/vibration-aiv-flare-network-export.test.mjs",
+    "verify:aiv-eit-export": "node --test tests/vibration-aiv-eit-export.test.mjs tests/vibration-aiv-eit-import.test.mjs tests/vibration-aiv-eit-controlled-sonic.test.mjs tests/vibration-aiv-eit-reference.test.mjs tests/vibration-aiv-workbench-ui.test.mjs tests/vibration-aiv-authority-copy.test.mjs tests/app-content-scroll-layout.test.mjs tests/vibration-aiv-assumption-layout.test.mjs",
+    "verify:aiv-canvas-release": "npm run verify:aiv-input-model && npm run verify:aiv-canvas && npm run verify:aiv-flare-network && npm run verify:aiv-eit-export",
+    "extract:fit-source": "node scripts/extract-fit-workbook-source.mjs",
+    "extract:aiv-ei-t27-source": "node scripts/extract-aiv-ei-t27-source.mjs",
+    "extract:aiv-ei-d23-source": "node scripts/extract-aiv-ei-d23-source.mjs",
+    "extract:aiv-workbook-sources": "node scripts/extract-aiv-workbook-sources.mjs",
+    "solve:aiv-d23-qualification": "node scripts/solve-aiv-d23-qualification.mjs",
+    "solve:aiv-independent-qualification-benchmarks": "node scripts/solve-aiv-independent-qualification-benchmarks.mjs",
+    "run:aiv-d23-product-path-validation": "node scripts/run-aiv-d23-product-path-validation.mjs",
+    "build:aiv-qualification-parity-manifest": "node scripts/build-aiv-qualification-parity-manifest.mjs",
+    "build:aiv-kernel-candidate-parity": "node scripts/build-aiv-kernel-candidate-parity.mjs",
+    "verify:aiv-t27-reconciliation": "node scripts/verify-aiv-t27-reconciliation.mjs",
+    "verify:aiv-d23-flm1-reconciliation": "node scripts/verify-aiv-d23-flm1-reconciliation.mjs",
+    "verify:aiv-worked-example-result-scope": "node scripts/verify-aiv-worked-example-result-scope.mjs",
+    "verify:aiv-workbook-reconciliation": "node scripts/verify-aiv-workbook-reconciliation.mjs",
+    "verify:aiv-independent-benchmarks": "node scripts/verify-aiv-independent-benchmarks.mjs",
+    "verify:aiv-independent-promotion-review": "node scripts/verify-aiv-independent-promotion-review.mjs"
+  },
+  "dependencies": {
+    "pyodide": "^0.27.2",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.1"
+  }
+}

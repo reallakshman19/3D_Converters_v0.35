@@ -1,0 +1,54 @@
+{
+  "schema": "AivStage7UserWorkflowChromiumEvidence.v1",
+  "pr": 528,
+  "issue": 526,
+  "classification": "LOCAL_CHROMIUM_UI_EVIDENCE_NOT_HOSTED_FULL_APP",
+  "scenario": {
+    "start": "blank project -> New flare network",
+    "model": "3 RVs -> 2 subheaders -> main header",
+    "lateChange": "SUBHEADER-B engineering length 22 m -> 27 m",
+    "extension": "add RV-104 with 9 m branch to SUBHEADER-B",
+    "resolvedRv104PathM": 66
+  },
+  "sourceValidation": {
+    "suite": "tests/vibration-aiv-unified-canvas-user-workflow.test.mjs reconstructed with branch modules",
+    "passed": 5,
+    "total": 5,
+    "claims": [
+      "blank network uses clean AIV_FLARE_NETWORK_UI provenance",
+      "suggested IDs avoid collisions",
+      "quick RV branch returns Source plus explicit physical segment in one graph commit",
+      "SUBHEADER-B 22-to-27 m correction plus RV-104 resolves to 66 m",
+      "Source completeness is guidance only and does not replace qualified readiness"
+    ]
+  },
+  "chromium": {
+    "executable": "/usr/bin/chromium",
+    "captureMethod": "Playwright page.set_content lower-level UI evidence",
+    "passed": 8,
+    "total": 8,
+    "assertions": [
+      "blank exposes New flare network",
+      "blank uses one canvas SVG",
+      "correction shows explicit 27 m engineering length",
+      "correction shows readiness/results stale currentness",
+      "RV-104 appears",
+      "RV-104 auto-selected guidance appears",
+      "RV-104 path is 66 m",
+      "qualified readiness remains authoritative"
+    ]
+  },
+  "artifacts": {
+    "htmlSha256": "bc2fa925483f6a7cb4d9fc1ccb9c34c544cc63153bc22790a423840d77c444f4",
+    "reportSha256": "ab9a4b64c60aac0a71a69df75cc3f1ebfe90da0a61603c9869663b8466c2a2da",
+    "blankPngSha256": "28fc5d16d852d275836e38477f43a80fd6214f8d58df0fe8408cded904a1ac14",
+    "threeRvPngSha256": "1e2d636ed59a0fe7895aaab0ca388eac90bf503d409ac7f8fea8e693bcf63f87",
+    "correctedHeaderPngSha256": "20a0b11b0d2e03bd20bde0620506e6627c6c024b9abeb1946d70524b9b31e0ba",
+    "rv4PngSha256": "74bc3c0d78694b2ef34150f2293b49231c94cba51b343dfcf09ed802a11f2a7e"
+  },
+  "limits": [
+    "This is lower-level local Chromium evidence, not hosted full-app acceptance.",
+    "Managed browser URL navigation is blocked in the current environment; page.set_content is used for visual evidence.",
+    "Final promotion still requires exact-current-main integration and the repository's full native/full-app acceptance path."
+  ]
+}

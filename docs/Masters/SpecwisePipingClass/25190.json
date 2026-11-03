@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "specKey": "25190",
+  "rowCount": 6,
+  "generatedAt": "2026-06-09T02:27:27.048Z",
+  "source": "../Piping_class_master.json",
+  "rows": [
+    {
+      "Piping Class": "25190",
+      "Size": "0",
+      "SCH": "2500",
+      "convertedBore": null,
+      "_sourceRowIndex": 10679
+    },
+    {
+      "Piping Class": "25190",
+      "Size": "0",
+      "SCH": "2500",
+      "convertedBore": null,
+      "_sourceRowIndex": 10680
+    },
+    {
+      "Piping Class": "25190",
+      "Size": "0",
+      "SCH": "2500",
+      "convertedBore": null,
+      "_sourceRowIndex": 10681
+    },
+    {
+      "Piping Class": "25190",
+      "Size": "0",
+      "SCH": "2500",
+      "convertedBore": null,
+      "_sourceRowIndex": 10682
+    },
+    {
+      "Piping Class": "25190",
+      "Size": "0",
+      "SCH": "2500",
+      "convertedBore": null,
+      "_sourceRowIndex": 10683
+    },
+    {
+      "Piping Class": "25190",
+      "Size": "0",
+      "SCH": "2500",
+      "convertedBore": null,
+      "_sourceRowIndex": 10684
+    }
+  ]
+}

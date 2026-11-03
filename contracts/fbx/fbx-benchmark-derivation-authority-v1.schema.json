@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reallaksh19.github.io/3D_Converters/contracts/fbx/fbx-benchmark-derivation-authority-v1.schema.json",
+  "title": "FbxBenchmarkDerivationAuthority.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "executionIdentity", "producerStatus", "recordLedger", "summary"],
+  "properties": {
+    "schema": { "const": "FbxBenchmarkDerivationAuthority.v1" },
+    "executionIdentity": { "$ref": "#/$defs/executionIdentity" },
+    "producerStatus": { "const": "BLOCKED" },
+    "recordLedger": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/recordEntry" }
+    },
+    "summary": { "$ref": "#/$defs/summary" }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "occurrenceId": { "type": "string", "pattern": "^branch:[0-9]+(?:/child:[0-9]+)?$" },
+    "executionIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sourceBindingSha256",
+        "lineageAccountingSha256",
+        "benchmarkContentSha256",
+        "benchmarkByteLength",
+        "producerAuthoritySha256"
+      ],
+      "properties": {
+        "sourceBindingSha256": { "$ref": "#/$defs/sha256" },
+        "lineageAccountingSha256": { "$ref": "#/$defs/sha256" },
+        "benchmarkContentSha256": { "$ref": "#/$defs/sha256" },
+        "benchmarkByteLength": { "type": "integer", "minimum": 1 },
+        "producerAuthoritySha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["claimType", "producerId", "ruleId", "fields", "conformance", "authorityState", "reasons"],
+      "properties": {
+        "claimType": {
+          "enum": [
+            "DIRECT_IDENTITY",
+            "TYPE_NORMALIZATION",
+            "SYNTHETIC_PIPE",
+            "SUPPORT_SHAPING",
+            "SUPPORT_KIND_MAPPING",
+            "BRANCH_OWNER_SITE",
+            "UNRESOLVED_RECORD"
+          ]
+        },
+        "producerId": { "type": "string", "minLength": 1 },
+        "ruleId": { "type": "string", "minLength": 1 },
+        "fields": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "conformance": { "enum": ["PASS", "FAIL", "NOT_APPLICABLE"] },
+        "authorityState": {
+          "enum": [
+            "BOUND_BY_STAGE2",
+            "PINNED_RULE_RUN_UNBOUND",
+            "PINNED_RULE_CONFIG_UNBOUND",
+            "UNRESOLVED"
+          ]
+        },
+        "reasons": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "recordEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["benchmarkOccurrenceId", "recordRole", "recordType", "stage2Disposition", "claims"],
+      "properties": {
+        "benchmarkOccurrenceId": { "$ref": "#/$defs/occurrenceId" },
+        "recordRole": { "enum": ["BRANCH_RECORD", "CHILD_RECORD"] },
+        "recordType": { "type": "string" },
+        "stage2Disposition": { "enum": ["DIRECT_ENGINEERING_RECORD", "UNRESOLVED"] },
+        "claims": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/claim" }
+        }
+      }
+    },
+    "countMap": {
+      "type": "object",
+      "additionalProperties": { "type": "integer", "minimum": 0 }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "benchmarkRecordsCoveredExactlyOnce",
+        "invalidClaimCount",
+        "unresolvedRecordCount",
+        "runUnboundClaimCount",
+        "configUnboundClaimCount",
+        "countsByClaimState",
+        "status"
+      ],
+      "properties": {
+        "benchmarkRecordsCoveredExactlyOnce": { "type": "boolean" },
+        "invalidClaimCount": { "type": "integer", "minimum": 0 },
+        "unresolvedRecordCount": { "type": "integer", "minimum": 0 },
+        "runUnboundClaimCount": { "type": "integer", "minimum": 0 },
+        "configUnboundClaimCount": { "type": "integer", "minimum": 0 },
+        "countsByClaimState": { "$ref": "#/$defs/countMap" },
+        "status": { "enum": ["PASS", "BLOCKED", "FAIL"] }
+      }
+    }
+  }
+}

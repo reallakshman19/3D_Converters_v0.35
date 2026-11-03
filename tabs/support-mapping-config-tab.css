@@ -1,0 +1,120 @@
+﻿.support-map-root {
+  display: grid;
+  grid-template-columns: 330px minmax(0, 1fr);
+  gap: 12px;
+  min-height: 760px;
+  color: #dbe5ef;
+}
+.support-map-left,
+.support-map-main {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.support-map-card {
+  background: #0f1724;
+  border: 1px solid #2c3a4f;
+  border-radius: 10px;
+  padding: 12px;
+}
+.support-map-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #9cc5ff;
+}
+.support-map-subtitle {
+  margin-top: 8px;
+  color: #9cb0c8;
+  font-size: 12px;
+}
+.support-map-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.support-map-btn,
+.support-map-label input,
+.support-map-label select,
+.support-map-card textarea {
+  background: #182334;
+  color: #e6edf5;
+  border: 1px solid #31455f;
+  border-radius: 8px;
+}
+.support-map-btn {
+  padding: 8px 10px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.support-map-btn:hover {
+  background: #1e2d41;
+}
+.support-map-hidden {
+  display: none;
+}
+.support-map-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.support-map-card.full {
+  grid-column: 1 / 3;
+}
+.support-map-section-label {
+  color: #9cc5ff;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.support-map-label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+.support-map-label.format {
+  min-width: 150px;
+}
+.support-map-label input,
+.support-map-label select,
+.support-map-card textarea {
+  padding: 8px;
+}
+.support-map-card textarea {
+  width: 100%;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  white-space: pre;
+  overflow: auto;
+}
+.support-map-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.support-map-pre {
+  background: #09111a;
+  border: 1px solid #243247;
+  border-radius: 8px;
+  padding: 10px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  white-space: pre-wrap;
+}
+.ok {
+  color: #40d17d;
+}
+.bad {
+  color: #ff8c8c;
+}
+@media (max-width: 1200px) {
+  .support-map-root {
+    grid-template-columns: 1fr;
+  }
+  .support-map-card.full {
+    grid-column: 1;
+  }
+}

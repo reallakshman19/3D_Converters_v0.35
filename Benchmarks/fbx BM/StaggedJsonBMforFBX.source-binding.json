@@ -1,0 +1,53 @@
+{
+  "benchmark": {
+    "commit": "ecd841cd41cc7a8df1764cec502e0873f578a5dc",
+    "gitBlobSha1": "e4ce63f180d3bcc3cba0e85137ce9811cef477e9",
+    "inventory": {
+      "branchRecords": 37,
+      "childRecords": 499,
+      "supportRecords": 145,
+      "totalRecords": 536
+    },
+    "path": "Benchmarks/fbx BM/StaggedJsonBMforFBX",
+    "repository": "reallaksh19/3D_Converters"
+  },
+  "bindingSha256": "b1af433eb2aaa0b87dc71266f0f441a1cdbe473b98d635a50458533a9e15af8f",
+  "lineage": {
+    "benchmarkBranchCount": 37,
+    "benchmarkChildCount": 499,
+    "certificationStatus": "BLOCKED",
+    "commonModelStatus": "STRONGLY_SUPPORTED",
+    "derivationStatus": "UNPROVEN",
+    "netAdditionalBenchmarkRecords": 58,
+    "sourceBranchRootCount": 37,
+    "sourceDirectBranchChildCount": 441
+  },
+  "schema": "FbxBenchmarkSourceBinding.v1",
+  "source": {
+    "byteLength": 71486048,
+    "fbx": {
+      "creationTime": "2026-07-21 16:23:48:291",
+      "creator": "FBX SDK/FBX Plugins version 2019.0 build=b92b15b23",
+      "encoding": "BINARY",
+      "fileId": "2cbf26e1bc28c2ccb3cdb625a327f2fc",
+      "globalSettings": {
+        "coordAxis": 0,
+        "coordAxisSign": -1,
+        "frontAxis": 1,
+        "frontAxisSign": 1,
+        "originalUnitScaleFactor": 1,
+        "unitScaleFactor": 100,
+        "upAxis": 2,
+        "upAxisSign": 1
+      },
+      "version": 7500
+    },
+    "fileName": "fbxtaya.fbx",
+    "sha256": "0c2c0600a1232541a497aea05832b728569fefcf62ea86e71dea520247fe9ca8",
+    "storage": {
+      "fileId": "1febjASkHnzLA667P81YuLF3pZqjI2ySM",
+      "provider": "GOOGLE_DRIVE",
+      "revisionId": "0B3VXl1aCZ-GkVmM3S3grcTROdjBOTEpadFptaGRIZXUxN01BPQ"
+    }
+  }
+}

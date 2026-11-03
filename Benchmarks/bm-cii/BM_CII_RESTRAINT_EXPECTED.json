@@ -1,0 +1,119 @@
+{
+  "schema": "bm-cii-restraint-expected/v1",
+  "description": "Record-scoped BM_CII InputXML Basic restraint expectations used for ISONOTE restraint validation. No carry-forward is allowed for restraints/supports.",
+  "rules": {
+    "restraintCarryForward": false,
+    "componentCarryForward": true,
+    "source": "approved BM_CII support/restraint table"
+  },
+  "records": [
+    {
+      "node": "10",
+      "sourceItem": "ANC",
+      "family": "ANCHOR",
+      "axisPipeBasis": "AXIAL / FLOW-BLOCKING",
+      "cosine": "PLANE BLOCKING THE FLOW",
+      "renderKind": "ANCHOR",
+      "expectedVisual": "Flat plate blocking flow"
+    },
+    {
+      "node": "35",
+      "sourceItem": "+Y",
+      "family": "REST",
+      "axisPipeBasis": "VERTICAL",
+      "cosine": "VERTICAL AXIS",
+      "renderKind": "REST",
+      "expectedVisual": "Single arrow toward +Y"
+    },
+    {
+      "node": "35",
+      "sourceItem": "X",
+      "family": "AXIS_RESTRAINT",
+      "axisPipeBasis": "AXIAL",
+      "cosine": "X",
+      "renderKind": "AXIS_PAIR_X",
+      "expectedVisual": "Axis pair X"
+    },
+    {
+      "node": "35",
+      "sourceItem": "Z",
+      "family": "AXIS_RESTRAINT",
+      "axisPipeBasis": "AXIAL",
+      "cosine": "Z",
+      "renderKind": "AXIS_PAIR_Z",
+      "expectedVisual": "Axis pair Z"
+    },
+    {
+      "node": "130",
+      "sourceItem": "+Z",
+      "family": "LINE_STOP",
+      "axisPipeBasis": "AXIAL",
+      "cosine": "+Z",
+      "renderKind": "LINESTOP",
+      "expectedVisual": "Single axial arrow +Z"
+    },
+    {
+      "node": "190",
+      "sourceItem": "ANC",
+      "family": "ANCHOR",
+      "axisPipeBasis": "AXIAL / FLOW-BLOCKING",
+      "cosine": "PLANE BLOCKING THE FLOW",
+      "renderKind": "ANCHOR",
+      "expectedVisual": "Flat plate blocking flow"
+    },
+    {
+      "node": "205",
+      "sourceItem": "LIM",
+      "family": "LIMIT",
+      "axisPipeBasis": "AXIAL",
+      "cosine": "AXIAL TO PIPE",
+      "renderKind": "LIMIT",
+      "expectedVisual": "Axial pair"
+    },
+    {
+      "node": "205",
+      "sourceItem": "Y",
+      "family": "REST",
+      "axisPipeBasis": "VERTICAL",
+      "cosine": "VERTICAL AXIS",
+      "renderKind": "REST",
+      "expectedVisual": "Axis pair Y"
+    },
+    {
+      "node": "205",
+      "sourceItem": "HANGER",
+      "family": "HANGER / SPRING",
+      "axisPipeBasis": "LATERAL / VERTICAL HANGER",
+      "cosine": "VERTICAL AXIS",
+      "renderKind": "SPRING",
+      "expectedVisual": "Coil only"
+    },
+    {
+      "node": "240",
+      "sourceItem": "ANC",
+      "family": "ANCHOR",
+      "axisPipeBasis": "AXIAL / FLOW-BLOCKING",
+      "cosine": "PLANE BLOCKING THE FLOW",
+      "renderKind": "ANCHOR",
+      "expectedVisual": "Flat plate"
+    },
+    {
+      "node": "255",
+      "sourceItem": "GUIDE",
+      "family": "GUIDE",
+      "axisPipeBasis": "LATERAL",
+      "cosine": "AS PER NODE DATA",
+      "renderKind": "GUIDE",
+      "expectedVisual": "GUIDE lateral pair"
+    },
+    {
+      "node": "255",
+      "sourceItem": "+Y",
+      "family": "REST",
+      "axisPipeBasis": "VERTICAL",
+      "cosine": "VERTICAL AXIS",
+      "renderKind": "REST",
+      "expectedVisual": "Single +Y"
+    }
+  ]
+}

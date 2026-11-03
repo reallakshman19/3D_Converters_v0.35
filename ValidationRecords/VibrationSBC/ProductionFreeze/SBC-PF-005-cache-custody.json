@@ -1,0 +1,86 @@
+{
+  "schema": "VibrationSbcRuntimeCacheCustody.v1",
+  "sliceId": "SBC-PF-005-RUNTIME-CACHE-CUSTODY",
+  "issue": 514,
+  "pr": 527,
+  "repository": "reallaksh19/3D_Converters",
+  "branch": "agent/sbc-pf-005-runtime-cache-custody",
+  "stackBase": {
+    "pr": 524,
+    "head": "390aeb954f73eade6aa1f8344cd646d5c6048832"
+  },
+  "groundedCurrentMain": "36f53018d5c1cf8bec609e39d6995a6067bb5d01",
+  "cacheIdentity": "20260815-sbc-pf05-cache-1",
+  "preservedSharedCacheIdentity": {
+    "aiv": "20260815-aiv-pf01-cache-1",
+    "sourceMain": "36f53018d5c1cf8bec609e39d6995a6067bb5d01"
+  },
+  "diagnosis": "PF004_CHANGED_SBC_ES_MODULE_GRAPH_LACKED_END_TO_END_CACHE_IDENTITY",
+  "productionChangeClass": "IMPORT_URL_IDENTITY_ONLY",
+  "engineeringSemanticsChanged": false,
+  "uiBehaviorChanged": false,
+  "authorityChanged": false,
+  "curvePublicationChanged": false,
+  "protectedEngineeringOracle": {
+    "id": "EI-D7-SBC-TYPE3",
+    "c": 0.68,
+    "d": 0.2,
+    "e": 0.7,
+    "f": 0.6,
+    "g": 0.2,
+    "firstLocationLof": 1.0,
+    "mainlineMultiplier": 1.42,
+    "finalLof": 0.7,
+    "status": "UNCHANGED_BY_PF005"
+  },
+  "authority": {
+    "engineeringAuthority": "NONE",
+    "screeningAuthority": "NOT_AUTHORIZED",
+    "designAuthority": false,
+    "masterDataAuthority": false,
+    "status": "UNCHANGED_BY_PF005"
+  },
+  "curveQuarantine": {
+    "figures": ["T3-1", "T3-2", "T3-3", "T3-4"],
+    "publicationState": "BLOCKED_SOURCE_DATA_CONFLICT",
+    "runtimeCurveActivation": false,
+    "masterPublicationAuthorized": false,
+    "status": "UNCHANGED_BY_PF005"
+  },
+  "hostedObservation": {
+    "observedHead": "6d982f7ca1d074ef9ff98dcd7ad21dcb6b154217",
+    "workflowId": 31898365393,
+    "jobId": 95045073162,
+    "stepsExecuted": 0,
+    "runnerId": 0,
+    "conclusion": "failure",
+    "annotation": "The job was not started because an Actions budget is preventing further use.",
+    "classification": "NOT_RUN_INFRASTRUCTURE_BLOCKED"
+  },
+  "validation": [
+    {
+      "check": "PF004-to-PF005 production diff",
+      "status": "PASS",
+      "observation": "GIT_COMPARE",
+      "detail": "Every production file changed only import URL lines; no calculation/state/UI body delta."
+    },
+    {
+      "check": "tests/vibration-sbc-type3-runtime-cache-chain.test.mjs",
+      "status": "NOT_RUN_INFRASTRUCTURE_BLOCKED",
+      "observation": "HOSTED_JOB_ZERO_STEPS",
+      "detail": "Regression is committed and selected by the full repository test command, but the hosted job never received a runner."
+    },
+    {
+      "check": "official served-app Chromium",
+      "status": "NOT_RUN_INFRASTRUCTURE_BLOCKED",
+      "observation": "HOSTED_JOB_ZERO_STEPS",
+      "detail": "Cache custody is a prerequisite for live browser proof, not a substitute for it."
+    },
+    {
+      "check": "production freeze",
+      "status": "NOT_FROZEN",
+      "observation": "GATE_OPEN"
+    }
+  ],
+  "mergeAuthority": "OWNER_ONLY_NOT_GRANTED"
+}

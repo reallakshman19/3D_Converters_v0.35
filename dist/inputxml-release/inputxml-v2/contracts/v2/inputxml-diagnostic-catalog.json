@@ -1,0 +1,19 @@
+{
+  "schema": "InputXmlDiagnosticCatalog.v1",
+  "codes": [
+    {"code": "INPUTXML_RESTRAINT_OVERFLOW", "category": "SOURCE_CARDINALITY"},
+    {"code": "INPUTXML_DIALECT_AMBIGUOUS", "category": "DIALECT"},
+    {"code": "INPUTXML_DIALECT_UNSUPPORTED", "category": "DIALECT"},
+    {"code": "INPUTXML_ALIAS_CONFLICT", "category": "FIELD_ALIAS"},
+    {"code": "INPUTXML_NAMESPACE_INVALID", "category": "XML_STRUCTURE"},
+    {"code": "INPUTXML_LINE_ID_UNRESOLVED", "category": "RELATIONSHIP"},
+    {"code": "INPUTXML_NODE_PLAN_MISSING", "category": "NUMBERING"},
+    {"code": "INPUTXML_DUPLICATE_ACTIVE_NODE", "category": "NUMBERING"},
+    {"code": "INPUTXML_UNSUPPORTED_BLOCKING_EVIDENCE", "category": "EXTENSION"},
+    {"code": "INPUTXML_XSD_FAILED", "category": "SCHEMA"},
+    {"code": "INPUTXML_SCHEMATRON_FAILED", "category": "SEMANTIC"},
+    {"code": "INPUTXML_TOPOLOGY_PARITY_FAILED", "category": "TOPOLOGY"},
+    {"code": "INPUTXML_DOWNSTREAM_PROOF_FAILED", "category": "ASSURANCE"},
+    {"code": "INPUTXML_SCHEMA_COPY_DRIFT", "category": "PROVENANCE"}
+  ]
+}

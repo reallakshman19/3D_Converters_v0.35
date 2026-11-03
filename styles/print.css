@@ -1,0 +1,180 @@
+/* print.css — @media print layout for engineering report output */
+
+@media print {
+  /* ── Reset screen-only elements ─────────────────────────── */
+  #app-header .header-actions,
+  #tab-bar,
+  .geo-controls,
+  .file-controls,
+  .loads-picker,
+  .load-preview,
+  .geo-legend-panel,
+  .geo-status,
+  .debug-controls,
+  .debug-tab,
+  #geo-status,
+  #app-status,
+  .btn-primary,
+  .btn-secondary,
+  .file-label,
+  .btn-remove,
+  #canvas-wrap,
+  .canvas-placeholder,
+  .hide-on-print {
+    display: none !important;
+  }
+
+  /* ── Page setup ─────────────────────────────────────────── */
+  @page {
+    size: A4 portrait;
+    margin: 18mm 15mm 22mm;
+
+    @top-center {
+      content: "XX-XX-PFEED- | Petroleum Development Oman-PDO";
+      font-size: 8pt;
+      font-family: Arial, sans-serif;
+      color: #444;
+    }
+    @bottom-left {
+      content: "ASME B31.3-2016 | Rev 0";
+      font-size: 8pt;
+      font-family: Arial, sans-serif;
+      color: #444;
+    }
+    @bottom-center {
+      content: counter(page) " of " counter(pages);
+      font-size: 8pt;
+      font-family: Arial, sans-serif;
+      color: #444;
+    }
+    @bottom-right {
+      content: "CAESAR-II 2018 v10.0";
+      font-size: 8pt;
+      font-family: Arial, sans-serif;
+      color: #444;
+    }
+  }
+
+  body, html {
+    background: #fff !important;
+    font-size: 10pt;
+  }
+
+  /* ── Show all report sections sequentially ──────────────── */
+  #tab-content {
+    overflow: visible !important;
+    height: auto !important;
+  }
+
+  .report-section {
+    display: block !important;
+    page-break-before: always;
+    page-break-inside: avoid;
+    padding: 0;
+    max-width: 100%;
+  }
+
+  /* First section: no leading page break */
+  #section-summary { page-break-before: auto; }
+
+  /* ── App header: show as print title block ──────────────── */
+  #app-header {
+    background: #fff !important;
+    color: #000 !important;
+    border-bottom: 2px solid #000;
+    padding: 6pt 0;
+  }
+  #app-header .header-title { color: #000; font-size: 14pt; }
+  #app-header .header-sub   { color: #444; }
+  #app-header .header-meta  { color: #444; font-size: 9pt; }
+
+  /* ── Tables ─────────────────────────────────────────────── */
+  .data-table th {
+    background: #1e2d42 !important;
+    color: #fff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .data-table tbody tr:nth-child(even) {
+    background: #f0f4f8 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .data-table, .data-table td, .data-table th {
+    font-size: 9pt;
+  }
+  .table-scroll {
+    overflow: visible !important;
+    max-height: none !important;
+    border: none;
+  }
+
+  /* ── Ratio bars ─────────────────────────────────────────── */
+  .ratio-bar {
+    background: #dde4ea !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .ratio-bar::after {
+    background: #1a5fa3 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* ── Badges ─────────────────────────────────────────────── */
+  .badge-pass {
+    background: #d4edda !important;
+    color: #1a8040 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .badge-fail {
+    background: #fde8e8 !important;
+    color: #c0200c !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* ── Geometry: show print image ─────────────────────────── */
+  /* Print-hidden logic */
+  .print-hidden {
+    display: none !important;
+  }
+
+  .print-only { display: block !important; }
+  #print-geo-img {
+    width: 100%;
+    max-height: 180mm;
+    object-fit: contain;
+    border: 1px solid #ccc;
+    display: none; /* shown by JS before print() */
+  }
+
+  /* Geometry section */
+  #section-geometry {
+    page-break-before: always;
+  }
+
+  /* ── Scope rows ─────────────────────────────────────────── */
+  .scope-row {
+    border: 1px solid #ccc !important;
+    background: #fff !important;
+  }
+  .scope-conclusion.hidden { display: none !important; }
+  .scope-conclusion.visible { display: inline !important; }
+
+  /* ── Log box: hide in print ─────────────────────────────── */
+  .log-box, .json-box { display: none !important; }
+
+  /* ── Section headings ───────────────────────────────────── */
+  .section-heading {
+    color: #1e2d42 !important;
+    border-bottom-color: #1e2d42 !important;
+    font-size: 10pt;
+  }
+
+  /* ── Report header block ────────────────────────────────── */
+  .report-header-block {
+    border-color: #1e2d42 !important;
+  }
+}

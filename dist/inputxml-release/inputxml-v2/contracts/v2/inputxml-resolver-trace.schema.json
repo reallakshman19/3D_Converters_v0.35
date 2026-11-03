@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:reallaksh19:inputxml:resolver-trace:v1",
+  "title": "InputXmlResolverTrace.v1",
+  "type": "object",
+  "required": ["schema", "status", "sourceHashSha256", "resolvers", "resolverTraceHashSha256"],
+  "properties": {
+    "schema": {"const": "InputXmlResolverTrace.v1"},
+    "status": {"enum": ["PASS", "BLOCKED", "DIAGNOSTIC"]},
+    "sourceHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "resolvers": {
+      "type": "array",
+      "minItems": 12,
+      "maxItems": 12,
+      "items": {
+        "type": "object",
+        "required": ["resolver", "status", "evidenceRefs", "diagnosticCodes"],
+        "properties": {
+          "resolver": {
+            "enum": [
+              "InputXmlDialectResolver",
+              "NamespaceResolver",
+              "FieldAliasResolver",
+              "SentinelInheritanceResolver",
+              "UnitResolver",
+              "LineIdentityResolver",
+              "NodeReferenceResolver",
+              "ElementIdentityResolver",
+              "RestraintSlotResolver",
+              "CountResolver",
+              "ExtensionDispositionResolver",
+              "TopologyParityResolver"
+            ]
+          },
+          "status": {"enum": ["PASS", "BLOCKED", "DIAGNOSTIC"]},
+          "evidenceRefs": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+          "diagnosticCodes": {"type": "array", "items": {"type": "string", "minLength": 1}}
+        },
+        "additionalProperties": false
+      }
+    },
+    "resolverTraceHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "additionalProperties": false
+}

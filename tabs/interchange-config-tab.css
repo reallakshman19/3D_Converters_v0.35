@@ -1,0 +1,93 @@
+.interchange-config-root {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  gap: 12px;
+  height: 100%;
+  min-height: 760px;
+  color: #dbe5ef;
+}
+.interchange-config-sidebar,
+.interchange-config-main {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.interchange-config-card {
+  background: #0f1724;
+  border: 1px solid #2c3a4f;
+  border-radius: 10px;
+  padding: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.18);
+}
+.interchange-config-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(280px, 1fr));
+  gap: 12px;
+}
+.interchange-config-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #9cc5ff;
+}
+.interchange-config-subtitle {
+  margin-top: 6px;
+  color: #9aa8ba;
+  font-size: 13px;
+}
+.interchange-config-section-label {
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #9cc5ff;
+}
+.interchange-config-card label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+.interchange-config-card label.checkbox {
+  flex-direction: row;
+  align-items: center;
+}
+.interchange-config-card input,
+.interchange-config-card select {
+  background: #182334;
+  color: #e6edf5;
+  border: 1px solid #31455f;
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+.interchange-config-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.interchange-config-btn {
+  background: #182334;
+  color: #e6edf5;
+  border: 1px solid #31455f;
+  border-radius: 8px;
+  padding: 8px 10px;
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  cursor: pointer;
+}
+.interchange-config-btn:hover { background: #1e2d41; }
+.interchange-config-pre {
+  background: #09111a;
+  border: 1px solid #243247;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 12px;
+  white-space: pre-wrap;
+}
+.ok { color: #58d68d; }
+.bad { color: #ff8585; }
+.ic-hidden { display: none; }
+.ic-icon svg { width: 16px; height: 16px; }
+@media (max-width: 1200px) {
+  .interchange-config-root { grid-template-columns: 1fr; }
+  .interchange-config-grid { grid-template-columns: 1fr; }
+}

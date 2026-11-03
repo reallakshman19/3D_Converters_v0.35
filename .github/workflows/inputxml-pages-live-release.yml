@@ -1,0 +1,218 @@
+name: InputXML Pages Live Release
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/inputxml-pages-live-release.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/inputxml-pages-live-release.yml'
+      - 'core/app-standalone-runtime.js'
+      - 'tabs/model-converters-tab.js'
+      - 'tabs/model-converters/index.js'
+      - 'tabs/model-converters/ModelConvertersTab.js'
+      - 'tabs/model-converters/xml-cii-workflow-bridge.js'
+      - 'tabs/model-converters/xml-cii-rich-worker-cache-bust.js'
+      - 'tabs/model-converters/converter-registry.js'
+      - 'tabs/model-converters/legacy-adapter.js'
+      - 'tabs/model-converters/converters/inputxml-to-cii2019.js'
+      - 'tabs/model-converters/converters/inputxml-blocked-diagnostics.js'
+      - 'converters/BrowserConverterExecutor.js'
+      - 'converters/inputxml-runtime-manifest.json'
+      - 'converters/inputxml-release-runtime-loader.js'
+      - 'converters/inputxml-release-worker.js'
+      - 'converters/inputxml-runtime-cache.js'
+      - 'converters/py-worker.js'
+      - 'converters/inputxml-release/**'
+      - 'converters/scripts/inputxml_release_preflight.py'
+      - 'converters/scripts/inputxml_to_cii2019_release.py'
+      - 'scripts/inputxml_compiler/**'
+      - 'scripts/inputxml_release_*.py'
+      - 'contracts/inputxml/**'
+      - 'tests/inputxml-pages-live-release.test.mjs'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: inputxml-pages-live-release-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualify-live-pages:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      PAGES_ROOT: https://reallaksh19.github.io/3D_Converters
+      EVIDENCE_PATH: evidence/inputxml-pages-release-deployment.json
+      DEPLOYED_REPOSITORY_COMMIT: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.sha }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
+      - name: Poll exact deployed InputXML application identity
+        id: convergence
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected_revision="$(jq -r '.sourceRevision' converters/inputxml-runtime-manifest.json)"
+          test -n "$expected_revision"
+          test "$expected_revision" != null
+          paths=(
+            'core/app-standalone-runtime.js'
+            'tabs/model-converters-tab.js'
+            'tabs/model-converters/index.js'
+            'tabs/model-converters/ModelConvertersTab.js'
+            'tabs/model-converters/xml-cii-workflow-bridge.js'
+            'tabs/model-converters/xml-cii-rich-worker-cache-bust.js'
+            'tabs/model-converters/converter-registry.js'
+            'tabs/model-converters/legacy-adapter.js'
+            'tabs/model-converters/converters/inputxml-to-cii2019.js'
+            'tabs/model-converters/converters/inputxml-blocked-diagnostics.js'
+            'converters/BrowserConverterExecutor.js'
+            'converters/py-worker.js'
+            'converters/inputxml-runtime-cache.js'
+          )
+          rm -rf .inputxml-pages-live
+          mkdir -p .inputxml-pages-live
+          matched=false
+          matched_attempt=0
+          for attempt in $(seq 1 60); do
+            cache_bust="commit=${DEPLOYED_REPOSITORY_COMMIT}&attempt=${attempt}"
+            if ! curl --fail --location --silent --show-error \
+                --header 'Cache-Control: no-cache' \
+                "$PAGES_ROOT/converters/inputxml-runtime-manifest.json?$cache_bust" \
+                --output .inputxml-pages-live/inputxml-runtime-manifest.json; then
+              sleep 10
+              continue
+            fi
+            deployed_revision="$(jq -r '.sourceRevision // empty' .inputxml-pages-live/inputxml-runtime-manifest.json 2>/dev/null || true)"
+            if [[ "$deployed_revision" != "$expected_revision" ]]; then
+              printf 'attempt=%s expected_revision=%s deployed_revision=%s\n' "$attempt" "$expected_revision" "$deployed_revision"
+              sleep 10
+              continue
+            fi
+            all_files_match=true
+            for path in "${paths[@]}"; do
+              target=".inputxml-pages-live/${path//\//__}"
+              if ! curl --fail --location --silent --show-error \
+                  --header 'Cache-Control: no-cache' \
+                  "$PAGES_ROOT/$path?$cache_bust" \
+                  --output "$target"; then
+                all_files_match=false
+                break
+              fi
+              expected_sha="$(sha256sum "$path" | cut -d' ' -f1)"
+              deployed_sha="$(sha256sum "$target" | cut -d' ' -f1)"
+              if [[ "$deployed_sha" != "$expected_sha" ]]; then
+                printf 'attempt=%s path=%s expected_sha=%s deployed_sha=%s\n' "$attempt" "$path" "$expected_sha" "$deployed_sha"
+                all_files_match=false
+                break
+              fi
+            done
+            if [[ "$all_files_match" == true ]]; then
+              matched=true
+              matched_attempt="$attempt"
+              break
+            fi
+            sleep 10
+          done
+          if [[ "$matched" != true ]]; then
+            echo 'GitHub Pages did not converge to the exact InputXML application identity.' >&2
+            exit 1
+          fi
+          grep -F '20260729-inputxml-live-release-1' .inputxml-pages-live/core__app-standalone-runtime.js
+          grep -F '20260729-inputxml-live-release-1' .inputxml-pages-live/tabs__model-converters-tab.js
+          grep -F 'createRetryableAsyncCache' .inputxml-pages-live/converters__py-worker.js
+          grep -F 'buildInputXmlBlockedSummary' .inputxml-pages-live/tabs__model-converters__converters__inputxml-to-cii2019.js
+          grep -F 'inputxml-release-blocked-' .inputxml-pages-live/tabs__model-converters__converters__inputxml-blocked-diagnostics.js
+          echo "attempt=$matched_attempt" >> "$GITHUB_OUTPUT"
+
+      - name: Run end-to-end live Pages release qualification
+        env:
+          REPOSITORY_COMMIT: ${{ env.DEPLOYED_REPOSITORY_COMMIT }}
+          INPUTXML_PAGES_EVIDENCE_PATH: evidence/inputxml-pages-release-deployment.json
+        run: node tests/inputxml-pages-live-release.test.mjs
+
+      - name: Bind deployed UI hashes into evidence
+        env:
+          CONVERGENCE_ATTEMPT: ${{ steps.convergence.outputs.attempt }}
+        run: |
+          python - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          evidence_path = Path(os.environ['EVIDENCE_PATH'])
+          evidence = json.loads(evidence_path.read_text(encoding='utf-8'))
+          paths = [
+              'core/app-standalone-runtime.js',
+              'tabs/model-converters-tab.js',
+              'tabs/model-converters/index.js',
+              'tabs/model-converters/ModelConvertersTab.js',
+              'tabs/model-converters/xml-cii-workflow-bridge.js',
+              'tabs/model-converters/xml-cii-rich-worker-cache-bust.js',
+              'tabs/model-converters/converter-registry.js',
+              'tabs/model-converters/legacy-adapter.js',
+              'tabs/model-converters/converters/inputxml-to-cii2019.js',
+              'tabs/model-converters/converters/inputxml-blocked-diagnostics.js',
+              'converters/BrowserConverterExecutor.js',
+              'converters/py-worker.js',
+              'converters/inputxml-runtime-cache.js',
+          ]
+          evidence['convergenceAttempt'] = int(os.environ['CONVERGENCE_ATTEMPT'])
+          evidence['deployedApplicationFiles'] = {
+              path: {
+                  'sha256': hashlib.sha256(Path(path).read_bytes()).hexdigest(),
+                  'bytes': Path(path).stat().st_size,
+              }
+              for path in paths
+          }
+          evidence_path.write_text(json.dumps(evidence, indent=2) + '\n', encoding='utf-8')
+          PY
+          cat "$EVIDENCE_PATH"
+
+      - name: Upload deployment evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: inputxml-pages-live-release-evidence
+          path: evidence/inputxml-pages-release-deployment.json
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Commit deployment evidence
+        if: github.event_name == 'push'
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "$EVIDENCE_PATH"
+          if ! git diff --cached --quiet; then
+            git commit -m 'evidence(inputxml): record live Pages CII release'
+            git push origin HEAD:main
+          fi
+
+      - name: Publish qualification summary
+        env:
+          CONVERGENCE_ATTEMPT: ${{ steps.convergence.outputs.attempt }}
+        run: |
+          {
+            echo '### InputXML Pages live release'
+            echo
+            echo "- repository commit: \`$(jq -r '.repositoryCommit' "$EVIDENCE_PATH")\`"
+            echo "- convergence attempt: \`${CONVERGENCE_ATTEMPT}\`"
+            echo "- runtime source revision: \`$(jq -r '.runtime.sourceRevision' "$EVIDENCE_PATH")\`"
+            echo "- CII SHA-256: \`$(jq -r '.passRelease.ciiSha256' "$EVIDENCE_PATH")\`"
+            echo "- blocked diagnostic: \`$(jq -r '.blockedRelease.diagnosticCode' "$EVIDENCE_PATH")\`"
+            echo '- selected-output manifest: PASS and file hashes verified'
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -1,0 +1,49 @@
+name: HP Piping Class I1-I3 Qualification Gate
+
+on:
+  push:
+    branches:
+      - agent/hp-piping-class-i1-i3
+    paths:
+      - 'converters/b313-chapter-ix/hp-piping-class*.js'
+      - 'converters/engineering-calculations/**'
+      - 'converters/b313-chapter-ix/**'
+      - 'tests/hp-piping-class-*.test.mjs'
+      - 'scripts/verify-hp-piping-class-i1-i3.mjs'
+      - '.github/workflows/hp-piping-class-i1-i3.yml'
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches:
+      - main
+    paths:
+      - 'converters/b313-chapter-ix/hp-piping-class*.js'
+      - 'converters/engineering-calculations/**'
+      - 'converters/b313-chapter-ix/**'
+      - 'tests/hp-piping-class-*.test.mjs'
+      - 'scripts/verify-hp-piping-class-i1-i3.mjs'
+      - '.github/workflows/hp-piping-class-i1-i3.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  verify-i1-i3:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact PR source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Record runtime
+        run: |
+          node --version
+          npm --version
+          git rev-parse HEAD
+
+      - name: Verify HP Piping Class I1-I3
+        run: node scripts/verify-hp-piping-class-i1-i3.mjs

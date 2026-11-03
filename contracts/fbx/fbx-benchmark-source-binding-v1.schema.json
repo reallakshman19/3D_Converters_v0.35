@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reallaksh19.github.io/3D_Converters/contracts/fbx/fbx-benchmark-source-binding-v1.schema.json",
+  "title": "FbxBenchmarkSourceBinding.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "source", "benchmark", "lineage", "bindingSha256"],
+  "properties": {
+    "schema": { "const": "FbxBenchmarkSourceBinding.v1" },
+    "bindingSha256": { "$ref": "#/$defs/sha256" },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fileName", "storage", "byteLength", "sha256", "fbx"],
+      "properties": {
+        "fileName": { "type": "string", "minLength": 1 },
+        "byteLength": { "type": "integer", "minimum": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "storage": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["provider", "fileId", "revisionId"],
+          "properties": {
+            "provider": { "const": "GOOGLE_DRIVE" },
+            "fileId": { "type": "string", "minLength": 1 },
+            "revisionId": { "type": "string", "minLength": 1 }
+          }
+        },
+        "fbx": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["encoding", "version", "fileId", "creator", "creationTime", "globalSettings"],
+          "properties": {
+            "encoding": { "const": "BINARY" },
+            "version": { "type": "integer", "minimum": 3000, "maximum": 7700 },
+            "fileId": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
+            "creator": { "type": "string", "minLength": 1 },
+            "creationTime": { "type": "string", "minLength": 1 },
+            "globalSettings": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["upAxis", "upAxisSign", "frontAxis", "frontAxisSign", "coordAxis", "coordAxisSign", "unitScaleFactor", "originalUnitScaleFactor"],
+              "properties": {
+                "upAxis": { "type": "number" },
+                "upAxisSign": { "type": "number" },
+                "frontAxis": { "type": "number" },
+                "frontAxisSign": { "type": "number" },
+                "coordAxis": { "type": "number" },
+                "coordAxisSign": { "type": "number" },
+                "unitScaleFactor": { "type": "number" },
+                "originalUnitScaleFactor": { "type": "number" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "benchmark": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository", "commit", "path", "gitBlobSha1", "inventory"],
+      "properties": {
+        "repository": { "type": "string", "minLength": 1 },
+        "commit": { "$ref": "#/$defs/sha1" },
+        "path": { "type": "string", "minLength": 1 },
+        "gitBlobSha1": { "$ref": "#/$defs/sha1" },
+        "inventory": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["totalRecords", "branchRecords", "childRecords", "supportRecords"],
+          "properties": {
+            "totalRecords": { "type": "integer", "minimum": 0 },
+            "branchRecords": { "type": "integer", "minimum": 0 },
+            "childRecords": { "type": "integer", "minimum": 0 },
+            "supportRecords": { "type": "integer", "minimum": 0 }
+          }
+        }
+      }
+    },
+    "lineage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sourceBranchRootCount", "sourceDirectBranchChildCount", "benchmarkBranchCount", "benchmarkChildCount", "netAdditionalBenchmarkRecords", "commonModelStatus", "derivationStatus", "certificationStatus"],
+      "properties": {
+        "sourceBranchRootCount": { "type": "integer", "minimum": 0 },
+        "sourceDirectBranchChildCount": { "type": "integer", "minimum": 0 },
+        "benchmarkBranchCount": { "type": "integer", "minimum": 0 },
+        "benchmarkChildCount": { "type": "integer", "minimum": 0 },
+        "netAdditionalBenchmarkRecords": { "type": "integer", "minimum": 0 },
+        "commonModelStatus": { "const": "STRONGLY_SUPPORTED" },
+        "derivationStatus": { "const": "UNPROVEN" },
+        "certificationStatus": { "const": "BLOCKED" }
+      }
+    }
+  },
+  "$defs": {
+    "sha1": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  }
+}

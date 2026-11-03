@@ -1,0 +1,59 @@
+{
+  "schema": "AivCanvasCacheCustodyEvidence.v1",
+  "pullRequest": 543,
+  "releaseKey": "20260816-aiv-canvas-release-1",
+  "baseSha": "19cf1f0a6f3f0f88ca983ced3b2606041adeab4c",
+  "classification": "SOURCE_DIFF_AUDIT_NOT_HOSTED_FULL_APP",
+  "rootCause": "The #534/#537 browser-visible parent import path retained the Stage-8 editor-3 URL identity, allowing a warm client to reuse the old unified canvas renderer after rebuild/deploy.",
+  "sourceAudit": {
+    "productionFilesChanged": 14,
+    "productionChanges": "IMPORT_OR_QUERY_STRING_IDENTITY_ONLY",
+    "behaviorChangesDetected": false,
+    "testFileChanged": "tests/vibration-aiv-runtime-cache-chain.test.mjs",
+    "branchRelationAtAudit": "AHEAD_ONLY_0_BEHIND"
+  },
+  "releaseChain": [
+    "index.html -> main-rhbg-fitguard.js",
+    "main-rhbg-fitguard.js -> core/app.js",
+    "core/app.js -> core/engineering-tabs-extension.js",
+    "core/engineering-tabs-extension.js -> tabs/engineering-workspace-tab.js",
+    "tabs/engineering-workspace-tab.js -> tabs/engineering-calculations-tab.js",
+    "tabs/engineering-calculations-tab.js -> tabs/vibration-aiv-qualification-tab.js",
+    "tabs/vibration-aiv-qualification-tab.js -> tabs/vibration-aiv-qualification-view.js",
+    "tabs/vibration-aiv-qualification-view.js -> tabs/vibration-aiv-input-view.js",
+    "tabs/vibration-aiv-input-view.js -> tabs/vibration-aiv-unified-canvas-view.js"
+  ],
+  "changedLeafCustody": [
+    "vibration-aiv-canvas-export-controller.js",
+    "vibration-aiv-unified-canvas-controller.js",
+    "vibration-aiv-unified-canvas-inspector.js",
+    "vibration-aiv-canvas-selection.js",
+    "vibration-aiv-canvas-field.js",
+    "vibration-aiv-canvas-field-link.js"
+  ],
+  "regressionGuard": {
+    "requiresFreshParentReleaseIdentity": true,
+    "forbidsEditor3ParentRoute": true,
+    "alignsExportPresentationIdentity": "20260816-aiv-canvas-spatial-1",
+    "forbidsSupersededExportPresentationIdentity": "20260816-aiv-canvas-ui-1",
+    "requiresFitNetworkMarker": true,
+    "requiresAutoTidyMarker": true,
+    "requiresInspectorDockMarker": true,
+    "requiresOneUnifiedSvgMarker": true,
+    "preservesFivIdentity": "20260815-sbc-pf05-cache-1",
+    "preservesHpIdentity": "20260816-hp-i5-native-editors-1"
+  },
+  "validation": {
+    "exactPrDiffReviewed": true,
+    "hostedWorkflowRun": "NOT_SCHEDULED_AT_EVIDENCE_CAPTURE",
+    "localHttpWarmCacheChromium": "NOT_RUN_ENVIRONMENT_BLOCKS_LOCALHOST_NAVIGATION",
+    "productionPagesVerification": "PENDING_MERGE_AND_DEPLOY"
+  },
+  "authorityBoundary": {
+    "aivEquationsChanged": false,
+    "engineeringOwnershipChanged": false,
+    "engineeringDistanceChanged": false,
+    "readinessOrResultAuthorityChanged": false,
+    "canvasVisualImplementationChanged": false
+  }
+}

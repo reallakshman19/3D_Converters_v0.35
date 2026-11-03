@@ -1,0 +1,525 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "FbxElbowPortEvidence.v1",
+  "title": "FbxElbowPortEvidence.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "artifactId",
+    "sourceComponentCrosswalkArtifactId",
+    "sourceSolidFittingPortEvidenceArtifactId",
+    "geometryProfile",
+    "managedElbowCount",
+    "admittedElbowCount",
+    "blockedElbowCount",
+    "blockingReasonCounts",
+    "elbowEvidence",
+    "authority"
+  ],
+  "properties": {
+    "schema": {
+      "const": "FbxElbowPortEvidence.v1"
+    },
+    "artifactId": {
+      "type": "string",
+      "pattern": "^fbx-elbow-port-evidence:[0-9a-f]{64}$"
+    },
+    "sourceComponentCrosswalkArtifactId": {
+      "type": "string",
+      "pattern": "^FBXZCROSS-[0-9a-f]{32}$"
+    },
+    "sourceSolidFittingPortEvidenceArtifactId": {
+      "type": "string",
+      "pattern": "^fbx-solid-fitting-port-evidence:[0-9a-f]{64}$"
+    },
+    "geometryProfile": {
+      "$ref": "#/$defs/geometryProfile"
+    },
+    "managedElbowCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "admittedElbowCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "blockedElbowCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "blockingReasonCounts": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 1
+      }
+    },
+    "elbowEvidence": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/elbowRecord"
+      }
+    },
+    "authority": {
+      "$ref": "#/$defs/authority"
+    }
+  },
+  "$defs": {
+    "nullableText": {
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "decimalId": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)$"
+    },
+    "nullableDecimalId": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/decimalId"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "vector3": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "number"
+      }
+    },
+    "geometryProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "minimumBendAngleDeg",
+        "maximumBendAngleDeg",
+        "minimumBendRadiusMm",
+        "lineIntersectionAbsoluteMm",
+        "lineIntersectionRadiusRatio",
+        "tangentLengthAbsoluteMm",
+        "tangentLengthRatio",
+        "bendRadiusAbsoluteMm",
+        "bendRadiusRatio",
+        "portRadiusAbsoluteMm",
+        "portRadiusRatio"
+      ],
+      "properties": {
+        "schema": {
+          "const": "FbxElbowGeometryProfile.v1"
+        },
+        "minimumBendAngleDeg": {
+          "const": 1e-06
+        },
+        "maximumBendAngleDeg": {
+          "const": 179.999999
+        },
+        "minimumBendRadiusMm": {
+          "const": 1e-06
+        },
+        "lineIntersectionAbsoluteMm": {
+          "const": 0.05
+        },
+        "lineIntersectionRadiusRatio": {
+          "const": 0.001
+        },
+        "tangentLengthAbsoluteMm": {
+          "const": 0.05
+        },
+        "tangentLengthRatio": {
+          "const": 0.001
+        },
+        "bendRadiusAbsoluteMm": {
+          "const": 0.05
+        },
+        "bendRadiusRatio": {
+          "const": 0.001
+        },
+        "portRadiusAbsoluteMm": {
+          "const": 0.05
+        },
+        "portRadiusRatio": {
+          "const": 0.001
+        }
+      }
+    },
+    "blockingReason": {
+      "enum": [
+        "GENERATED_COMPONENT_NOT_SUPPORTED",
+        "NO_EXACT_SOURCE_BINDING",
+        "MISSING_SOLID_FITTING_EVIDENCE",
+        "BENT_TOPOLOGY_NOT_EVIDENCED",
+        "AMBIGUOUS_BENT_GEOMETRY",
+        "PORT_COUNT_MISMATCH",
+        "PORT_GEOMETRY_INCOMPLETE",
+        "PORT_RADIUS_MISMATCH",
+        "BEND_ANGLE_OUT_OF_RANGE",
+        "TANGENT_LINES_PARALLEL",
+        "TANGENT_INTERSECTION_OUTSIDE",
+        "TANGENT_INTERSECTION_RESIDUAL",
+        "TANGENT_LENGTH_MISMATCH",
+        "BEND_RADIUS_INVALID",
+        "BEND_RADIUS_RESIDUAL",
+        "BEND_PLANE_DEGENERATE",
+        "BEND_CENTRE_RESIDUAL"
+      ]
+    },
+    "port": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "portId",
+        "sourcePortEvidenceId",
+        "centreMm",
+        "outwardDirection",
+        "radiusMm",
+        "diameterMm",
+        "innerRadiusMm"
+      ],
+      "properties": {
+        "portId": {
+          "type": "string",
+          "pattern": "^elbow-port:[0-9a-f]{64}$"
+        },
+        "sourcePortEvidenceId": {
+          "type": "string",
+          "pattern": "^cap-ring:[0-9a-f]{64}$"
+        },
+        "centreMm": {
+          "$ref": "#/$defs/vector3"
+        },
+        "outwardDirection": {
+          "$ref": "#/$defs/vector3"
+        },
+        "radiusMm": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "diameterMm": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "innerRadiusMm": {
+          "oneOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "residuals": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "lineIntersectionMm",
+        "tangentLengthMm",
+        "bendRadiusMm",
+        "bendCentreMm",
+        "portRadiusMm"
+      ],
+      "properties": {
+        "lineIntersectionMm": {
+          "type": "number",
+          "minimum": 0
+        },
+        "tangentLengthMm": {
+          "type": "number",
+          "minimum": 0
+        },
+        "bendRadiusMm": {
+          "type": "number",
+          "minimum": 0
+        },
+        "bendCentreMm": {
+          "type": "number",
+          "minimum": 0
+        },
+        "portRadiusMm": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "bend": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method",
+        "angleDeg",
+        "centreMm",
+        "radiusMm",
+        "planeNormal",
+        "tangentIntersectionMm",
+        "tangentLengthsMm",
+        "residuals"
+      ],
+      "properties": {
+        "method": {
+          "const": "TANGENT_INTERSECTION_CIRCULAR_ARC_V1"
+        },
+        "angleDeg": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "exclusiveMaximum": 180
+        },
+        "centreMm": {
+          "$ref": "#/$defs/vector3"
+        },
+        "radiusMm": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "planeNormal": {
+          "$ref": "#/$defs/vector3"
+        },
+        "tangentIntersectionMm": {
+          "$ref": "#/$defs/vector3"
+        },
+        "tangentLengthsMm": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          }
+        },
+        "residuals": {
+          "$ref": "#/$defs/residuals"
+        }
+      }
+    },
+    "elbowRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "managedRecordId",
+        "branchId",
+        "reference",
+        "displayName",
+        "sourceOccurrenceId",
+        "sourceModelObjectId",
+        "geometryObjectId",
+        "shellId",
+        "sourceEvidenceRecordCount",
+        "sourceTopologyDispositions",
+        "sourceRejectionReasons",
+        "disposition",
+        "blockingReasons",
+        "ports",
+        "bend"
+      ],
+      "properties": {
+        "managedRecordId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "branchId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reference": {
+          "$ref": "#/$defs/nullableText"
+        },
+        "displayName": {
+          "$ref": "#/$defs/nullableText"
+        },
+        "sourceOccurrenceId": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^occ:[0-9]+$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sourceModelObjectId": {
+          "$ref": "#/$defs/nullableDecimalId"
+        },
+        "geometryObjectId": {
+          "$ref": "#/$defs/nullableDecimalId"
+        },
+        "shellId": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^shell:[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sourceEvidenceRecordCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sourceTopologyDispositions": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "STRAIGHT_TWO_PORT",
+              "BENT_TWO_PORT",
+              "TAPERED_TWO_PORT",
+              "SHORT_TWO_PORT",
+              "THREE_PORT",
+              "REJECTED"
+            ]
+          }
+        },
+        "sourceRejectionReasons": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "disposition": {
+          "enum": [
+            "ADMITTED",
+            "BLOCKED"
+          ]
+        },
+        "blockingReasons": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/blockingReason"
+          }
+        },
+        "ports": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/port"
+          }
+        },
+        "bend": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/bend"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "disposition": {
+                "const": "ADMITTED"
+              }
+            },
+            "required": [
+              "disposition"
+            ]
+          },
+          "then": {
+            "properties": {
+              "sourceOccurrenceId": {
+                "type": "string",
+                "pattern": "^occ:[0-9]+$"
+              },
+              "sourceModelObjectId": {
+                "$ref": "#/$defs/decimalId"
+              },
+              "geometryObjectId": {
+                "$ref": "#/$defs/decimalId"
+              },
+              "shellId": {
+                "type": "string",
+                "pattern": "^shell:[0-9a-f]{64}$"
+              },
+              "blockingReasons": {
+                "maxItems": 0
+              },
+              "ports": {
+                "minItems": 2,
+                "maxItems": 2
+              },
+              "bend": {
+                "$ref": "#/$defs/bend"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "blockingReasons": {
+                "minItems": 1
+              },
+              "ports": {
+                "maxItems": 0
+              },
+              "bend": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "managedFamilyAuthority",
+        "managedTypeVocabulary",
+        "geometryAuthority",
+        "exactSourceBindingRequired",
+        "candidateBindingsAccepted",
+        "runtimeAdmissionChanged",
+        "engineeringAttributesInferred"
+      ],
+      "properties": {
+        "managedFamilyAuthority": {
+          "const": "FbxSelectedZoneComponentCrosswalk.v1"
+        },
+        "geometryAuthority": {
+          "const": "FbxSolidFittingPortEvidence.v3"
+        },
+        "exactSourceBindingRequired": {
+          "const": true
+        },
+        "candidateBindingsAccepted": {
+          "const": false
+        },
+        "runtimeAdmissionChanged": {
+          "const": false
+        },
+        "engineeringAttributesInferred": {
+          "const": false
+        },
+        "managedTypeVocabulary": {
+          "type": "array",
+          "const": [
+            "ELBO",
+            "BEND"
+          ]
+        }
+      }
+    }
+  }
+}

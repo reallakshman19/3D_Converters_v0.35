@@ -1,0 +1,85 @@
+{
+  "schema": "SbcBenchmarkRegistry.v1",
+  "calculationId": "VIB.SBC.SMALL_BORE",
+  "artifactStatus": "SCAFFOLD_PRESENT_NOT_FROZEN",
+  "benchmarkExecutionAllowed": false,
+  "productionExpectedValueGenerationForbidden": true,
+  "types": {
+    "TYPE_1": {
+      "b1": {
+        "registryId": "SBC-B1-TYPE_1-EI_APPENDIX_D5",
+        "family": "B1_PUBLISHED_METHOD_EXAMPLE",
+        "exampleId": "EI_APPENDIX_D5",
+        "status": "SOURCE_AND_EXPECTED_VALUES_NOT_FROZEN",
+        "expectedValuesPresent": false
+      },
+      "b2": {
+        "registryId": "SBC-B2-TYPE_1-INDEPENDENT",
+        "family": "B2_INDEPENDENT_ENGINEERING",
+        "minimumFamilies": 1,
+        "status": "MISSING_INDEPENDENT_ENGINEERING_EVIDENCE",
+        "expectedValuesPresent": false
+      }
+    },
+    "TYPE_2": {
+      "b1": {
+        "registryId": "SBC-B1-TYPE_2-EI_APPENDIX_D6",
+        "family": "B1_PUBLISHED_METHOD_EXAMPLE",
+        "exampleId": "EI_APPENDIX_D6",
+        "status": "SOURCE_AND_EXPECTED_VALUES_NOT_FROZEN",
+        "expectedValuesPresent": false
+      },
+      "b2": {
+        "registryId": "SBC-B2-TYPE_2-INDEPENDENT",
+        "family": "B2_INDEPENDENT_ENGINEERING",
+        "minimumFamilies": 1,
+        "status": "MISSING_INDEPENDENT_ENGINEERING_EVIDENCE",
+        "expectedValuesPresent": false
+      }
+    },
+    "TYPE_3": {
+      "b1": {
+        "registryId": "SBC-B1-TYPE_3-EI_APPENDIX_D7",
+        "family": "B1_PUBLISHED_METHOD_EXAMPLE",
+        "exampleId": "EI_APPENDIX_D7",
+        "status": "SOURCE_AND_EXPECTED_VALUES_NOT_FROZEN",
+        "expectedValuesPresent": false,
+        "oracleUseOnly": true,
+        "calibrationUseForbidden": true
+      },
+      "b2": {
+        "registryId": "SBC-B2-TYPE_3-INDEPENDENT",
+        "family": "B2_INDEPENDENT_ENGINEERING",
+        "minimumFamilies": 1,
+        "status": "MISSING_INDEPENDENT_ENGINEERING_EVIDENCE",
+        "expectedValuesPresent": false
+      },
+      "blockedBy": [
+        "SBC_T3_CURVES_BLOCKED_SOURCE_DATA_CONFLICT",
+        "ISSUE_514_ENGINEERING_EVIDENCE_REQUIRED"
+      ]
+    },
+    "TYPE_4": {
+      "b1": {
+        "registryId": "SBC-B1-TYPE_4-EI_APPENDIX_D8",
+        "family": "B1_PUBLISHED_METHOD_EXAMPLE",
+        "exampleId": "EI_APPENDIX_D8",
+        "status": "SOURCE_AND_EXPECTED_VALUES_NOT_FROZEN",
+        "expectedValuesPresent": false
+      },
+      "b2": {
+        "registryId": "SBC-B2-TYPE_4-INDEPENDENT",
+        "family": "B2_INDEPENDENT_ENGINEERING",
+        "minimumFamilies": 1,
+        "status": "MISSING_INDEPENDENT_ENGINEERING_EVIDENCE",
+        "expectedValuesPresent": false
+      }
+    }
+  },
+  "additionalEvidenceDoesNotReplaceB2": [
+    "BOUNDARY_REGRESSION",
+    "UNIT_REGRESSION",
+    "API_REGRESSION",
+    "UI_REGRESSION"
+  ]
+}

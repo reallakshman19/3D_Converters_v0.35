@@ -1,0 +1,114 @@
+{
+  "schema": "Psi116CanonicalProjectionPolicy.v1",
+  "profileId": "pipesstressexport-psi116-xml",
+  "sourceNamespace": "http://aveva.com/pipeStress116.xsd",
+  "sourceRoot": "PipeStressExport",
+  "canonicalVersion": "11.00",
+  "canonicalIssueNo": "1",
+  "canonicalNorth": [0, 1, 0],
+  "coordinatePolicy": {
+    "sourceUnit": "mm",
+    "canonicalUnit": "mm",
+    "axisMapping": "IDENTITY_XYZ",
+    "elementOwnership": "EXPLICIT_OCCURRENCE_SECTION_CLAIMS",
+    "deltaRule": "TO_MINUS_FROM",
+    "zeroLength": "BLOCK"
+  },
+  "occurrenceOwnershipPolicy": {
+    "elementRule": "ADJACENT_SOURCE_NODES_FORM_ONE_ELEMENT",
+    "incomingOwner": {"role": "INCOMING_ELEMENT_OWNER", "baseElementFields": true},
+    "outgoingOwner": {
+      "role": "OUTGOING_ENDPOINT_OWNER",
+      "branchStartOnly": true,
+      "requiredEndpoint": 0,
+      "allowedProjectionRoles": ["ARRIVE"],
+      "auxiliarySectionsOnly": ["BEND", "RIGID", "RESTRANT"]
+    },
+    "sharedElementPolicy": "SECTION_SCOPED_NON_CONFLICTING_CLAIMS",
+    "omissionPolicy": "PAYLOAD_FREE_ISOLATED_TOPOLOGY_ENDPOINT_ONLY"
+  },
+  "unitPolicy": {
+    "DistanceUnits": {"requiredSource": "mm", "factor": 1},
+    "BoreUnits": {"requiredSource": "mm", "factor": 1},
+    "WallThicknessUnits": {"requiredSource": "mm", "factor": 1},
+    "PressureUnits": {"requiredSource": "pascal", "canonicalUnit": "pascal", "factor": 1},
+    "TemperatureUnits": {"requiredSource": "degC", "canonicalUnit": "degC", "factor": 1},
+    "WeightUnits": {"requiredSource": "kg", "canonicalUnit": "kg", "factor": 1},
+    "ForceUnits": {"requiredSource": "newton", "factor": 1},
+    "FluidDensityUnits": {"requiredSource": "kg/m3", "canonicalUnit": "kg/m3", "factor": 1}
+  },
+  "componentPolicy": {
+    "supported": ["PIPE", "OLET", "ELBO", "VALV", "FLAN", "GASK", "INST", "ATTA"],
+    "unsupportedBlocking": ["BRAN", "REDU"],
+    "independentPayloadTypes": ["OLET", "ELBO", "VALV", "FLAN", "GASK", "INST", "ATTA"],
+    "requiredProjectionSections": {
+      "PIPE": [], "OLET": ["ELEMENTS"], "ELBO": ["BEND"],
+      "VALV": ["RIGID"], "FLAN": ["RIGID"], "GASK": ["RIGID"],
+      "INST": ["RIGID"], "ATTA": ["RESTRANT"]
+    },
+    "bend": {"componentType": "ELBO", "endpoint": 0, "requiresPositiveRadius": true},
+    "rigidValues": [0, 2],
+    "rigidOwnerValues": [2],
+    "supportType": "ATTA"
+  },
+  "restraintPolicy": {
+    "maxPerOwner": 6,
+    "typeCodes": {
+      "ANC": 1, "GUI": 8, "GUIDE": 8, "LIM": 9, "LIMIT": 9,
+      "XSNB": 10, "YSNB": 11, "ZSNB": 12,
+      "+X": 13, "+Y": 14, "+Z": 15, "-X": 16, "-Y": 17, "-Z": 18,
+      "+RX": 19, "+RY": 20, "+RZ": 21, "-RX": 22, "-RY": 23, "-RZ": 24,
+      "+LIM": 25, "-LIM": 26, "XROD": 27, "YROD": 28, "ZROD": 29,
+      "+XROD": 30, "+YROD": 31, "+ZROD": 32, "-XROD": 33, "-YROD": 34, "-ZROD": 35,
+      "X2": 36, "Y2": 37, "Z2": 38, "RX2": 39, "RY2": 40, "RZ2": 41,
+      "+X2": 42, "+Y2": 43, "+Z2": 44, "-X2": 45, "-Y2": 46, "-Z2": 47,
+      "+RX2": 48, "+RY2": 49, "+RZ2": 50, "-RX2": 51, "-RY2": 52, "-RZ2": 53,
+      "XSPR": 54, "YSPR": 55, "ZSPR": 56,
+      "+XSNB": 57, "+YSNB": 58, "+ZSNB": 59, "-XSNB": 60, "-YSNB": 61, "-ZSNB": 62
+    },
+    "missingGap": 0,
+    "missingStiffness": 0,
+    "missingFriction": 0,
+    "cnode": 0,
+    "directionCosines": [0, 0, 0]
+  },
+  "fieldPolicy": {
+    "HYDRO_PRESSURE": {
+      "canonicalValue": "0",
+      "canonicalUnit": "pascal",
+      "authority": "TE014_POLICY_EXPLICIT_ABSENCE_OF_HYDROSTATIC_TEST_CASE",
+      "sourceDisposition": "PSI116_SOURCE_CONTRACT_HAS_NO_HYDRO_PRESSURE_FIELD",
+      "projectionDisposition": "NORMALIZE_EXPLICIT_ABSENCE",
+      "ciiSection": "ELEMENTS",
+      "fallbackAllowed": false
+    }
+  },
+  "openEndPolicy": {
+    "sourceField": "RestrainOpenEnds",
+    "canonicalDisposition": "EVIDENCE_ONLY",
+    "syntheticRestraintsAllowed": false
+  },
+  "isolatedNodePolicy": {
+    "disposition": "INTENTIONALLY_OMITTED_PAYLOAD_FREE_ENDPOINT",
+    "requiresExplicitLedgerRow": true,
+    "requiresPayloadFree": true,
+    "ciiProjection": false
+  },
+  "boundaryNodePolicy": {
+    "disposition": "PROJECT_TO_ADJACENT_ELEMENT_OR_BLOCK",
+    "payloadFreeComponentTypes": ["PIPE"],
+    "requiresExplicitLedgerRow": true,
+    "requiresPayloadFreeForOmission": true
+  },
+  "materialPolicy": {"zeroMeaning": "EXPLICIT_UNSPECIFIED", "fallbackAllowed": false},
+  "fallbackPolicy": {
+    "fieldDefaultsAllowed": false,
+    "policyNormalizedExplicitAbsenceAllowed": ["HYDRO_PRESSURE"],
+    "nodeNumberAllocationAllowed": false,
+    "coordinateInferenceAllowed": false,
+    "topologyRepairAllowed": false,
+    "shortSegmentContractionAllowed": false,
+    "componentSubstitutionAllowed": false,
+    "currentClockAllowed": false
+  }
+}

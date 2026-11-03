@@ -1,0 +1,329 @@
+{
+  "projectId": "PROJECT-1",
+  "zoneId": "ZONE-1",
+  "sourceInventoryHash": "sha256:source",
+  "logicalTopologyHash": "sha256:topology",
+  "sequencePlan": {
+    "schema": "TopoSequencePlan.v1",
+    "projectId": "PROJECT-1",
+    "zoneId": "ZONE-1",
+    "sourceInventoryHash": "sha256:source",
+    "logicalTopologyHash": "sha256:topology",
+    "branches": [
+      {
+        "sourceBranch": "/LINE-A/B1",
+        "canonicalMainLine": "/LINE-A"
+      }
+    ],
+    "components": [
+      {
+        "sourceEntityId": "SE-PIPE",
+        "sourceBranch": "/LINE-A/B1"
+      },
+      {
+        "sourceEntityId": "SE-ELBO",
+        "sourceBranch": "/LINE-A/B1"
+      },
+      {
+        "sourceEntityId": "SE-BEND",
+        "sourceBranch": "/LINE-A/B1"
+      },
+      {
+        "sourceEntityId": "SE-TEE",
+        "sourceBranch": "/LINE-A/B1"
+      },
+      {
+        "sourceEntityId": "SE-OLET",
+        "sourceBranch": "/LINE-A/B1"
+      },
+      {
+        "sourceEntityId": "SE-REDU",
+        "sourceBranch": "/LINE-A/B1"
+      },
+      {
+        "sourceEntityId": "SE-REDUCER",
+        "sourceBranch": "/LINE-A/B1"
+      },
+      {
+        "sourceEntityId": "SE-VALV",
+        "sourceBranch": "/LINE-A/B1"
+      },
+      {
+        "sourceEntityId": "SE-FLAN",
+        "sourceBranch": "/LINE-A/B1"
+      },
+      {
+        "sourceEntityId": "SE-GASK",
+        "sourceBranch": "/LINE-A/B1"
+      },
+      {
+        "sourceEntityId": "SE-INST",
+        "sourceBranch": "/LINE-A/B1"
+      },
+      {
+        "sourceEntityId": "SE-FBLI",
+        "sourceBranch": "/LINE-A/B1"
+      },
+      {
+        "sourceEntityId": "SE-ATTA",
+        "sourceBranch": "/LINE-A/B1"
+      },
+      {
+        "sourceEntityId": "SE-SUPPORT",
+        "sourceBranch": "/LINE-A/B1"
+      },
+      {
+        "sourceEntityId": "SE-ANCI",
+        "sourceBranch": "/LINE-A/B1"
+      },
+      {
+        "sourceEntityId": "SE-RIGI",
+        "sourceBranch": "/LINE-A/B1"
+      }
+    ],
+    "validation": {
+      "status": "PASS",
+      "blockers": [],
+      "reviewItems": [],
+      "warnings": []
+    }
+  },
+  "records": [
+    {
+      "sourceEntityId": "SE-PIPE",
+      "sourceRecordId": "REC-PIPE",
+      "componentType": "PIPE",
+      "attrs": {
+        "APOS": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "LPOS": {
+          "x": 1,
+          "y": 0,
+          "z": 0
+        }
+      }
+    },
+    {
+      "sourceEntityId": "SE-ELBO",
+      "sourceRecordId": "REC-ELBO",
+      "componentType": "ELBO",
+      "attrs": {
+        "APOS": {
+          "x": 1,
+          "y": 0,
+          "z": 0
+        },
+        "LPOS": {
+          "x": 2,
+          "y": 1,
+          "z": 0
+        }
+      }
+    },
+    {
+      "sourceEntityId": "SE-BEND",
+      "sourceRecordId": "REC-BEND",
+      "componentType": "BEND",
+      "attrs": {
+        "APOS": {
+          "x": 2,
+          "y": 1,
+          "z": 0
+        },
+        "LPOS": {
+          "x": 3,
+          "y": 2,
+          "z": 0
+        }
+      }
+    },
+    {
+      "sourceEntityId": "SE-TEE",
+      "sourceRecordId": "REC-TEE",
+      "componentType": "TEE",
+      "attrs": {
+        "APOS": {
+          "x": 3,
+          "y": 2,
+          "z": 0
+        },
+        "LPOS": {
+          "x": 4,
+          "y": 2,
+          "z": 0
+        }
+      }
+    },
+    {
+      "sourceEntityId": "SE-OLET",
+      "sourceRecordId": "REC-OLET",
+      "componentType": "OLET",
+      "attrs": {
+        "APOS": {
+          "x": 4,
+          "y": 2,
+          "z": 0
+        },
+        "LPOS": {
+          "x": 5,
+          "y": 2,
+          "z": 0
+        }
+      }
+    },
+    {
+      "sourceEntityId": "SE-REDU",
+      "sourceRecordId": "REC-REDU",
+      "componentType": "REDU",
+      "attrs": {
+        "APOS": {
+          "x": 5,
+          "y": 2,
+          "z": 0
+        },
+        "LPOS": {
+          "x": 6,
+          "y": 2,
+          "z": 0
+        }
+      }
+    },
+    {
+      "sourceEntityId": "SE-REDUCER",
+      "sourceRecordId": "REC-REDUCER",
+      "componentType": "REDUCER",
+      "attrs": {
+        "APOS": {
+          "x": 6,
+          "y": 2,
+          "z": 0
+        },
+        "LPOS": {
+          "x": 7,
+          "y": 2,
+          "z": 0
+        }
+      }
+    },
+    {
+      "sourceEntityId": "SE-VALV",
+      "sourceRecordId": "REC-VALV",
+      "componentType": "VALV",
+      "attrs": {
+        "POS": {
+          "x": 7,
+          "y": 2,
+          "z": 0
+        }
+      }
+    },
+    {
+      "sourceEntityId": "SE-FLAN",
+      "sourceRecordId": "REC-FLAN",
+      "componentType": "FLAN",
+      "attrs": {
+        "POS": {
+          "x": 8,
+          "y": 2,
+          "z": 0
+        }
+      }
+    },
+    {
+      "sourceEntityId": "SE-GASK",
+      "sourceRecordId": "REC-GASK",
+      "componentType": "GASK",
+      "attrs": {
+        "POS": {
+          "x": 9,
+          "y": 2,
+          "z": 0
+        }
+      }
+    },
+    {
+      "sourceEntityId": "SE-INST",
+      "sourceRecordId": "REC-INST",
+      "componentType": "INST",
+      "attrs": {
+        "POS": {
+          "x": 10,
+          "y": 2,
+          "z": 0
+        }
+      }
+    },
+    {
+      "sourceEntityId": "SE-FBLI",
+      "sourceRecordId": "REC-FBLI",
+      "componentType": "FBLI",
+      "attrs": {
+        "POS": {
+          "x": 11,
+          "y": 2,
+          "z": 0
+        }
+      }
+    },
+    {
+      "sourceEntityId": "SE-ATTA",
+      "sourceRecordId": "REC-ATTA",
+      "componentType": "ATTA",
+      "attrs": {
+        "POS": {
+          "x": 12,
+          "y": 2,
+          "z": 0
+        }
+      }
+    },
+    {
+      "sourceEntityId": "SE-SUPPORT",
+      "sourceRecordId": "REC-SUPPORT",
+      "componentType": "SUPPORT",
+      "attrs": {
+        "POS": {
+          "x": 13,
+          "y": 2,
+          "z": 0
+        }
+      }
+    },
+    {
+      "sourceEntityId": "SE-ANCI",
+      "sourceRecordId": "REC-ANCI",
+      "componentType": "ANCI",
+      "attrs": {
+        "POS": {
+          "x": 14,
+          "y": 2,
+          "z": 0
+        }
+      }
+    },
+    {
+      "sourceEntityId": "SE-RIGI",
+      "sourceRecordId": "REC-RIGI",
+      "componentType": "RIGI",
+      "attrs": {
+        "POS": {
+          "x": 15,
+          "y": 2,
+          "z": 0
+        }
+      }
+    }
+  ],
+  "logicalNodeBySourceEntityId": {
+    "SE-PIPE": {
+      "ARRIVE": "LN-1",
+      "LEAVE": "LN-2"
+    },
+    "SE-ATTA": {
+      "PRIMARY": "LN-2"
+    }
+  }
+}

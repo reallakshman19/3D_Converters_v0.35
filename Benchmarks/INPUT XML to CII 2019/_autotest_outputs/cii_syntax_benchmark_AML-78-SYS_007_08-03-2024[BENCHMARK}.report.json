@@ -1,0 +1,146 @@
+{
+  "ok": true,
+  "profile": "cii2019",
+  "inputFile": "C:\\Code3\\PCF_GLB_Viewer_Conv_Latest2\\Benchmarks\\INPUT XML to CII 2019\\7\\AML-78-SYS_007_08-03-2024[BENCHMARK}.CII",
+  "sectionsFound": [
+    "VERSION",
+    "CONTROL",
+    "ELEMENTS",
+    "AUX_DATA",
+    "NODENAME",
+    "BEND",
+    "RIGID",
+    "EXPJT",
+    "RESTRANT",
+    "DISPLMNT",
+    "FORCMNT",
+    "UNIFORM",
+    "WIND",
+    "OFFSETS",
+    "ALLOWBLS",
+    "SIF&TEES",
+    "REDUCERS",
+    "FLANGES",
+    "EQUIPMNT",
+    "MISCEL_1",
+    "UNITS",
+    "COORDS"
+  ],
+  "metrics": {
+    "elements": 108,
+    "nozzles": 2,
+    "hangers": 2,
+    "nodename_blocks": 61,
+    "reducers": 2,
+    "flanges": 0,
+    "bends": 26,
+    "rigids": 27,
+    "expjts": 0,
+    "restraints": 26,
+    "displmnt": 2,
+    "forcmnt": 0,
+    "uniform": 0,
+    "wind": 0,
+    "offsets": 0,
+    "allowbls": 2,
+    "sif_tees": 5,
+    "control_line3_field6": 0,
+    "equipmnt": 2,
+    "vertical_axis_flag": 2
+  },
+  "derivedBlockCounts": {
+    "BEND": {
+      "rows": 78,
+      "linesPerBlock": 3,
+      "derivedBlocks": 26,
+      "remainderRows": 0
+    },
+    "RIGID": {
+      "rows": 27,
+      "linesPerBlock": 1,
+      "derivedBlocks": 27,
+      "remainderRows": 0
+    },
+    "EXPJT": {
+      "rows": 0,
+      "linesPerBlock": 1,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    },
+    "RESTRANT": {
+      "rows": 624,
+      "linesPerBlock": 24,
+      "derivedBlocks": 26,
+      "remainderRows": 0
+    },
+    "DISPLMNT": {
+      "rows": 40,
+      "linesPerBlock": 20,
+      "derivedBlocks": 2,
+      "remainderRows": 0
+    },
+    "FORCMNT": {
+      "rows": 0,
+      "linesPerBlock": 13,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    },
+    "UNIFORM": {
+      "rows": 0,
+      "linesPerBlock": 6,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    },
+    "WIND": {
+      "rows": 0,
+      "linesPerBlock": 1,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    },
+    "OFFSETS": {
+      "rows": 0,
+      "linesPerBlock": 1,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    },
+    "ALLOWBLS": {
+      "rows": 52,
+      "linesPerBlock": 26,
+      "derivedBlocks": 2,
+      "remainderRows": 0
+    },
+    "SIF&TEES": {
+      "rows": 50,
+      "linesPerBlock": 10,
+      "derivedBlocks": 5,
+      "remainderRows": 0
+    },
+    "REDUCERS": {
+      "rows": 2,
+      "linesPerBlock": 1,
+      "derivedBlocks": 2,
+      "remainderRows": 0
+    },
+    "FLANGES": {
+      "rows": 0,
+      "linesPerBlock": 11,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    },
+    "EQUIPMNT": {
+      "rows": 12,
+      "linesPerBlock": 6,
+      "derivedBlocks": 2,
+      "remainderRows": 0
+    }
+  },
+  "errors": [],
+  "warnings": [
+    {
+      "code": "nodename_rows_short",
+      "section": "NODENAME",
+      "line": 1690,
+      "message": "NODENAME has 59 rows, less than CONTROL NONAM 61."
+    }
+  ]
+}

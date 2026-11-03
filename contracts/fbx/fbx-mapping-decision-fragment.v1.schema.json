@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "FbxMappingDecisionFragment.v1",
+  "title": "FbxMappingDecisionFragment.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "bundleId",
+    "worklistId",
+    "sourceGraphCanonicalSha256",
+    "shardId",
+    "fragmentId",
+    "decisions"
+  ],
+  "properties": {
+    "schema": { "const": "FbxMappingDecisionFragment.v1" },
+    "bundleId": { "$ref": "FbxMappingWorklist.v1#/$defs/sha256" },
+    "worklistId": { "$ref": "FbxMappingWorklist.v1#/$defs/sha256" },
+    "sourceGraphCanonicalSha256": { "$ref": "FbxMappingWorklist.v1#/$defs/sha256" },
+    "shardId": { "$ref": "FbxMappingWorklist.v1#/$defs/sha256" },
+    "fragmentId": { "$ref": "FbxMappingWorklist.v1#/$defs/sha256" },
+    "decisions": {
+      "type": "array",
+      "items": { "$ref": "FbxMappingDecisionSet.v1#/$defs/decision" }
+    }
+  }
+}

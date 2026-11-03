@@ -1,0 +1,13 @@
+{
+  "schema": "legacy-psi-numbering-warning/v1",
+  "canonical": {"O-A": 500, "O-B": 510, "O-C": 520},
+  "sequential": {"O-A": 510, "O-B": 500, "O-C": 520},
+  "legacyExpectation": {
+    "numberingEquivalent": false,
+    "selectionGateAllowed": true
+  },
+  "strictExpectation": {
+    "blocker": "NODE_NUMBER_MISMATCH",
+    "selectionGateAllowed": false
+  }
+}

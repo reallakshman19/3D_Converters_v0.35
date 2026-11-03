@@ -1,0 +1,50 @@
+schema: AgentPrStatus.v1
+repository: reallaksh19/3D_Converters
+pr_or_wip: PR569
+mission: "Issue #568 reusable fail-closed Engineering Work Pack framework"
+workstream: ENGINEERING_WORKPACK_FRAMEWORK
+branch: agent/engineering-workpack-framework-568
+pr_head: de2079979e173e919fbbf4dab1c9d5f3b0599199
+main_head_last_checked: ecf3b7c44826212710f24ff00f3c0e8847570725
+merge_base: ecf3b7c44826212710f24ff00f3c0e8847570725
+work_intent: IMPLEMENT
+criticality: ENGINEERING_CRITICAL
+execution_mode: AUTO
+auto_state: RUNNING
+auto_authorization: "Owner instruction 2026-08-16T23:04+04:00: proceed in auto mode; skip workflow, only local check"
+agent_state: IMPLEMENTED_SOURCE_RECONCILING
+pr_recovery_state: ACTIVE
+handover_readiness: READY
+report_path: agents/PR569_workreport.md
+appendix_a_status: QUALIFIED_FOR_ENGINEERING_WORKPACK_FRAMEWORK
+qualification_comment: 5309114286
+current_stage: FINAL_SOURCE_DIFF_FALSIFIER_AUDIT
+protected_authority:
+  - FIT_NUMERICAL_METHOD_UNCHANGED
+  - FIT_SCREENING_AUTHORITY_AUTHORIZED_BOUNDED
+  - FIT_DESIGN_AUTHORITY_FALSE
+  - FIT_CODE_COMPLIANCE_FALSE
+  - QST003_FAIL_CLOSED
+  - FIT_PRODUCT_FREEZE_SEPARATE_BLOCKED
+  - CAPABILITY_LIFECYCLE_NOT_INFERRED_FROM_REGISTRY
+  - BENCHMARK_ORACLE_IDENTITY_UNCHANGED
+validation:
+  pre_edit_blob_backups: PASS
+  changed_scope_reconciliation: PASS
+  new_js_line_limit: PASS_UNDER_300
+  prepared_mjs_node_check: PASS_LOCAL_RECONSTRUCTION
+  vib_fit_json_parse: PASS_LOCAL_RECONSTRUCTION
+  synthetic_second_consumer: PASS_LOCAL_RECONSTRUCTION
+  unknown_check_type_fail_closed: PASS_LOCAL_RECONSTRUCTION
+  mutation_probe_immutability: PASS_LOCAL_RECONSTRUCTION
+  pull_request_mergeable: PASS
+  exact_head_git_clone: NOT_RUN_ENVIRONMENT_BLOCKED_DNS_GITHUB
+  exact_head_fit_workpack: NOT_RUN_ENVIRONMENT_BLOCKED_NO_PRIVATE_CHECKOUT
+  exact_head_framework_test: NOT_RUN_ENVIRONMENT_BLOCKED_NO_PRIVATE_CHECKOUT
+  exact_head_fit_release: NOT_RUN_ENVIRONMENT_BLOCKED_NO_PRIVATE_CHECKOUT
+  workflows_actions: NOT_APPLICABLE_OWNER_DIRECTED_SKIP
+coordination_state: COORDINATION_REQUIRED_PR567_SHARED_VERIFIER
+highest_risk: "Exact repository-native FIT execution is unavailable; do not move PR out of draft or merge based on source/local reconstruction alone."
+exact_next_action: "Complete source/diff/falsifier audit, update durable evidence, then set AUTO_STATE=TAKEOVER_REQUIRED for native exact-head execution before review readiness."
+merge_authority: OWNER_ONLY_NOT_GRANTED
+last_updated: 2026-08-16T23:08:00+04:00

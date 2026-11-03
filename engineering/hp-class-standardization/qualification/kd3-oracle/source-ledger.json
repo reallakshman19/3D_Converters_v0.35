@@ -1,0 +1,77 @@
+{
+  "schema": "kd3-qualification-source-ledger/v1",
+  "authority": {
+    "nativeCoreKd3Qualified": false,
+    "codeCompliance": false,
+    "canUseForDesignAuthority": false
+  },
+  "sources": [
+    {
+      "sourceId": "ASME-B313-2024-PUBLIC",
+      "sourceType": "PUBLIC_OFFICIAL_IDENTITY",
+      "publisher": "ASME",
+      "title": "B31.3 - Process Piping, 2024",
+      "url": "https://www.asme.org/codes-standards/find-codes-standards/b31-3-process-piping",
+      "admissibility": "EDITION_AND_SCOPE_IDENTITY_ONLY",
+      "facts": ["edition=2024", "public page identifies High Pressure Fluid Service Fatigue Analysis at K302.3 and K304.8"],
+      "formulaOracle": false,
+      "fatigueCurveOracle": false
+    },
+    {
+      "sourceId": "ASME-VIII3-2025-PUBLIC",
+      "sourceType": "PUBLIC_OFFICIAL_IDENTITY",
+      "publisher": "ASME",
+      "title": "BPVC Section VIII Division 3 - Alternative Rules for Construction of High Pressure Vessels",
+      "url": "https://www.asme.org/codes-standards/find-codes-standards/bpvc-viii-3-bpvc-section-viii-rules-construction-pressure-vessels-division-3-alternative-rules-construction-high-pressure-vessels-%283%29",
+      "admissibility": "EDITION_AND_SCOPE_IDENTITY_ONLY",
+      "facts": ["edition=2025", "Division 3 high-pressure vessel standard identity"],
+      "formulaOracle": false,
+      "fatigueCurveOracle": false
+    },
+    {
+      "sourceId": "SRC-VIII3-2025-CONTROLLED",
+      "sourceType": "LICENSED_RESTRICTED_CONTROLLED",
+      "publisher": "ASME",
+      "title": "BPVC VIII.3 2025 controlled project copy",
+      "storageClass": "SECURE_STORE",
+      "licenseClass": "LICENSED_RESTRICTED",
+      "status": "PENDING_SECURE_HASH_AND_LOCATOR_RECONCILIATION",
+      "admissibility": "REQUIRED_FOR_NATIVE_KD3_SEMANTICS",
+      "formulaOracle": false,
+      "fatigueCurveOracle": false,
+      "publicRepositoryContentAllowed": false
+    },
+    {
+      "sourceId": "ANALYTICAL-LAME-001",
+      "sourceType": "INDEPENDENT_ANALYTICAL_IDENTITY",
+      "title": "Thick-cylinder pressure-stress analytical benchmark",
+      "admissibility": "FOUNDATION_ONLY_NOT_KD320_AUTHORITY",
+      "formulaOracle": false,
+      "fatigueCurveOracle": false
+    },
+    {
+      "sourceId": "ANALYTICAL-MINER-001",
+      "sourceType": "INDEPENDENT_ANALYTICAL_IDENTITY",
+      "title": "Palmgren-Miner arithmetic benchmark",
+      "admissibility": "DAMAGE_BOOKKEEPING_ONLY_NOT_KD320_AUTHORITY",
+      "formulaOracle": false,
+      "fatigueCurveOracle": false
+    },
+    {
+      "sourceId": "PUBLISHED-KD3-INDEPENDENT-001",
+      "sourceType": "PRIMARY_PUBLISHED_NUMERICAL_ORACLE_SLOT",
+      "status": "PENDING_PRIMARY_SOURCE_ADMISSION",
+      "admissibility": "NOT_ADMITTED",
+      "formulaOracle": false,
+      "fatigueCurveOracle": false
+    },
+    {
+      "sourceId": "EXTERNAL-KD3-CHECKED-001",
+      "sourceType": "INDEPENDENT_CHECKED_PROJECT_CALCULATION_SLOT",
+      "status": "PENDING_EXTERNAL_EVIDENCE",
+      "admissibility": "NOT_ADMITTED",
+      "formulaOracle": false,
+      "fatigueCurveOracle": false
+    }
+  ]
+}

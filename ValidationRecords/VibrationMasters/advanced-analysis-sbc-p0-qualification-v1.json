@@ -1,0 +1,97 @@
+{
+  "schema": "SbcT3P0SourceQualificationReceipt.v1",
+  "candidateSource": {
+    "repository": "reallaksh19/Advanced_Analysis",
+    "commit": "6111ddbc0f27dd95b50a80c569a2c4daba3b3921",
+    "p0Path": "docs/EI data/P0_SBC_Master_Data.md",
+    "p0BlobSha1": "5312c9e2cf86af9e940ba722fcbee64702aeccd3",
+    "examplesPath": "docs/EI data/EI_AVIFF_Guidelines_2nd_Edition_Examples.md",
+    "examplesBlobSha1": "c050cd90802c27241c510c6f0ac43bfaf7a89e9d"
+  },
+  "uploadedCompleteRegisterCorroboration": {
+    "fileName": "EI_AVIFF_Complete_Master_Register.md",
+    "sizeBytes": 33272,
+    "sha256": "1b88b6e1b8345eff89f751b196fb9fd29d73103d7bba67ccb49f6e9a7cd5f29a",
+    "status": "PASS_CORROBORATION_ONLY",
+    "observedCombinationRule": "min(mainLineLof * 1.42, sbcModifier)",
+    "observedGovernance": {
+      "tablesT3_1_T3_2_T3_3": "QUALIFIED_IN_REGISTER",
+      "combinationFormula": "QUALIFIED_IN_REGISTER",
+      "figuresT3_1_T3_4": "BLOCKED_SOURCE_DATA_CONFLICT_QUARANTINED"
+    },
+    "authorityEffect": "NONE",
+    "reason": "Uploaded register is user-supplied corroborating governance evidence. It does not provide calibrated curve geometry and does not independently resolve the D7 curve conflict."
+  },
+  "existingCandidateParity": {
+    "tableT3_1": {
+      "status": "PASS",
+      "rows": 15,
+      "repositoryPath": "docs/Masters/Vibration/ei-aviff-t3-sbc-fitting-span-factors.candidate.csv",
+      "blobSha1": "1c21cd7c856cd9656c50aeb0c6a0d5fc1e0dd319"
+    },
+    "tableT3_2": {
+      "status": "PASS",
+      "rows": 8,
+      "repositoryPath": "docs/Masters/Vibration/ei-aviff-t3-sbc-first-span-limits.candidate.csv",
+      "blobSha1": "9da7aa1b4df520ad000bae4a034da2460a899629"
+    },
+    "tableT3_3": {
+      "status": "PASS",
+      "rows": 8,
+      "repositoryPath": "docs/Masters/Vibration/ei-aviff-t3-sbc-between-main-lines-limits.candidate.csv",
+      "blobSha1": "86dd78e684c3497ae968c69abf276cc69ccb07f1"
+    }
+  },
+  "combinationRule": {
+    "workedExampleDisposition": "PASS",
+    "authoritativeRule": "min(mainLineLof * 1.42, sbcModifier)",
+    "candidateNarrativeProductFormula": "REJECTED_CONFLICT_WITH_WORKED_EXAMPLES",
+    "oracles": [
+      { "example": "D5", "mainLineLof": 1.0, "sbcModifier": 0.66, "expectedSbcLof": 0.66 },
+      { "example": "D6", "mainLineLof": 0.49, "sbcModifier": 0.7, "expectedSbcLofApprox": 0.696 },
+      { "example": "D7", "mainLineLof": 1.0, "sbcModifier": 0.7, "expectedSbcLof": 0.7 }
+    ]
+  },
+  "curveQualification": {
+    "status": "FAIL",
+    "checks": [
+      {
+        "id": "D7-T3-1",
+        "diameterIn": 1.5,
+        "spanM": 1.2857142857142858,
+        "expectedLof": 0.2,
+        "suppliedCandidateLof": 0.4,
+        "status": "FAIL"
+      },
+      {
+        "id": "D7-T3-3",
+        "diameterIn": 1.5,
+        "spanM": 2.3,
+        "expectedLof": 0.6,
+        "suppliedCandidateLof": 0.7,
+        "status": "FAIL"
+      },
+      {
+        "id": "D7-T3-4",
+        "diameterIn": 1.5,
+        "spanM": 1.4,
+        "expectedLof": 0.2,
+        "suppliedCandidateLof": 0.3,
+        "status": "FAIL"
+      }
+    ]
+  },
+  "decision": {
+    "publicationState": "BLOCKED_SOURCE_DATA_CONFLICT",
+    "masterPublicationAuthorized": false,
+    "runtimeCurveActivation": false,
+    "manualUserEngineeringDataFallbackRetained": true,
+    "requiredResolution": "Obtain controlled readable Figure T3-1..T3-4 geometry or a corrected independently digitized pack that reproduces D7 before runtime publication."
+  },
+  "authority": {
+    "engineeringAuthority": "NONE",
+    "screeningAuthority": "NOT_AUTHORIZED",
+    "designAuthority": false,
+    "masterDataAuthority": false
+  }
+}

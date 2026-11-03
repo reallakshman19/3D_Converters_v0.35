@@ -1,0 +1,160 @@
+{
+  "schema": "AivEitRoundTripValidationRecord.v1",
+  "validationId": "AIV-SMALL-FLARE-EIT-ROUNDTRIP-V1",
+  "createdDate": "2026-08-14",
+  "scope": "Modern two-source flare-network EI .eit export/import/rerun/export compatibility trace",
+  "implementationCandidate": {
+    "repository": "reallaksh19/3D_Converters",
+    "branch": "agent/aiv-eit-import-ui",
+    "baseSha": "994f43521b5aa6e4dd397efd9300ce21943d056d",
+    "calculationId": "VIB.AIV.ACOUSTIC",
+    "qualificationMode": "screening",
+    "screeningResultScope": "ASSESSMENT",
+    "designAuthority": false
+  },
+  "exampleEvidence": {
+    "repository": "reallaksh19/Common",
+    "pullRequest": 3,
+    "path": "AIV/Examples/Small-Flare-Network/validation-record.json",
+    "exampleId": "SMALL-FLARE-2RV-SUBHEADER-001",
+    "status": "INTEGRATION_PASS_GEOMETRY_QUALIFICATION_MISMATCH"
+  },
+  "fixture": {
+    "caseId": "RELIEF-COMBINED",
+    "sources": [
+      {
+        "sourceCanonicalId": "RV-101",
+        "effectiveSourcePwlDb": 160,
+        "physicalDistanceM": 38,
+        "pointPwlDb": 148.75406925125776,
+        "segmentIds": ["RV101-BRANCH", "SUBHEADER-4IN", "HEADER-8IN"]
+      },
+      {
+        "sourceCanonicalId": "RV-102",
+        "effectiveSourcePwlDb": 154,
+        "physicalDistanceM": 41,
+        "pointPwlDb": 141.86623261319917,
+        "segmentIds": ["RV102-BRANCH", "SUBHEADER-4IN", "HEADER-8IN"]
+      }
+    ],
+    "assessment": {
+      "assessmentCanonicalId": "AIV-ASSESS-HDR-001",
+      "assessmentType": "WELDED_TEE",
+      "line": "8IN-FLARE-HEADER",
+      "combinedPointPwlDb": 149.56302572849327,
+      "screeningLof": 0.29
+    },
+    "lineCaseTrace": {
+      "lof": 1.48,
+      "authoritativeForScreening": false
+    },
+    "simultaneousSourceGroup": "FLARE-GROUP-1",
+    "distanceAuthority": "EXPLICIT_SEGMENT_ENGINEERING_LENGTH_SUM"
+  },
+  "eitExpectations": {
+    "lineAiv": "0.29",
+    "lineMaxLofForAivOnlyDocument": "0.29",
+    "configuredLineCaseTraceLof": 1.48,
+    "configuredLineCaseTraceAuthoritative": false,
+    "aivDataEncoding": "JSON_STRINGIFIED_ARRAY",
+    "sourceCanonicalIds": ["RV-101", "RV-102"],
+    "assessmentCanonicalId": "AIV-ASSESS-HDR-001",
+    "caseId": "RELIEF-COMBINED",
+    "sourcePwlDb": [160, 154],
+    "pointPwlDb": [148.75406925125776, 141.86623261319917],
+    "combinedPointPwlDb": 149.56302572849327,
+    "distancesM": [38, 41],
+    "segmentIdsPreserved": true,
+    "simultaneousSourceGroupPreserved": true,
+    "svgPixelsAuthoritativeForDistance": false
+  },
+  "authorityExpectation": {
+    "exportedCurrentAssessmentLof": 0.29,
+    "importedPriorResultAuthority": "REVIEW_REQUIRED",
+    "registeredRerunRequiredAfterImport": true,
+    "rerunAssessmentLofExpected": 0.29,
+    "lineCaseTraceNeverPromoted": true,
+    "designAuthority": false
+  },
+  "geometryQualificationFinding": {
+    "configuredFlm1": 1.2133,
+    "geometryRecalculatedFlm1": 1.327921644354955,
+    "variance": 0.11462164435495505,
+    "tolerance": 0.0024,
+    "status": "MISMATCH",
+    "consequence": "The example remains an integration sample and is not independent arbitrary-geometry AIV qualification. EIT round-trip compatibility must not change this status."
+  },
+  "antiDrift": {
+    "sourceCaseIdentityLocked": true,
+    "assessmentIdentityLocked": true,
+    "roundTripIdentityFailureCode": "AIV_EIT_ROUND_TRIP_IDENTITY_CHANGED",
+    "multiSourceStreamResolution": "ADDITIVE_SOURCE_CASE_IDENTITY_BEFORE_LEGACY_LINE_SI",
+    "unknownFieldPreservationRequired": true,
+    "currentAivAuthoritySource": "AivAssessmentResult.v1.lof"
+  },
+  "validationSteps": [
+    {
+      "step": 1,
+      "name": "Confirm source example engineering values",
+      "expected": "160/154 dB sources, 38/41 m paths, 149.5630257285 dB combined, Assessment LOF 0.29",
+      "observed": "Common PR #3 validation-record patch contains the expected values and the geometry qualification warning.",
+      "status": "PASS"
+    },
+    {
+      "step": 2,
+      "name": "Export modern AIV-only EI .eit",
+      "expected": "line.aiv=0.29; line trace 1.48 additive/non-authoritative; modern source/path metadata retained in stringified aiv_data",
+      "observed": "Exporter regression exists from the preceding merged stage; updated round-trip seam is implemented but not executed in this runtime.",
+      "status": "NOT_RUN"
+    },
+    {
+      "step": 3,
+      "name": "Import generated EI .eit",
+      "expected": "2 Sources / 1 Assessment / 2 Relationships and imported prior result REVIEW_REQUIRED",
+      "observed": "Permanent import regression is implemented but not executed in this runtime.",
+      "status": "NOT_RUN"
+    },
+    {
+      "step": 4,
+      "name": "Verify multi-source stream identity",
+      "expected": "RV-102 resolves its additive stream rather than reusing line.si for RV-101",
+      "observed": "Permanent regression is implemented; execution pending.",
+      "status": "NOT_RUN"
+    },
+    {
+      "step": 5,
+      "name": "Registered screening rerun after import",
+      "expected": "Assessment result remains 0.29 with 149.5630257285 dB combined-point evidence",
+      "observed": "Not executed in current runtime.",
+      "status": "NOT_RUN"
+    },
+    {
+      "step": 6,
+      "name": "Second EI .eit export",
+      "expected": "Source IDs, case, Assessment ID, source/point/combined PWL, distances, segment IDs, simultaneous group and non-authoritative 1.48 trace survive",
+      "observed": "Permanent round-trip regression is implemented; execution pending.",
+      "status": "NOT_RUN"
+    },
+    {
+      "step": 7,
+      "name": "Real-browser import/export acceptance",
+      "expected": "Import EI .eit control populates working state and Export EI .eit produces a downloadable v5 JSON file",
+      "observed": "No real browser acceptance executed in this environment.",
+      "status": "NOT_RUN"
+    }
+  ],
+  "execution": {
+    "focusedCommand": "npm run verify:aiv-eit-export",
+    "focusedAutomatedTests": "NOT_RUN",
+    "fullAivRelease": "NOT_RUN",
+    "realBrowserAcceptance": "NOT_RUN",
+    "externalEiConsumerRoundTrip": "NOT_RUN"
+  },
+  "overallStatus": "IMPLEMENTED_VALIDATION_PENDING_GEOMETRY_QUALIFICATION_MISMATCH_RETAINED",
+  "notes": [
+    "This validation record does not upgrade the small flare example to arbitrary-geometry qualification.",
+    "Distances come only from explicit engineering lengths; SVG geometry remains presentation-only.",
+    "Assessment LOF 0.29 is the intended current screening result; Line/Case 1.48 remains non-authoritative trace.",
+    "PASS is not claimed for automated or browser validation that has not executed."
+  ]
+}

@@ -1,0 +1,16 @@
+rowId,fittingKey,fittingType,fittingSpanFactor,sourceLocator,publicationState,engineeringAuthority,screeningAuthority,designAuthority,masterValuesPublished
+T3-FSF-001,SHORT_CONTOURED_BODY,Short Contoured Body,1.0,Table T3-1 printed page 81,CANDIDATE,NONE,NOT_AUTHORIZED,false,false
+T3-FSF-002,CONTOURED_BODY,Contoured Body,0.85,Table T3-1 printed page 81,CANDIDATE,NONE,NOT_AUTHORIZED,false,false
+T3-FSF-003,FORGED_REDUCING_TEE,Forged Reducing Tee,0.85,Table T3-1 printed page 81,CANDIDATE,NONE,NOT_AUTHORIZED,false,false
+T3-FSF-004,WELDED_TEE,Welded Tee,0.85,Table T3-1 printed page 81,CANDIDATE,NONE,NOT_AUTHORIZED,false,false
+T3-FSF-005,WELDOLET,Weldolet,0.7,Table T3-1 printed page 81,CANDIDATE,NONE,NOT_AUTHORIZED,false,false
+T3-FSF-006,THREADOLET_FULLY_BACK_WELDED,Threadolet fully back welded,0.7,Table T3-1 printed page 81,CANDIDATE,NONE,NOT_AUTHORIZED,false,false
+T3-FSF-007,SCREWED_FULLY_BACK_WELDED,Screwed fully back welded,0.7,Table T3-1 printed page 81,CANDIDATE,NONE,NOT_AUTHORIZED,false,false
+T3-FSF-008,THREADOLET,Threadolet,0.65,Table T3-1 printed page 81,CANDIDATE,NONE,NOT_AUTHORIZED,false,false
+T3-FSF-009,SCREWED,Screwed,0.65,Table T3-1 printed page 81,CANDIDATE,NONE,NOT_AUTHORIZED,false,false
+T3-FSF-010,SOCKOLET,Sockolet,0.65,Table T3-1 printed page 81,CANDIDATE,NONE,NOT_AUTHORIZED,false,false
+T3-FSF-011,THREADOLET_PARTIALLY_BACK_WELDED,Threadolet partially back welded,0.6,Table T3-1 printed page 81,CANDIDATE,NONE,NOT_AUTHORIZED,false,false
+T3-FSF-012,SCREWED_PARTIALLY_BACK_WELDED,Screwed partially back welded,0.6,Table T3-1 printed page 81,CANDIDATE,NONE,NOT_AUTHORIZED,false,false
+T3-FSF-013,SET_ON,Set-on,0.55,Table T3-1 printed page 81,CANDIDATE,NONE,NOT_AUTHORIZED,false,false
+T3-FSF-014,SET_IN,Set-in,0.55,Table T3-1 printed page 81,CANDIDATE,NONE,NOT_AUTHORIZED,false,false
+T3-FSF-015,SET_THRU,Set-thru,0.55,Table T3-1 printed page 81,CANDIDATE,NONE,NOT_AUTHORIZED,false,false

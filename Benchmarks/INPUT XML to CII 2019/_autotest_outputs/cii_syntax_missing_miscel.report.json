@@ -1,0 +1,65 @@
+{
+  "ok": false,
+  "profile": "cii2019",
+  "inputFile": "Benchmarks\\INPUT XML to CII 2019\\_autotest_outputs\\cii_syntax_missing_miscel.cii",
+  "sectionsFound": [
+    "VERSION",
+    "CONTROL",
+    "ELEMENTS",
+    "AUX_DATA",
+    "NODENAME",
+    "BEND",
+    "RIGID",
+    "EXPJT",
+    "RESTRANT",
+    "DISPLMNT",
+    "FORCMNT",
+    "UNIFORM",
+    "WIND",
+    "OFFSETS",
+    "ALLOWBLS",
+    "SIF&TEES",
+    "REDUCERS",
+    "FLANGES",
+    "EQUIPMNT",
+    "UNITS",
+    "COORDS"
+  ],
+  "metrics": {
+    "elements": 40,
+    "nozzles": 0,
+    "hangers": 1,
+    "nodename_blocks": 2,
+    "reducers": 0,
+    "flanges": 0,
+    "bends": 7,
+    "rigids": 15,
+    "expjts": 0,
+    "restraints": 8,
+    "displmnt": 0,
+    "forcmnt": 0,
+    "uniform": 0,
+    "wind": 0,
+    "offsets": 0,
+    "allowbls": 1,
+    "sif_tees": 9,
+    "control_line3_field6": 0,
+    "equipmnt": 0,
+    "vertical_axis_flag": 0
+  },
+  "errors": [
+    {
+      "code": "missing_section",
+      "section": "MISCEL_1",
+      "line": 0,
+      "message": "Missing required section '#$ MISCEL_1'."
+    },
+    {
+      "code": "section_block_rows",
+      "section": "EQUIPMNT",
+      "line": 1030,
+      "message": "EQUIPMNT has 23 rows, expected 0 (0 blocks x 6 rows)."
+    }
+  ],
+  "warnings": []
+}

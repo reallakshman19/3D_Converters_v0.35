@@ -1,0 +1,42 @@
+{
+  "schema": "AivSingleIntegratedCanvasChromiumEvidence.v1",
+  "repository": "reallaksh19/3D_Converters",
+  "pullRequest": 528,
+  "branch": "agent/aiv-unified-network-canvas-526",
+  "chromium": "144.0.7559.96",
+  "execution": {
+    "runner": "local Playwright + system Chromium",
+    "navigation": "page.set_content",
+    "managedNavigationLimitation": "URLBlocklist=[\"*\"] prevents normal URL/file navigation in this environment"
+  },
+  "supersedes": "ValidationRecords/AIV/PR528-local-chromium-evidence.json side-by-side presentation artifact",
+  "acceptanceIntent": "Prove one integrated AIV canvas host/SVG is reused while switching TABLE_DRIVEN D2.3 and NETWORK_DRIVEN flare sample projections.",
+  "assertions": [
+    "PASS exactly one svg[data-aiv-unified-canvas-svg=true] exists",
+    "PASS D2.3 TABLE_DRIVEN renders in that one SVG with one logical relationship and zero invented physical segments",
+    "PASS D2.3 explicit 0.8 m evidence and frozen registered result values remain visible",
+    "PASS loading the flare sample reuses the same SVG DOM object identity",
+    "PASS the flare sample renders four explicit physical segments in that same SVG",
+    "PASS the flare path overlays retain exact 38 m and 41 m pathEvidence distances",
+    "PASS no second unified-canvas workspace/card or SVG is created",
+    "PASS switching back to D2.3 again reuses the original SVG object"
+  ],
+  "summary": "8/8 PASS",
+  "canvasCounts": {
+    "workspaceCount": 1,
+    "svgCount": 1,
+    "d23SvgCountAfterSwitch": 1
+  },
+  "artifacts": {
+    "networkDrivenPngSha256": "9c5c454b56368832d7ae7c96875d9a44d39a0998a0b3bbb6fc447a56badb0620",
+    "sameCanvasD23PngSha256": "da0a7d83bc70004b2458103cf2abbf809c882c1fdd314fdb94242db40ca301b1",
+    "harnessHtmlSha256": "a3f1573f23173ff810f8f7ed2ff1c07950263a4b3eed73ede226607071b2aa4d",
+    "note": "PNG/HTML returned through ChatGPT sandbox; GitHub connector stores the evidence manifest, not binary screenshots."
+  },
+  "promotionBoundary": {
+    "singleIntegratedCanvasLocalChromium": "PASS",
+    "hostedFullApplicationChromium": "NOT_RUN_INFRASTRUCTURE_BLOCKED",
+    "fullNativeReleaseSuite": "NOT_RUN_NO_PRIVATE_CHECKOUT",
+    "completeB1B10": "NOT_RUN"
+  }
+}

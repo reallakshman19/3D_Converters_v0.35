@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "FbxMappingReviewBundle.v1",
+  "title": "FbxMappingReviewBundle.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "bundleId", "worklistId", "sourceGraphCanonicalSha256", "partitionPolicy", "shards"],
+  "properties": {
+    "schema": { "const": "FbxMappingReviewBundle.v1" },
+    "bundleId": { "$ref": "FbxMappingWorklist.v1#/$defs/sha256" },
+    "worklistId": { "$ref": "FbxMappingWorklist.v1#/$defs/sha256" },
+    "sourceGraphCanonicalSha256": { "$ref": "FbxMappingWorklist.v1#/$defs/sha256" },
+    "partitionPolicy": { "$ref": "#/$defs/partitionPolicy" },
+    "shards": { "type": "array", "items": { "$ref": "#/$defs/shard" } }
+  },
+  "$defs": {
+    "partitionPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "orderingAuthority", "maxItemsPerShard", "shardCount"],
+      "properties": {
+        "id": { "const": "WORK_ITEM_ID_CONTIGUOUS_V1" },
+        "orderingAuthority": { "const": "workItemId" },
+        "maxItemsPerShard": { "type": "integer", "minimum": 1 },
+        "shardCount": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "shard": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["shardId", "ordinal", "firstWorkItemId", "lastWorkItemId", "workItemCount", "canonicalSha256", "fileName"],
+      "properties": {
+        "shardId": { "$ref": "FbxMappingWorklist.v1#/$defs/sha256" },
+        "ordinal": { "type": "integer", "minimum": 0 },
+        "firstWorkItemId": { "type": "string", "pattern": "^work-[0-9a-f]{64}$" },
+        "lastWorkItemId": { "type": "string", "pattern": "^work-[0-9a-f]{64}$" },
+        "workItemCount": { "type": "integer", "minimum": 1 },
+        "canonicalSha256": { "$ref": "FbxMappingWorklist.v1#/$defs/sha256" },
+        "fileName": { "type": "string", "pattern": "^shard-\\d+\\.json$" }
+      }
+    }
+  }
+}

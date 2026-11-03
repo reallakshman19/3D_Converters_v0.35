@@ -1,0 +1,56 @@
+name: Topology Edit Support Reprojection
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/topology-edit-support-reprojection.yml'
+      - 'tabs/model-converters/converters/component-topology/**'
+      - 'tests/component-topology-edit-engine.test.mjs'
+      - 'tests/component-topology-edit-support-reprojection.test.mjs'
+      - 'tests/component-topology-support-dual-position.test.mjs'
+      - 'scripts/build-topology-browser-core.mjs'
+      - 'package.json'
+      - 'package-lock.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    name: Source tests and browser bundle
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run topology edit engine suite
+        run: node tests/component-topology-edit-engine.test.mjs
+
+      - name: Run support reprojection regression
+        run: node tests/component-topology-edit-support-reprojection.test.mjs
+
+      - name: Run support dual-position contract
+        run: node tests/component-topology-support-dual-position.test.mjs
+
+      - name: Build pinned topology browser core
+        run: node scripts/build-topology-browser-core.mjs dist/topology-browser-core.mjs dist/topology-browser-core.manifest.json
+
+      - name: Upload browser core release candidate
+        uses: actions/upload-artifact@v7
+        with:
+          name: topology-browser-core-support-reprojection
+          path: dist
+          if-no-files-found: error
+          retention-days: 14

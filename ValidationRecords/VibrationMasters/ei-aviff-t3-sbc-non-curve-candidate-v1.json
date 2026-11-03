@@ -1,0 +1,128 @@
+{
+  "schema": "VibrationSbcNonCurveCandidateSet.v1",
+  "candidateSetId": "EI_AVIFF.T3.SBC.NON_CURVE_MASTERS.v1",
+  "candidateFiles": {
+    "geometryScores": "docs/Masters/Vibration/ei-aviff-t3-sbc-geometry-scores.candidate.csv",
+    "locationScores": "docs/Masters/Vibration/ei-aviff-t3-sbc-location-scores.candidate.csv",
+    "fittingSpanFactors": "docs/Masters/Vibration/ei-aviff-t3-sbc-fitting-span-factors.candidate.csv",
+    "firstSpanLimits": "docs/Masters/Vibration/ei-aviff-t3-sbc-first-span-limits.candidate.csv",
+    "betweenMainLinesLimits": "docs/Masters/Vibration/ei-aviff-t3-sbc-between-main-lines-limits.candidate.csv"
+  },
+  "controlledSource": {
+    "repository": "reallaksh19/Common",
+    "commit": "fb549185b9b27edc2379734240320a85c5bef9f6",
+    "path": "EI - AVIFF Guidelines 2nd Edition.pdf",
+    "gitBlobSha1": "sha1:9d3eccc56429411e17c07a579bdebbd13cb0bdc5",
+    "sizeBytes": 10348594,
+    "executionStatus": "BLOCKED_ENVIRONMENT"
+  },
+  "independentEiCorroboration": {
+    "status": "PASS",
+    "role": "SECONDARY_PUBLICATION_NAVIGATION_AND_RECONCILIATION_ONLY",
+    "copiesChecked": 4,
+    "locators": {
+      "geometryScores": "Flowchart T3-3 printed page 74 and Appendix C.1.1-C.1.4/C.1.9",
+      "locationScores": "Flowchart T3-9 printed page 80 and Appendix C.1.10",
+      "fittingSpanFactors": "Table T3-1 printed page 81",
+      "firstSpanLimits": "Table T3-2 printed page 81",
+      "betweenMainLinesLimits": "Table T3-3 printed page 82"
+    }
+  },
+  "geometryRules": {
+    "aggregation": "ARITHMETIC_MEAN_OF_FIVE_SCORES",
+    "dimensions": [
+      "FITTING_TYPE",
+      "BRANCH_LENGTH_MM",
+      "VALVE_FLANGE_CATEGORY",
+      "PARENT_PIPE_SCHEDULE",
+      "SBC_MIN_DIAMETER_IN"
+    ],
+    "betweenListedSchedules": "USE_LOWER_STANDARD_SCHEDULE",
+    "neckedSbc": "USE_SMALLEST_DIAMETER_AND_RELEVANT_LONGEST_LENGTH",
+    "unknownGeometry": "NOT_READY"
+  },
+  "locationRules": {
+    "mainLineLofUnknown": {
+      "mainLineLofForAssessment": 1.0,
+      "LOFLOC": 1.0
+    },
+    "mainLineLofAtLeast1": {
+      "LOFLOC": 1.0
+    },
+    "otherwise": "ARITHMETIC_MEAN_OF_LOCATION_SCORE_A_AND_PARENT_SCHEDULE_SCORE_B",
+    "fixedSupportOverride": true,
+    "otherLocationSelection": "HIGHEST_APPLICABLE_SCORE",
+    "noOtherLocation": "MID_SPAN",
+    "betweenListedSchedules": "USE_LOWER_STANDARD_SCHEDULE",
+    "unknownLocation": "NOT_READY"
+  },
+  "spanRules": {
+    "maximumSpanCurveInput": "ACTUAL_SPAN_DIVIDED_BY_FITTING_SPAN_FACTOR",
+    "minimumSpanTableInput": "ACTUAL_SPAN_MULTIPLIED_BY_FITTING_SPAN_FACTOR",
+    "belowMinimum": {
+      "geometryComponentLof": 0.7
+    },
+    "atOrAboveMinimum": {
+      "geometryComponentLof": 0.2
+    },
+    "curveFiguresExcluded": [
+      "T3-1",
+      "T3-2",
+      "T3-3",
+      "T3-4"
+    ],
+    "curveDataIncluded": false
+  },
+  "projectWorkbookAudit": {
+    "repository": "reallaksh19/CRF-4-1",
+    "commit": "68dc8e1fa2ef67073c59b3afc56f1bf40953d535",
+    "path": "Extended calc2/AIV FIV/SBC.xls",
+    "gitBlobSha1": "sha1:69c02f600f84647ececdbf08e1f86fc8dc3fc723",
+    "sizeBytes": 91648,
+    "status": "NOT_USED_AS_EI_SOURCE",
+    "reason": "Project workbook identity and observed MTD/JIP lineage do not establish EI 2nd-edition authority; EI documents material SBC method changes from MTD."
+  },
+  "workedExampleChecks": {
+    "D5": {
+      "scores": [
+        0.9,
+        0.7,
+        0.5,
+        0.5,
+        0.7
+      ],
+      "expectedLOFGEOM": 0.66
+    },
+    "D6": {
+      "locationScore": 0.9,
+      "parentScheduleScore": 0.7,
+      "expectedLOFLOC": 0.8
+    },
+    "D7": {
+      "actualFirstSpan_m": 0.9,
+      "fittingSpanFactor": 0.7,
+      "modifiedSpan_m": 0.63,
+      "minimum_m": 1.3,
+      "expectedGeometryComponentLof": 0.7
+    },
+    "D8": {
+      "actualBetweenMainSpan_m": 3.0,
+      "fittingSpanFactor": 0.7,
+      "modifiedSpan_m": 2.1,
+      "minimum_m": 2.0,
+      "expectedGeometryComponentLof": 0.2
+    }
+  },
+  "reconciliation": {
+    "status": "CONTROLLED_SOURCE_RECONCILIATION_REQUIRED",
+    "reason": "Exact controlled EI PDF has not been executed through canonical DocumentEvidence."
+  },
+  "publicationState": "CANDIDATE",
+  "qualificationStatus": "NOT_QUALIFIED",
+  "masterValuesPublished": false,
+  "authority": {
+    "engineeringAuthority": "NONE",
+    "screeningAuthority": "NOT_AUTHORIZED",
+    "designAuthority": false
+  }
+}

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PipeStressExport ExportVersion="PSI116-BENCHMARK-VALIDATION" Units="mm">
+  <Pipeline Name="ASIM-XML-CII-STANDALONE-BENCHMARK">
+    <PipingElement
+      FROM_NODE="100"
+      TO_NODE="110"
+      LINE_ID="/ASIM-1836-6&quot;-S8810010-91261M7-HC/B1"
+      BRANCHNAME="/ASIM-1836-6&quot;-S8810010-91261M7-HC/B1"
+      DIAMETER="168.300003"
+      WALL_THICK="10.970000"
+      PRESSURE1="11600"
+      TEMP1="85"
+      MATERIAL="106" />
+    <PipingElement
+      FROM_NODE="110"
+      TO_NODE="120"
+      LINE_ID="/ASIM-1836-6&quot;-S8810010-91261M7-HC/B1"
+      BRANCHNAME="/ASIM-1836-6&quot;-S8810010-91261M7-HC/B1"
+      DIAMETER="168.300003"
+      WALL_THICK="10.970000"
+      PRESSURE1="11600"
+      TEMP1="85"
+      MATERIAL="106" />
+    <PipingElement
+      FROM_NODE="120"
+      TO_NODE="130"
+      LINE_ID="/ASIM-1836-6&quot;-S8810010-91261M7-HC/B1"
+      BRANCHNAME="/ASIM-1836-6&quot;-S8810010-91261M7-HC/B1"
+      DIAMETER="168.300003"
+      WALL_THICK="10.970000"
+      PRESSURE1="11600"
+      TEMP1="85"
+      MATERIAL="106" />
+  </Pipeline>
+</PipeStressExport>

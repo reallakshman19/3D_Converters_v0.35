@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CAESARII xmlns="COADE" xmlns:ext="urn:reallaksh19:inputxml:extension:v1" VERSION="11.00" XML_TYPE="Input">
+  <PIPINGMODEL xmlns="" JOBNAME="IXSD_MINIMAL" TIME="2026/07/15 12:00:00" ISSUE_NO=""
+    NUMELT="1" NUMNOZ="0" NOHGRS="0" NUMBEND="0" NUMRIGID="0"
+    NUMEXPJNT="0" NUMREST="0" NUMFORCMNT="0" NUMUNFLOAD="0" NUMWIND="0"
+    NUMELEOFF="0" NUMALLOW="0" NUMISECT="0" NORTH_X="0" NORTH_Y="1" NORTH_Z="0">
+    <PIPINGELEMENT ID="E1" FROM_NODE="10" TO_NODE="20"
+      DELTA_X="1000" DELTA_Y="0" DELTA_Z="0"
+      DIAMETER="114.3" WALL_THICK="6.02" INSUL_THICK="0" CORR_ALLOW="0"
+      TEMP_EXP_C1="100" PRESSURE_C1="1000" HYDRO_PRESSURE="1500"
+      INSUL_DENSITY="0" FLUID_DENSITY="0.000965" MATERIAL_NUM="1"
+      FROM_NAME="N10" TO_NAME="N20" LINE="L-001"
+      FROM_X="0" FROM_Y="0" FROM_Z="0" TO_X="1000" TO_Y="0" TO_Z="0">
+      <ext:Extension schema="inputxml-extension/v1" producer="golden-corpus" dialect="canonical-v1">
+        <ext:Record name="MATERIAL_NAME" sourcePath="golden/positive/minimal"
+          sourceField="MATERIAL_NAME" dataType="string" disposition="PRESERVE_EXTENSION"
+          criticality="MEDIUM" confidence="1.00">A106 Grade B</ext:Record>
+      </ext:Extension>
+    </PIPINGELEMENT>
+  </PIPINGMODEL>
+</CAESARII>

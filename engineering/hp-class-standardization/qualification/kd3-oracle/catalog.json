@@ -1,0 +1,81 @@
+{
+  "schema": "kd3-qualification-oracle-catalog/v1",
+  "methodTarget": {
+    "b313Edition": "2024",
+    "viii3Edition": "2025",
+    "methodId": "KD3-FATIGUE-001",
+    "routeId": "ROUTE-KD3-2024",
+    "nativeCoreKd3Qualified": false,
+    "codeCompliance": false,
+    "canUseForDesignAuthority": false
+  },
+  "qaPolicy": {
+    "defaultRelativeTolerance": 0.0001,
+    "meaning": "SOFTWARE_QA_ONLY_NOT_ASME_ACCEPTANCE_TOLERANCE",
+    "mayLoosenToPass": false
+  },
+  "cases": [
+    {
+      "benchmarkId":"KD3-QF-001","coverageClass":"PRESSURE_SALT_BASELINE","scope":"FOUNDATION_ONLY","status":"QUALIFICATION_FOUNDATION_READY",
+      "sourceRefs":["ANALYTICAL-LAME-001"],"requirementRefs":["QREQ-010","QREQ-015"],"solver":"PRESSURE_SALT",
+      "input":{"outsideDiameterMm":114.3,"effectiveWallMm":8.80375,"fromPressureMpa":2,"toPressureMpa":20},
+      "expected":{"alternatingStressIntensityMpa":63.299495811},
+      "expectedOrigin":"INDEPENDENT_ANALYTICAL_FROZEN",
+      "authority":{"nativeCoreKd3Qualified":false,"codeCompliance":false,"canUseForDesignAuthority":false}
+    },
+    {
+      "benchmarkId":"KD3-QF-002","coverageClass":"ZERO_RANGE_ZERO_DAMAGE","scope":"FOUNDATION_ONLY","status":"QUALIFICATION_FOUNDATION_READY",
+      "sourceRefs":["ANALYTICAL-LAME-001","ANALYTICAL-MINER-001"],"requirementRefs":["QREQ-010","QREQ-011","QREQ-015"],"solver":"ZERO_DAMAGE",
+      "input":{"outsideDiameterMm":88.9,"effectiveWallMm":6.06,"fromPressureMpa":15,"toPressureMpa":15,"appliedCycles":25000},
+      "expected":{"alternatingStressIntensityMpa":0,"cumulativeUsage":0},
+      "expectedOrigin":"INDEPENDENT_ANALYTICAL_FROZEN",
+      "authority":{"nativeCoreKd3Qualified":false,"codeCompliance":false,"canUseForDesignAuthority":false}
+    },
+    {"benchmarkId":"KD3-QF-003","coverageClass":"TENSILE_MEAN_STRESS","scope":"NATIVE_KD320","status":"PENDING_CONTROLLED_SOURCE","sourceRefs":["SRC-VIII3-2025-CONTROLLED"],"requirementRefs":["QREQ-002","QREQ-003","QREQ-004","QREQ-005"],"expected":null,"authority":{"nativeCoreKd3Qualified":false,"codeCompliance":false,"canUseForDesignAuthority":false}},
+    {"benchmarkId":"KD3-QF-004","coverageClass":"COMPRESSIVE_MEAN_STRESS","scope":"NATIVE_KD320","status":"PENDING_CONTROLLED_SOURCE","sourceRefs":["SRC-VIII3-2025-CONTROLLED"],"requirementRefs":["QREQ-002","QREQ-004","QREQ-005"],"expected":null,"authority":{"nativeCoreKd3Qualified":false,"codeCompliance":false,"canUseForDesignAuthority":false}},
+    {"benchmarkId":"KD3-QF-005","coverageClass":"ZERO_MEAN_STRESS","scope":"NATIVE_KD320","status":"PENDING_CONTROLLED_SOURCE","sourceRefs":["SRC-VIII3-2025-CONTROLLED"],"requirementRefs":["QREQ-002","QREQ-004","QREQ-005"],"expected":null,"authority":{"nativeCoreKd3Qualified":false,"codeCompliance":false,"canUseForDesignAuthority":false}},
+    {"benchmarkId":"KD3-QF-006","coverageClass":"PRINCIPAL_STRESS_PERMUTATION_INVARIANCE","scope":"NATIVE_KD320","status":"PENDING_CONTROLLED_SOURCE","sourceRefs":["SRC-VIII3-2025-CONTROLLED"],"requirementRefs":["QREQ-003"],"expected":null,"authority":{"nativeCoreKd3Qualified":false,"codeCompliance":false,"canUseForDesignAuthority":false}},
+    {"benchmarkId":"KD3-QF-007","coverageClass":"NEAR_EQUAL_PRINCIPAL_STRESSES","scope":"NATIVE_KD320","status":"PENDING_CONTROLLED_SOURCE","sourceRefs":["SRC-VIII3-2025-CONTROLLED"],"requirementRefs":["QREQ-003"],"expected":null,"authority":{"nativeCoreKd3Qualified":false,"codeCompliance":false,"canUseForDesignAuthority":false}},
+    {"benchmarkId":"KD3-QF-008","coverageClass":"FATIGUE_CURVE_EXACT_UPPER_POINT","scope":"NATIVE_KD320","status":"PENDING_CONTROLLED_SOURCE","sourceRefs":["SRC-VIII3-2025-CONTROLLED"],"requirementRefs":["QREQ-006","QREQ-008"],"expected":null,"authority":{"nativeCoreKd3Qualified":false,"codeCompliance":false,"canUseForDesignAuthority":false}},
+    {"benchmarkId":"KD3-QF-009","coverageClass":"FATIGUE_CURVE_EXACT_LOWER_POINT","scope":"NATIVE_KD320","status":"PENDING_CONTROLLED_SOURCE","sourceRefs":["SRC-VIII3-2025-CONTROLLED"],"requirementRefs":["QREQ-006","QREQ-008"],"expected":null,"authority":{"nativeCoreKd3Qualified":false,"codeCompliance":false,"canUseForDesignAuthority":false}},
+    {"benchmarkId":"KD3-QF-010","coverageClass":"FATIGUE_CURVE_INTERPOLATION","scope":"NATIVE_KD320","status":"PENDING_CONTROLLED_SOURCE","sourceRefs":["SRC-VIII3-2025-CONTROLLED"],"requirementRefs":["QREQ-006","QREQ-008"],"expected":null,"authority":{"nativeCoreKd3Qualified":false,"codeCompliance":false,"canUseForDesignAuthority":false}},
+    {"benchmarkId":"KD3-QF-011","coverageClass":"FATIGUE_CURVE_ABOVE_RANGE","scope":"NATIVE_KD320","status":"PENDING_CONTROLLED_SOURCE","sourceRefs":["SRC-VIII3-2025-CONTROLLED"],"requirementRefs":["QREQ-006","QREQ-008","QREQ-012"],"expected":null,"authority":{"nativeCoreKd3Qualified":false,"codeCompliance":false,"canUseForDesignAuthority":false}},
+    {"benchmarkId":"KD3-QF-012","coverageClass":"FATIGUE_CURVE_BELOW_RANGE","scope":"NATIVE_KD320","status":"PENDING_CONTROLLED_SOURCE","sourceRefs":["SRC-VIII3-2025-CONTROLLED"],"requirementRefs":["QREQ-006","QREQ-008","QREQ-012"],"expected":null,"authority":{"nativeCoreKd3Qualified":false,"codeCompliance":false,"canUseForDesignAuthority":false}},
+    {"benchmarkId":"KD3-QF-013","coverageClass":"MATERIAL_TEMPERATURE_BOUNDARY","scope":"NATIVE_KD320","status":"PENDING_CONTROLLED_SOURCE","sourceRefs":["SRC-VIII3-2025-CONTROLLED"],"requirementRefs":["QREQ-006","QREQ-007","QREQ-009"],"expected":null,"authority":{"nativeCoreKd3Qualified":false,"codeCompliance":false,"canUseForDesignAuthority":false}},
+    {
+      "benchmarkId":"KD3-QF-014","coverageClass":"ONE_CYCLE_MINER","scope":"FOUNDATION_ONLY","status":"QUALIFICATION_FOUNDATION_READY",
+      "sourceRefs":["ANALYTICAL-MINER-001"],"requirementRefs":["QREQ-011","QREQ-015"],"solver":"MINER",
+      "input":{"cycles":[{"cycleId":"B1","appliedCycles":1,"permissibleCycles":10000}]},"expected":{"cumulativeUsage":0.0001},"expectedOrigin":"INDEPENDENT_ANALYTICAL_FROZEN",
+      "authority":{"nativeCoreKd3Qualified":false,"codeCompliance":false,"canUseForDesignAuthority":false}
+    },
+    {
+      "benchmarkId":"KD3-QF-015","coverageClass":"MULTI_CYCLE_MINER","scope":"FOUNDATION_ONLY","status":"QUALIFICATION_FOUNDATION_READY",
+      "sourceRefs":["ANALYTICAL-MINER-001"],"requirementRefs":["QREQ-011","QREQ-015"],"solver":"MINER",
+      "input":{"cycles":[{"cycleId":"B1","appliedCycles":1000,"permissibleCycles":10000},{"cycleId":"B2","appliedCycles":5000,"permissibleCycles":50000}]},"expected":{"cumulativeUsage":0.2},"expectedOrigin":"INDEPENDENT_ANALYTICAL_FROZEN",
+      "authority":{"nativeCoreKd3Qualified":false,"codeCompliance":false,"canUseForDesignAuthority":false}
+    },
+    {
+      "benchmarkId":"KD3-QF-016","coverageClass":"CYCLE_ORDER_INVARIANCE","scope":"FOUNDATION_ONLY","status":"QUALIFICATION_FOUNDATION_READY",
+      "sourceRefs":["ANALYTICAL-MINER-001"],"requirementRefs":["QREQ-011","QREQ-015"],"solver":"MINER_ORDER",
+      "input":{"cycles":[{"cycleId":"B1","appliedCycles":1000,"permissibleCycles":10000},{"cycleId":"B2","appliedCycles":5000,"permissibleCycles":50000}]},"expected":{"cumulativeUsage":0.2},"expectedOrigin":"INDEPENDENT_ANALYTICAL_FROZEN",
+      "authority":{"nativeCoreKd3Qualified":false,"codeCompliance":false,"canUseForDesignAuthority":false}
+    },
+    {
+      "benchmarkId":"KD3-QF-017","coverageClass":"VERY_SMALL_USAGE","scope":"FOUNDATION_ONLY","status":"QUALIFICATION_FOUNDATION_READY",
+      "sourceRefs":["ANALYTICAL-MINER-001"],"requirementRefs":["QREQ-011","QREQ-015"],"solver":"MINER",
+      "input":{"cycles":[{"cycleId":"B1","appliedCycles":1,"permissibleCycles":1000000000}]},"expected":{"cumulativeUsage":1e-9},"expectedOrigin":"INDEPENDENT_ANALYTICAL_FROZEN",
+      "authority":{"nativeCoreKd3Qualified":false,"codeCompliance":false,"canUseForDesignAuthority":false}
+    },
+    {
+      "benchmarkId":"KD3-QF-018","coverageClass":"USAGE_NEAR_UNITY","scope":"FOUNDATION_ONLY","status":"QUALIFICATION_FOUNDATION_READY",
+      "sourceRefs":["ANALYTICAL-MINER-001"],"requirementRefs":["QREQ-011","QREQ-015"],"solver":"MINER",
+      "input":{"cycles":[{"cycleId":"B1","appliedCycles":999999,"permissibleCycles":1000000}]},"expected":{"cumulativeUsage":0.999999},"expectedOrigin":"INDEPENDENT_ANALYTICAL_FROZEN",
+      "authority":{"nativeCoreKd3Qualified":false,"codeCompliance":false,"canUseForDesignAuthority":false}
+    },
+    {"benchmarkId":"KD3-QF-019","coverageClass":"APPLICABILITY_BOUNDARY","scope":"NATIVE_KD320","status":"PENDING_CONTROLLED_SOURCE","sourceRefs":["SRC-VIII3-2025-CONTROLLED"],"requirementRefs":["QREQ-009","QREQ-012"],"expected":null,"authority":{"nativeCoreKd3Qualified":false,"codeCompliance":false,"canUseForDesignAuthority":false}},
+    {"benchmarkId":"KD3-QF-020","coverageClass":"EDITION_MISMATCH_FAIL_CLOSED","scope":"QUALIFICATION_CONTROL","status":"CONTROL_EXPECTATION_ONLY","sourceRefs":["ASME-B313-2024-PUBLIC","ASME-VIII3-2025-PUBLIC"],"requirementRefs":["QREQ-001","QREQ-012"],"expected":{"outcome":"BLOCK"},"expectedOrigin":"QUALIFICATION_POLICY_NOT_NUMERICAL_ORACLE","authority":{"nativeCoreKd3Qualified":false,"codeCompliance":false,"canUseForDesignAuthority":false}},
+    {"benchmarkId":"KD3-QF-021","coverageClass":"MISSING_AMBIGUOUS_PARAMETER_FAIL_CLOSED","scope":"QUALIFICATION_CONTROL","status":"CONTROL_EXPECTATION_ONLY","sourceRefs":["SRC-VIII3-2025-CONTROLLED"],"requirementRefs":["QREQ-002","QREQ-005","QREQ-012"],"expected":{"outcome":"BLOCK"},"expectedOrigin":"QUALIFICATION_POLICY_NOT_NUMERICAL_ORACLE","authority":{"nativeCoreKd3Qualified":false,"codeCompliance":false,"canUseForDesignAuthority":false}},
+    {"benchmarkId":"KD3-QF-022","coverageClass":"INDEPENDENT_PUBLISHED_NUMERICAL_EXAMPLE","scope":"NATIVE_KD320","status":"PENDING_PRIMARY_ORACLE","sourceRefs":["PUBLISHED-KD3-INDEPENDENT-001"],"requirementRefs":["QREQ-016"],"expected":null,"authority":{"nativeCoreKd3Qualified":false,"codeCompliance":false,"canUseForDesignAuthority":false}},
+    {"benchmarkId":"KD3-QF-023","coverageClass":"INDEPENDENT_CHECKED_PROJECT_CALCULATION","scope":"NATIVE_KD320","status":"PENDING_EXTERNAL_EVIDENCE","sourceRefs":["EXTERNAL-KD3-CHECKED-001"],"requirementRefs":["QREQ-013","QREQ-017"],"expected":null,"authority":{"nativeCoreKd3Qualified":false,"codeCompliance":false,"canUseForDesignAuthority":false}}
+  ]
+}

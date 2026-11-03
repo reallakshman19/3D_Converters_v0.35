@@ -1,0 +1,5 @@
+rowId,scheduleBand,parentPipeScheduleDescription,FM,FMWith4WayWeldedGussets,sourceLocator,publicationState,engineeringAuthority,screeningAuthority,designAuthority,masterValuesPublished
+T4-FM-001,SCHEDULE_160_OR_GREATER,Schedule 160 or greater,0.96,0.98,T4.2.2 Table T4-1 printed page 87,CANDIDATE,NONE,NOT_AUTHORIZED,false,false
+T4-FM-002,SCHEDULE_80_TO_LT_160,Schedule 80 to less than Schedule 160,0.93,0.96,T4.2.2 Table T4-1 printed page 87,CANDIDATE,NONE,NOT_AUTHORIZED,false,false
+T4-FM-003,SCHEDULE_40_TO_LT_80,Schedule 40 to less than Schedule 80,0.85,0.93,T4.2.2 Table T4-1 printed page 87,CANDIDATE,NONE,NOT_AUTHORIZED,false,false
+T4-FM-004,LESS_THAN_SCHEDULE_40,Less than Schedule 40,0.42,0.85,T4.2.2 Table T4-1 printed page 87,CANDIDATE,NONE,NOT_AUTHORIZED,false,false

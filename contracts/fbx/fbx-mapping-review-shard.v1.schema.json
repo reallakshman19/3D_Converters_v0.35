@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "FbxMappingReviewShard.v1",
+  "title": "FbxMappingReviewShard.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "bundleId",
+    "worklistId",
+    "sourceGraphCanonicalSha256",
+    "shardId",
+    "ordinal",
+    "workItems"
+  ],
+  "properties": {
+    "schema": { "const": "FbxMappingReviewShard.v1" },
+    "bundleId": { "$ref": "FbxMappingWorklist.v1#/$defs/sha256" },
+    "worklistId": { "$ref": "FbxMappingWorklist.v1#/$defs/sha256" },
+    "sourceGraphCanonicalSha256": { "$ref": "FbxMappingWorklist.v1#/$defs/sha256" },
+    "shardId": { "$ref": "FbxMappingWorklist.v1#/$defs/sha256" },
+    "ordinal": { "type": "integer", "minimum": 0 },
+    "workItems": {
+      "type": "array",
+      "items": { "$ref": "FbxMappingWorklist.v1#/$defs/workItem" }
+    }
+  }
+}

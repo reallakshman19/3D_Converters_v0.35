@@ -1,0 +1,93 @@
+{
+  "schema": "AivProductionFreezeCacheCustody.v1",
+  "sliceId": "PF-01-CACHE-CUSTODY",
+  "repository": "reallaksh19/3D_Converters",
+  "pr": 525,
+  "baseMain": "e97effb06ff9bfcad5ea87381abaa9f2665c1bdd",
+  "branch": "agent/aiv-pf01-cache-custody-20260815",
+  "reportBasisHead": "c4706b1c702853666e6252300bb2c8dd1bee3fc2",
+  "liveFailure": {
+    "status": "PASS_REPRODUCED",
+    "observation": "USER_SUPPLIED_LIVE_CHROMIUM",
+    "error": "Cannot read properties of null (reading 'caseId')",
+    "observedQualificationUrl": "vibration-aiv-qualification-tab.js?v=aiv-qualification-1"
+  },
+  "currentMainTruth": {
+    "filterNullGuardPresent": true,
+    "filterGuard": "input = input ?? {};",
+    "qualificationTokenInEngineeringCalculations": "aiv-qualification-2",
+    "diagnosis": "LIVE_RUNTIME_STALE_RELATIVE_TO_CURRENT_MAIN"
+  },
+  "cacheKey": "20260815-aiv-pf01-cache-1",
+  "requiredChain": [
+    "index.html -> main-rhbg-fitguard.js",
+    "main-rhbg-fitguard.js -> core/app.js",
+    "core/app.js -> core/engineering-tabs-extension.js",
+    "core/engineering-tabs-extension.js -> tabs/engineering-workspace-tab.js",
+    "tabs/engineering-workspace-tab.js -> tabs/engineering-calculations-tab.js",
+    "tabs/engineering-calculations-tab.js -> tabs/vibration-aiv-qualification-tab.js",
+    "tabs/vibration-aiv-qualification-tab.js -> tabs/vibration-aiv-canvas-controller.js",
+    "tabs/vibration-aiv-canvas-controller.js -> tabs/vibration-aiv-canvas-filter.js"
+  ],
+  "sharedShell": {
+    "fbxProductionKey": "20260804-fbx-multifamily-release-1",
+    "fbxProductionBehaviorChanged": false,
+    "testReconciliation": "tests/fbx/test-fbx2-runtime-cache-chain.mjs now distinguishes shared shellKey from downstream FBX key"
+  },
+  "authority": {
+    "aivNumericalAuthorityChanged": false,
+    "readinessAuthorityChanged": false,
+    "physicalDistanceAuthorityChanged": false,
+    "screeningResultScope": "ASSESSMENT",
+    "designAuthority": false
+  },
+  "validation": [
+    {
+      "check": "live post-merge failure",
+      "status": "PASS_REPRODUCED",
+      "observation": "USER_SUPPLIED"
+    },
+    {
+      "check": "current main null guard",
+      "status": "PASS",
+      "observation": "SOURCE_INSPECTION"
+    },
+    {
+      "check": "exact branch cache chain",
+      "status": "PASS",
+      "observation": "SOURCE_INSPECTION_ALL_EDGES"
+    },
+    {
+      "check": "source diff scope",
+      "status": "PASS",
+      "observation": "GIT_COMPARE",
+      "detail": "cache-identity-only production/config changes; one new 49-line AIV cache-chain test; one existing FBX test adjusted to split shellKey from fbxKey"
+    },
+    {
+      "check": "tests/vibration-aiv-runtime-cache-chain.test.mjs",
+      "status": "IMPLEMENTED_NOT_EXECUTED",
+      "observation": "SOURCE_INSPECTION"
+    },
+    {
+      "check": "tests/fbx/test-fbx2-runtime-cache-chain.mjs",
+      "status": "IMPLEMENTED_NOT_EXECUTED",
+      "observation": "SOURCE_INSPECTION"
+    },
+    {
+      "check": "npm run verify:aiv-canvas",
+      "status": "NOT_RUN",
+      "reason": "native private checkout unavailable in connector environment"
+    },
+    {
+      "check": "post-deploy Chromium",
+      "status": "NOT_RUN",
+      "reason": "requires merged/deployed exact candidate"
+    }
+  ],
+  "acceptance": {
+    "requiredObservedCacheKey": "20260815-aiv-pf01-cache-1",
+    "forbiddenObservedQualificationUrl": "vibration-aiv-qualification-tab.js?v=aiv-qualification-1",
+    "workflow": "Open AIV -> load/import EI example -> Check Readiness -> Run Screening",
+    "requiredResult": "zero uncaught caseId TypeError"
+  }
+}

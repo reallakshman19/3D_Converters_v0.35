@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<exchange xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://download.autodesk.com/us/navisworks/schemas/nw-exchange-12.0.xsd">
+  <optionset name="">
+    <optionset name="interface">
+      <optionset name="smart_tags">
+        <option name="enabled" flags="32">
+          <data type="bool">false</data>
+        </option>
+        <option name="hide_category" flags="32">
+          <data type="bool">false</data>
+        </option>
+        <optionarray name="definitions">
+          <optionset name="">
+            <option name="category">
+              <data type="name">
+                <name internal="LcOaNode">Item</name>
+              </data>
+            </option>
+            <option name="property">
+              <data type="name">
+                <name internal="LcOaSceneBaseUserName">Name</name>
+              </data>
+            </option>
+          </optionset>
+          <optionset name="">
+            <option name="category">
+              <data type="name">
+                <name internal="LcOaNode">Item</name>
+              </data>
+            </option>
+            <option name="property">
+              <data type="name">
+                <name internal="LcOaSceneBaseClassUserName">Type</name>
+              </data>
+            </option>
+          </optionset>
+        </optionarray>
+      </optionset>
+    </optionset>
+  </optionset>
+</exchange>

@@ -1,0 +1,61 @@
+* PCF RESTRAINT MAPPING FILE
+*
+* Follow the instructions below to define/modify the mapping file to meet your requirements as you import *.pcf files into CAESAR II. 
+* Lines starting with "*" may be used to insert comments.
+*
+* KEYWORD MAPPING SECTION
+*********************************************
+*
+* Define a property from your PCF file to associate with the following CAESAR II keyword. 
+* The CAESAR II keywords located within "<>" are used in the PCF import process.
+* The <SUPPORT_NAME> keyword is used by CAESAR II to map the supports.
+* The <SUPPORT_GUID> and <SUPPORT_TAG> keywords are support properties that are imported into CAESAR II.
+*
+*
+<SUPPORT_NAME> Name
+<SUPPORT_TAG>  Name
+<SUPPORT_GUID> UCI
+
+*
+* SUPPORT MAPPING SECTION
+*********************************************
+* The first line of each entry is the PCF property that is mapped to the <SUPPORT_NAME>, 
+* followed by the number of CAESAR II restraints it generates.
+* THe next couple of lines define the CAESAR II restraint type, 1 per line.
+* Valid entries are: ANC, VERT, NS, EW, A, B, C (these 3 also accept + or -), GUI, LIM, VHGR, CHGR
+* VERT, NS, EW indicate absolute global axes.
+* Local axes are indicated by a, b, c, (a = pipe centerline, b = support direction, c = a x (cross) b).
+*
+* Other supported keywords:
+*   MU=x.xx
+*   GAP=x.xx UN
+*
+* For best results, the <SUPPORT_NAME> keywords should be listed in order from longest to shortest.
+* For example, list "VG100" before "VG1".
+*
+
+ASSY_VS_SR_DB 2
+  +VERT   MU=0.3
+  GUI     MU=0.3  GAP=1.5MM
+ASSY_VS_SR_CL 2
+  +VERT
+  GUI     MU=0.3  GAP=1.5MM
+ASSY_FR_LS_WS 2
+  +VERT
+  A
+ASSY_FR_US_LS 2
+  +VERT   MU=0.3
+  A
+ASSY_LE_DL 1
+  +VERT   MU=0.3
+ASSY_SH_CL 1
+  ANC
+ASSY_  1
+  +VERT
+AT_GXS5VDLV_3B 1
+  +VERT   MU=0.3
+CA150 1
+  +VERT   MU=0.3
+VG100 2
+  +VERT   MU=0.3
+  GUI     MU=0.3  

@@ -1,0 +1,16 @@
+SourceDocumentId,DocumentNumber,DocumentTitle,DocumentType,Organization,Edition,Revision,IssueDate,AuthorityLevel,RecordVersion,FileReference,DocumentHash,SupersededBy,DataOwner,Status
+DOC-ASME-B3610,ASME B36.10M,Welded and Seamless Wrought Steel Pipe,STANDARD,ASME,2022,2022,2022-10-28,AUTHORITATIVE,1,ASME_B36_10M_2022.pdf,,,Engineering DB,ACTIVE
+DOC-ASME-B3619,ASME B36.19M,Stainless Steel Pipe,STANDARD,ASME,2022,2022,2022-10-28,AUTHORITATIVE,1,ASME_B36_19M_2022.pdf,,,Engineering DB,ACTIVE
+DOC-ASME-B169,ASME B16.9,Factory-Made Wrought Buttwelding Fittings,STANDARD,ASME,2018,2018,2018-08-31,AUTHORITATIVE,1,ASME_B16_9_2018.pdf,,,Engineering DB,ACTIVE
+DOC-MSS-SP97,MSS SP-97,"Integrally Reinforced Forged Branch Outlet Fittings - Socket Welding, Threaded and Buttwelding Ends",STANDARD,MSS,2019,2019,2019-05-15,AUTHORITATIVE,1,MSS_SP_97_2019.pdf,,,Engineering DB,ACTIVE
+DOC-ASTM-A106,ASTM A106/A106M,Standard Specification for Seamless Carbon Steel Pipe for High-Temperature Service,STANDARD,ASTM,2024,2024,2024-01-15,AUTHORITATIVE,1,ASTM_A106_2024.pdf,,,Materials DB,ACTIVE
+DOC-ASTM-A312,ASTM A312/A312M,"Standard Specification for Seamless, Welded, and Heavily Cold Worked Austenitic Stainless Steel Pipes",STANDARD,ASTM,2024,2024,2024-02-01,AUTHORITATIVE,1,ASTM_A312_2024.pdf,,,Materials DB,ACTIVE
+DOC-ASTM-A790,ASTM A790/A790M,Standard Specification for Seamless and Welded Ferritic/Austenitic Stainless Steel Pipe,STANDARD,ASTM,2024,2024,2024-03-01,AUTHORITATIVE,1,ASTM_A790_2024.pdf,,,Materials DB,ACTIVE
+DOC-ASTM-A105,ASTM A105/A105M,Standard Specification for Carbon Steel Forgings for Piping Applications,STANDARD,ASTM,2024,2024,2024-01-10,AUTHORITATIVE,1,ASTM_A105_2024.pdf,,,Materials DB,ACTIVE
+DOC-ASTM-A182,ASTM A182/A182M,"Standard Specification for Forged or Rolled Alloy and Stainless Steel Pipe Flanges, Forged Fittings, and Valves",STANDARD,ASTM,2024,2024,2024-02-15,AUTHORITATIVE,1,ASTM_A182_2024.pdf,,,Materials DB,ACTIVE
+DOC-EI-AVIFF-2008,EI AVIFF 2nd Edition,Guidelines for the Avoidance of Vibration Induced Fatigue Failure in Process Pipework,INDUSTRY_GUIDELINE,Energy Institute,2nd,2008,2008-01-01,AUTHORITATIVE,1,EI_AVIFF_2008.pdf,,,Vibration Engineering,ACTIVE
+DOC-PMS-A1,PMS-A1,Project Piping Material Specification - Carbon Steel (Class 150/300/600),PMS,PROJECT,2026,4,2026-07-20,PROJECT_AUTHORITY,4,PMS_A1_Rev4.pdf,,,Piping Engineering,ACTIVE
+DOC-PMS-B1,PMS-B1,Project Piping Material Specification - Austenitic Stainless Steel 316L,PMS,PROJECT,2026,3,2026-07-20,PROJECT_AUTHORITY,3,PMS_B1_Rev3.pdf,,,Piping Engineering,ACTIVE
+DOC-PMS-C1,PMS-C1,Project Piping Material Specification - 22Cr Duplex Stainless Steel,PMS,PROJECT,2026,2,2026-07-20,PROJECT_AUTHORITY,2,PMS_C1_Rev2.pdf,,,Piping Engineering,ACTIVE
+DOC-AIV-MAP,AIV-MAP-001,AIV Component Classification Mapping Rules,ENGINEERING_RULE,PROJECT,2026,1,2026-08-15,CONTROLLED_ENGINEERING,1,AIV_MAP_001.pdf,,,Vibration Engineering,ACTIVE
+DOC-AIV-SOURCE-MAP,AIV-SRC-001,AIV Source Device Classification Mapping Rules,ENGINEERING_RULE,PROJECT,2026,1,2026-08-15,CONTROLLED_ENGINEERING,1,AIV_SRC_001.pdf,,,Vibration Engineering,ACTIVE

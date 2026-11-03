@@ -1,0 +1,179 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:reallaksh19:inputxml:cii-projection-ledger:v1",
+  "title": "InputXmlCiiProjectionLedger.v1",
+  "type": "object",
+  "required": [
+    "schema",
+    "authority",
+    "status",
+    "chain",
+    "writerPolicy",
+    "summary",
+    "writerStats",
+    "sections",
+    "elements",
+    "records",
+    "diagnostics",
+    "projectionHashSha256"
+  ],
+  "properties": {
+    "schema": {"const": "InputXmlCiiProjectionLedger.v1"},
+    "authority": {
+      "type": "object",
+      "required": ["repository", "writer", "wrapper", "mode", "rule"],
+      "properties": {
+        "repository": {"const": "reallaksh19/3D_Converters"},
+        "writer": {"const": "converters/scripts/inputxml_to_cii2019.py"},
+        "wrapper": {"const": "converters/scripts/inputxml_to_cii2019_assured.py"},
+        "mode": {"const": "ASSURED_STRICT"},
+        "rule": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "status": {"enum": ["PASS", "BLOCKED"]},
+    "chain": {
+      "type": "object",
+      "required": [
+        "canonicalHashSha256",
+        "assuranceHashSha256",
+        "fieldCatalogHashSha256",
+        "projectionContractHashSha256",
+        "ciiHashSha256"
+      ],
+      "properties": {
+        "canonicalHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "assuranceHashSha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+        "fieldCatalogHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "projectionContractHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "ciiHashSha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"}
+      },
+      "additionalProperties": false
+    },
+    "writerPolicy": {
+      "type": "object",
+      "additionalProperties": {"type": ["boolean", "number", "string", "null"]}
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": {"type": "integer", "minimum": 0}
+    },
+    "writerStats": {
+      "type": "object",
+      "additionalProperties": {"type": "integer", "minimum": 0}
+    },
+    "sections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["section", "order", "payloadLineCount", "recordCount", "referencedIndexes"],
+        "properties": {
+          "section": {"type": "string", "minLength": 1},
+          "order": {"type": "integer", "minimum": 1},
+          "payloadLineCount": {"type": "integer", "minimum": 0},
+          "recordCount": {"type": "integer", "minimum": 0},
+          "referencedIndexes": {
+            "type": "array",
+            "items": {"type": "integer", "minimum": 1},
+            "uniqueItems": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "elements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["inputXmlElementId", "elementIndex", "fromNode", "toNode", "pointers"],
+        "properties": {
+          "inputXmlElementId": {"type": "string", "minLength": 1},
+          "elementIndex": {"type": "integer", "minimum": 1},
+          "fromNode": {"type": "string", "minLength": 1},
+          "toNode": {"type": "string", "minLength": 1},
+          "pointers": {
+            "type": "object",
+            "additionalProperties": {"type": "integer", "minimum": 0}
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "projectionRecordId",
+          "assuranceRecordId",
+          "sourceEntityId",
+          "sourceType",
+          "inputXmlElementIds",
+          "plannedSections",
+          "catalogProjectionStatus",
+          "effectiveSections",
+          "targets",
+          "status",
+          "diagnostics"
+        ],
+        "properties": {
+          "projectionRecordId": {"type": "string", "pattern": "^IXPL-[0-9]{7}$"},
+          "assuranceRecordId": {"type": ["string", "null"]},
+          "sourceEntityId": {"type": ["string", "null"]},
+          "sourceType": {"type": ["string", "null"]},
+          "inputXmlElementIds": {
+            "type": "array",
+            "items": {"type": "string"},
+            "uniqueItems": true
+          },
+          "plannedSections": {
+            "type": "array",
+            "items": {"type": "string"},
+            "uniqueItems": true
+          },
+          "catalogProjectionStatus": {
+            "type": ["string", "null"],
+            "enum": ["PROJECTED", "VALIDATION_ONLY", "PRESERVE_EXTENSION", "UNSUPPORTED_BLOCKING", null]
+          },
+          "effectiveSections": {
+            "type": "array",
+            "items": {"type": "string"},
+            "uniqueItems": true
+          },
+          "targets": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["section", "index", "indexBasis"],
+              "properties": {
+                "section": {"type": "string", "minLength": 1},
+                "index": {"type": "integer", "minimum": 1},
+                "indexBasis": {
+                  "enum": [
+                    "GLOBAL_SECTION",
+                    "ELEMENT_ORDINAL",
+                    "NODE_RECORD_ORDINAL",
+                    "ELEMENT_AUX_POINTER",
+                    "MATERIAL_ELEMENT_ORDINAL"
+                  ]
+                },
+                "ownerElementId": {"type": "string"},
+                "nodeRole": {"enum": ["FROM", "TO"]},
+                "nodeId": {"type": "string"},
+                "payloadLine": {"type": "integer", "minimum": 1},
+                "payloadSlot": {"type": "integer", "minimum": 1, "maximum": 6}
+              },
+              "additionalProperties": false
+            }
+          },
+          "status": {"enum": ["PASS", "EVIDENCE_ONLY", "BLOCKED"]},
+          "diagnostics": {"type": "array", "items": {"type": "string"}}
+        },
+        "additionalProperties": false
+      }
+    },
+    "diagnostics": {"type": "array", "items": {"type": "object"}},
+    "projectionHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "additionalProperties": false
+}

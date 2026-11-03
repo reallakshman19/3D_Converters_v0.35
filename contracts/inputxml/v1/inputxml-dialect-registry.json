@@ -1,0 +1,26 @@
+{
+  "schema": "InputXmlDialectRegistry.v1",
+  "generatedAt": "2026-07-15",
+  "authority": {
+    "repository": "reallaksh19/3D_Converters",
+    "baseline": "b875f51a471c12a0d10b64b771f1208d01d4ccf0"
+  },
+  "rule": "Only canonical-inputxml-v1 validates directly against inputxml-canonical-v1.xsd. Every other supported dialect requires its named adapter and post-adapter canonical validation.",
+  "dialects": [
+    {"dialectId":"canonical-inputxml-v1","root":"{COADE}CAESARII","xmlType":"Input","artifactRole":"canonical-engineering-input","adapter":"none","canonicalAcceptance":"DIRECT","schema":"inputxml-canonical-v1.xsd"},
+    {"dialectId":"caesar-inputxml-pressure1","root":"{COADE}CAESARII","xmlType":"Input","artifactRole":"vendor-intake","adapter":"pressure1-lineid-to-canonical","canonicalAcceptance":"ADAPTER_REQUIRED","signals":["PRESSURE1..9","LINE_ID or LINE","sentinel inheritance"]},
+    {"dialectId":"caesar-inputxml-pressure-c","root":"{COADE}CAESARII","xmlType":"Input","artifactRole":"application-intake","adapter":"canonical-name-and-provenance-adapter","canonicalAcceptance":"ADAPTER_REQUIRED","signals":["PRESSURE_C1..9","possible missing IDs","possible compatibility defaults"]},
+    {"dialectId":"enriched-inputxml-app","root":"{COADE}CAESARII","xmlType":"Input","artifactRole":"enriched-intake","adapter":"enriched-inputxml-to-canonical","canonicalAcceptance":"ADAPTER_REQUIRED","signals":["DTXR_POS child","PipingClass child","Point_properties_basis child"]},
+    {"dialectId":"inputxml-fragment","root":"PIPINGELEMENT|fragment","xmlType":null,"artifactRole":"fragment-intake","adapter":"fragment-wrapper-and-context-resolver","canonicalAcceptance":"ADAPTER_REQUIRED","signals":["no CAESARII root","no PIPINGMODEL"]},
+    {"dialectId":"categorized-inputxml-v3","root":"CategorizedInputXML","xmlType":null,"artifactRole":"review-transfer-document","adapter":"categorized-reconciliation-compiler","canonicalAcceptance":"RECONCILIATION_REQUIRED","schema":"categorized-inputxml-v3.xsd","signals":["OriginalElement evidence","normalized blocks"]},
+    {"dialectId":"xml-builder-root-branch-node","root":"Root","xmlType":null,"artifactRole":"source-node-xml","adapter":"xml-cii-node-to-canonical","canonicalAcceptance":"ADAPTER_REQUIRED","signals":["Branch","Node","Position"]},
+    {"dialectId":"seljson-custom-root","root":"Root","xmlType":null,"artifactRole":"source-node-xml","adapter":"seljson-custom-model-to-canonical","canonicalAcceptance":"ADAPTER_REQUIRED","signals":["misleading _to_inputxml filename","custom Branch/Node output"]},
+    {"dialectId":"managed-stage-json","root":"JSON","xmlType":null,"artifactRole":"source-hierarchy","adapter":"managed-stage-to-canonical","canonicalAcceptance":"ADAPTER_REQUIRED","signals":["branches","children","APOS/LPOS/CPOS"]},
+    {"dialectId":"pdf-input-echo","root":"PDF","xmlType":null,"artifactRole":"source-report","adapter":"pdf-input-echo-to-canonical","canonicalAcceptance":"ADAPTER_REQUIRED","signals":["Input Echo","PIPE DATA"]},
+    {"dialectId":"xml-to-cii-diagnostic-sidecar","root":"{COADE}CAESARII","xmlType":"Input","artifactRole":"diagnostic-reconstruction","adapter":"diagnostic-sidecar-reconciliation","canonicalAcceptance":"DIAGNOSTIC_ONLY","signals":["SOURCE debug export","parallel route"]},
+    {"dialectId":"cii14-inputxml","root":"{COADE}CAESARII","xmlType":"Input","artifactRole":"versioned-vendor-intake","adapter":"cii14-to-canonical-v1","canonicalAcceptance":"ADAPTER_REQUIRED","signals":["CII14 template/profile"]},
+    {"dialectId":"uxml-rvm-intake","root":"multiple","xmlType":null,"artifactRole":"geometry-intake","adapter":"uxml-rvm-to-canonical","canonicalAcceptance":"ADAPTER_REQUIRED","signals":["UXML component graph","RVM-derived geometry"]},
+    {"dialectId":"pipesstressexport-psi116-xml","root":"{http://aveva.com/pipeStress116.xsd}PipeStressExport","xmlType":null,"artifactRole":"te013-selected-psi116-source","adapter":"psi116-to-canonical-v1","canonicalAcceptance":"ADAPTER_REQUIRED","signals":["exact TE-013 production result","Pipe/Branch/Node","strict source and policy hash binding"]},
+    {"dialectId":"nodeset-v1","root":"NodeSet","xmlType":null,"artifactRole":"comparison-only","adapter":"none","canonicalAcceptance":"EXCLUDED","signals":["nodeset/v1","synthetic-comparison coordinates"]}
+  ]
+}

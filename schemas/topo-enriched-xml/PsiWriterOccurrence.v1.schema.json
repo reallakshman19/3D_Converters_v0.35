@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reallaksh19.github.io/3D_Converters/schemas/topo-enriched-xml/PsiWriterOccurrence.v1.schema.json",
+  "title": "PsiWriterOccurrence.v1",
+  "type": "object",
+  "required": [
+    "schema",
+    "occurrenceId",
+    "sourceEntityId",
+    "sourceBranch",
+    "canonicalMainLine",
+    "componentProjectionId",
+    "projectionRole",
+    "endpoint",
+    "psiComponentType",
+    "coordinateRole",
+    "disposition"
+  ],
+  "properties": {
+    "schema": { "const": "PsiWriterOccurrence.v1" },
+    "occurrenceId": { "type": "string", "minLength": 1 },
+    "logicalNodeId": { "type": "string", "minLength": 1 },
+    "sourceEntityId": { "type": "string", "minLength": 1 },
+    "sourceRecordId": { "type": "string", "minLength": 1 },
+    "sourceBranch": { "type": "string", "minLength": 1 },
+    "canonicalMainLine": { "type": "string", "minLength": 1 },
+    "componentProjectionId": { "type": "string", "minLength": 1 },
+    "projectionRole": { "type": "string", "minLength": 1 },
+    "endpoint": { "type": ["integer", "string"] },
+    "psiComponentType": { "type": "string", "minLength": 1 },
+    "rawComponentType": { "type": "string", "minLength": 1 },
+    "normalizedComponentType": { "type": "string", "minLength": 1 },
+    "coordinateRole": { "type": "string", "minLength": 1 },
+    "coordinateEvidence": { "type": "object" },
+    "orderingEvidence": { "type": "object" },
+    "disposition": { "enum": ["EMITTED", "RESERVED"] }
+  },
+  "additionalProperties": false
+}

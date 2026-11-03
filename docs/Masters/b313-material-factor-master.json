@@ -1,0 +1,344 @@
+{
+  "schemaVersion": "1.0.0",
+  "standard": "ASME B31.3",
+  "edition": "2024",
+  "standardStatusChecked": "2026-08-11",
+  "families": [
+    "CS",
+    "LTCS",
+    "SS",
+    "DSS",
+    "SDSS"
+  ],
+  "familyAliases": {
+    "LT": "LTCS",
+    "LT CS": "LTCS",
+    "LOW TEMPERATURE CARBON STEEL": "LTCS",
+    "AUSTENITIC_SS": "SS",
+    "STAINLESS": "SS",
+    "STAINLESS STEEL": "SS",
+    "DUPLEX": "DSS",
+    "DUPLEX SS": "DSS",
+    "SUPER DUPLEX": "SDSS",
+    "SUPER DUPLEX SS": "SDSS"
+  },
+  "materials": [
+    {
+      "materialId": "CS-A106-B",
+      "family": "CS",
+      "spec": "ASTM A106",
+      "grade": "B",
+      "productForm": "PIPE",
+      "aliases": [
+        "ASTM A106-B",
+        "ASTM A106 GR B",
+        "A106-B",
+        "A106 GR B"
+      ],
+      "projectEvidence": [
+        "converters/xml-cii2019-core/default-piping-class-material-code-rows.js"
+      ],
+      "identityStatus": "PROJECT_VERIFIED",
+      "defaultForFamily": true
+    },
+    {
+      "materialId": "LTCS-A333-6",
+      "family": "LTCS",
+      "spec": "ASTM A333",
+      "grade": "6",
+      "productForm": "PIPE",
+      "aliases": [
+        "ASTM A333-6",
+        "ASTM A333 GR 6",
+        "A333-6",
+        "LT CS",
+        "LTCS"
+      ],
+      "projectEvidence": [
+        "converters/xml-cii2019-core/default-piping-class-material-code-rows.js"
+      ],
+      "identityStatus": "PROJECT_VERIFIED",
+      "defaultForFamily": true
+    },
+    {
+      "materialId": "SS-A312-TP304",
+      "family": "SS",
+      "spec": "ASTM A312",
+      "grade": "TP304",
+      "productForm": "PIPE",
+      "aliases": [
+        "ASTM A312-TP304",
+        "A312 TP304",
+        "SS304",
+        "304"
+      ],
+      "projectEvidence": [
+        "converters/xml-cii2019-core/default-piping-class-material-code-rows.js",
+        "docs/Masters/SpecwisePipingClass/13092.json"
+      ],
+      "identityStatus": "PROJECT_VERIFIED",
+      "defaultForFamily": false
+    },
+    {
+      "materialId": "SS-A312-TP316",
+      "family": "SS",
+      "spec": "ASTM A312",
+      "grade": "TP316",
+      "productForm": "PIPE",
+      "aliases": [
+        "ASTM A312-TP316",
+        "A312 TP316",
+        "SS316",
+        "316"
+      ],
+      "projectEvidence": [
+        "converters/xml-cii2019-core/default-piping-class-material-code-rows.js"
+      ],
+      "identityStatus": "PROJECT_VERIFIED",
+      "defaultForFamily": false
+    },
+    {
+      "materialId": "DSS-A790-S31803",
+      "family": "DSS",
+      "spec": "ASTM A790",
+      "grade": "UNS S31803",
+      "uns": "S31803",
+      "productForm": "PIPE",
+      "aliases": [
+        "ASTM A790 UNS S31803",
+        "A790 S31803",
+        "S31803",
+        "DSS"
+      ],
+      "projectEvidence": [
+        "docs/Masters/SpecwisePipingClass/13831.json"
+      ],
+      "identityStatus": "PROJECT_VERIFIED",
+      "defaultForFamily": true
+    },
+    {
+      "materialId": "SDSS-A790-S32760",
+      "family": "SDSS",
+      "spec": "ASTM A790",
+      "grade": "UNS S32760",
+      "uns": "S32760",
+      "productForm": "PIPE",
+      "aliases": [
+        "ASTM A790 UNS S32760",
+        "A790 S32760",
+        "S32760",
+        "SDSS"
+      ],
+      "projectEvidence": [
+        "docs/Masters/SpecwisePipingClass/13841.json"
+      ],
+      "identityStatus": "PROJECT_VERIFIED",
+      "defaultForFamily": true
+    }
+  ],
+  "factors": {
+    "S": {
+      "schemaVersion": "1.0.0",
+      "standard": "ASME B31.3",
+      "edition": "2024",
+      "factor": "S",
+      "records": [
+        {
+          "materialId": "CS-A106-B",
+          "temperatureC": 0,
+          "value": 20.0,
+          "unit": "ksi",
+          "status": "BENCHMARK_ONLY",
+          "sourceAuthority": "USER_SUPPLIED_ENGINEERING_BENCHMARK"
+        },
+        {
+          "materialId": "CS-A106-B",
+          "temperatureC": 25,
+          "value": 20.0,
+          "unit": "ksi",
+          "status": "BENCHMARK_ONLY",
+          "sourceAuthority": "USER_SUPPLIED_ENGINEERING_BENCHMARK"
+        },
+        {
+          "materialId": "CS-A106-B",
+          "temperatureC": 50,
+          "value": 20.0,
+          "unit": "ksi",
+          "status": "BENCHMARK_ONLY",
+          "sourceAuthority": "USER_SUPPLIED_ENGINEERING_BENCHMARK"
+        },
+        {
+          "materialId": "CS-A106-B",
+          "temperatureC": 100,
+          "value": 20.0,
+          "unit": "ksi",
+          "status": "BENCHMARK_ONLY",
+          "sourceAuthority": "USER_SUPPLIED_ENGINEERING_BENCHMARK"
+        },
+        {
+          "materialId": "CS-A106-B",
+          "temperatureC": 150,
+          "value": 20.0,
+          "unit": "ksi",
+          "status": "BENCHMARK_ONLY",
+          "sourceAuthority": "USER_SUPPLIED_ENGINEERING_BENCHMARK"
+        },
+        {
+          "materialId": "CS-A106-B",
+          "temperatureC": 175,
+          "value": 19.95,
+          "unit": "ksi",
+          "status": "BENCHMARK_ONLY",
+          "sourceAuthority": "USER_SUPPLIED_ENGINEERING_BENCHMARK"
+        },
+        {
+          "materialId": "CS-A106-B",
+          "temperatureC": 230,
+          "value": 19.5,
+          "unit": "ksi",
+          "status": "BENCHMARK_ONLY",
+          "sourceAuthority": "USER_SUPPLIED_ENGINEERING_BENCHMARK"
+        },
+        {
+          "materialId": "CS-A106-B",
+          "temperatureC": 340,
+          "value": 17.4,
+          "unit": "ksi",
+          "status": "BENCHMARK_ONLY",
+          "sourceAuthority": "USER_SUPPLIED_ENGINEERING_BENCHMARK"
+        }
+      ],
+      "coveragePlaceholders": [
+        "LTCS-A333-6",
+        "SS-A312-TP304",
+        "SS-A312-TP316",
+        "DSS-A790-S31803",
+        "SDSS-A790-S32760"
+      ],
+      "lookupPolicy": "EXACT_TEMPERATURE_ONLY_UNLESS_FUTURE_RECORD_EXPLICITLY_ALLOWS_INTERPOLATION"
+    },
+    "E": {
+      "schemaVersion": "1.0.0",
+      "standard": "ASME B31.3",
+      "edition": "2024",
+      "factor": "E",
+      "records": [
+        {
+          "materialId": "CS-A106-B",
+          "productForm": "PIPE",
+          "manufacturingRoute": "SEAMLESS",
+          "temperatureC": 0,
+          "value": 1.0,
+          "status": "BENCHMARK_ONLY",
+          "sourceAuthority": "USER_SUPPLIED_ENGINEERING_BENCHMARK"
+        }
+      ],
+      "coveragePlaceholders": [
+        "LTCS-A333-6",
+        "SS-A312-TP304",
+        "SS-A312-TP316",
+        "DSS-A790-S31803",
+        "SDSS-A790-S32760"
+      ]
+    },
+    "W": {
+      "schemaVersion": "1.0.0",
+      "standard": "ASME B31.3",
+      "edition": "2024",
+      "factor": "W",
+      "records": [
+        {
+          "materialId": "CS-A106-B",
+          "productForm": "PIPE",
+          "manufacturingRoute": "SEAMLESS",
+          "temperatureC": 0,
+          "value": 1.0,
+          "status": "BENCHMARK_ONLY",
+          "sourceAuthority": "USER_SUPPLIED_ENGINEERING_BENCHMARK"
+        }
+      ],
+      "coveragePlaceholders": [
+        "LTCS-A333-6",
+        "SS-A312-TP304",
+        "SS-A312-TP316",
+        "DSS-A790-S31803",
+        "SDSS-A790-S32760"
+      ]
+    },
+    "Y": {
+      "schemaVersion": "1.0.0",
+      "standard": "ASME B31.3",
+      "edition": "2024",
+      "factor": "Y",
+      "records": [
+        {
+          "materialId": "CS-A106-B",
+          "productForm": "PIPE",
+          "temperatureC": 0,
+          "value": 0.4,
+          "status": "BENCHMARK_ONLY",
+          "sourceAuthority": "USER_SUPPLIED_ENGINEERING_BENCHMARK"
+        }
+      ],
+      "coveragePlaceholders": [
+        "LTCS-A333-6",
+        "SS-A312-TP304",
+        "SS-A312-TP316",
+        "DSS-A790-S31803",
+        "SDSS-A790-S32760"
+      ]
+    }
+  },
+  "screeningBases": {
+    "OWNER-B313-SEWY-2026-08-11": {
+      "status": "SCREENING",
+      "sourceAuthority": "USER_SUPPLIED_ENGINEERING_SCREENING_BASIS",
+      "sourceReference": "User message 2026-08-11; cites B31.3 Tables A-1, A-1B, 302.3.5, 304.1.1",
+      "editionBasis": "2016/2018 user-supplied basis; not independently verified against project edition 2024",
+      "temperaturesC": [
+        20,
+        80,
+        120,
+        300,
+        420
+      ],
+      "commonFactors": {
+        "W": 1.0,
+        "Y": 0.4
+      },
+      "conditions": [
+        "Y=0.4 basis supplied for t < D/6 through 420 C.",
+        "W=1.0 supplied through 420 C.",
+        "No interpolation is activated by this basis; resolver remains exact-temperature."
+      ],
+      "materials": {
+        "CS-A106-B": {
+          "Sksi": [20.0,20.0,20.0,18.2,12.0],
+          "EByRoute": {"SEAMLESS":1.0}
+        },
+        "LTCS-A333-6": {
+          "Sksi": [20.0,20.0,20.0,18.2,12.0],
+          "EByRoute": {"SEAMLESS":1.0}
+        },
+        "SS-A312-TP304": {
+          "Sksi": [20.0,20.0,20.0,16.9,15.1],
+          "EByRoute": {"SEAMLESS":1.0,"EFW_DOUBLE_BUTT":0.85,"EFW_SINGLE_BUTT":0.8,"EFW_100_PERCENT_RT":1.0}
+        },
+        "SS-A312-TP316": {
+          "Sksi": [20.0,20.0,20.0,17.3,15.8],
+          "EByRoute": {"SEAMLESS":1.0,"EFW_DOUBLE_BUTT":0.85,"EFW_SINGLE_BUTT":0.8,"EFW_100_PERCENT_RT":1.0}
+        },
+        "DSS-A790-S31803": {
+          "Sksi": [30.0,30.0,29.5,27.0,null],
+          "EByRoute": {"SEAMLESS":1.0,"EFW_DOUBLE_BUTT":0.85,"EFW_SINGLE_BUTT":0.8,"EFW_100_PERCENT_RT":1.0},
+          "limitations": {"420C":"NO_S_RECORD_USER_BASIS_NOT_PERMITTED"}
+        },
+        "SDSS-A790-S32760": {
+          "Sksi": [36.3,36.0,35.2,34.0,null],
+          "EByRoute": {"SEAMLESS":1.0,"EFW_DOUBLE_BUTT":0.85,"EFW_SINGLE_BUTT":0.8,"EFW_100_PERCENT_RT":1.0},
+          "limitations": {"420C":"NO_S_RECORD_USER_BASIS_NOT_PERMITTED"}
+        }
+      }
+    }
+  }
+}

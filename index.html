@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3D converters</title>
+<meta name="application-name" content="3D converters">
+<meta name="apple-mobile-web-app-title" content="3D converters">
+<meta name="theme-color" content="#0f172a">
+<link rel="icon" type="image/svg+xml" href="./assets/app-icon.svg?v=standalone-1">
+<link rel="manifest" href="./site.webmanifest?v=standalone-1">
+<link rel="stylesheet" href="styles/base.css">
+<link rel="stylesheet" href="styles/tabs.css?v=standalone-1">
+<link rel="stylesheet" href="styles/app-shell-header-fix.css?v=standalone-1">
+<link rel="stylesheet" href="styles/viewer3d.css?v=standalone-1">
+<link rel="stylesheet" href="tabs/model-converters-tab.css?v=standalone-2">
+<link rel="stylesheet" href="tabs/model-converters-css-fix.css?v=standalone-1">
+<link rel="stylesheet" href="tabs/model-converters-weight-ranking.css?v=standalone-1">
+<link rel="stylesheet" href="tabs/universal-xml-converter-tab.css?v=standalone-1">
+<link rel="stylesheet" href="tabs/model-exchange-tab.css?v=standalone-1">
+<link rel="stylesheet" href="tabs/interchange-config-tab.css?v=standalone-1">
+<link rel="stylesheet" href="tabs/support-mapping-config-tab.css?v=standalone-1">
+<link rel="stylesheet" href="styles/app-content-scroll.css?v=2">
+<link rel="preconnect" href="//unpkg.com" crossorigin>
+<link rel="preconnect" href="//cdn.sheetjs.com" crossorigin>
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.160.1/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.1/examples/jsm/","gltf-exporter":"https://unpkg.com/three@0.160.1/examples/jsm/exporters/GLTFExporter.js","mdb-reader":"https://esm.sh/mdb-reader@2","buffer":"https://esm.sh/buffer@6","xlsx":"https://cdn.sheetjs.com/xlsx-latest/package/xlsx.mjs"}}</script>
+</head>
+<body data-standalone-app="format-converters">
+<div id="app-layout" role="application" aria-label="3D converters"></div>
+<div id="app-loading-overlay" class="app-loading-overlay is-visible" aria-live="polite" aria-hidden="false">
+  <div class="app-loading-card">
+    <div class="app-loading-spinner" aria-hidden="true"></div>
+    <div>
+      <strong>3D converters</strong>
+      <p>Loading workspace...</p>
+    </div>
+  </div>
+</div>
+<div id="app-toast" hidden></div>
+<script type="module" src="./main-rhbg-fitguard.js?v=20260816-cii-v11-v14-dropdown-release-4"></script>
+</body>
+</html>

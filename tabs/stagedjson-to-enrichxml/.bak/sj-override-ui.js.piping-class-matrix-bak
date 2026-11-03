@@ -1,0 +1,225 @@
+/**
+ * Functionality: Resolution Override Matrix modal UI.
+ * Groups 2863 issues into ~10-30 unique raw-value rows per field tab.
+ * User fills one override per unique pattern; engine re-runs for all.
+ * Parameters: {matrix, records, onRerun}. Pure DOM render. No side effects.
+ */
+
+import { buildOverrideMatrix, applyOverridesToConfig } from './sj-override-matrix.js';
+
+// ─── RATING options ───────────────────────────────────────────────
+const RATING_OPTIONS = ['', '150', '300', '600', '900', '1500', '2500',
+  '3000', '5000', '6000', '9000', '10000', '15000', '20000'];
+// ─── SCHEDULE options ─────────────────────────────────────────────
+const SCHEDULE_OPTIONS = ['', 'STD', 'XS', 'XXS', '10', '20', '30',
+  '40', '60', '80', '100', '120', '140', '160'];
+// ─── RESTRAINT options ────────────────────────────────────────────
+const RESTRAINT_OPTIONS = ['', 'REST', 'ANCHOR', 'GUIDE', 'LINESTOP', 'SPRING'];
+
+/**
+ * Open the override matrix modal.
+ * @param {{records:EnrichedRecord[], config:Object, onRerun:Function}} params
+ */
+export function openOverrideMatrix({ records, config, onRerun }) {
+  const matrix = buildOverrideMatrix(records);
+  const userOverrides = { rating: {}, wall: {}, corr: {}, restraint: {}, weight: {} };
+  const totalIssues = countTotalIssues(matrix);
+
+  const existing = document.getElementById('sj-override-overlay');
+  if (existing) existing.remove();
+
+  const overlay = el('div', 'sj-override-overlay');
+  overlay.id = 'sj-override-overlay';
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
+
+  const modal = el('div', 'sj-override-modal');
+  modal.appendChild(buildHeader(totalIssues, () => overlay.remove()));
+  modal.appendChild(buildTabs(matrix, userOverrides));
+  modal.appendChild(buildFooter(overlay, config, userOverrides, onRerun));
+
+  overlay.appendChild(modal);
+  document.body.appendChild(overlay);
+}
+
+// ─── Header ──────────────────────────────────────────────────────
+
+function buildHeader(totalIssues, onClose) {
+  const h = el('div', 'sj-om-header');
+  const left = el('div', 'sj-om-header-left');
+  left.appendChild(el('h2', 'sj-om-title', '⚡ Resolution Override Matrix'));
+  left.appendChild(el('p', 'sj-om-subtitle',
+    `${totalIssues} unresolved nodes grouped into unique patterns. Fill one row to fix many.`));
+  h.appendChild(left);
+  const close = el('button', 'sj-popup-close', '✕');
+  close.onclick = onClose;
+  h.appendChild(close);
+  return h;
+}
+
+// ─── Tab system ───────────────────────────────────────────────────
+
+function buildTabs(matrix, userOverrides) {
+  const tabs = [
+    { id: 'rating',    label: 'Rating',    icon: '🏷', count: matrix.rating.length },
+    { id: 'wall',      label: 'Wall (SCH)',icon: '📐', count: matrix.wall.length },
+    { id: 'corr',      label: 'Corrosion', icon: '🔧', count: matrix.corr.length },
+    { id: 'restraint', label: 'Restraint', icon: '⚓', count: matrix.restraint.length },
+    { id: 'weight',    label: 'Weight',    icon: '⚖', count: matrix.weight.length },
+  ];
+  const wrap = el('div', 'sj-om-tabs-wrap');
+  const bar  = el('div', 'sj-om-tab-bar');
+  const body = el('div', 'sj-om-tab-body');
+  let active = tabs[0].id;
+
+  function activate(id) {
+    active = id;
+    bar.querySelectorAll('.sj-om-tab').forEach(b => b.classList.toggle('is-active', b.dataset.tab === id));
+    body.innerHTML = '';
+    body.appendChild(buildTabContent(id, matrix, userOverrides));
+  }
+
+  tabs.forEach(tab => {
+    const btn = el('button', 'sj-om-tab');
+    btn.dataset.tab = tab.id;
+    const badge = tab.count ? ` (${tab.count})` : '';
+    btn.textContent = `${tab.icon} ${tab.label}${badge}`;
+    btn.onclick = () => activate(tab.id);
+    bar.appendChild(btn);
+  });
+
+  wrap.appendChild(bar);
+  wrap.appendChild(body);
+  activate(active);
+  return wrap;
+}
+
+function buildTabContent(field, matrix, userOverrides) {
+  const rows = matrix[field] || [];
+  const wrap = el('div', 'sj-om-content');
+  if (!rows.length) {
+    wrap.appendChild(el('p', 'sj-om-empty', '✅ No unresolved patterns in this field.'));
+    return wrap;
+  }
+  wrap.appendChild(buildPatternTable(field, rows, userOverrides));
+  return wrap;
+}
+
+// ─── Pattern table ────────────────────────────────────────────────
+
+function buildPatternTable(field, rows, userOverrides) {
+  const table = document.createElement('table');
+  table.className = 'sj-om-table';
+
+  const thead = document.createElement('thead');
+  thead.innerHTML = `<tr>
+    <th>Nodes</th>
+    <th>Raw Value Found</th>
+    <th>Override</th>
+    <th>Apply to</th>
+  </tr>`;
+  table.appendChild(thead);
+
+  const tbody = document.createElement('tbody');
+  rows.forEach(row => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="sj-om-count">${row.count}</td>
+      <td class="sj-om-raw" title="${esc(row.sample || row.key)}">${esc(truncate(row.key, 50))}</td>
+    `;
+
+    const tdCtrl = document.createElement('td');
+    tdCtrl.className = 'sj-om-ctrl';
+    const ctrl = buildControl(field, row, userOverrides);
+    tdCtrl.appendChild(ctrl);
+    tr.appendChild(tdCtrl);
+
+    const tdInfo = document.createElement('td');
+    tdInfo.className = 'sj-om-apply';
+    tdInfo.textContent = `all ${row.count} nodes with this ${fieldLabel(field)}`;
+    tr.appendChild(tdInfo);
+
+    tbody.appendChild(tr);
+  });
+
+  table.appendChild(tbody);
+  return table;
+}
+
+function buildControl(field, row, userOverrides) {
+  if (field === 'rating') {
+    return makeSelect(RATING_OPTIONS, v => {
+      userOverrides.rating[row.key] = v ? Number(v) : '';
+    }, 'Select rating…');
+  }
+  if (field === 'wall') {
+    return makeSelect(SCHEDULE_OPTIONS, v => {
+      userOverrides.wall[row.key] = v;
+    }, 'Select schedule…');
+  }
+  if (field === 'corr') {
+    const inp = makeNumber(v => { userOverrides.corr[row.key] = v; });
+    inp.placeholder = 'mm e.g. 1.5';
+    return inp;
+  }
+  if (field === 'restraint') {
+    return makeSelect(RESTRAINT_OPTIONS, v => {
+      userOverrides.restraint[row.key] = v;
+    }, 'Select type…');
+  }
+  if (field === 'weight') {
+    const inp = makeNumber(v => { userOverrides.weight[row.key] = v; });
+    inp.placeholder = 'kg e.g. 45';
+    return inp;
+  }
+  return el('span');
+}
+
+// ─── Footer ──────────────────────────────────────────────────────
+
+function buildFooter(overlay, config, userOverrides, onRerun) {
+  const footer = el('div', 'sj-om-footer');
+  const note = el('span', 'sj-om-note', 'Unfilled rows keep auto-resolved values. Filled rows override for all matching nodes.');
+  const rerunBtn = el('button', 'sj-btn-primary', '▶ Apply Overrides & Re-Run');
+  rerunBtn.type = 'button';
+  rerunBtn.onclick = () => {
+    const newConfig = applyOverridesToConfig(config, userOverrides);
+    overlay.remove();
+    onRerun(newConfig);
+  };
+  footer.append(note, rerunBtn);
+  return footer;
+}
+
+// ─── DOM helpers ──────────────────────────────────────────────────
+
+function makeSelect(options, onChange, placeholder) {
+  const sel = document.createElement('select');
+  sel.className = 'sj-om-select';
+  options.forEach((opt, i) => {
+    const o = document.createElement('option');
+    o.value = opt; o.textContent = opt || placeholder;
+    if (i === 0) o.disabled = false;
+    sel.appendChild(o);
+  });
+  sel.onchange = () => onChange(sel.value);
+  return sel;
+}
+
+function makeNumber(onChange) {
+  const inp = document.createElement('input');
+  inp.type = 'number'; inp.className = 'sj-om-num';
+  inp.oninput = () => onChange(inp.value ? Number(inp.value) : '');
+  return inp;
+}
+
+function el(tag, cls = '', text = '') {
+  const n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (text) n.textContent = text;
+  return n;
+}
+
+function esc(v) { return String(v ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function truncate(s, n) { return String(s).length > n ? String(s).slice(0, n) + '…' : String(s); }
+function countTotalIssues(m) { return Object.values(m).flat().reduce((s, r) => s + r.count, 0); }
+function fieldLabel(f) { return ({rating:'SPRE',wall:'DTXR',corr:'class prefix',restraint:'support kind',weight:'type+bore'})[f]||f; }

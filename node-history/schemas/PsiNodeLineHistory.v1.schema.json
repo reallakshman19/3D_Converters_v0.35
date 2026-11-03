@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reallaksh19.github.io/3D_Converters/node-history/schemas/PsiNodeLineHistory.v1.schema.json",
+  "title": "PsiNodeLineHistory.v1",
+  "type": "object",
+  "required": [
+    "schema", "registryVersion", "projectId", "zoneId", "mainLineKey",
+    "historyNodes", "validation", "lineHistoryHash"
+  ],
+  "properties": {
+    "schema": {"const": "PsiNodeLineHistory.v1"},
+    "registryVersion": {"const": "1.0.0"},
+    "projectId": {"type": "string", "minLength": 1},
+    "zoneId": {"type": "string", "minLength": 1},
+    "mainLineKey": {"$ref": "#/$defs/mainLineKey"},
+    "coordinateRegistrationRef": {"type": ["string", "null"]},
+    "historyNodes": {"type": "array", "items": {"$ref": "#/$defs/historyNode"}},
+    "validation": {"$ref": "#/$defs/validation"},
+    "lineHistoryHash": {"$ref": "#/$defs/hash"},
+    "audit": {"type": "object"}
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"},
+    "mainLineKey": {"type": "string", "pattern": "^/[A-Z0-9][A-Z0-9._-]*(/[A-Z0-9][A-Z0-9._-]*)*$"},
+    "evidence": {
+      "type": "object",
+      "required": ["authority", "revisionId", "reason"],
+      "properties": {
+        "authority": {"type": "string", "minLength": 1},
+        "revisionId": {"type": "string", "minLength": 1},
+        "reason": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": true
+    },
+    "identityEvidence": {
+      "type": "object",
+      "required": ["kind", "value", "authority"],
+      "properties": {
+        "kind": {"type": "string", "minLength": 1},
+        "value": {"type": "string", "minLength": 1},
+        "authority": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "immutableFacts": {
+      "type": "object",
+      "required": ["historyNodeId", "engineeringNodeNumber", "mainLineKey", "firstObservedRevision"],
+      "properties": {
+        "historyNodeId": {"type": "string", "minLength": 1},
+        "engineeringNodeNumber": {"type": "integer", "minimum": 0},
+        "mainLineKey": {"$ref": "#/$defs/mainLineKey"},
+        "firstObservedRevision": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "historyNode": {
+      "type": "object",
+      "required": [
+        "historyNodeId", "engineeringNodeNumber", "lifecycleStatus", "sourceAliases",
+        "identityEvidence", "immutableFacts", "firstObservedRevision", "lastObservedRevision"
+      ],
+      "properties": {
+        "historyNodeId": {"type": "string", "minLength": 1},
+        "engineeringNodeNumber": {"type": "integer", "minimum": 0},
+        "lifecycleStatus": {"enum": ["ACTIVE", "RETIRED", "REACTIVATED", "SUPERSEDED", "REVIEW_REQUIRED"]},
+        "sourceAliases": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+        "identityEvidence": {"type": "array", "items": {"$ref": "#/$defs/identityEvidence"}},
+        "immutableFacts": {"$ref": "#/$defs/immutableFacts"},
+        "firstObservedRevision": {"type": "string", "minLength": 1},
+        "lastObservedRevision": {"type": "string", "minLength": 1},
+        "retirementEvidence": {"anyOf": [{"$ref": "#/$defs/evidence"}, {"type": "null"}]},
+        "reactivationEvidence": {"anyOf": [{"$ref": "#/$defs/evidence"}, {"type": "null"}]},
+        "supersessionEvidence": {"anyOf": [{"$ref": "#/$defs/evidence"}, {"type": "null"}]},
+        "supersededByHistoryNodeId": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "validation": {
+      "type": "object",
+      "required": ["status", "blockers", "reviewItems", "warnings"],
+      "properties": {
+        "status": {"enum": ["PASS", "REVIEW_REQUIRED", "BLOCKED"]},
+        "blockers": {"type": "array"},
+        "reviewItems": {"type": "array"},
+        "warnings": {"type": "array"}
+      },
+      "additionalProperties": false
+    }
+  }
+}

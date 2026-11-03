@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reallaksh19.github.io/3D_Converters/contracts/fbx/fbx-benchmark-producer-authority-v1.schema.json",
+  "title": "FbxBenchmarkProducerAuthority.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "benchmarkCommit", "producers", "invocation", "status", "authoritySha256"],
+  "properties": {
+    "schema": { "const": "FbxBenchmarkProducerAuthority.v1" },
+    "benchmarkCommit": { "$ref": "#/$defs/sha1" },
+    "authoritySha256": { "$ref": "#/$defs/sha256" },
+    "status": { "const": "BLOCKED" },
+    "producers": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/producer" }
+    },
+    "invocation": { "$ref": "#/$defs/invocation" }
+  },
+  "$defs": {
+    "sha1": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "stringArray": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "producer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["producerId", "path", "blobSha1", "entrypoints", "ruleIds"],
+      "properties": {
+        "producerId": { "type": "string", "minLength": 1 },
+        "path": { "type": "string", "minLength": 1 },
+        "blobSha1": { "$ref": "#/$defs/sha1" },
+        "entrypoints": { "$ref": "#/$defs/stringArray" },
+        "ruleIds": { "$ref": "#/$defs/stringArray" }
+      }
+    },
+    "invocation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidateInputKind",
+        "inputIdentityStatus",
+        "generationCommandStatus",
+        "routingOptionsStatus",
+        "supportMapperConfigStatus"
+      ],
+      "properties": {
+        "candidateInputKind": { "const": "RMSS_ATTRIBUTE_TEXT" },
+        "inputIdentityStatus": { "const": "UNBOUND" },
+        "generationCommandStatus": { "const": "UNBOUND" },
+        "routingOptionsStatus": { "const": "UNBOUND" },
+        "supportMapperConfigStatus": { "const": "UNBOUND" }
+      }
+    }
+  }
+}

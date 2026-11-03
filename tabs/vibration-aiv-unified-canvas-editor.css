@@ -1,0 +1,59 @@
+.aiv-canvas-editor-panel{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin:10px 0;
+  padding:12px;
+  border:1px solid #155e75;
+  border-radius:10px;
+  background:#081827;
+}
+.aiv-canvas-editor-title,.aiv-canvas-editor-toolbar,.aiv-canvas-editor-buttons{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.aiv-canvas-editor-title{justify-content:space-between}
+.aiv-canvas-editor-title>div{display:flex;flex-direction:column;gap:2px}
+.aiv-canvas-editor-title strong{color:#e2e8f0;font-size:13px}
+.aiv-canvas-editor-title small{color:#7dd3fc}
+.aiv-canvas-editor-status{
+  padding:8px 10px;
+  border:1px solid #334155;
+  border-radius:7px;
+  background:#07111f;
+  color:#cbd5e1;
+  font-size:11px;
+}
+.aiv-canvas-editor-panel fieldset{min-width:0}
+.aiv-canvas-editor-panel .danger,.aiv-canvas-engineering-editor .danger{border-color:#991b1b;color:#fecaca}
+.aiv-canvas-engineering-editor{display:flex;flex-direction:column;gap:10px}
+.aiv-canvas-engineering-editor h6{margin:4px 0 0;color:#7dd3fc;font-size:11px}
+.aiv-canvas-engineering-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+  gap:8px;
+}
+.aiv-canvas-engineering-grid label{display:flex;flex-direction:column;gap:4px;color:#94a3b8;font-size:10px}
+.aiv-canvas-engineering-grid input,.aiv-canvas-engineering-grid select{
+  min-height:31px;
+  width:100%;
+  border:1px solid #334155;
+  border-radius:6px;
+  background:#07111f;
+  color:#e5e7eb;
+  padding:5px 7px;
+}
+.aiv-canvas-engineering-grid input[readonly]{color:#94a3b8;background:#0b1322}
+.aiv-network-segment{cursor:pointer;outline:none}
+.aiv-network-segment line{stroke:#64748b;stroke-width:4}
+.aiv-network-segment text{fill:#cbd5e1;font-size:9px;paint-order:stroke;stroke:#08111f;stroke-width:3px}
+.aiv-network-segment.is-unresolved line{stroke:#f59e0b;stroke-dasharray:7 5}
+.aiv-network-segment.is-selected line,.aiv-network-segment:focus line{stroke:#f8fafc;stroke-width:7}
+.aiv-canvas-card:has([data-aiv-canvas-editor-tool].is-active[data-aiv-canvas-editor-tool="PLACE_NODE"]) .aiv-canvas-svg{cursor:crosshair}
+.aiv-canvas-card:has([data-aiv-canvas-editor-tool].is-active[data-aiv-canvas-editor-tool="CONNECT_SEGMENT"]) .aiv-canvas-node{cursor:crosshair}
+@media(max-width:900px){
+  .aiv-canvas-editor-title{align-items:flex-start;flex-direction:column}
+  .aiv-canvas-engineering-grid{grid-template-columns:1fr}
+}

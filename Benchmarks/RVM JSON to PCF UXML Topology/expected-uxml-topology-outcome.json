@@ -1,0 +1,55 @@
+{
+  "schema": "rvm-pcf-uxml-topology-benchmark-expected/v1",
+  "benchmarkName": "broken-topology-50-rows",
+  "topologyMode": "UXML_TOPOLOGY",
+  "rowCount": 50,
+  "minimums": {
+    "componentCount": 50,
+    "anchorCount": 80,
+    "portCount": 80,
+    "segmentCount": 30,
+    "universalNodeCount": 20,
+    "universalEdgeCount": 10,
+    "universalDisconnectedCount": 1,
+    "rayCandidateCount": 1,
+    "rayConnectionCount": 1,
+    "acceptedConnectionCount": 1,
+    "diagnosticCount": 1
+  },
+  "flags": {
+    "faceModelCreated": true,
+    "universalGraphCreated": true,
+    "rayGraphCreated": true,
+    "comparisonCreated": true,
+    "topologyDecisionCreated": true,
+    "legacyRoutingContinues": true,
+    "mastersDeferredToLegacyRoute": true,
+    "pcfEmitterDeferredToLegacyRoute": true,
+    "coordinatesMutated": false
+  },
+  "requiredIdentityFields": [
+    "rowNo",
+    "refNo",
+    "seqNo",
+    "lineNo",
+    "pipelineRef"
+  ],
+  "requiredGapsMm": [
+    3,
+    4,
+    6,
+    15,
+    20
+  ],
+  "requiredTypes": [
+    "PIPE",
+    "VALVE",
+    "FLANGE",
+    "REDUCER",
+    "TEE",
+    "OLET",
+    "ELBOW",
+    "BEND",
+    "SUPPORT"
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "schema": "kd320-controlled-source-receipts/v1",
+  "authority": {
+    "nativeCoreKd3Qualified": false,
+    "codeCompliance": false,
+    "canUseForDesignAuthority": false,
+    "publicRepositoryMayContainLicensedSourceText": false
+  },
+  "receipts": [
+    {
+      "receiptId": "Q1-SRC-B313-2024",
+      "standard": "ASME B31.3",
+      "edition": "2024",
+      "purpose": "Chapter IX high-pressure fatigue invocation and applicability custody",
+      "publicIdentitySourceRef": "ASME-B313-2024-PUBLIC",
+      "controlledLedgerSourceRef": null,
+      "status": "PENDING_CONTROLLED_SOURCE_RECEIPT",
+      "licenseClass": "LICENSED_RESTRICTED",
+      "storageClass": "SECURE_STORE",
+      "secureStorageRef": null,
+      "documentSha256": null,
+      "exactLocators": [],
+      "verifiedBy": null,
+      "verifiedAt": null,
+      "independentCheckBy": null,
+      "independentCheckedAt": null,
+      "publicRepositoryContentAllowed": false,
+      "notes": "Q1 records the receipt schema only. Controlled source bytes, hash and paragraph-level locators are not committed here."
+    },
+    {
+      "receiptId": "Q1-SRC-VIII3-2025",
+      "standard": "ASME BPVC Section VIII Division 3",
+      "edition": "2025",
+      "purpose": "KD-3/KD320 method semantics, fatigue-curve custody and applicability",
+      "publicIdentitySourceRef": "ASME-VIII3-2025-PUBLIC",
+      "controlledLedgerSourceRef": "SRC-VIII3-2025-CONTROLLED",
+      "status": "PENDING_CONTROLLED_SOURCE_RECEIPT",
+      "licenseClass": "LICENSED_RESTRICTED",
+      "storageClass": "SECURE_STORE",
+      "secureStorageRef": null,
+      "documentSha256": null,
+      "exactLocators": [],
+      "verifiedBy": null,
+      "verifiedAt": null,
+      "independentCheckBy": null,
+      "independentCheckedAt": null,
+      "publicRepositoryContentAllowed": false,
+      "notes": "Existing source routing metadata is not qualification-complete until secure bytes/hash and exact controlled locators are reconciled."
+    }
+  ],
+  "verifiedReceiptRequirements": {
+    "requiredFields": [
+      "secureStorageRef",
+      "documentSha256",
+      "exactLocators",
+      "verifiedBy",
+      "verifiedAt",
+      "independentCheckBy",
+      "independentCheckedAt"
+    ],
+    "sha256Format": "sha256:<64 lowercase hex characters>",
+    "independentIdentityRequired": true,
+    "licensedTextMustRemainOutsidePublicRepository": true
+  }
+}

@@ -1,0 +1,5 @@
+rowId,valveType,FL,applicability,sourceLocator,publicationState,engineeringAuthority,screeningAuthority,designAuthority,masterValuesPublished
+T29-FL-001,Ball,0.6,valve-caused discrete pressure drop,T2.9.2 printed page 69,CANDIDATE,NONE,NOT_AUTHORIZED,false,false
+T29-FL-002,Butterfly,0.62,valve-caused discrete pressure drop,T2.9.2 printed page 69,CANDIDATE,NONE,NOT_AUTHORIZED,false,false
+T29-FL-003,Globe,0.9,valve-caused discrete pressure drop,T2.9.2 printed page 69,CANDIDATE,NONE,NOT_AUTHORIZED,false,false
+T29-FL-004,Gate,0.6,valve-caused discrete pressure drop,T2.9.2 printed page 69,CANDIDATE,NONE,NOT_AUTHORIZED,false,false

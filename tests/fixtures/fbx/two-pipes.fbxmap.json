@@ -1,0 +1,47 @@
+{
+  "schema": "FbxStagedMapping.v1",
+  "inScopeSourceObjectIds": ["201", "202"],
+  "entries": [
+    {
+      "mappingEntryId": "map-pipe-1",
+      "logicalComponentId": "PIPE-001",
+      "sourceModelObjectId": "201",
+      "sourceOccurrenceId": "occ:201",
+      "componentType": "PIPE",
+      "scopeDisposition": "promote",
+      "portA": {
+        "authority": "mesh-vertex",
+        "geometryObjectId": "101",
+        "vertexIndex": 0,
+        "connections": []
+      },
+      "portB": {
+        "authority": "mesh-vertex",
+        "geometryObjectId": "101",
+        "vertexIndex": 1,
+        "connections": [{ "mappingEntryId": "map-pipe-2", "port": "A" }]
+      }
+    },
+    {
+      "mappingEntryId": "map-pipe-2",
+      "logicalComponentId": "PIPE-002",
+      "sourceModelObjectId": "202",
+      "sourceOccurrenceId": "occ:202",
+      "componentType": "PIPE",
+      "scopeDisposition": "promote",
+      "portA": {
+        "authority": "mesh-vertex",
+        "geometryObjectId": "102",
+        "vertexIndex": 0,
+        "connections": [{ "mappingEntryId": "map-pipe-1", "port": "B" }]
+      },
+      "portB": {
+        "authority": "mesh-vertex",
+        "geometryObjectId": "102",
+        "vertexIndex": 1,
+        "connections": []
+      }
+    }
+  ],
+  "exclusions": []
+}

@@ -1,0 +1,16 @@
+{
+  "schema": "source-backup-manifest/v1",
+  "workPack": "XML Builder to InputXML audit and diagnostics",
+  "baselineCommit": "fc43c4df40793f7437aca7ab06dcf50b5edacb99",
+  "recovery": "Restore a path from the immutable Git blob SHA recorded below.",
+  "files": [
+    { "path": "tabs/xml-builder-tab.js", "blobSha": "461ed0887fcaeb6fe999e4707f24a65b1e867270" },
+    { "path": "tabs/model-converters/xml-cii-node-to-inputxml-core.js", "blobSha": "9233627df5af6e52b597bbf1fff98fdda635b4d4" },
+    { "path": "converters/xml-cii2019-core/custom-input-api.js", "blobSha": "3d0a87a80351611b37aa418133cb2581d050e98f" },
+    { "path": "converters/xml-cii2019-core/custom-input-model.js", "blobSha": "cde1a42aeabfb589713dbe2d05bf684192e6cc04" },
+    { "path": "converters/xml-cii2019-core/custom-input-xml-builder.js", "blobSha": "f5c711d3a36800f4096c1040b026fe7f5bf81440" },
+    { "path": "converters/xml-cii2019-core/custom-input-table-parser.js", "blobSha": "87d871839dff09f6557a57973fb08437af6cb900" },
+    { "path": "tabs/model-converters/custom-input/custom-input-panel.js", "blobSha": "226b51a8ae58f8bb57da526b62f2d614394ef790" },
+    { "path": "tests/xml-cii-node-to-inputxml-core.test.js", "blobSha": "deceaf0e370f4368728e9098831fd257522e892f" }
+  ]
+}

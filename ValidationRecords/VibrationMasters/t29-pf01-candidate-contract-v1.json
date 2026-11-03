@@ -1,0 +1,161 @@
+{
+  "schema": "T29CandidateKernelContract.v1",
+  "calculationId": "VIB.CAVITATION.FLASHING",
+  "implementationState": "CONTRACT_ONLY_NOT_EXECUTABLE",
+  "request": {
+    "schema": "T29CandidateRequest.v1",
+    "required": [
+      "assessmentId",
+      "fluidPhase",
+      "upstreamPressure",
+      "downstreamPressure",
+      "vapourPressure",
+      "flowingTemperature",
+      "valve"
+    ],
+    "fields": {
+      "assessmentId": { "type": "string", "blankAllowed": false },
+      "fluidPhase": { "type": "enum", "values": [], "status": "PENDING_CONTROLLED_SOURCE_SCOPE" },
+      "upstreamPressure": {
+        "type": "EngineeringQuantityEvidence.v1",
+        "quantity": "pressure",
+        "requiredMembers": ["value", "unit", "basis", "source"],
+        "basisValues": ["ABSOLUTE", "GAUGE"],
+        "basisSelection": "EXPLICIT_ONLY_NO_DEFAULT"
+      },
+      "downstreamPressure": {
+        "type": "EngineeringQuantityEvidence.v1",
+        "quantity": "pressure",
+        "requiredMembers": ["value", "unit", "basis", "source"],
+        "basisValues": ["ABSOLUTE", "GAUGE"],
+        "basisSelection": "EXPLICIT_ONLY_NO_DEFAULT"
+      },
+      "vapourPressure": {
+        "type": "EngineeringQuantityEvidence.v1",
+        "quantity": "pressure",
+        "requiredMembers": ["value", "unit", "basis", "source"],
+        "requiredBasis": "ABSOLUTE_PENDING_CONTROLLED_CONFIRMATION",
+        "sourcePrecedence": [
+          "PROJECT_EXPLICIT",
+          "GOVERNED_ACCEPTED_PROPERTY",
+          "APPENDIX_B_CANDIDATE_REQUIRES_EXPLICIT_ACCEPTANCE"
+        ],
+        "automaticAppendixBDefault": false
+      },
+      "flowingTemperature": {
+        "type": "EngineeringQuantityEvidence.v1",
+        "quantity": "temperature",
+        "requiredMembers": ["value", "unit", "source"]
+      },
+      "valve": {
+        "type": "T29ValveEvidence.v1",
+        "requiredMembers": ["valveType", "source"],
+        "optionalMembers": ["trimType", "flowOrientation", "projectFL"]
+      },
+      "qualificationMode": {
+        "type": "enum",
+        "values": ["candidate"],
+        "screening": "FORBIDDEN_UNTIL_SEPARATE_AUTHORITY_PROMOTION"
+      }
+    }
+  },
+  "resolution": {
+    "pressureNormalization": {
+      "targetUnit": "Pa",
+      "targetBasis": "PENDING_CONTROLLED_SOURCE",
+      "gaugeReferenceRequiredForGaugeInput": true,
+      "unknownBasisBehavior": "NOT_READY"
+    },
+    "vapourPressure": {
+      "missingBehavior": "NOT_READY",
+      "zeroAsMissingSentinelForbidden": true,
+      "silentDefaultForbidden": true
+    },
+    "FL": {
+      "resolutionModes": [
+        "PROJECT_EXPLICIT_PENDING_SOURCE_RULE",
+        "GOVERNED_MASTER_PENDING_ACTIVATION"
+      ],
+      "candidateRowsAvailableForQualificationOnly": true,
+      "unknownValveBehavior": "NOT_READY",
+      "nearestMatchForbidden": true,
+      "fuzzyMatchForbidden": true,
+      "genericFallbackForbidden": true
+    }
+  },
+  "kernelStages": [
+    "validateInput",
+    "normalizeUnitsAndPressureEvidence",
+    "evaluateApplicability",
+    "resolveVapourPressureEvidence",
+    "resolveFL",
+    "calculateQualifiedIntermediates",
+    "evaluateQualifiedDecisionBranches",
+    "buildCandidateEvidence"
+  ],
+  "qualifiedIntermediates": {
+    "FL": "CANDIDATE_LOOKUP_AVAILABLE_NOT_ACTIVE",
+    "pressureRecoveryDelta": "ARITHMETIC_RELATION_CANDIDATE_ONLY",
+    "sigma": "BLOCKED_CONTROLLED_SOURCE",
+    "Kc": "BLOCKED_CONTROLLED_SOURCE",
+    "FF": "BLOCKED_CONTROLLED_SOURCE_CONFLICT",
+    "regimeBoundaries": "BLOCKED_CONTROLLED_SOURCE",
+    "LOF": "BLOCKED_CONTROLLED_SOURCE"
+  },
+  "result": {
+    "schema": "T29CandidateResult.v1",
+    "requiredMembers": [
+      "methodId",
+      "methodRevision",
+      "assessmentId",
+      "applicability",
+      "resolvedInputs",
+      "intermediates",
+      "candidateOutcome",
+      "qualification",
+      "authority",
+      "provenance",
+      "warnings"
+    ],
+    "candidateOutcome": {
+      "regime": "NULL_UNTIL_CONTROLLED_SOURCE_QUALIFIED",
+      "lof": "NULL_UNTIL_CONTROLLED_SOURCE_QUALIFIED",
+      "safePassFail": "PROHIBITED"
+    },
+    "authority": {
+      "engineeringAuthority": "NONE",
+      "screeningAuthority": "NOT_AUTHORIZED",
+      "designAuthority": false,
+      "codeCompliance": false
+    }
+  },
+  "stableErrors": [
+    "T29_PRESSURE_BASIS_REQUIRED",
+    "T29_GAUGE_REFERENCE_REQUIRED",
+    "T29_PV_REQUIRED",
+    "T29_PV_SOURCE_ACCEPTANCE_REQUIRED",
+    "T29_VALVE_TYPE_REQUIRED",
+    "T29_FL_NOT_READY",
+    "T29_UNSUPPORTED_PHASE",
+    "T29_UNSUPPORTED_DEVICE",
+    "T29_CONTROLLED_METHOD_NOT_QUALIFIED",
+    "T29_SCREENING_NOT_AUTHORIZED"
+  ],
+  "prohibitedImplementation": [
+    "copy sigma/Kc/FF rules from Advanced_Analysis synthesis",
+    "activate four-row FL candidate as governed master before controlled reconciliation",
+    "assume pressure basis",
+    "default missing Pv",
+    "generic FL fallback",
+    "UI-side numerical equations",
+    "return PASS/SAFE from candidate arithmetic",
+    "mix AIV or T2.8 equations into T2.9"
+  ],
+  "promotionGate": {
+    "controlledSourceReconciled": false,
+    "branchOraclesFrozen": false,
+    "appendixAQualified": false,
+    "pureCandidateKernelImplementationAuthorized": false,
+    "screeningPromotionAuthorized": false
+  }
+}

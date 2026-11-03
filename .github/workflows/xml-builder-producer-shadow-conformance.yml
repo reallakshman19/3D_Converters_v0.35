@@ -1,0 +1,83 @@
+name: XML Builder Producer Shadow Conformance
+
+on:
+  pull_request:
+    paths:
+      - 'contracts/xml-builder-producer-conformance/**'
+      - 'scripts/xml-builder-producer-shadow-conformance.mjs'
+      - 'tests/helpers/simple-xml-dom.mjs'
+      - 'tests/xml-builder-producer-shadow-conformance-static.test.mjs'
+      - '.github/workflows/xml-builder-producer-shadow-conformance.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout 3D Converters
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Checkout pinned XML Utilities authority
+        uses: actions/checkout@v6
+        with:
+          repository: reallaksh19/XML_Compare_Utilities
+          ref: dd7e62c2dc879d0ac4916303f9c41ff863b50cbc
+          path: XML_Compare_Utilities
+          fetch-depth: 1
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
+      - name: Verify shadow-only scope
+        shell: bash
+        run: |
+          git fetch origin main --depth=1
+          changed="$(git diff --name-only origin/main...HEAD)"
+          printf '%s\n' "$changed"
+          for protected in \
+            tabs/xml-builder-tab.js \
+            converters/xml-cii2019-core/custom-input-api.js \
+            tabs/model-converters/xml-cii-node-to-inputxml-core.js \
+            xml-compare/CategorizedInputXmlConverter.js
+          do
+            if printf '%s\n' "$changed" | grep -Fxq "$protected"; then
+              echo "Protected production authority changed during shadow conformance: $protected" >&2
+              exit 1
+            fi
+          done
+
+      - name: Run static boundary gate
+        run: |
+          node --check scripts/xml-builder-producer-shadow-conformance.mjs
+          node --check tests/helpers/simple-xml-dom.mjs
+          node tests/xml-builder-producer-shadow-conformance-static.test.mjs
+          git diff --check
+
+      - name: Run existing XML Builder regressions
+        run: |
+          node tests/xml-builder-inputxml-ui.test.js
+          node tests/xml-cii-node-to-inputxml-core.test.js
+
+      - name: Run pinned producer conformance
+        run: |
+          mkdir -p artifacts
+          node scripts/xml-builder-producer-shadow-conformance.mjs \
+            --xml-utils-root "$PWD/XML_Compare_Utilities" \
+            --evidence "$PWD/artifacts/xml-builder-producer-shadow-conformance.json"
+
+      - name: Upload conformance evidence
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: xml-builder-producer-shadow-conformance
+          path: artifacts/xml-builder-producer-shadow-conformance.json
+          if-no-files-found: error
+          retention-days: 30

@@ -1,0 +1,3271 @@
+<?xml version="1.0" encoding="utf-8"?><PipeStressExport xmlns="http://aveva.com/pipeStress116.xsd">
+<DateTime>10:52:57 24 June 2026</DateTime>
+<Source>AVEVA PSI</Source>
+<Version>3.1.7.0</Version>
+<UserName>mu65397</UserName>
+<Purpose>Preliminary stress run</Purpose>
+<ProjectName>AML</ProjectName>
+ <MDBName>/AMF1</MDBName>
+<TitleLine>PSI stress Output</TitleLine>
+<!-- Configuration information -->
+<Units>
+<DistanceUnits>mm</DistanceUnits>
+<BoreUnits>mm</BoreUnits>
+<PressureUnits>pascal</PressureUnits>
+<TemperatureUnits>degC</TemperatureUnits>
+<WeightUnits>kg</WeightUnits>
+<ForceUnits>newton</ForceUnits>
+<WallThicknessUnits>mm</WallThicknessUnits>
+<FluidDensityUnits>kg/m3</FluidDensityUnits>
+</Units>
+<RestrainOpenEnds>Yes</RestrainOpenEnds>
+<AmbientTemperature>21</AmbientTemperature>
+<Pipe>
+<FullName>/GH-TYP-04-STEAM-MDF</FullName>
+<Ref>=1006674359/185</Ref>
+<Branch>
+<Branchname>/ASIM-1885-8"-S8810103-91261M7-HC/B1</Branchname>
+<Temperature>
+<Temperature1>325</Temperature1>
+<Temperature2>309</Temperature2>
+<Temperature3>5</Temperature3>
+<Temperature4>-100000</Temperature4>
+<Temperature5>-100000</Temperature5>
+<Temperature6>-100000</Temperature6>
+<Temperature7>-100000</Temperature7>
+<Temperature8>-100000</Temperature8>
+<Temperature9>-100000</Temperature9>
+</Temperature>
+<Pressure>
+<Pressure1>11600</Pressure1>
+<Pressure2>0</Pressure2>
+<Pressure3>0</Pressure3>
+<Pressure4>0</Pressure4>
+<Pressure5>0</Pressure5>
+<Pressure6>0</Pressure6>
+<Pressure7>0</Pressure7>
+<Pressure8>0</Pressure8>
+<Pressure9>0</Pressure9>
+<HydroPressure>22035</HydroPressure></Pressure>
+<MaterialNumber>106</MaterialNumber>
+<InsulationDensity>0</InsulationDensity>
+<FluidDensity>67</FluidDensity>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<Rigid>1</Rigid>
+<ComponentType>BRAN</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51427</ComponentRefNo>
+<ConnectionType>BRAN</ConnectionType>
+<OutsideDiameter>219.1</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>100</InsulationThickness>
+<Position>595775.15 -1116925.00 101182.65</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>200.000</BoreMm><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>10</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51428</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>219.1</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>100</InsulationThickness>
+<Position>595775.15 -1116925.00 101182.65</Position>
+<BendRadius>305</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>200.000</BoreMm><DTXR_POS>ELBOW 90 DEG LR BW SCH 100</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>431.335</ElementLengthMm></Node>
+<Node>
+<NodeNumber>20</NodeNumber>
+<NodeName/>
+<Endpoint>0</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51428</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>219.1</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>100</InsulationThickness>
+<Position>596080.15 -1116925.00 101182.65</Position>
+<BendRadius>305</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>200.000</BoreMm><ElementLengthMm>305.000</ElementLengthMm><DTXR_POS>ELBOW 90 DEG LR BW Sch 100(NAME==1006649732/51428)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51428</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>219.1</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>100</InsulationThickness>
+<Position>596080.15 -1116925.00 101487.65</Position>
+<BendRadius>305</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>200.000</BoreMm><DTXR_POS>ELBOW 90 DEG LR BW SCH 100</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>431.335</ElementLengthMm></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51429</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>219.1</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>100</InsulationThickness>
+<Position>596080.15 -1116925.00 102904.55</Position>
+<BendRadius>305</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>200.000</BoreMm><DTXR_POS>ELBOW 90 DEG LR BW SCH 100</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>431.335</ElementLengthMm></Node>
+<Node>
+<NodeNumber>30</NodeNumber>
+<NodeName/>
+<Endpoint>0</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51429</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>219.1</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>100</InsulationThickness>
+<Position>596080.15 -1116925.00 103209.55</Position>
+<BendRadius>305</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>200.000</BoreMm><ElementLengthMm>2026.900</ElementLengthMm><DTXR_POS>ELBOW 90 DEG LR BW Sch 100(NAME==1006649732/51429)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51429</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>219.1</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>100</InsulationThickness>
+<Position>596080.15 -1117230.00 103209.55</Position>
+<BendRadius>305</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>200.000</BoreMm><DTXR_POS>ELBOW 90 DEG LR BW SCH 100</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>431.335</ElementLengthMm></Node>
+
+
+<Node>
+<NodeNumber>60</NodeNumber>
+<NodeName>PS-12228/DATUM</NodeName>
+<Endpoint>0</Endpoint>
+<ComponentType>ATTA</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51431</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>219.1</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>100</InsulationThickness>
+<Position>596080.15 -1117775.00 103209.55</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>200.000</BoreMm><ElementLengthMm>850.000</ElementLengthMm><DTXR_PS>Pipe Rest XRT01|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-100-450 Carbon Steel|WEAR PLATE TYPE-421 PAD L 550mm|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 8-PDO-TYPE-416A/B-170-450 Carbon Steel|PIPE SUPPORT TYPE-105</DTXR_PS><DTXR_POS>PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 8-PDO-TYPE-416A/B-170-450 Carbon Steel(NAME=/PS-12228.3)|WEAR PLATE TYPE-421 PAD L 550mm(NAME=/PS-12228.10)|Pipe Rest XRT01(NAME=/PS-12228/DATUM)|PIPE SUPPORT TYPE-105(NAME=/PS-12228/SREF)</DTXR_POS><Restraint><Type>+Y</Type><Stiffness>1.751270E+12</Stiffness><Gap>0</Gap><Friction>0.3</Friction><DirectionCosineX>0.000000000</DirectionCosineX><DirectionCosineY>1.000000000</DirectionCosineY><DirectionCosineZ>0.000000000</DirectionCosineZ></Restraint><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+
+
+
+
+<Node>
+<NodeNumber>110</NodeNumber>
+<NodeName>PS-12034/DATUM</NodeName>
+<Endpoint>0</Endpoint>
+<ComponentType>ATTA</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51437</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>219.1</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>100</InsulationThickness>
+<Position>596080.15 -1120935.93 103209.55</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>200.000</BoreMm><ElementLengthMm>3160.930</ElementLengthMm><CMPSUPGAP_PS>25mm GAP</CMPSUPGAP_PS><CMPSUPGAP>25mm GAP</CMPSUPGAP><DTXR_PS>Pipe Rest XRT01|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-100-650 Carbon Steel|Directional Anchor On Shoe for Hot Insulated Pipe NPS 1/2- 36 6-XST06-40|GUIDE PDO-TYPE-603|WEAR PLATE TYPE-421 PAD L 700mm|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 8-PDO-TYPE-416A/B-170-600 Carbon Steel|Directional Anchor On Shoe for Hot Insulated Pipe NPS 1/2- 36 8-XST06-40|Special Support</DTXR_PS><DTXR_POS>PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 8-PDO-TYPE-416A/B-170-600 Carbon Steel(NAME=/PS-12034.9)|Directional Anchor On Shoe for Hot Insulated Pipe NPS 1/2- 36 8-XST06-40(NAME=/PS-12034.4)|WEAR PLATE TYPE-421 PAD L 700mm(NAME=/PS-12034.10)|Pipe Rest XRT01(NAME=/PS-12034/DATUM)|Special Support(NAME=/PS-12034/SREF)</DTXR_POS><Restraint><Type>+Y</Type><Stiffness>1.751270E+12</Stiffness><Gap>0</Gap><Friction>0.3</Friction><DirectionCosineX>0.000000000</DirectionCosineX><DirectionCosineY>1.000000000</DirectionCosineY><DirectionCosineZ>0.000000000</DirectionCosineZ></Restraint><Restraint><Type>LIM</Type><Stiffness>1.751270E+12</Stiffness><Gap>25</Gap><Friction>-1.010100</Friction><CMPSUPGAP>25mm GAP</CMPSUPGAP></Restraint><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+
+<Node>
+<NodeNumber>130</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<Rigid>1</Rigid>
+<ComponentType>FLAN</ComponentType>
+<Weight>95</Weight>
+<ComponentRefNo>=1006649732/51439</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>219.1</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>100</InsulationThickness>
+<Position>596080.15 -1122631.00 103209.55</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>200.000</BoreMm><ElementLengthMm>1695.070</ElementLengthMm><DTXR_POS>WELDING NECK FLANGE SCH 100 900#</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>139</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint><Rigid>2</Rigid>
+<ComponentType>FLAN</ComponentType>
+<Weight>95</Weight>
+<ComponentRefNo>=1006649732/51439</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>219.1</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>100</InsulationThickness>
+<Position>596080.15 -1122800.00 103209.55</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>200.000</BoreMm><DTXR_POS>WELDING NECK FLANGE Sch 100 900#(NAME==1006649732/51439)|GASKET SPIRAL WOUND 900#(NAME==1006649732/51440)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>169.000</ElementLengthMm></Node>
+
+
+<Node>
+<NodeNumber>140</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<Rigid>2</Rigid>
+<ComponentType>RIGID</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51427</ComponentRefNo>
+<ConnectionType>BRAN</ConnectionType>
+<OutsideDiameter>219.1</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>100</InsulationThickness>
+<Position>596080.15 -1122803.20 103209.55</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>200.000</BoreMm><ElementLengthMm>6225.318</ElementLengthMm><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<PipelineReference>S8811956</PipelineReference><LineNo>S8811956</LineNo></Branch>
+<Branch>
+<Branchname>/ASIM-1885-10"-S8810101-91261M7-HC/B1</Branchname>
+<Temperature>
+<Temperature1>325</Temperature1>
+<Temperature2>309.3</Temperature2>
+<Temperature3>5</Temperature3>
+<Temperature4>-100000</Temperature4>
+<Temperature5>-100000</Temperature5>
+<Temperature6>-100000</Temperature6>
+<Temperature7>-100000</Temperature7>
+<Temperature8>-100000</Temperature8>
+<Temperature9>-100000</Temperature9>
+</Temperature>
+<Pressure>
+<Pressure1>11600</Pressure1>
+<Pressure2>0</Pressure2>
+<Pressure3>0</Pressure3>
+<Pressure4>0</Pressure4>
+<Pressure5>0</Pressure5>
+<Pressure6>0</Pressure6>
+<Pressure7>0</Pressure7>
+<Pressure8>0</Pressure8>
+<Pressure9>0</Pressure9>
+<HydroPressure>22035</HydroPressure></Pressure>
+<MaterialNumber>106</MaterialNumber>
+<InsulationDensity>0</InsulationDensity>
+<FluidDensity>53.89</FluidDensity>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<Rigid>1</Rigid>
+<ComponentType>BRAN</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51442</ComponentRefNo>
+<ConnectionType>BRAN</ConnectionType>
+<OutsideDiameter>273</OutsideDiameter>
+<WallThickness>15.09</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>120</InsulationThickness>
+<Position>593473.15 -1122803.20 103209.55</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>250.000</BoreMm><DTXR_POS>GASKET SPIRAL WOUND 900#(NAME==1006649732/51443)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+
+
+
+<Node>
+<NodeNumber>160</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<Rigid>2</Rigid>
+<ComponentType>RIGID</ComponentType>
+<Weight>139</Weight>
+<ComponentRefNo>=1006649732/51444</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>273</OutsideDiameter>
+<WallThickness>15.09</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>120</InsulationThickness>
+<Position>593473.15 -1122609.00 103209.55</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>250.000</BoreMm><DTXR_POS>WELDING NECK FLANGE SCH 100 900#</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>191.000</ElementLengthMm></Node>
+<Node>
+<NodeNumber>170</NodeNumber>
+<NodeName>PS-12060/DATUM</NodeName>
+<Endpoint>0</Endpoint>
+<ComponentType>ATTA</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51445</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>273</OutsideDiameter>
+<WallThickness>15.09</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>120</InsulationThickness>
+<Position>593473.15 -1120710.00 103209.55</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>250.000</BoreMm><ElementLengthMm>1899.000</ElementLengthMm><CMPSUPGAP_PS>25mm GAP</CMPSUPGAP_PS><CMPSUPGAP>25mm GAP</CMPSUPGAP><DTXR_PS>Pipe Rest XRT01|PIPE SUPPORT TYPE-103|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 10-PDO-TYPE-416A/B-170-700 Carbon Steel|Directional Anchor On Shoe for Hot Insulated Pipe NPS 1/2- 36 10-XST06-40|WEAR PLATE TYPE-421 PAD L 800mm|GUIDE PDO-TYPE-603</DTXR_PS><CMPSUPGAP_POS>25mm GAP</CMPSUPGAP_POS><DTXR_POS>Pipe Rest XRT01(NAME=/PS-12060/DATUM)|PIPE SUPPORT TYPE-103(NAME=/PS-12060/SREF)|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 10-PDO-TYPE-416A/B-170-700 Carbon Steel(NAME=/PS-12060.2)|Directional Anchor On Shoe for Hot Insulated Pipe NPS 1/2- 36 10-XST06-40(NAME=/PS-12060.1)|WEAR PLATE TYPE-421 PAD L 800mm(NAME=/PS-12060.3)|GUIDE PDO-TYPE-603(NAME=/PS-12060.4,CMPSUPGAP=25mm GAP)</DTXR_POS><Restraint><Type>+Y</Type><Stiffness>1.751270E+12</Stiffness><Gap>0</Gap><Friction>0.3</Friction><DirectionCosineX>0.000000000</DirectionCosineX><DirectionCosineY>1.000000000</DirectionCosineY><DirectionCosineZ>0.000000000</DirectionCosineZ></Restraint><Restraint><Type>LIM</Type><Stiffness>1.751270E+12</Stiffness><Gap>25</Gap><Friction>-1.010100</Friction><CMPSUPGAP>25mm GAP</CMPSUPGAP></Restraint><Restraint><Type>GUI</Type><Stiffness>1.751270E+12</Stiffness><Gap>25</Gap><Friction>-1.010100</Friction><CMPSUPGAP>25mm GAP</CMPSUPGAP></Restraint><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+
+
+
+
+
+<Node>
+<NodeNumber>230</NodeNumber>
+<NodeName>PS-12059/DATUM</NodeName>
+<Endpoint>0</Endpoint>
+<ComponentType>ATTA</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51451</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>273</OutsideDiameter>
+<WallThickness>15.09</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>120</InsulationThickness>
+<Position>593473.15 -1118085.00 103209.55</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>250.000</BoreMm><ElementLengthMm>2625.000</ElementLengthMm><DTXR_PS>Pipe Rest XRT01|PIPE SUPPORT TYPE-107|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 10-PDO-TYPE-416A/B-170-450 Carbon Steel|WEAR PLATE TYPE-421 PAD L 550mm</DTXR_PS><DTXR_POS>Pipe Rest XRT01(NAME=/PS-12059/DATUM)|PIPE SUPPORT TYPE-107(NAME=/PS-12059/SREF)|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 10-PDO-TYPE-416A/B-170-450 Carbon Steel(NAME=/PS-12059.1)|WEAR PLATE TYPE-421 PAD L 550mm(NAME=/PS-12059.2)</DTXR_POS><Restraint><Type>+Y</Type><Stiffness>1.751270E+12</Stiffness><Gap>0</Gap><Friction>0.3</Friction><DirectionCosineX>0.000000000</DirectionCosineX><DirectionCosineY>1.000000000</DirectionCosineY><DirectionCosineZ>0.000000000</DirectionCosineZ></Restraint><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+
+
+
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51454</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>273</OutsideDiameter>
+<WallThickness>15.09</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>120</InsulationThickness>
+<Position>593473.15 -1117306.00 103209.55</Position>
+<BendRadius>381</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>250.000</BoreMm><DTXR_POS>ELBOW 90 DEG LR BW SCH 100</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>538.815</ElementLengthMm></Node>
+<Node>
+<NodeNumber>270</NodeNumber>
+<NodeName/>
+<Endpoint>0</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51454</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>273</OutsideDiameter>
+<WallThickness>15.09</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>120</InsulationThickness>
+<Position>593473.15 -1116925.00 103209.55</Position>
+<BendRadius>381</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>250.000</BoreMm><ElementLengthMm>1160.000</ElementLengthMm><DTXR_POS>ELBOW 90 DEG LR BW Sch 100(NAME==1006649732/51454)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51454</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>273</OutsideDiameter>
+<WallThickness>15.09</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>120</InsulationThickness>
+<Position>593473.15 -1116925.00 102828.55</Position>
+<BendRadius>381</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>250.000</BoreMm><DTXR_POS>ELBOW 90 DEG LR BW SCH 100</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>538.815</ElementLengthMm></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<ComponentType>OLET</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51455</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>273</OutsideDiameter>
+<WallThickness>15.09</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>120</InsulationThickness>
+<Position>593473.15 -1116925.00 101775.55</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>250.000</BoreMm><DTXR_POS>Branch Fitting Plain Sch 80(NAME==1006649732/51455)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>3</Endpoint>
+<ComponentType>OLET</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51455</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>273</OutsideDiameter>
+<WallThickness>15.09</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>120</InsulationThickness>
+<Position>593698.68 -1116925.00 101775.55</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>250.000</BoreMm><DTXR_POS>---(NAME==1006649732/51465)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>280</NodeNumber>
+<NodeName/>
+<Endpoint>0</Endpoint>
+<ComponentType>OLET</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51455</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>273</OutsideDiameter>
+<WallThickness>15.09</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>120</InsulationThickness>
+<Position>593473.15 -1116925.00 101775.55</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>250.000</BoreMm><ElementLengthMm>1434.000</ElementLengthMm><DTXR_POS>Branch Fitting Plain Sch 80(NAME==1006649732/51455)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<ComponentType>OLET</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51455</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>273</OutsideDiameter>
+<WallThickness>15.09</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>120</InsulationThickness>
+<Position>593473.15 -1116925.00 101775.55</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>250.000</BoreMm><DTXR_POS>Branch Fitting Plain Sch 80(NAME==1006649732/51455)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<ComponentType>OLET</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51456</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>273</OutsideDiameter>
+<WallThickness>15.09</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>120</InsulationThickness>
+<Position>593473.15 -1116925.00 101625.55</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>250.000</BoreMm><DTXR_POS>Branch Outlet BW Sch 80(NAME==1006649732/51456)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>3</Endpoint>
+<ComponentType>OLET</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51456</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>273</OutsideDiameter>
+<WallThickness>15.09</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>120</InsulationThickness>
+<Position>593298.55 -1116925.00 101625.55</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>250.000</BoreMm><DTXR_POS>BRANCH OUTLET BW SCH 80</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>290</NodeNumber>
+<NodeName/>
+<Endpoint>0</Endpoint>
+<ComponentType>OLET</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51456</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>273</OutsideDiameter>
+<WallThickness>15.09</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>120</InsulationThickness>
+<Position>593473.15 -1116925.00 101625.55</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>250.000</BoreMm><ElementLengthMm>150.000</ElementLengthMm><DTXR_POS>Branch Outlet BW Sch 80(NAME==1006649732/51456)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<ComponentType>OLET</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51456</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>273</OutsideDiameter>
+<WallThickness>15.09</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>120</InsulationThickness>
+<Position>593473.15 -1116925.00 101625.55</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>250.000</BoreMm><DTXR_POS>Branch Outlet BW Sch 80(NAME==1006649732/51456)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>300</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<ComponentType>BRAN</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51442</ComponentRefNo>
+<ConnectionType>BRAN</ConnectionType>
+<OutsideDiameter>273</OutsideDiameter>
+<WallThickness>15.09</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>120</InsulationThickness>
+<Position>593473.15 -1116925.00 101425.55</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>250.000</BoreMm><ElementLengthMm>200.000</ElementLengthMm><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<PipelineReference>S8810110</PipelineReference><LineNo>S8810110</LineNo></Branch>
+<Branch>
+<Branchname>/ASIM-1885-6"-S8810112-91261M7-HC/B6</Branchname>
+<Temperature>
+<Temperature1>325</Temperature1>
+<Temperature2>309</Temperature2>
+<Temperature3>5</Temperature3>
+<Temperature4>-100000</Temperature4>
+<Temperature5>-100000</Temperature5>
+<Temperature6>-100000</Temperature6>
+<Temperature7>-100000</Temperature7>
+<Temperature8>-100000</Temperature8>
+<Temperature9>-100000</Temperature9>
+</Temperature>
+<Pressure>
+<Pressure1>11600</Pressure1>
+<Pressure2>0</Pressure2>
+<Pressure3>0</Pressure3>
+<Pressure4>0</Pressure4>
+<Pressure5>0</Pressure5>
+<Pressure6>0</Pressure6>
+<Pressure7>0</Pressure7>
+<Pressure8>0</Pressure8>
+<Pressure9>0</Pressure9>
+<HydroPressure>22035</HydroPressure></Pressure>
+<MaterialNumber>106</MaterialNumber>
+<InsulationDensity>0</InsulationDensity>
+<FluidDensity>67</FluidDensity>
+<Node>
+<NodeNumber>310</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<ComponentType>BRAN</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006657924/39544</ComponentRefNo>
+<ConnectionType>TEE</ConnectionType>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>591160.22 -1116925.00 101157.20</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>TEE EQUAL BW Sch 80(NAME==1006690692/1)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006657924/39695</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>591160.22 -1116925.00 102885.00</Position>
+<BendRadius>229</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>ELBOW 90 DEG LR BW SCH 80</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>323.855</ElementLengthMm></Node>
+<Node>
+<NodeNumber>320</NodeNumber>
+<NodeName/>
+<Endpoint>0</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006657924/39695</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>591160.22 -1116925.00 103114.00</Position>
+<BendRadius>229</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>1956.800</ElementLengthMm><DTXR_POS>ELBOW 90 DEG LR BW Sch 80(NAME==1006657924/39695)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006657924/39695</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>591160.22 -1117154.00 103114.00</Position>
+<BendRadius>229</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>ELBOW 90 DEG LR BW SCH 80</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>323.855</ElementLengthMm></Node>
+<Node>
+<NodeNumber>330</NodeNumber>
+<NodeName>PS-12228.6</NodeName>
+<Endpoint>0</Endpoint>
+<ComponentType>ATTA</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006657924/39570</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>591160.22 -1117775.00 103114.00</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>850.000</ElementLengthMm><DTXR_PS>Pipe Rest XRT01</DTXR_PS><DTXR_POS>Pipe Rest XRT01(NAME=/PS-12228.6)|PIPE SUPPORT TYPE-103(NAME==1006657924/39571)|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-100-450 Carbon Steel(NAME=/PS-12228.2)|WEAR PLATE TYPE-421 PAD L 550mm(NAME=/PS-12228.9)</DTXR_POS><Restraint><Type>+Y</Type><Stiffness>1.751270E+12</Stiffness><Gap>0</Gap><Friction>0.3</Friction><DirectionCosineX>0.000000000</DirectionCosineX><DirectionCosineY>1.000000000</DirectionCosineY><DirectionCosineZ>0.000000000</DirectionCosineZ></Restraint><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+
+
+
+<Node>
+<NodeNumber>370</NodeNumber>
+<NodeName>PS-12034.15</NodeName>
+<Endpoint>0</Endpoint>
+<ComponentType>ATTA</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006657924/39574</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>591160.22 -1120935.93 103114.00</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>3160.930</ElementLengthMm><DTXR_PS>Pipe Rest XRT01</DTXR_PS><CMPSUPGAP_POS>25mm GAP</CMPSUPGAP_POS><CMPSUPGAP>25mm GAP</CMPSUPGAP><DTXR_POS>Pipe Rest XRT01(NAME=/PS-12034.15)|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-100-650 Carbon Steel(NAME=/PS-12034.2)|Directional Anchor On Shoe for Hot Insulated Pipe NPS 1/2- 36 6-XST06-40(NAME=/PS-12034.3)|GUIDE PDO-TYPE-603(NAME=/PS-12034.20,CMPSUPGAP=25mm GAP)|WEAR PLATE TYPE-421 PAD L 700mm(NAME=/PS-12034.1)</DTXR_POS><Restraint><Type>+Y</Type><Stiffness>1.751270E+12</Stiffness><Gap>0</Gap><Friction>0.3</Friction><DirectionCosineX>0.000000000</DirectionCosineX><DirectionCosineY>1.000000000</DirectionCosineY><DirectionCosineZ>0.000000000</DirectionCosineZ></Restraint><Restraint><Type>LIM</Type><Stiffness>1.751270E+12</Stiffness><Gap>25</Gap><Friction>-1.010100</Friction><CMPSUPGAP>25mm GAP</CMPSUPGAP></Restraint><Restraint><Type>GUI</Type><Stiffness>1.751270E+12</Stiffness><Gap>25</Gap><Friction>-1.010100</Friction><CMPSUPGAP>25mm GAP</CMPSUPGAP></Restraint><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+
+
+
+
+<Node>
+<NodeNumber>420</NodeNumber>
+<NodeName/>
+<Endpoint>0</Endpoint>
+<ComponentType>ATTA</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006657924/39580</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>591160.22 -1122244.98 103114.00</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>1309.050</ElementLengthMm><DTXR_POS>ATTA FOR FLOOR OPENING(NAME==1006657924/39580)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>430</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<Rigid>1</Rigid>
+<ComponentType>FLAN</ComponentType>
+<Weight>59</Weight>
+<ComponentRefNo>=1006657924/39581</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>591160.22 -1122598.00 103114.00</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>353.020</ElementLengthMm><DTXR_POS>WELDING NECK FLANGE SCH 80 900#</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>439</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint><Rigid>2</Rigid>
+<ComponentType>FLAN</ComponentType>
+<Weight>59</Weight>
+<ComponentRefNo>=1006657924/39581</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>591160.22 -1122745.00 103114.00</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>WELDING NECK FLANGE Sch 80 900#(NAME==1006657924/39581)|GASKET SPIRAL WOUND 900#(NAME==1006657924/39582)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>147.000</ElementLengthMm></Node>
+
+
+<Node>
+<NodeNumber>440</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<Rigid>2</Rigid>
+<ComponentType>RIGID</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006657924/39544</ComponentRefNo>
+<ConnectionType>GBG</ConnectionType>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>591160.22 -1122748.20 103114.00</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>6143.185</ElementLengthMm><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<PipelineReference>S8811946</PipelineReference><LineNo>S8811946</LineNo></Branch>
+<Branch>
+<Branchname>/ASIM-1885-10"-S8810101-91261M7-HC/B7</Branchname>
+<Temperature>
+<Temperature1>325</Temperature1>
+<Temperature2>309.3</Temperature2>
+<Temperature3>5</Temperature3>
+<Temperature4>-100000</Temperature4>
+<Temperature5>-100000</Temperature5>
+<Temperature6>-100000</Temperature6>
+<Temperature7>-100000</Temperature7>
+<Temperature8>-100000</Temperature8>
+<Temperature9>-100000</Temperature9>
+</Temperature>
+<Pressure>
+<Pressure1>11600</Pressure1>
+<Pressure2>0</Pressure2>
+<Pressure3>0</Pressure3>
+<Pressure4>0</Pressure4>
+<Pressure5>0</Pressure5>
+<Pressure6>0</Pressure6>
+<Pressure7>0</Pressure7>
+<Pressure8>0</Pressure8>
+<Pressure9>0</Pressure9>
+<HydroPressure>22035</HydroPressure></Pressure>
+<MaterialNumber>106</MaterialNumber>
+<InsulationDensity>0</InsulationDensity>
+<FluidDensity>53.89</FluidDensity>
+<Node>
+<NodeNumber>300</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<Rigid>1</Rigid>
+<ComponentType>BRAN</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51493</ComponentRefNo>
+<ConnectionType>BRAN</ConnectionType>
+<OutsideDiameter>273</OutsideDiameter>
+<WallThickness>15.09</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>120</InsulationThickness>
+<Position>593473.15 -1116925.00 101425.55</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>250.000</BoreMm><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>449</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<Rigid>2</Rigid>
+<ComponentType>RIGID</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51494</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>273</OutsideDiameter>
+<WallThickness>15.09</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>120</InsulationThickness>
+<Position>593473.15 -1116925.00 101425.55</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>250.000</BoreMm><DTXR_POS>TEE EQUAL BW SCH 100</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>305.470</ElementLengthMm></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>3</Endpoint>
+<ComponentType>TEE</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51494</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>273</OutsideDiameter>
+<WallThickness>15.09</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>120</InsulationThickness>
+<Position>593689.15 -1116925.00 101209.55</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>250.000</BoreMm><DTXR_POS>TEE EQUAL BW SCH 100</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>216.000</ElementLengthMm></Node>
+<Node>
+<NodeNumber>450</NodeNumber>
+<NodeName/>
+<Endpoint>0</Endpoint>
+<ComponentType>TEE</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51494</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>273</OutsideDiameter>
+<WallThickness>15.09</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>120</InsulationThickness>
+<Position>593473.15 -1116925.00 101209.55</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>250.000</BoreMm><ElementLengthMm>216.000</ElementLengthMm><TEEDESC_POS>TEE EQUAL BW Sch 100</TEEDESC_POS><DTXR_POS>TEE EQUAL BW Sch 100(NAME==1006649732/51494)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<ComponentType>TEE</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51494</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>273</OutsideDiameter>
+<WallThickness>15.09</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>120</InsulationThickness>
+<Position>593257.15 -1116925.00 101209.55</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>250.000</BoreMm><DTXR_POS>TEE EQUAL BW SCH 100</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>216.000</ElementLengthMm></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<ComponentType>OLET</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51495</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>273</OutsideDiameter>
+<WallThickness>15.09</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>120</InsulationThickness>
+<Position>592923.41 -1116925.00 101209.55</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>250.000</BoreMm><DTXR_POS>Branch Outlet BW Sch 80(NAME==1006649732/51495)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>3</Endpoint>
+<ComponentType>OLET</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51495</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>273</OutsideDiameter>
+<WallThickness>15.09</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>120</InsulationThickness>
+<Position>592923.41 -1116925.00 101034.95</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>250.000</BoreMm><DTXR_POS>BRANCH OUTLET BW SCH 80</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>460</NodeNumber>
+<NodeName/>
+<Endpoint>0</Endpoint>
+<ComponentType>OLET</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51495</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>273</OutsideDiameter>
+<WallThickness>15.09</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>120</InsulationThickness>
+<Position>592923.41 -1116925.00 101209.55</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>250.000</BoreMm><ElementLengthMm>333.740</ElementLengthMm><DTXR_POS>Branch Outlet BW Sch 80(NAME==1006649732/51495)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<ComponentType>OLET</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51495</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>273</OutsideDiameter>
+<WallThickness>15.09</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>120</InsulationThickness>
+<Position>592923.41 -1116925.00 101209.55</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>250.000</BoreMm><DTXR_POS>Branch Outlet BW Sch 80(NAME==1006649732/51495)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>470</NodeNumber>
+<NodeName>PS-12166/DATUM</NodeName>
+<Endpoint>0</Endpoint>
+<ComponentType>ATTA</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51496</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>273</OutsideDiameter>
+<WallThickness>15.09</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>120</InsulationThickness>
+<Position>591937.50 -1116925.00 101209.55</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>250.000</BoreMm><ElementLengthMm>985.910</ElementLengthMm><CMPSUPGAP_PS>10mm GAP</CMPSUPGAP_PS><CMPSUPGAP>10mm GAP</CMPSUPGAP><DTXR_PS>Pipe Rest XRT01|PIPE SUPPORT TYPE-106|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 10-PDO-TYPE-416A/B-170-600 Carbon Steel|WEAR PLATE TYPE-421 PAD L 700mm|Directional Anchor On Shoe for Hot Insulated Pipe NPS 1/2- 36 10-XST06-40</DTXR_PS><CMPSUPGAP_POS>10mm GAP</CMPSUPGAP_POS><DTXR_POS>Pipe Rest XRT01(NAME=/PS-12166/DATUM)|PIPE SUPPORT TYPE-106(NAME=/PS-12166/SREF)|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 10-PDO-TYPE-416A/B-170-600 Carbon Steel(NAME=/PS-12166.2,CMPSUPGAP=10mm GAP)|WEAR PLATE TYPE-421 PAD L 700mm(NAME=/PS-12166.7)|Directional Anchor On Shoe for Hot Insulated Pipe NPS 1/2- 36 10-XST06-40(NAME=/PS-12166.1,CMPSUPGAP=10mm GAP)</DTXR_POS><Restraint><Type>+Y</Type><Stiffness>1.751270E+12</Stiffness><Gap>0</Gap><Friction>0.3</Friction><DirectionCosineX>0.000000000</DirectionCosineX><DirectionCosineY>1.000000000</DirectionCosineY><DirectionCosineZ>0.000000000</DirectionCosineZ></Restraint><Restraint><Type>LIM</Type><Stiffness>1.751270E+12</Stiffness><Gap>10</Gap><Friction>-1.010100</Friction><CMPSUPGAP>10mm GAP</CMPSUPGAP></Restraint><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+
+
+
+
+<Node>
+<NodeNumber>520</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<ComponentType>REDU</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51499</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>273</OutsideDiameter>
+<WallThickness>15.09</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>120</InsulationThickness>
+<Position>591481.22 -1116925.00 101209.55</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>250.000</BoreMm><ElementLengthMm>456.280</ElementLengthMm><DTXR_POS>REDUCER ECCENTRIC BW Sch 100 X Sch 80(NAME==1006649732/51499)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<ComponentType>REDU</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51499</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>15.09</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<AlphaAngle>25.19</AlphaAngle>
+<InsulationThickness>120</InsulationThickness>
+<Position>591303.22 -1116925.00 101157.20</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>250.000</BoreMm><DTXR_POS>REDUCER ECCENTRIC BW SCH 100 X SCH 80</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>185.538</ElementLengthMm></Node>
+<Node>
+<NodeNumber>530</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<ComponentType>BRAN</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51493</ComponentRefNo>
+<ConnectionType>BRAN</ConnectionType>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>15.09</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>120</InsulationThickness>
+<Position>591303.22 -1116925.00 101157.20</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>250.000</BoreMm><ElementLengthMm>185.538</ElementLengthMm><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<PipelineReference>S8810101</PipelineReference><LineNo>S8810101</LineNo></Branch>
+<Branch>
+<Branchname>/ASIM-1885-6"-S8810111-91261M7-HC/B2</Branchname>
+<Temperature>
+<Temperature1>325</Temperature1>
+<Temperature2>309</Temperature2>
+<Temperature3>5</Temperature3>
+<Temperature4>-100000</Temperature4>
+<Temperature5>-100000</Temperature5>
+<Temperature6>-100000</Temperature6>
+<Temperature7>-100000</Temperature7>
+<Temperature8>-100000</Temperature8>
+<Temperature9>-100000</Temperature9>
+</Temperature>
+<Pressure>
+<Pressure1>11600</Pressure1>
+<Pressure2>0</Pressure2>
+<Pressure3>0</Pressure3>
+<Pressure4>0</Pressure4>
+<Pressure5>0</Pressure5>
+<Pressure6>0</Pressure6>
+<Pressure7>0</Pressure7>
+<Pressure8>0</Pressure8>
+<Pressure9>0</Pressure9>
+<HydroPressure>22035</HydroPressure></Pressure>
+<MaterialNumber>106</MaterialNumber>
+<InsulationDensity>0</InsulationDensity>
+<FluidDensity>67</FluidDensity>
+<Node>
+<NodeNumber>530</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<Rigid>1</Rigid>
+<ComponentType>BRAN</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51203</ComponentRefNo>
+<ConnectionType>BRAN</ConnectionType>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>591303.22 -1116925.00 101157.20</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<Rigid>2</Rigid>
+<ComponentType>RIGID</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006690692/1</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>591303.22 -1116925.00 101157.20</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>TEE EQUAL BW SCH 80</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>286.000</ElementLengthMm></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>3</Endpoint>
+<ComponentType>TEE</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006690692/1</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>591160.22 -1116925.00 101300.20</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>TEE EQUAL BW SCH 80</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>143.000</ElementLengthMm></Node>
+<Node>
+<NodeNumber>310</NodeNumber>
+<NodeName/>
+<Endpoint>0</Endpoint>
+<ComponentType>TEE</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006690692/1</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>591160.22 -1116925.00 101157.20</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>143.000</ElementLengthMm><TEEDESC_POS>TEE EQUAL BW Sch 80</TEEDESC_POS><DTXR_POS>TEE EQUAL BW Sch 80(NAME==1006690692/1)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<ComponentType>TEE</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006690692/1</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>591017.22 -1116925.00 101157.20</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>TEE EQUAL BW SCH 80</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>143.000</ElementLengthMm></Node>
+<Node>
+<NodeNumber>540</NodeNumber>
+<NodeName>PS-12156/DATUM</NodeName>
+<Endpoint>0</Endpoint>
+<ComponentType>ATTA</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51204</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>589167.22 -1116925.00 101157.20</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>1993.000</ElementLengthMm><DTXR_PS>Pipe Rest XRT01|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-130-450 Carbon Steel|WEAR PLATE TYPE-421 PAD L 550mm|PIPE SUPPORT TYPE-108</DTXR_PS><DTXR_POS>Pipe Rest XRT01(NAME=/PS-12156/DATUM)|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-130-450 Carbon Steel(NAME=/PS-12156.2)|WEAR PLATE TYPE-421 PAD L 550mm(NAME=/PS-12156.7)|PIPE SUPPORT TYPE-108(NAME=/PS-12156/SREF)</DTXR_POS><Restraint><Type>+Y</Type><Stiffness>1.751270E+12</Stiffness><Gap>0</Gap><Friction>0.3</Friction><DirectionCosineX>0.000000000</DirectionCosineX><DirectionCosineY>1.000000000</DirectionCosineY><DirectionCosineZ>0.000000000</DirectionCosineZ></Restraint><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+
+
+
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51207</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>588252.22 -1116925.00 101157.20</Position>
+<BendRadius>229</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>ELBOW 90 DEG LR BW SCH 80</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>323.855</ElementLengthMm></Node>
+<Node>
+<NodeNumber>580</NodeNumber>
+<NodeName/>
+<Endpoint>0</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51207</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>588023.22 -1116925.00 101157.20</Position>
+<BendRadius>229</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>1144.000</ElementLengthMm><DTXR_POS>ELBOW 90 DEG LR BW Sch 80(NAME==1006649732/51207)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51207</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>588023.22 -1116925.00 101386.20</Position>
+<BendRadius>229</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>ELBOW 90 DEG LR BW SCH 80</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>323.855</ElementLengthMm></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51208</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>588023.22 -1116925.00 101955.15</Position>
+<BendRadius>229</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>ELBOW 90 DEG LR BW SCH 80</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>323.855</ElementLengthMm></Node>
+<Node>
+<NodeNumber>590</NodeNumber>
+<NodeName/>
+<Endpoint>0</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51208</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>588023.22 -1116925.00 102184.15</Position>
+<BendRadius>229</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>1026.950</ElementLengthMm><DTXR_POS>ELBOW 90 DEG LR BW Sch 80(NAME==1006649732/51208)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51208</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>588023.22 -1116696.00 102184.15</Position>
+<BendRadius>229</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>ELBOW 90 DEG LR BW SCH 80</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>323.855</ElementLengthMm></Node>
+<Node>
+<NodeNumber>600</NodeNumber>
+<NodeName>PS-12170/DATUM</NodeName>
+<Endpoint>0</Endpoint>
+<ComponentType>ATTA</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51209</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>588023.22 -1115821.23 102184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>1103.770</ElementLengthMm><DTXR_PS>Pipe Rest XRT01|PIPE SUPPORT TYPE-108</DTXR_PS><DTXR_POS>Pipe Rest XRT01(NAME=/PS-12170/DATUM)|PIPE SUPPORT TYPE-108(NAME=/PS-12170/SREF)|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-130-450 Carbon Steel(NAME=/PS-12170.3)|WEAR PLATE TYPE-421 PAD L 550mm(NAME=/PS-12170.2)</DTXR_POS><Restraint><Type>+Y</Type><Stiffness>1.751270E+12</Stiffness><Gap>0</Gap><Friction>0.3</Friction><DirectionCosineX>0.000000000</DirectionCosineX><DirectionCosineY>1.000000000</DirectionCosineY><DirectionCosineZ>0.000000000</DirectionCosineZ></Restraint><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+
+
+<Node>
+<NodeNumber>630</NodeNumber>
+<NodeName>PS-12169/DATUM</NodeName>
+<Endpoint>0</Endpoint>
+<ComponentType>ATTA</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51213</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>588023.22 -1109235.00 102184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>6586.230</ElementLengthMm><CMPSUPGAP_PS>0mm GAP</CMPSUPGAP_PS><CMPSUPGAP>0mm GAP</CMPSUPGAP><DTXR_PS>Pipe Rest XRT01|PIPE SUPPORT TYPE-108|GUIDE PDO-TYPE-603|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-130-600 Carbon Steel|Directional Anchor On Shoe for Hot Insulated Pipe NPS 1/2- 36 6-XST06-40|WEAR PLATE TYPE-421 PAD L 700mm</DTXR_PS><CMPSUPGAP_POS>0mm GAP</CMPSUPGAP_POS><DTXR_POS>Pipe Rest XRT01(NAME=/PS-12169/DATUM)|PIPE SUPPORT TYPE-108(NAME=/PS-12169/SREF)|GUIDE PDO-TYPE-603(NAME=/PS-12169.9,CMPSUPGAP=0mm GAP)|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-130-600 Carbon Steel(NAME=/PS-12169.2)|Directional Anchor On Shoe for Hot Insulated Pipe NPS 1/2- 36 6-XST06-40(NAME=/PS-12169.3)|WEAR PLATE TYPE-421 PAD L 700mm(NAME=/PS-12169.1)</DTXR_POS><Restraint><Type>+Y</Type><Stiffness>1.751270E+12</Stiffness><Gap>0</Gap><Friction>0.3</Friction><DirectionCosineX>0.000000000</DirectionCosineX><DirectionCosineY>1.000000000</DirectionCosineY><DirectionCosineZ>0.000000000</DirectionCosineZ></Restraint><Restraint><Type>GUI</Type><Stiffness>1.751270E+12</Stiffness><Gap>0</Gap><Friction>-1.010100</Friction><CMPSUPGAP>0mm GAP</CMPSUPGAP></Restraint><Restraint><Type>LIM</Type><Stiffness>1.751270E+12</Stiffness><Gap>0</Gap><Friction>-1.010100</Friction><CMPSUPGAP>0mm GAP</CMPSUPGAP></Restraint><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+
+
+
+
+
+<Node>
+<NodeNumber>690</NodeNumber>
+<NodeName>PS-12165/DATUM</NodeName>
+<Endpoint>0</Endpoint>
+<ComponentType>ATTA</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51218</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>588023.22 -1104621.20 102184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>4613.800</ElementLengthMm><DTXR_PS>Pipe Rest XRT01|PIPE SUPPORT TYPE-108|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-130-450 Carbon Steel|WEAR PLATE TYPE-421 PAD L 550mm</DTXR_PS><DTXR_POS>Pipe Rest XRT01(NAME=/PS-12165/DATUM)|PIPE SUPPORT TYPE-108(NAME=/PS-12165/SREF)|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-130-450 Carbon Steel(NAME=/PS-12165.1)|WEAR PLATE TYPE-421 PAD L 550mm(NAME=/PS-12165.5)</DTXR_POS><Restraint><Type>+Y</Type><Stiffness>1.751270E+12</Stiffness><Gap>0</Gap><Friction>0.3</Friction><DirectionCosineX>0.000000000</DirectionCosineX><DirectionCosineY>1.000000000</DirectionCosineY><DirectionCosineZ>0.000000000</DirectionCosineZ></Restraint><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+
+
+
+<Node>
+<NodeNumber>730</NodeNumber>
+<NodeName>PS-12297/SREF</NodeName>
+<Endpoint>0</Endpoint>
+<ComponentType>ATTA</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51225</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>588023.22 -1102574.80 102184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>2046.400</ElementLengthMm><DTXR_PS>PIPE SUPPORT TYPE-108</DTXR_PS><DTXR_POS>PIPE SUPPORT TYPE-108(NAME=/PS-12297/SREF)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51226</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>588023.22 -1102054.00 102184.15</Position>
+<BendRadius>229</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>ELBOW 90 DEG LR BW SCH 80</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>323.855</ElementLengthMm></Node>
+<Node>
+<NodeNumber>740</NodeNumber>
+<NodeName/>
+<Endpoint>0</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51226</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>588023.22 -1101825.00 102184.15</Position>
+<BendRadius>229</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>2796.200</ElementLengthMm><DTXR_POS>ELBOW 90 DEG LR BW Sch 80(NAME==1006649732/51226)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51226</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>587794.22 -1101825.00 102184.15</Position>
+<BendRadius>229</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>ELBOW 90 DEG LR BW SCH 80</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>323.855</ElementLengthMm></Node>
+<Node>
+<NodeNumber>750</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<ComponentType>BRAN</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51203</ComponentRefNo>
+<ConnectionType>BRAN</ConnectionType>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>587794.22 -1101825.00 102184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>229.000</ElementLengthMm><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<PipelineReference>S8810111</PipelineReference><LineNo>S8810111</LineNo></Branch>
+<Branch>
+<Branchname>/ASIM-1885-6"-S8810111-91261M7-HC/B1</Branchname>
+<Temperature>
+<Temperature1>325</Temperature1>
+<Temperature2>309</Temperature2>
+<Temperature3>5</Temperature3>
+<Temperature4>-100000</Temperature4>
+<Temperature5>-100000</Temperature5>
+<Temperature6>-100000</Temperature6>
+<Temperature7>-100000</Temperature7>
+<Temperature8>-100000</Temperature8>
+<Temperature9>-100000</Temperature9>
+</Temperature>
+<Pressure>
+<Pressure1>11600</Pressure1>
+<Pressure2>0</Pressure2>
+<Pressure3>0</Pressure3>
+<Pressure4>0</Pressure4>
+<Pressure5>0</Pressure5>
+<Pressure6>0</Pressure6>
+<Pressure7>0</Pressure7>
+<Pressure8>0</Pressure8>
+<Pressure9>0</Pressure9>
+<HydroPressure>22035</HydroPressure></Pressure>
+<MaterialNumber>106</MaterialNumber>
+<InsulationDensity>0</InsulationDensity>
+<FluidDensity>67</FluidDensity>
+<Node>
+<NodeNumber>750</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<ComponentType>BRAN</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51399</ComponentRefNo>
+<ConnectionType>BRAN</ConnectionType>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>587794.22 -1101825.00 102184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>760</NodeNumber>
+<NodeName>PS-12061/DATUM</NodeName>
+<Endpoint>0</Endpoint>
+<ComponentType>ATTA</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51400</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>586979.22 -1101825.00 102184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>815.000</ElementLengthMm><DTXR_PS>Pipe Rest XRT01|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-130-450 Carbon Steel|WEAR PLATE TYPE-421 PAD L 550mm|PIPE SUPPORT TYPE-105</DTXR_PS><DTXR_POS>Pipe Rest XRT01(NAME=/PS-12061/DATUM)|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-130-450 Carbon Steel(NAME=/PS-12061.1)|WEAR PLATE TYPE-421 PAD L 550mm(NAME=/PS-12061.2)|PIPE SUPPORT TYPE-105(NAME=/PS-12061/SREF)</DTXR_POS><Restraint><Type>+Y</Type><Stiffness>1.751270E+12</Stiffness><Gap>0</Gap><Friction>0.3</Friction><DirectionCosineX>0.000000000</DirectionCosineX><DirectionCosineY>1.000000000</DirectionCosineY><DirectionCosineZ>0.000000000</DirectionCosineZ></Restraint><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+
+
+
+<Node>
+<NodeNumber>800</NodeNumber>
+<NodeName>PS-12240/DATUM</NodeName>
+<Endpoint>0</Endpoint>
+<ComponentType>ATTA</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51403</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>582223.22 -1101825.00 102184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>4756.000</ElementLengthMm><CMPSUPGAP_PS>10mm GAP</CMPSUPGAP_PS><CMPSUPGAP>10mm GAP</CMPSUPGAP><DTXR_PS>Pipe Rest XRT01|PIPE SUPPORT TYPE-103|WEAR PLATE TYPE-421 PAD L 700mm|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-130-600 Carbon Steel|Directional Anchor On Shoe for Hot Insulated Pipe NPS 1/2- 36 6-XST06-40</DTXR_PS><CMPSUPGAP_POS>10mm GAP</CMPSUPGAP_POS><DTXR_POS>Pipe Rest XRT01(NAME=/PS-12240/DATUM)|PIPE SUPPORT TYPE-103(NAME=/PS-12240/SREF)|WEAR PLATE TYPE-421 PAD L 700mm(NAME=/PS-12240.2)|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-130-600 Carbon Steel(NAME=/PS-12240.3)|Directional Anchor On Shoe for Hot Insulated Pipe NPS 1/2- 36 6-XST06-40(NAME=/PS-12240.4,CMPSUPGAP=10mm GAP)</DTXR_POS><Restraint><Type>+Y</Type><Stiffness>1.751270E+12</Stiffness><Gap>0</Gap><Friction>0.3</Friction><DirectionCosineX>0.000000000</DirectionCosineX><DirectionCosineY>1.000000000</DirectionCosineY><DirectionCosineZ>0.000000000</DirectionCosineZ></Restraint><Restraint><Type>LIM</Type><Stiffness>1.751270E+12</Stiffness><Gap>10</Gap><Friction>-1.010100</Friction><CMPSUPGAP>10mm GAP</CMPSUPGAP></Restraint><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+
+
+
+
+<Node>
+<NodeNumber>850</NodeNumber>
+<NodeName>PS-12242.5</NodeName>
+<Endpoint>0</Endpoint>
+<ComponentType>ATTA</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51406</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>577573.22 -1101825.00 102184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>4650.000</ElementLengthMm><DTXR_PS>Pipe Rest XRT01</DTXR_PS><CMPSUPGAP_POS>10mm GAP</CMPSUPGAP_POS><CMPSUPGAP>10mm GAP</CMPSUPGAP><DTXR_POS>Pipe Rest XRT01(NAME=/PS-12242.5)|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-130-450 Carbon Steel(NAME=/PS-12242.2)|GUIDE PDO-TYPE-603(NAME=/PS-12242.4,CMPSUPGAP=10mm GAP)|WEAR PLATE TYPE-421 PAD L 550mm(NAME=/PS-12242.1)</DTXR_POS><Restraint><Type>+Y</Type><Stiffness>1.751270E+12</Stiffness><Gap>0</Gap><Friction>0.3</Friction><DirectionCosineX>0.000000000</DirectionCosineX><DirectionCosineY>1.000000000</DirectionCosineY><DirectionCosineZ>0.000000000</DirectionCosineZ></Restraint><Restraint><Type>GUI</Type><Stiffness>1.751270E+12</Stiffness><Gap>10</Gap><Friction>-1.010100</Friction><CMPSUPGAP>10mm GAP</CMPSUPGAP></Restraint><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+
+
+
+<Node>
+<NodeNumber>890</NodeNumber>
+<NodeName>PS-12263.8</NodeName>
+<Endpoint>0</Endpoint>
+<ComponentType>ATTA</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51412</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>574545.97 -1101825.00 102184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>3027.250</ElementLengthMm><DTXR_PS>Pipe Rest XRT01</DTXR_PS><DTXR_POS>Pipe Rest XRT01(NAME=/PS-12263.8)|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-130-450 Carbon Steel(NAME=/PS-12263.3)|WEAR PLATE TYPE-421 PAD L 550mm(NAME=/PS-12263.7)</DTXR_POS><Restraint><Type>+Y</Type><Stiffness>1.751270E+12</Stiffness><Gap>0</Gap><Friction>0.3</Friction><DirectionCosineX>0.000000000</DirectionCosineX><DirectionCosineY>1.000000000</DirectionCosineY><DirectionCosineZ>0.000000000</DirectionCosineZ></Restraint><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+
+
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006657924/39632</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>574002.22 -1101825.00 102184.15</Position>
+<BendRadius>229</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>ELBOW 90 DEG LR BW SCH 80</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>323.855</ElementLengthMm></Node>
+<Node>
+<NodeNumber>920</NodeNumber>
+<NodeName/>
+<Endpoint>0</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006657924/39632</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>573773.22 -1101825.00 102184.15</Position>
+<BendRadius>229</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>772.750</ElementLengthMm><DTXR_POS>ELBOW 90 DEG LR BW Sch 80(NAME==1006657924/39632)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006657924/39632</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>573773.22 -1101596.00 102184.15</Position>
+<BendRadius>229</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>ELBOW 90 DEG LR BW SCH 80</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>323.855</ElementLengthMm></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006657924/39631</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>573773.22 -1100954.00 102184.15</Position>
+<BendRadius>229</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>ELBOW 90 DEG LR BW SCH 80</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>323.855</ElementLengthMm></Node>
+<Node>
+<NodeNumber>930</NodeNumber>
+<NodeName/>
+<Endpoint>0</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006657924/39631</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>573773.22 -1100725.00 102184.15</Position>
+<BendRadius>229</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>1100.000</ElementLengthMm><DTXR_POS>ELBOW 90 DEG LR BW Sch 80(NAME==1006657924/39631)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006657924/39631</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>573544.22 -1100725.00 102184.15</Position>
+<BendRadius>229</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>ELBOW 90 DEG LR BW SCH 80</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>323.855</ElementLengthMm></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51415</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>572502.22 -1100725.00 102184.15</Position>
+<BendRadius>229</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>ELBOW 90 DEG LR BW SCH 80</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>323.855</ElementLengthMm></Node>
+<Node>
+<NodeNumber>940</NodeNumber>
+<NodeName/>
+<Endpoint>0</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51415</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>572273.22 -1100725.00 102184.15</Position>
+<BendRadius>229</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>1500.000</ElementLengthMm><DTXR_POS>ELBOW 90 DEG LR BW Sch 80(NAME==1006649732/51415)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51415</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>572273.22 -1100725.00 101955.15</Position>
+<BendRadius>229</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>ELBOW 90 DEG LR BW SCH 80</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>323.855</ElementLengthMm></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006690692/2</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>572273.22 -1100725.00 101413.15</Position>
+<BendRadius>229</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>ELBOW 90 DEG LR BW SCH 80</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>323.855</ElementLengthMm></Node>
+<Node>
+<NodeNumber>950</NodeNumber>
+<NodeName/>
+<Endpoint>0</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006690692/2</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>572273.22 -1100725.00 101184.15</Position>
+<BendRadius>229</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>1000.000</ElementLengthMm><DTXR_POS>ELBOW 90 DEG LR BW Sch 80(NAME==1006690692/2)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006690692/2</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>572273.22 -1100496.00 101184.15</Position>
+<BendRadius>229</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>ELBOW 90 DEG LR BW SCH 80</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>323.855</ElementLengthMm></Node>
+<Node>
+<NodeNumber>960</NodeNumber>
+<NodeName>PS-12243/DATUM</NodeName>
+<Endpoint>0</Endpoint>
+<ComponentType>ATTA</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51417</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>572273.22 -1099982.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>743.000</ElementLengthMm><DTXR_PS>Pipe Rest XRT01|PIPE SUPPORT TYPE-103|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-130-600 Carbon Steel|WEAR PLATE TYPE-421 PAD L 700mm|Directional Anchor On Shoe for Hot Insulated Pipe NPS 1/2- 36 6-XST06-40</DTXR_PS><DTXR_POS>Pipe Rest XRT01(NAME=/PS-12243/DATUM)|PIPE SUPPORT TYPE-103(NAME=/PS-12243/SREF)|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-130-600 Carbon Steel(NAME=/PS-12243.2)|WEAR PLATE TYPE-421 PAD L 700mm(NAME=/PS-12243.1)|Directional Anchor On Shoe for Hot Insulated Pipe NPS 1/2- 36 6-XST06-40(NAME=/PS-12243.3)</DTXR_POS><Restraint><Type>+Y</Type><Stiffness>1.751270E+12</Stiffness><Gap>0</Gap><Friction>0.3</Friction><DirectionCosineX>0.000000000</DirectionCosineX><DirectionCosineY>1.000000000</DirectionCosineY><DirectionCosineZ>0.000000000</DirectionCosineZ></Restraint><Restraint><Type>LIM</Type><Stiffness>1.751270E+12</Stiffness><Gap>0</Gap><Friction>-1.010100</Friction></Restraint><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+
+
+
+
+<Node>
+<NodeNumber>-2</NodeNumber>
+<NodeName/>
+<Endpoint>0</Endpoint>
+<ComponentType>ATTA</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51422</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>572273.22 -1098354.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>---(NAME==1006649732/51422)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>1628.000</ElementLengthMm></Node>
+<Node>
+<NodeNumber>1010</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<ComponentType>BRAN</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51399</ComponentRefNo>
+<ConnectionType>BRAN</ConnectionType>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>12.7</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>572273.22 -1098354.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>1628.000</ElementLengthMm><DTXR_POS>---(NAME==1006649732/51422)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<PipelineReference>S8811946</PipelineReference><LineNo>S8811946</LineNo></Branch>
+<Branch>
+<Branchname>/ASIM-1885-6"-S8811951-91261M7-HC/B2</Branchname>
+<Temperature>
+<Temperature1>325</Temperature1>
+<Temperature2>309</Temperature2>
+<Temperature3>5</Temperature3>
+<Temperature4>-100000</Temperature4>
+<Temperature5>-100000</Temperature5>
+<Temperature6>-100000</Temperature6>
+<Temperature7>-100000</Temperature7>
+<Temperature8>-100000</Temperature8>
+<Temperature9>-100000</Temperature9>
+</Temperature>
+<Pressure>
+<Pressure1>11600</Pressure1>
+<Pressure2>0</Pressure2>
+<Pressure3>0</Pressure3>
+<Pressure4>0</Pressure4>
+<Pressure5>0</Pressure5>
+<Pressure6>0</Pressure6>
+<Pressure7>0</Pressure7>
+<Pressure8>0</Pressure8>
+<Pressure9>0</Pressure9>
+<HydroPressure>22035</HydroPressure></Pressure>
+<MaterialNumber>106</MaterialNumber>
+<InsulationDensity>0</InsulationDensity>
+<FluidDensity>67</FluidDensity>
+<Node>
+<NodeNumber>1010</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<Rigid>1</Rigid>
+<ComponentType>BRAN</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51227</ComponentRefNo>
+<ConnectionType>BRAN</ConnectionType>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>572273.22 -1098354.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>---(NAME==1006649732/51422)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51228</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>572273.22 -1098354.00 101184.15</Position>
+<BendRadius>229</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>---(NAME==1006649732/51422)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>323.855</ElementLengthMm></Node>
+<Node>
+<NodeNumber>1020</NodeNumber>
+<NodeName/>
+<Endpoint>0</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51228</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>572273.22 -1098125.00 101184.15</Position>
+<BendRadius>229</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>229.000</ElementLengthMm><DTXR_POS>ELBOW 90 DEG LR BW Sch 80(NAME==1006649732/51228)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51228</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>572502.22 -1098125.00 101184.15</Position>
+<BendRadius>229</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>ELBOW 90 DEG LR BW SCH 80</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>323.855</ElementLengthMm></Node>
+<Node>
+<NodeNumber>1029</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<Rigid>2</Rigid>
+<ComponentType>RIGID</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51229</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>572920.99 -1098125.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>Branch fitting PLAIN Sch 80(NAME==1006649732/51229)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>647.770</ElementLengthMm></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>3</Endpoint>
+<ComponentType>OLET</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51229</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>572920.99 -1098125.00 101357.29</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>BRANCH FITTING PLAIN SCH 80</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>1030</NodeNumber>
+<NodeName/>
+<Endpoint>0</Endpoint>
+<ComponentType>OLET</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51229</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>572920.99 -1098125.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>647.770</ElementLengthMm><DTXR_POS>Branch fitting PLAIN Sch 80(NAME==1006649732/51229)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<ComponentType>OLET</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51229</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>572920.99 -1098125.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>Branch fitting PLAIN Sch 80(NAME==1006649732/51229)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>1040</NodeNumber>
+<NodeName>PS-12244/DATUM</NodeName>
+<Endpoint>0</Endpoint>
+<ComponentType>ATTA</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51230</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>573670.97 -1098125.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>749.980</ElementLengthMm><DTXR_PS>Pipe Rest XRT01|PIPE SUPPORT TYPE-103|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-130-450 Carbon Steel|WEAR PLATE TYPE-421 PAD L 550mm</DTXR_PS><DTXR_POS>Pipe Rest XRT01(NAME=/PS-12244/DATUM)|PIPE SUPPORT TYPE-103(NAME=/PS-12244/SREF)|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-130-450 Carbon Steel(NAME=/PS-12244.1)|WEAR PLATE TYPE-421 PAD L 550mm(NAME=/PS-12244.2)|Branch Outlet BW Sch 80(NAME==1006649732/51233)</DTXR_POS><Restraint><Type>+Y</Type><Stiffness>1.751270E+12</Stiffness><Gap>0</Gap><Friction>0.3</Friction><DirectionCosineX>0.000000000</DirectionCosineX><DirectionCosineY>1.000000000</DirectionCosineY><DirectionCosineZ>0.000000000</DirectionCosineZ></Restraint><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+
+
+
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<ComponentType>OLET</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51233</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>573670.99 -1098125.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>Pipe Rest XRT01(NAME=/PS-12244/DATUM)|PIPE SUPPORT TYPE-103(NAME=/PS-12244/SREF)|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-130-450 Carbon Steel(NAME=/PS-12244.1)|WEAR PLATE TYPE-421 PAD L 550mm(NAME=/PS-12244.2)|Branch Outlet BW Sch 80(NAME==1006649732/51233)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>3</Endpoint>
+<ComponentType>OLET</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51233</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>573670.99 -1098125.00 101306.40</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>BRANCH OUTLET BW SCH 80</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<ComponentType>OLET</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51233</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>573670.99 -1098125.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>Pipe Rest XRT01(NAME=/PS-12244/DATUM)|PIPE SUPPORT TYPE-103(NAME=/PS-12244/SREF)|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-130-450 Carbon Steel(NAME=/PS-12244.1)|WEAR PLATE TYPE-421 PAD L 550mm(NAME=/PS-12244.2)|Branch Outlet BW Sch 80(NAME==1006649732/51233)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>1090</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<Rigid>1</Rigid>
+<ComponentType>FLAN</ComponentType>
+<Weight>59</Weight>
+<ComponentRefNo>=1006649732/51234</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>574470.99 -1098125.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>800.020</ElementLengthMm><DTXR_POS>WELDING NECK FLANGE SCH 80 900#</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>1100</NodeNumber>
+<NodeName>88-VGT-25050</NodeName>
+<Endpoint>2</Endpoint>
+<Rigid>2</Rigid>
+<ComponentType>RIGID</ComponentType>
+<Weight>59</Weight>
+<ComponentRefNo>=1006649732/51234</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>574617.99 -1098125.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>147.000</ElementLengthMm><DTXR_POS>WELDING NECK FLANGE Sch 80 900#(NAME==1006649732/51234)|GASKET SPIRAL WOUND 900#(NAME==1006649732/51235)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+
+
+
+<Node>
+<NodeNumber>1109</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint><Rigid>2</Rigid>
+<ComponentType>VALV</ComponentType>
+<Weight>378</Weight>
+<ComponentRefNo>=1006649732/51236</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>575231.19 -1098125.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>GASKET SPIRAL WOUND 900#(NAME==1006649732/51237)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>610.000</ElementLengthMm></Node>
+
+
+<Node>
+<NodeNumber>1119</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<Rigid>2</Rigid>
+<ComponentType>FLAN</ComponentType>
+<Weight>59</Weight>
+<ComponentRefNo>=1006649732/51238</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>575234.39 -1098125.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>WELDING NECK FLANGE Sch 80 900#(NAME==1006649732/51238)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>147.000</ElementLengthMm></Node>
+<Node>
+<NodeNumber>1120</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<Rigid>2</Rigid>
+<ComponentType>RIGID</ComponentType>
+<Weight>59</Weight>
+<ComponentRefNo>=1006649732/51238</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>575381.39 -1098125.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>147.000</ElementLengthMm><DTXR_POS>WELDING NECK FLANGE SCH 80 900#</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<ComponentType>OLET</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51239</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>576181.39 -1098125.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>Branch Outlet BW Sch 80(NAME==1006649732/51239)|Pipe Rest XRT01(NAME=/PS-12246/DATUM)|PIPE SUPPORT TYPE-103(NAME=/PS-12246/SREF)|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-130-450 Carbon Steel(NAME=/PS-12246.1)|WEAR PLATE TYPE-421 PAD L 550mm(NAME=/PS-12246.2)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>3</Endpoint>
+<ComponentType>OLET</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51239</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>576181.39 -1098125.00 101306.40</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>BRANCH OUTLET BW SCH 80</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>1130</NodeNumber>
+<NodeName/>
+<Endpoint>0</Endpoint>
+<ComponentType>OLET</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51239</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>576181.39 -1098125.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>800.000</ElementLengthMm><DTXR_POS>Branch Outlet BW Sch 80(NAME==1006649732/51239)|Pipe Rest XRT01(NAME=/PS-12246/DATUM)|PIPE SUPPORT TYPE-103(NAME=/PS-12246/SREF)|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-130-450 Carbon Steel(NAME=/PS-12246.1)|WEAR PLATE TYPE-421 PAD L 550mm(NAME=/PS-12246.2)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<ComponentType>OLET</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51239</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>576181.39 -1098125.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>Branch Outlet BW Sch 80(NAME==1006649732/51239)|Pipe Rest XRT01(NAME=/PS-12246/DATUM)|PIPE SUPPORT TYPE-103(NAME=/PS-12246/SREF)|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-130-450 Carbon Steel(NAME=/PS-12246.1)|WEAR PLATE TYPE-421 PAD L 550mm(NAME=/PS-12246.2)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+
+
+
+
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<ComponentType>OLET</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51244</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>577011.66 -1098125.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>Branch Outlet BW Sch 80(NAME==1006649732/51244)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>3</Endpoint>
+<ComponentType>OLET</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51244</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>577011.66 -1098125.00 101061.90</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>BRANCH OUTLET BW SCH 80</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>1180</NodeNumber>
+<NodeName/>
+<Endpoint>0</Endpoint>
+<ComponentType>OLET</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51244</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>577011.66 -1098125.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>830.270</ElementLengthMm><DTXR_POS>Branch Outlet BW Sch 80(NAME==1006649732/51244)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<ComponentType>OLET</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51244</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>577011.66 -1098125.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>Branch Outlet BW Sch 80(NAME==1006649732/51244)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>1190</NodeNumber>
+<NodeName>PS-12247.2</NodeName>
+<Endpoint>0</Endpoint>
+<ComponentType>ATTA</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51245</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>578015.39 -1098125.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>1003.730</ElementLengthMm><DTXR_PS>Pipe Rest XRT01</DTXR_PS><DTXR_POS>Pipe Rest XRT01(NAME=/PS-12247.2)|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-130-450 Carbon Steel(NAME=/PS-12247.3)|WEAR PLATE TYPE-421 PAD L 550mm(NAME=/PS-12247.4)</DTXR_POS><Restraint><Type>+Y</Type><Stiffness>1.751270E+12</Stiffness><Gap>0</Gap><Friction>0.3</Friction><DirectionCosineX>0.000000000</DirectionCosineX><DirectionCosineY>1.000000000</DirectionCosineY><DirectionCosineZ>0.000000000</DirectionCosineZ></Restraint><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+
+
+<Node>
+<NodeNumber>1220</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<Rigid>1</Rigid>
+<ComponentType>FLAN</ComponentType>
+<Weight>59</Weight>
+<ComponentRefNo>=1006649732/51248</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>578390.39 -1098125.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>375.000</ElementLengthMm><DTXR_POS>WELDING NECK FLANGE SCH 80 900#</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>1230</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<Rigid>2</Rigid>
+<ComponentType>RIGID</ComponentType>
+<Weight>59</Weight>
+<ComponentRefNo>=1006649732/51248</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>578537.39 -1098125.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>147.000</ElementLengthMm><DTXR_POS>WELDING NECK FLANGE Sch 80 900#(NAME==1006649732/51248)|GASKET SPIRAL WOUND 900#(NAME==1006649732/51249)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+
+
+
+<Node>
+<NodeNumber>1240</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<Rigid>2</Rigid>
+<ComponentType>RIGID</ComponentType>
+<Weight>697.142</Weight>
+<ComponentRefNo>=1006649732/51250</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>579150.59 -1098125.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>610.000</ElementLengthMm><DTXR_POS>---(NAME==1006649732/51254)|GASKET SPIRAL WOUND 900#(NAME==1006649732/51255)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-2</NodeNumber>
+<NodeName/>
+<Endpoint>0</Endpoint>
+<ComponentType>ATTA</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51254</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>579150.59 -1098125.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>---(NAME==1006649732/51254)|GASKET SPIRAL WOUND 900#(NAME==1006649732/51255)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+
+
+
+<Node>
+<NodeNumber>1270</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<Rigid>2</Rigid>
+<ComponentType>RIGID</ComponentType>
+<Weight>59</Weight>
+<ComponentRefNo>=1006649732/51256</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>579300.79 -1098125.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>147.000</ElementLengthMm><DTXR_POS>WELDING NECK FLANGE SCH 80 900#</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>1280</NodeNumber>
+<NodeName>PS-12248/DATUM</NodeName>
+<Endpoint>0</Endpoint>
+<ComponentType>ATTA</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51257</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>581300.97 -1098125.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>2000.180</ElementLengthMm><CMPSUPGAP_PS>0mm GAP</CMPSUPGAP_PS><CMPSUPGAP>0mm GAP</CMPSUPGAP><DTXR_PS>Pipe Rest XRT01|PIPE SUPPORT TYPE-103|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-130-600 Carbon Steel|Directional Anchor On Shoe for Hot Insulated Pipe NPS 1/2- 36 6-XST06-40|GUIDE PDO-TYPE-603|WEAR PLATE TYPE-421 PAD L 700mm</DTXR_PS><CMPSUPGAP_POS>0mm GAP</CMPSUPGAP_POS><DTXR_POS>Pipe Rest XRT01(NAME=/PS-12248/DATUM)|PIPE SUPPORT TYPE-103(NAME=/PS-12248/SREF)|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-130-600 Carbon Steel(NAME=/PS-12248.5)|Directional Anchor On Shoe for Hot Insulated Pipe NPS 1/2- 36 6-XST06-40(NAME=/PS-12248.7)|GUIDE PDO-TYPE-603(NAME=/PS-12248.9,CMPSUPGAP=0mm GAP)|WEAR PLATE TYPE-421 PAD L 700mm(NAME=/PS-12248.4)</DTXR_POS><Restraint><Type>+Y</Type><Stiffness>1.751270E+12</Stiffness><Gap>0</Gap><Friction>0.3</Friction><DirectionCosineX>0.000000000</DirectionCosineX><DirectionCosineY>1.000000000</DirectionCosineY><DirectionCosineZ>0.000000000</DirectionCosineZ></Restraint><Restraint><Type>LIM</Type><Stiffness>1.751270E+12</Stiffness><Gap>0</Gap><Friction>-1.010100</Friction><CMPSUPGAP>0mm GAP</CMPSUPGAP></Restraint><Restraint><Type>GUI</Type><Stiffness>1.751270E+12</Stiffness><Gap>0</Gap><Friction>-1.010100</Friction><CMPSUPGAP>0mm GAP</CMPSUPGAP></Restraint><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+
+
+
+
+
+<Node>
+<NodeNumber>1340</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<Rigid>1</Rigid>
+<ComponentType>FLAN</ComponentType>
+<Weight>59</Weight>
+<ComponentRefNo>=1006649732/51263</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>582056.79 -1098125.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>755.820</ElementLengthMm><DTXR_POS>WELDING NECK FLANGE SCH 80 900#</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>1350</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<Rigid>2</Rigid>
+<ComponentType>RIGID</ComponentType>
+<Weight>59</Weight>
+<ComponentRefNo>=1006649732/51263</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>582203.79 -1098125.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>147.000</ElementLengthMm><DTXR_POS>WELDING NECK FLANGE Sch 80 900#(NAME==1006649732/51263)|GASKET SPIRAL WOUND 900#(NAME==1006649732/51264)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+
+
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<ComponentType>PCOM</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51265</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>582206.99 -1098125.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>25.400</ElementLengthMm></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<ComponentType>PCOM</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51265</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>582232.39 -1098125.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>GASKET SPIRAL WOUND 900#(NAME==1006649732/51266)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>25.400</ElementLengthMm></Node>
+
+
+<Node>
+<NodeNumber>1369</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<Rigid>2</Rigid>
+<ComponentType>FLAN</ComponentType>
+<Weight>59</Weight>
+<ComponentRefNo>=1006649732/51267</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>582235.59 -1098125.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>WELDING NECK FLANGE Sch 80 900#(NAME==1006649732/51267)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>147.000</ElementLengthMm></Node>
+<Node>
+<NodeNumber>1370</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<Rigid>2</Rigid>
+<ComponentType>RIGID</ComponentType>
+<Weight>59</Weight>
+<ComponentRefNo>=1006649732/51267</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>582382.59 -1098125.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>147.000</ElementLengthMm><DTXR_POS>REDUCER ECCENTRIC BW - HOLD(NAME==1006649732/51268)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<ComponentType>REDU</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51268</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>582382.59 -1098125.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>REDUCER ECCENTRIC BW - HOLD(NAME==1006649732/51268)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>145.520</ElementLengthMm></Node>
+<Node>
+<NodeNumber>1380</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<ComponentType>REDU</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51268</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>88.9</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<AlphaAngle>24.45</AlphaAngle>
+<InsulationThickness>80</InsulationThickness>
+<Position>582522.59 -1098125.00 101144.45</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>145.520</ElementLengthMm><DTXR_POS>REDUCER ECCENTRIC BW - HOLD</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>1390</NodeNumber>
+<NodeName>PS-12249/DATUM</NodeName>
+<Endpoint>0</Endpoint>
+<ComponentType>ATTA</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51269</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>88.9</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>583432.59 -1098125.00 101144.45</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>80.000</BoreMm><ElementLengthMm>910.000</ElementLengthMm><DTXR_PS>Pipe Rest XRT01|PIPE SUPPORT TYPE-102|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 3-PDO-TYPE-416A/B-130-450 Carbon Steel|WEAR PLATE TYPE-421 PAD L 550mm</DTXR_PS><DTXR_POS>Pipe Rest XRT01(NAME=/PS-12249/DATUM)|PIPE SUPPORT TYPE-102(NAME=/PS-12249/SREF)|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 3-PDO-TYPE-416A/B-130-450 Carbon Steel(NAME=/PS-12249.4)|WEAR PLATE TYPE-421 PAD L 550mm(NAME=/PS-12249.5)</DTXR_POS><Restraint><Type>+Y</Type><Stiffness>1.751270E+12</Stiffness><Gap>0</Gap><Friction>0.3</Friction><DirectionCosineX>0.000000000</DirectionCosineX><DirectionCosineY>1.000000000</DirectionCosineY><DirectionCosineZ>0.000000000</DirectionCosineZ></Restraint><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+
+
+
+<Node>
+<NodeNumber>1430</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<Rigid>1</Rigid>
+<ComponentType>FLAN</ComponentType>
+<Weight>17</Weight>
+<ComponentRefNo>=1006649732/51272</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>88.9</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>584623.60 -1098125.00 101144.45</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>80.000</BoreMm><ElementLengthMm>1191.010</ElementLengthMm><DTXR_POS>WELDING NECK FLANGE 900# - HOLD</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>1440</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<Rigid>2</Rigid>
+<ComponentType>RIGID</ComponentType>
+<Weight>17</Weight>
+<ComponentRefNo>=1006649732/51272</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>88.9</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>584732.60 -1098125.00 101144.45</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>80.000</BoreMm><ElementLengthMm>109.000</ElementLengthMm><DTXR_POS>WELDING NECK FLANGE 900# - HOLD(NAME==1006649732/51272)|GASKET 900# -HOLD(NAME==1006649732/51273)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+
+
+
+<Node>
+<NodeNumber>1449</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint><Rigid>2</Rigid>
+<ComponentType>INST</ComponentType>
+<Weight>112.336</Weight>
+<ComponentRefNo>=1006649732/51274</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>88.9</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>585135.80 -1098125.00 101144.45</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>80.000</BoreMm><DTXR_POS>GASKET 900# -HOLD(NAME==1006649732/51276)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>400.000</ElementLengthMm></Node>
+
+
+<Node>
+<NodeNumber>1459</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<Rigid>2</Rigid>
+<ComponentType>FLAN</ComponentType>
+<Weight>17</Weight>
+<ComponentRefNo>=1006649732/51277</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>88.9</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>585139.00 -1098125.00 101144.45</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>80.000</BoreMm><DTXR_POS>WELDING NECK FLANGE 900# - HOLD(NAME==1006649732/51277)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>109.000</ElementLengthMm></Node>
+<Node>
+<NodeNumber>1460</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<Rigid>2</Rigid>
+<ComponentType>RIGID</ComponentType>
+<Weight>17</Weight>
+<ComponentRefNo>=1006649732/51277</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>88.9</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>585248.00 -1098125.00 101144.45</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>80.000</BoreMm><ElementLengthMm>109.000</ElementLengthMm><DTXR_POS>WELDING NECK FLANGE 900# - HOLD</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>1470</NodeNumber>
+<NodeName>PS-12250/DATUM</NodeName>
+<Endpoint>0</Endpoint>
+<ComponentType>ATTA</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51278</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>88.9</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>587073.02 -1098125.00 101144.45</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>80.000</BoreMm><ElementLengthMm>1825.020</ElementLengthMm><DTXR_PS>Pipe Rest XRT01|PIPE SUPPORT TYPE-102|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 3-PDO-TYPE-416A/B-130-450 Carbon Steel|WEAR PLATE TYPE-421 PAD L 550mm</DTXR_PS><DTXR_POS>Pipe Rest XRT01(NAME=/PS-12250/DATUM)|PIPE SUPPORT TYPE-102(NAME=/PS-12250/SREF)|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 3-PDO-TYPE-416A/B-130-450 Carbon Steel(NAME=/PS-12250.3)|WEAR PLATE TYPE-421 PAD L 550mm(NAME=/PS-12250.4)</DTXR_POS><Restraint><Type>+Y</Type><Stiffness>1.751270E+12</Stiffness><Gap>0</Gap><Friction>0.3</Friction><DirectionCosineX>0.000000000</DirectionCosineX><DirectionCosineY>1.000000000</DirectionCosineY><DirectionCosineZ>0.000000000</DirectionCosineZ></Restraint><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+
+
+
+<Node>
+<NodeNumber>1510</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<ComponentType>REDU</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51281</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>88.9</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>587933.02 -1098125.00 101144.45</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>80.000</BoreMm><ElementLengthMm>860.000</ElementLengthMm><DTXR_POS>REDUCER ECCENTRIC BW - HOLD</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>1520</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<Rigid>1</Rigid>
+<ComponentType>REDU</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51281</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<AlphaAngle>24.45</AlphaAngle>
+<InsulationThickness>80</InsulationThickness>
+<Position>588073.02 -1098125.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>80.000</BoreMm><ElementLengthMm>145.520</ElementLengthMm><DTXR_POS>REDUCER ECCENTRIC BW - HOLD(NAME==1006649732/51281)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>1529</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<Rigid>2</Rigid>
+<ComponentType>FLAN</ComponentType>
+<Weight>59</Weight>
+<ComponentRefNo>=1006649732/51282</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>588073.02 -1098125.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>REDUCER ECCENTRIC BW - HOLD(NAME==1006649732/51281)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>147.000</ElementLengthMm></Node>
+<Node>
+<NodeNumber>1530</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<Rigid>2</Rigid>
+<ComponentType>RIGID</ComponentType>
+<Weight>59</Weight>
+<ComponentRefNo>=1006649732/51282</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>588220.02 -1098125.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>147.000</ElementLengthMm><DTXR_POS>WELDING NECK FLANGE Sch 80 900#(NAME==1006649732/51282)|GASKET SPIRAL WOUND 900#(NAME==1006649732/51283)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+
+
+
+<Node>
+<NodeNumber>1539</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint><Rigid>2</Rigid>
+<ComponentType>INST</ComponentType>
+<Weight>380.795</Weight>
+<ComponentRefNo>=1006649732/51284</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>588523.22 -1097825.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>GASKET SPIRAL WOUND 900#(NAME==1006649732/51343)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>424.264</ElementLengthMm></Node>
+<Node>
+<NodeNumber>1540</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<Rigid>2</Rigid>
+<ComponentType>RIGID</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51227</ComponentRefNo>
+<ConnectionType>BRAN</ConnectionType>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>588523.22 -1097825.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>16258.608</ElementLengthMm><DTXR_POS>GASKET SPIRAL WOUND 900#(NAME==1006649732/51343)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<PipelineReference>S8810112</PipelineReference><LineNo>S8810112</LineNo></Branch>
+<Branch>
+<Branchname>/ASIM-1885-6"-S8811951-91261M7-HC/B7</Branchname>
+<Temperature>
+<Temperature1>325</Temperature1>
+<Temperature2>309</Temperature2>
+<Temperature3>5</Temperature3>
+<Temperature4>-100000</Temperature4>
+<Temperature5>-100000</Temperature5>
+<Temperature6>-100000</Temperature6>
+<Temperature7>-100000</Temperature7>
+<Temperature8>-100000</Temperature8>
+<Temperature9>-100000</Temperature9>
+</Temperature>
+<Pressure>
+<Pressure1>11600</Pressure1>
+<Pressure2>0</Pressure2>
+<Pressure3>0</Pressure3>
+<Pressure4>0</Pressure4>
+<Pressure5>0</Pressure5>
+<Pressure6>0</Pressure6>
+<Pressure7>0</Pressure7>
+<Pressure8>0</Pressure8>
+<Pressure9>0</Pressure9>
+<HydroPressure>22035</HydroPressure></Pressure>
+<MaterialNumber>106</MaterialNumber>
+<InsulationDensity>0</InsulationDensity>
+<FluidDensity>67</FluidDensity>
+<Node>
+<NodeNumber>1540</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<Rigid>2</Rigid>
+<ComponentType>RIGID</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51342</ComponentRefNo>
+<ConnectionType>BRAN</ConnectionType>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>588523.22 -1097825.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>GASKET SPIRAL WOUND 900#(NAME==1006649732/51343)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+
+
+
+<Node>
+<NodeNumber>1550</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<ComponentType>FLAN</ComponentType>
+<Weight>59</Weight>
+<ComponentRefNo>=1006649732/51344</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>588523.22 -1097674.80 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>147.000</ElementLengthMm><DTXR_POS>WELDING NECK FLANGE SCH 80 900#</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>1560</NodeNumber>
+<NodeName>PS-12231/DATUM</NodeName>
+<Endpoint>0</Endpoint>
+<ComponentType>ATTA</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51345</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>588523.22 -1097070.76 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>604.040</ElementLengthMm><DTXR_PS>Pipe Rest XRT01|PIPE SUPPORT TYPE-103|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-130-600 Carbon Steel|WEAR PLATE TYPE-421 PAD L 700mm|Directional Anchor On Shoe for Hot Insulated Pipe NPS 1/2- 36 6-XST06-40</DTXR_PS><DTXR_POS>Pipe Rest XRT01(NAME=/PS-12231/DATUM)|PIPE SUPPORT TYPE-103(NAME=/PS-12231/SREF)|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-130-600 Carbon Steel(NAME=/PS-12231.2)|WEAR PLATE TYPE-421 PAD L 700mm(NAME=/PS-12231.1)|Directional Anchor On Shoe for Hot Insulated Pipe NPS 1/2- 36 6-XST06-40(NAME=/PS-12231.3)</DTXR_POS><Restraint><Type>+Y</Type><Stiffness>1.751270E+12</Stiffness><Gap>0</Gap><Friction>0.3</Friction><DirectionCosineX>0.000000000</DirectionCosineX><DirectionCosineY>1.000000000</DirectionCosineY><DirectionCosineZ>0.000000000</DirectionCosineZ></Restraint><Restraint><Type>LIM</Type><Stiffness>1.751270E+12</Stiffness><Gap>0</Gap><Friction>-1.010100</Friction></Restraint><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+
+
+
+
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<ComponentType>OLET</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51350</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>588523.22 -1096222.20 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>Branch fitting PLAIN Sch 80(NAME==1006649732/51350)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>3</Endpoint>
+<ComponentType>OLET</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51350</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>588523.22 -1096222.20 101357.29</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>BRANCH FITTING PLAIN SCH 80</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>1610</NodeNumber>
+<NodeName/>
+<Endpoint>0</Endpoint>
+<ComponentType>OLET</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51350</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>588523.22 -1096222.20 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>848.560</ElementLengthMm><DTXR_POS>Branch fitting PLAIN Sch 80(NAME==1006649732/51350)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<ComponentType>OLET</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51350</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>588523.22 -1096222.20 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>Branch fitting PLAIN Sch 80(NAME==1006649732/51350)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<ComponentType>OLET</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51351</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>588523.22 -1095422.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>Branch Outlet BW Sch 80(NAME==1006649732/51351)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>3</Endpoint>
+<ComponentType>OLET</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51351</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>588523.22 -1095422.00 101306.40</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>BRANCH OUTLET BW SCH 80</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>1620</NodeNumber>
+<NodeName/>
+<Endpoint>0</Endpoint>
+<ComponentType>OLET</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51351</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>588523.22 -1095422.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>800.200</ElementLengthMm><DTXR_POS>Branch Outlet BW Sch 80(NAME==1006649732/51351)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<ComponentType>OLET</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51351</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>588523.22 -1095422.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>Branch Outlet BW Sch 80(NAME==1006649732/51351)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<ComponentType>OLET</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51352</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>588523.22 -1094841.12 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>Branch Outlet BW Sch 80(NAME==1006649732/51352)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>3</Endpoint>
+<ComponentType>OLET</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51352</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>588523.22 -1094841.12 101061.90</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>BRANCH OUTLET BW SCH 80</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>1630</NodeNumber>
+<NodeName/>
+<Endpoint>0</Endpoint>
+<ComponentType>OLET</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51352</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>588523.22 -1094841.12 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>580.880</ElementLengthMm><DTXR_POS>Branch Outlet BW Sch 80(NAME==1006649732/51352)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<ComponentType>OLET</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51352</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>588523.22 -1094841.12 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>Branch Outlet BW Sch 80(NAME==1006649732/51352)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>1640</NodeNumber>
+<NodeName>PS-12311/DATUM</NodeName>
+<Endpoint>0</Endpoint>
+<ComponentType>ATTA</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51353</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>588523.22 -1093824.03 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>1017.090</ElementLengthMm><DTXR_PS>Pipe Rest XRT01|PIPE SUPPORT TYPE-108|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-130-450 Carbon Steel|WEAR PLATE TYPE-421 PAD L 550mm</DTXR_PS><DTXR_POS>Pipe Rest XRT01(NAME=/PS-12311/DATUM)|PIPE SUPPORT TYPE-108(NAME=/PS-12311/SREF)|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-130-450 Carbon Steel(NAME=/PS-12311.1)|WEAR PLATE TYPE-421 PAD L 550mm(NAME=/PS-12311.5)</DTXR_POS><Restraint><Type>+Y</Type><Stiffness>1.751270E+12</Stiffness><Gap>0</Gap><Friction>0.3</Friction><DirectionCosineX>0.000000000</DirectionCosineX><DirectionCosineY>1.000000000</DirectionCosineY><DirectionCosineZ>0.000000000</DirectionCosineZ></Restraint><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+
+
+
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51356</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>588523.22 -1092304.00 101184.15</Position>
+<BendRadius>229</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>ELBOW 90 DEG LR BW SCH 80</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>323.855</ElementLengthMm></Node>
+<Node>
+<NodeNumber>1680</NodeNumber>
+<NodeName/>
+<Endpoint>0</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51356</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>588523.22 -1092075.00 101184.15</Position>
+<BendRadius>229</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>1749.030</ElementLengthMm><DTXR_POS>ELBOW 90 DEG LR BW Sch 80(NAME==1006649732/51356)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51356</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>588752.22 -1092075.00 101184.15</Position>
+<BendRadius>229</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>ELBOW 90 DEG LR BW SCH 80</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>323.855</ElementLengthMm></Node>
+<Node>
+<NodeNumber>1690</NodeNumber>
+<NodeName>PS-12321/DATUM</NodeName>
+<Endpoint>0</Endpoint>
+<ComponentType>ATTA</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51357</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>589188.25 -1092075.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>665.030</ElementLengthMm><DTXR_PS>Pipe Rest XRT01|PIPE SUPPORT TYPE-108|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-130-450 Carbon Steel|WEAR PLATE TYPE-421 PAD L 550mm</DTXR_PS><DTXR_POS>Pipe Rest XRT01(NAME=/PS-12321/DATUM)|PIPE SUPPORT TYPE-108(NAME=/PS-12321/SREF)|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-130-450 Carbon Steel(NAME=/PS-12321.2)|WEAR PLATE TYPE-421 PAD L 550mm(NAME=/PS-12321.1)</DTXR_POS><Restraint><Type>+Y</Type><Stiffness>1.751270E+12</Stiffness><Gap>0</Gap><Friction>0.3</Friction><DirectionCosineX>0.000000000</DirectionCosineX><DirectionCosineY>1.000000000</DirectionCosineY><DirectionCosineZ>0.000000000</DirectionCosineZ></Restraint><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+
+
+
+
+<Node>
+<NodeNumber>1740</NodeNumber>
+<NodeName>PS-12295/DATUM</NodeName>
+<Endpoint>0</Endpoint>
+<ComponentType>ATTA</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51363</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>593523.15 -1092075.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>4334.900</ElementLengthMm><CMPSUPGAP_PS>10mm GAP</CMPSUPGAP_PS><CMPSUPGAP>10mm GAP</CMPSUPGAP><DTXR_PS>Pipe Rest XRT01|PIPE SUPPORT TYPE-108|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-130-600 Carbon Steel|WEAR PLATE TYPE-421 PAD L 700mm|Directional Anchor On Shoe for Hot Insulated Pipe NPS 1/2- 36 6-XST06-40</DTXR_PS><CMPSUPGAP_POS>10mm GAP</CMPSUPGAP_POS><DTXR_POS>Pipe Rest XRT01(NAME=/PS-12295.2)|PIPE SUPPORT TYPE-108(NAME=/PS-12295/SREF)|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-130-600 Carbon Steel(NAME=/PS-12295.3)|WEAR PLATE TYPE-421 PAD L 700mm(NAME=/PS-12295.5)|Directional Anchor On Shoe for Hot Insulated Pipe NPS 1/2- 36 6-XST06-40(NAME=/PS-12295.4,CMPSUPGAP=10mm GAP)</DTXR_POS><Restraint><Type>+Y</Type><Stiffness>1.751270E+12</Stiffness><Gap>0</Gap><Friction>0.3</Friction><DirectionCosineX>0.000000000</DirectionCosineX><DirectionCosineY>1.000000000</DirectionCosineY><DirectionCosineZ>0.000000000</DirectionCosineZ></Restraint><Restraint><Type>LIM</Type><Stiffness>1.751270E+12</Stiffness><Gap>10</Gap><Friction>-1.010100</Friction><CMPSUPGAP>10mm GAP</CMPSUPGAP></Restraint><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+
+
+
+
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51366</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>595786.15 -1092075.00 101184.15</Position>
+<BendRadius>229</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>ELBOW 90 DEG LR BW SCH 80</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>323.855</ElementLengthMm></Node>
+<Node>
+<NodeNumber>1790</NodeNumber>
+<NodeName/>
+<Endpoint>0</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51366</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>596015.15 -1092075.00 101184.15</Position>
+<BendRadius>229</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>2492.000</ElementLengthMm><DTXR_POS>ELBOW 90 DEG LR BW Sch 80(NAME==1006649732/51366)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>-1</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<ComponentType>ELBO</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51366</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>596015.15 -1091846.00 101184.15</Position>
+<BendRadius>229</BendRadius>
+<BendType>0</BendType>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>ELBOW 90 DEG LR BW SCH 80</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>323.855</ElementLengthMm></Node>
+
+<Node>
+<NodeNumber>1810</NodeNumber>
+<NodeName>PS-12267/DATUM</NodeName>
+<Endpoint>0</Endpoint>
+<ComponentType>ATTA</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51368</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>596015.15 -1091225.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>850.000</ElementLengthMm><DTXR_PS>Pipe Rest XRT01|PIPE SUPPORT TYPE-103|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-130-450 Carbon Steel|WEAR PLATE TYPE-421 PAD L 550mm</DTXR_PS><DTXR_POS>Pipe Rest XRT01(NAME=/PS-12267.3)|PIPE SUPPORT TYPE-103(NAME=/PS-12267/SREF)|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-130-450 Carbon Steel(NAME=/PS-12267.1)|WEAR PLATE TYPE-421 PAD L 550mm(NAME=/PS-12267.5)</DTXR_POS><Restraint><Type>+Y</Type><Stiffness>1.751270E+12</Stiffness><Gap>0</Gap><Friction>0.3</Friction><DirectionCosineX>0.000000000</DirectionCosineX><DirectionCosineY>1.000000000</DirectionCosineY><DirectionCosineZ>0.000000000</DirectionCosineZ></Restraint><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+
+
+
+
+<Node>
+<NodeNumber>1860</NodeNumber>
+<NodeName>PS-12268/DATUM</NodeName>
+<Endpoint>0</Endpoint>
+<ComponentType>ATTA</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51372</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>596015.15 -1088525.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>2700.000</ElementLengthMm><CMPSUPGAP_PS>25mm GAP</CMPSUPGAP_PS><CMPSUPGAP>25mm GAP</CMPSUPGAP><DTXR_PS>Pipe Rest XRT01|PIPE SUPPORT TYPE-103|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-130-650 Carbon Steel|Directional Anchor On Shoe for Hot Insulated Pipe NPS 1/2- 36 6-XST06-40|GUIDE PDO-TYPE-603|WEAR PLATE TYPE-421 PAD L 700mm</DTXR_PS><CMPSUPGAP_POS>25mm GAP</CMPSUPGAP_POS><DTXR_POS>Pipe Rest XRT01(NAME=/PS-12268.5)|PIPE SUPPORT TYPE-103(NAME=/PS-12268/SREF)|PIPE SHOE FOR HORIZ LINES N.B. 3/4" to 24" 6-PDO-TYPE-416A/B-130-650 Carbon Steel(NAME=/PS-12268.2)|Directional Anchor On Shoe for Hot Insulated Pipe NPS 1/2- 36 6-XST06-40(NAME=/PS-12268.3)|GUIDE PDO-TYPE-603(NAME=/PS-12268.7,CMPSUPGAP=25mm GAP)|WEAR PLATE TYPE-421 PAD L 700mm(NAME=/PS-12268.1)</DTXR_POS><Restraint><Type>+Y</Type><Stiffness>1.751270E+12</Stiffness><Gap>0</Gap><Friction>0.3</Friction><DirectionCosineX>0.000000000</DirectionCosineX><DirectionCosineY>1.000000000</DirectionCosineY><DirectionCosineZ>0.000000000</DirectionCosineZ></Restraint><Restraint><Type>LIM</Type><Stiffness>1.751270E+12</Stiffness><Gap>25</Gap><Friction>-1.010100</Friction><CMPSUPGAP>25mm GAP</CMPSUPGAP></Restraint><Restraint><Type>GUI</Type><Stiffness>1.751270E+12</Stiffness><Gap>25</Gap><Friction>-1.010100</Friction><CMPSUPGAP>25mm GAP</CMPSUPGAP></Restraint><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+
+
+
+
+
+<Node>
+<NodeNumber>1920</NodeNumber>
+<NodeName/>
+<Endpoint>0</Endpoint>
+<ComponentType>ATTA</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51378</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>596015.15 -1087505.02 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>1019.980</ElementLengthMm><DTXR_POS>ATTA FOR FLOOR OPENING(NAME==1006649732/51378)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>1930</NodeNumber>
+<NodeName/>
+<Endpoint>1</Endpoint>
+<Rigid>1</Rigid>
+<ComponentType>FLAN</ComponentType>
+<Weight>59</Weight>
+<ComponentRefNo>=1006649732/51379</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>596015.15 -1087152.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>353.020</ElementLengthMm><DTXR_POS>WELDING NECK FLANGE SCH 80 900#</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<Node>
+<NodeNumber>1939</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint><Rigid>2</Rigid>
+<ComponentType>FLAN</ComponentType>
+<Weight>59</Weight>
+<ComponentRefNo>=1006649732/51379</ComponentRefNo>
+<ConnectionType/>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>596015.15 -1087005.00 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><DTXR_POS>WELDING NECK FLANGE Sch 80 900#(NAME==1006649732/51379)|GASKET SPIRAL WOUND 900#(NAME==1006649732/51380)</DTXR_POS><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode><ElementLengthMm>147.000</ElementLengthMm></Node>
+
+
+<Node>
+<NodeNumber>1940</NodeNumber>
+<NodeName/>
+<Endpoint>2</Endpoint>
+<Rigid>2</Rigid>
+<ComponentType>RIGID</ComponentType>
+<Weight>0</Weight>
+<ComponentRefNo>=1006649732/51342</ComponentRefNo>
+<ConnectionType>BRAN</ConnectionType>
+<OutsideDiameter>168.3</OutsideDiameter>
+<WallThickness>10.97</WallThickness>
+<CorrosionAllowance>1</CorrosionAllowance>
+<InsulationThickness>80</InsulationThickness>
+<Position>596015.15 -1087001.80 101184.15</Position>
+<BendRadius>0</BendRadius>
+<SIF>0</SIF>
+<PipingClass>91261</PipingClass><Rating>900</Rating><BoreMm>150.000</BoreMm><ElementLengthMm>13163.232</ElementLengthMm><MaterialName>ASTM A106-B</MaterialName><MaterialCode>106</MaterialCode></Node>
+<PipelineReference>S8811951</PipelineReference><LineNo>S8811951</LineNo></Branch>
+</Pipe>
+</PipeStressExport>

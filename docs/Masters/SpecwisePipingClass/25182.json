@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "specKey": "25182",
+  "rowCount": 1,
+  "generatedAt": "2026-06-09T02:27:27.048Z",
+  "source": "../Piping_class_master.json",
+  "rows": [
+    {
+      "Piping Class": "25182",
+      "Size": "0",
+      "SCH": "2500",
+      "convertedBore": null,
+      "_sourceRowIndex": 10686
+    }
+  ]
+}

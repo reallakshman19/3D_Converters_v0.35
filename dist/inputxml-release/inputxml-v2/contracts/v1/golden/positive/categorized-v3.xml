@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CategorizedInputXML schema="categorized-inputxml/v3" sourceName="golden.input.xml">
+  <Line id="L-001">
+    <LineBlock>
+      <Branchname>L-001</Branchname>
+      <LineNo>L-001</LineNo>
+      <PipingClass source="existing-field">A1</PipingClass>
+      <Rating source="piping-class">300</Rating>
+    </LineBlock>
+    <Element fromNode="10" toNode="20" elementKey="10-&gt;20">
+      <NameBlock>
+        <FROM_NAME>N10</FROM_NAME>
+        <TO_NAME>N20</TO_NAME>
+        <LINE_ID>L-001</LINE_ID>
+        <NAME>N20</NAME>
+      </NameBlock>
+      <RouteGeometryBlock>
+        <DELTA_X>1000</DELTA_X><DELTA_Y>0</DELTA_Y><DELTA_Z>0</DELTA_Z>
+      </RouteGeometryBlock>
+      <SectionDimensionBlock>
+        <DIAMETER>114.3</DIAMETER><WALL_THICK>6.02</WALL_THICK><INSUL_THICK>0</INSUL_THICK>
+      </SectionDimensionBlock>
+      <DerivedBlock>
+        <ElementLengthMm source="delta-vector">1000</ElementLengthMm>
+      </DerivedBlock>
+      <MiscBlock/>
+      <NodesBlock>
+        <Node nodeNumber="10" role="FROM" elementKey="10-&gt;20"/>
+        <Node nodeNumber="20" role="TO" elementKey="10-&gt;20"/>
+      </NodesBlock>
+      <OriginalElement><![CDATA[<PIPINGELEMENT FROM_NODE="10" TO_NODE="20"/>]]></OriginalElement>
+    </Element>
+  </Line>
+</CategorizedInputXML>

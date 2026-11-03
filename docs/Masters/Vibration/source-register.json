@@ -1,0 +1,291 @@
+{
+  "schema": "VibrationMasterSourceRegister.v1",
+  "registerRevision": "1",
+  "controlledSources": [
+    {
+      "sourceId": "EI_AVIFF_2E_GUIDANCE",
+      "repository": "reallaksh19/Common",
+      "commit": "fb549185b9b27edc2379734240320a85c5bef9f6",
+      "path": "EI - AVIFF Guidelines 2nd Edition.pdf",
+      "gitBlobSha1": "sha1:9d3eccc56429411e17c07a579bdebbd13cb0bdc5",
+      "sizeBytes": 10348594,
+      "edition": "2nd Edition"
+    }
+  ],
+  "entries": [
+    {
+      "masterId": "EI_AVIFF.T3.SBC.GEOMETRY_SCORES.v1",
+      "mechanismId": "smallBoreConnections",
+      "dataType": "RULE",
+      "sourceState": "SOURCE_PINNED",
+      "sourceRef": "EI_AVIFF_2E_GUIDANCE",
+      "locator": {
+        "identifier": "T3 small-bore-connection scoring-flow context",
+        "section": "T3",
+        "printedPage": "80",
+        "pdfPages": [],
+        "locatorStatus": "NAVIGATION_ONLY"
+      },
+      "extractionReceipt": null,
+      "notes": "Controlled PDF page/hash binding and rule reconciliation remain required."
+    },
+    {
+      "masterId": "EI_AVIFF.T3.SBC.LOCATION_SCORES.v1",
+      "mechanismId": "smallBoreConnections",
+      "dataType": "RULE",
+      "sourceState": "SOURCE_PINNED",
+      "sourceRef": "EI_AVIFF_2E_GUIDANCE",
+      "locator": {
+        "identifier": "T3 small-bore-connection scoring-flow context",
+        "section": "T3",
+        "printedPage": "80",
+        "pdfPages": [],
+        "locatorStatus": "NAVIGATION_ONLY"
+      },
+      "extractionReceipt": null,
+      "notes": "Controlled PDF page/hash binding and rule reconciliation remain required."
+    },
+    {
+      "masterId": "EI_AVIFF.T3.SBC.FITTING_SPAN_FACTORS.v1",
+      "mechanismId": "smallBoreConnections",
+      "dataType": "TABLE",
+      "sourceState": "SOURCE_PINNED",
+      "sourceRef": "EI_AVIFF_2E_GUIDANCE",
+      "locator": {
+        "identifier": "Table T3-1",
+        "section": "T3",
+        "printedPage": "81",
+        "pdfPages": [],
+        "locatorStatus": "NAVIGATION_ONLY"
+      },
+      "extractionReceipt": null,
+      "notes": "Table extraction remains reviewer-selected through DocumentEvidence v2."
+    },
+    {
+      "masterId": "EI_AVIFF.T3.SBC.FIRST_SPAN_LIMITS.v1",
+      "mechanismId": "smallBoreConnections",
+      "dataType": "TABLE",
+      "sourceState": "SOURCE_PINNED",
+      "sourceRef": "EI_AVIFF_2E_GUIDANCE",
+      "locator": {
+        "identifier": "Table T3-2",
+        "section": "T3",
+        "printedPage": "81",
+        "pdfPages": [],
+        "locatorStatus": "NAVIGATION_ONLY"
+      },
+      "extractionReceipt": null,
+      "notes": "Table extraction remains reviewer-selected through DocumentEvidence v2."
+    },
+    {
+      "masterId": "EI_AVIFF.T3.SBC.BETWEEN_MAIN_LINES_LIMITS.v1",
+      "mechanismId": "smallBoreConnections",
+      "dataType": "TABLE",
+      "sourceState": "SOURCE_PINNED",
+      "sourceRef": "EI_AVIFF_2E_GUIDANCE",
+      "locator": {
+        "identifier": "Table T3-3",
+        "section": "T3",
+        "printedPage": "82",
+        "pdfPages": [],
+        "locatorStatus": "NAVIGATION_ONLY"
+      },
+      "extractionReceipt": null,
+      "notes": "Table extraction remains reviewer-selected through DocumentEvidence v2."
+    },
+    {
+      "masterId": "EI_AVIFF.T3.SBC.FIGURE_T3_1.v1",
+      "mechanismId": "smallBoreConnections",
+      "dataType": "CURVE",
+      "sourceState": "RECONCILIATION_REQUIRED",
+      "sourceRef": "EI_AVIFF_2E_GUIDANCE",
+      "locator": {
+        "identifier": "Figure T3-1",
+        "section": "T3",
+        "printedPage": "82",
+        "pdfPages": [],
+        "locatorStatus": "NAVIGATION_ONLY"
+      },
+      "extractionReceipt": null,
+      "notes": "Requires controlled render, dual digitization and engineering reconciliation."
+    },
+    {
+      "masterId": "EI_AVIFF.T3.SBC.FIGURE_T3_2.v1",
+      "mechanismId": "smallBoreConnections",
+      "dataType": "CURVE",
+      "sourceState": "RECONCILIATION_REQUIRED",
+      "sourceRef": "EI_AVIFF_2E_GUIDANCE",
+      "locator": {
+        "identifier": "Figure T3-2",
+        "section": "T3",
+        "printedPage": "83",
+        "pdfPages": [],
+        "locatorStatus": "NAVIGATION_ONLY"
+      },
+      "extractionReceipt": null,
+      "notes": "Requires controlled render, dual digitization and engineering reconciliation."
+    },
+    {
+      "masterId": "EI_AVIFF.T3.SBC.FIGURE_T3_3.v1",
+      "mechanismId": "smallBoreConnections",
+      "dataType": "CURVE",
+      "sourceState": "RECONCILIATION_REQUIRED",
+      "sourceRef": "EI_AVIFF_2E_GUIDANCE",
+      "locator": {
+        "identifier": "Figure T3-3",
+        "section": "T3",
+        "printedPage": "83",
+        "pdfPages": [],
+        "locatorStatus": "NAVIGATION_ONLY"
+      },
+      "extractionReceipt": null,
+      "notes": "Requires controlled render, dual digitization and engineering reconciliation."
+    },
+    {
+      "masterId": "EI_AVIFF.T3.SBC.FIGURE_T3_4.v1",
+      "mechanismId": "smallBoreConnections",
+      "dataType": "CURVE",
+      "sourceState": "RECONCILIATION_REQUIRED",
+      "sourceRef": "EI_AVIFF_2E_GUIDANCE",
+      "locator": {
+        "identifier": "Figure T3-4",
+        "section": "T3",
+        "printedPage": "84",
+        "pdfPages": [],
+        "locatorStatus": "NAVIGATION_ONLY"
+      },
+      "extractionReceipt": null,
+      "notes": "Requires controlled render, dual digitization and engineering reconciliation."
+    },
+    {
+      "masterId": "EI_AVIFF.T2.8.VALVE_CLOSURE_CHARACTERISTICS.v1",
+      "mechanismId": "valveTransients",
+      "dataType": "UNRESOLVED",
+      "sourceState": "RECONCILIATION_REQUIRED",
+      "sourceRef": "EI_AVIFF_2E_GUIDANCE",
+      "locator": null,
+      "extractionReceipt": null,
+      "notes": "Exact controlled source representation and locator must be reconciled before deciding TABLE versus EQUATION."
+    },
+    {
+      "masterId": "EI_AVIFF.T2.9.VALVE_RECOVERY_FACTORS.v1",
+      "mechanismId": "cavitationFlashing",
+      "dataType": "TABLE",
+      "sourceState": "RECONCILIATION_REQUIRED",
+      "sourceRef": "EI_AVIFF_2E_GUIDANCE",
+      "locator": null,
+      "extractionReceipt": null,
+      "notes": "Exact FL table/applicability locator remains to be controlled and reconciled."
+    },
+    {
+      "masterId": "EI_AVIFF.T4.WALL_MODIFIER.v1",
+      "mechanismId": "thermowells",
+      "dataType": "TABLE",
+      "sourceState": "SOURCE_PINNED",
+      "sourceRef": "EI_AVIFF_2E_GUIDANCE",
+      "locator": {
+        "identifier": "Table T4-1",
+        "section": "T4",
+        "printedPage": "87",
+        "pdfPages": [],
+        "locatorStatus": "NAVIGATION_ONLY"
+      },
+      "extractionReceipt": null,
+      "notes": "Controlled PDF page/hash binding and table reconciliation remain required."
+    },
+    {
+      "masterId": "EI_AVIFF.T4.GEOMETRY_TYPES.v1",
+      "mechanismId": "thermowells",
+      "dataType": "RULE",
+      "sourceState": "SOURCE_PINNED",
+      "sourceRef": "EI_AVIFF_2E_GUIDANCE",
+      "locator": null,
+      "extractionReceipt": null,
+      "notes": "EI geometry taxonomy requires controlled figure/schema review before normalization."
+    },
+    {
+      "masterId": "EI_AVIFF.T2.4.RECIP_PD_RULES.v1",
+      "mechanismId": "reciprocatingPositiveDisplacement",
+      "dataType": "RULE",
+      "sourceState": "SOURCE_PINNED",
+      "sourceRef": "EI_AVIFF_2E_GUIDANCE",
+      "locator": {
+        "identifier": "Flowchart T2-2",
+        "section": "T2.4",
+        "printedPage": "55",
+        "pdfPages": [],
+        "locatorStatus": "NAVIGATION_ONLY"
+      },
+      "extractionReceipt": null,
+      "notes": "All decision branches require source-traced rule extraction."
+    },
+    {
+      "masterId": "EI_AVIFF.T2.5.ROTATING_STALL_RULES.v1",
+      "mechanismId": "rotatingStall",
+      "dataType": "RULE",
+      "sourceState": "SOURCE_PINNED",
+      "sourceRef": "EI_AVIFF_2E_GUIDANCE",
+      "locator": {
+        "identifier": "Flowchart T2-3",
+        "section": "T2.5",
+        "printedPage": "56",
+        "pdfPages": [],
+        "locatorStatus": "NAVIGATION_ONLY"
+      },
+      "extractionReceipt": null,
+      "notes": "OEM compressor map remains project evidence, not a universal master."
+    },
+    {
+      "masterId": "EI_AVIFF.T2.6.ADVANCED_DEADLEG.v1",
+      "mechanismId": "deadlegAdvanced",
+      "dataType": "UNRESOLVED",
+      "sourceState": "BLOCKED_SOURCE",
+      "sourceRef": null,
+      "locator": null,
+      "extractionReceipt": null,
+      "notes": "Full adopted advanced method and coefficient package are not controlled."
+    },
+    {
+      "masterId": "SUBSEA_AVIFF.E4.3.CORRUGATION.v1",
+      "mechanismId": "corrugation",
+      "dataType": "CURVE",
+      "sourceState": "BLOCKED_SOURCE",
+      "sourceRef": null,
+      "locator": null,
+      "extractionReceipt": null,
+      "notes": "Adopted Subsea AVIFF E4.3 controlled package is not available."
+    },
+    {
+      "masterId": "SPECIALIST.SLUG.ASSESSMENT.v1",
+      "mechanismId": "slugTimeHistory",
+      "dataType": "UNRESOLVED",
+      "sourceState": "BLOCKED_SOURCE",
+      "sourceRef": null,
+      "locator": null,
+      "extractionReceipt": null,
+      "notes": "Specialist adopted method/source package is not controlled."
+    },
+    {
+      "masterId": "EI_AVIFF.APPENDIX_B.DEFAULTS.v1",
+      "mechanismId": "sharedOptionalDefaults",
+      "dataType": "TABLE",
+      "sourceState": "SOURCE_PINNED",
+      "sourceRef": "EI_AVIFF_2E_GUIDANCE",
+      "locator": {
+        "identifier": "Appendix B",
+        "section": "Appendix B",
+        "printedPage": null,
+        "pdfPages": [],
+        "locatorStatus": "NAVIGATION_ONLY"
+      },
+      "extractionReceipt": null,
+      "notes": "Optional assumption library only; never overrides explicit project data."
+    }
+  ],
+  "authority": {
+    "engineeringAuthority": "NONE",
+    "screeningAuthority": "NOT_AUTHORIZED",
+    "designAuthority": false,
+    "statement": "SOURCE_REGISTER_ONLY"
+  }
+}

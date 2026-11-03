@@ -1,0 +1,123 @@
+{
+  "schema": "T29SourceReconciliationMatrix.v1",
+  "methodId": "VIB.CAVITATION.FLASHING",
+  "masterId": "EI_AVIFF.T2.9.VALVE_RECOVERY_FACTORS.v1",
+  "controlledSource": {
+    "repository": "reallaksh19/Common",
+    "commit": "fb549185b9b27edc2379734240320a85c5bef9f6",
+    "path": "EI - AVIFF Guidelines 2nd Edition.pdf",
+    "gitBlobSha1": "sha1:9d3eccc56429411e17c07a579bdebbd13cb0bdc5",
+    "sizeBytes": 10348594,
+    "section": "T2.9",
+    "status": "SOURCE_IDENTITY_VERIFIED_CONTENT_NOT_EXECUTED"
+  },
+  "candidateEvidence": {
+    "sourceRole": "SECONDARY_PUBLICATION_COPIES_RECONCILIATION_ONLY",
+    "copiesChecked": 4,
+    "printedPage": "69",
+    "rows": [
+      { "valveType": "Ball", "FL": 0.60 },
+      { "valveType": "Butterfly", "FL": 0.62 },
+      { "valveType": "Globe", "FL": 0.90 },
+      { "valveType": "Gate", "FL": 0.60 }
+    ],
+    "candidateRelation": "delta = FL^2 * (P1 - 0.96 * Pv)",
+    "qualification": "NOT_QUALIFIED"
+  },
+  "conflictingSynthesis": {
+    "repository": "reallaksh19/Advanced_Analysis",
+    "commit": "76eb4bd075ce2e8e2442d02b2798df7be491fb4b",
+    "path": "docs/EI data/P1_Valve_Transient_and_Cavitation.md",
+    "gitBlobSha1": "sha1:f27764534a9bee88e3b4e2d1b12da046ccfced5d",
+    "sourceRole": "CORROBORATION_INVESTIGATION_ONLY",
+    "productionUse": "PROHIBITED_PENDING_CONTROLLED_RECONCILIATION"
+  },
+  "reconciliationItems": [
+    {
+      "id": "T29-REC-FL-BALL",
+      "topic": "Ball valve FL",
+      "candidate": "generic Ball = 0.60",
+      "synthesis": "Full-bore Ball = 0.50; segmented/V-notch Ball = 0.75",
+      "state": "CONFLICT",
+      "requiredControlledEvidence": "exact T2.9.2 table row/taxonomy"
+    },
+    {
+      "id": "T29-REC-FL-BUTTERFLY",
+      "topic": "Butterfly valve FL",
+      "candidate": "generic Butterfly = 0.62",
+      "synthesis": "concentric/full-open/high-performance variants = 0.55/0.68/0.70",
+      "state": "CONFLICT",
+      "requiredControlledEvidence": "exact T2.9.2 table row/taxonomy"
+    },
+    {
+      "id": "T29-REC-FL-GLOBE",
+      "topic": "Globe valve FL",
+      "candidate": "generic Globe = 0.90",
+      "synthesis": "single-port flow-to-open = 0.90; other Globe variants differ",
+      "state": "PARTIAL_MATCH_TAXONOMY_CONFLICT",
+      "requiredControlledEvidence": "whether EI defines generic or trim/orientation-specific rows"
+    },
+    {
+      "id": "T29-REC-FL-GATE",
+      "topic": "Gate valve FL",
+      "candidate": "generic Gate = 0.60",
+      "synthesis": "no Gate row present",
+      "state": "OMISSION_CONFLICT",
+      "requiredControlledEvidence": "exact T2.9.2 Gate row"
+    },
+    {
+      "id": "T29-REC-EQ-PRESSURE-DROP",
+      "topic": "pressure-recovery / choked-drop relation",
+      "candidate": "FL^2 * (P1 - 0.96 * Pv)",
+      "synthesis": "FL^2 * (P1 - FF * Pv), FF = 0.96 - 0.28 * sqrt(Pv/Pc)",
+      "state": "EQUATION_CONFLICT",
+      "requiredControlledEvidence": "exact T2.9 equation, constants and property definitions"
+    },
+    {
+      "id": "T29-REC-SIGMA",
+      "topic": "cavitation index sigma",
+      "candidate": null,
+      "synthesis": "(Pupstream - Pv) / (Pupstream - Pdownstream)",
+      "state": "SYNTHESIS_ONLY_UNVERIFIED",
+      "requiredControlledEvidence": "exact source equation if present"
+    },
+    {
+      "id": "T29-REC-KC",
+      "topic": "incipient cavitation index Kc",
+      "candidate": null,
+      "synthesis": "Kc = 0.80 * FL^2",
+      "state": "SYNTHESIS_ONLY_UNVERIFIED",
+      "requiredControlledEvidence": "exact source equation/constant if present"
+    },
+    {
+      "id": "T29-REC-BRANCHES",
+      "topic": "no-cavitation / cavitation / flashing decision tree",
+      "candidate": null,
+      "synthesis": "four sigma/Kc regimes with LOF 1.00/1.00/0.50/0.20",
+      "state": "SYNTHESIS_ONLY_UNVERIFIED",
+      "requiredControlledEvidence": "Flowchart T2-9 exact predicates, equality directions and outcomes"
+    },
+    {
+      "id": "T29-REC-PRESSURE-BASIS",
+      "topic": "P1/P2/Pv pressure basis and tapping locations",
+      "candidate": null,
+      "synthesis": "Pv described as bar absolute; P1/P2 locations implied",
+      "state": "UNRESOLVED",
+      "requiredControlledEvidence": "source-defined absolute/gauge basis and pressure locations"
+    }
+  ],
+  "decisions": {
+    "candidateRowsMayBeUsedForQualificationArithmetic": true,
+    "candidateRowsMayBeActivatedAsMaster": false,
+    "synthesisMayDriveProductionEquations": false,
+    "synthesisMayDriveBranchAcceptance": false,
+    "unknownValveFallbackPermitted": false,
+    "numericalKernelAuthorized": false
+  },
+  "authority": {
+    "engineeringAuthority": "NONE",
+    "screeningAuthority": "NOT_AUTHORIZED",
+    "designAuthority": false,
+    "masterValuesPublished": false
+  }
+}

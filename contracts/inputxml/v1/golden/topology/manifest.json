@@ -1,0 +1,120 @@
+{
+  "schema": "InputXmlTopologyGoldenCorpus.v1",
+  "profiles": {
+    "xml-builder-root-branch-node": {
+      "adapterId": "xml-cii-node-to-canonical",
+      "cases": [
+        {
+          "caseId": "xml-builder-straight-route",
+          "category": "positive",
+          "source": "xml-builder/positive/straight-route.xml",
+          "dialectOverride": null,
+          "expectedStatus": "PASS",
+          "differenceClassification": "INTENDED_TOPOLOGY_CORRECTION"
+        },
+        {
+          "caseId": "xml-builder-producer-shaped-repeated-line",
+          "category": "positive",
+          "source": "xml-builder/positive/producer-shaped-repeated-line.xml",
+          "dialectOverride": null,
+          "expectedStatus": "PASS",
+          "differenceClassification": "INTENDED_TOPOLOGY_CORRECTION"
+        },
+        {
+          "caseId": "xml-builder-malformed",
+          "category": "negative",
+          "source": "xml-builder/negative/malformed.xml",
+          "dialectOverride": null,
+          "expectedBlockedAt": "MEDIA_INSPECTION_GATE",
+          "differenceClassification": "INTENDED_TOPOLOGY_CORRECTION"
+        },
+        {
+          "caseId": "xml-builder-gasket-evidence",
+          "category": "blocked-with-candidate",
+          "source": "xml-builder/blocked-with-candidate/gasket.xml",
+          "dialectOverride": null,
+          "expectedBlockedAt": "LEDGER_GATE",
+          "differenceClassification": "INTENDED_ACCOUNTING_CORRECTION"
+        },
+        {
+          "caseId": "xml-builder-missing-position",
+          "category": "blocked-without-candidate",
+          "source": "xml-builder/blocked-without-candidate/missing-position.xml",
+          "dialectOverride": null,
+          "expectedBlockedAt": "PROFILE_RESOLVER_GATE",
+          "differenceClassification": "INTENDED_TOPOLOGY_CORRECTION"
+        },
+        {
+          "caseId": "xml-builder-same-coordinate-distinct-node",
+          "category": "adversarial",
+          "source": "xml-builder/adversarial/same-coordinate-distinct-node.xml",
+          "dialectOverride": null,
+          "expectedBlockedAt": "PROFILE_RESOLVER_GATE",
+          "differenceClassification": "ENGINEERING_CHANGE_WITH_AUTHORITY"
+        },
+        {
+          "caseId": "xml-builder-line-id-conflict",
+          "category": "adversarial",
+          "source": "xml-builder/adversarial/line-id-conflict.xml",
+          "dialectOverride": null,
+          "expectedBlockedAt": "PROFILE_RESOLVER_GATE",
+          "differenceClassification": "INTENDED_TOPOLOGY_CORRECTION"
+        }
+      ]
+    },
+    "seljson-custom-root": {
+      "adapterId": "seljson-custom-model-to-canonical",
+      "cases": [
+        {
+          "caseId": "selectionjson-explicit-route",
+          "category": "positive",
+          "source": "selectionjson/positive/explicit-route.xml",
+          "dialectOverride": "seljson-custom-root",
+          "expectedStatus": "PASS",
+          "differenceClassification": "INTENDED_TOPOLOGY_CORRECTION"
+        },
+        {
+          "caseId": "selectionjson-malformed",
+          "category": "negative",
+          "source": "selectionjson/negative/malformed.xml",
+          "dialectOverride": "seljson-custom-root",
+          "expectedBlockedAt": "MEDIA_INSPECTION_GATE",
+          "differenceClassification": "INTENDED_TOPOLOGY_CORRECTION"
+        },
+        {
+          "caseId": "selectionjson-valve-evidence",
+          "category": "blocked-with-candidate",
+          "source": "selectionjson/blocked-with-candidate/valve.xml",
+          "dialectOverride": "seljson-custom-root",
+          "expectedBlockedAt": "LEDGER_GATE",
+          "differenceClassification": "INTENDED_ACCOUNTING_CORRECTION"
+        },
+        {
+          "caseId": "selectionjson-contradictory-producer",
+          "category": "blocked-without-candidate",
+          "source": "selectionjson/blocked-without-candidate/contradictory-producer.xml",
+          "dialectOverride": "seljson-custom-root",
+          "expectedBlockedAt": "PROFILE_INTAKE_GATE",
+          "differenceClassification": "INTENDED_TOPOLOGY_CORRECTION"
+        },
+        {
+          "caseId": "selectionjson-filename-is-not-identity",
+          "category": "adversarial",
+          "source": "selectionjson/adversarial/misleading_seljson_to_inputxml.xml",
+          "dialectOverride": null,
+          "expectedDialect": "xml-builder-root-branch-node",
+          "expectedStatus": "PASS",
+          "differenceClassification": "ENGINEERING_CHANGE_WITH_AUTHORITY"
+        }
+      ]
+    }
+  },
+  "allowedDifferenceClassifications": [
+    "NO_CHANGE",
+    "INTENDED_TOPOLOGY_CORRECTION",
+    "INTENDED_ACCOUNTING_CORRECTION",
+    "REPRESENTATION_ONLY",
+    "ENGINEERING_CHANGE_WITH_AUTHORITY",
+    "UNKNOWN — BLOCK MERGE"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "schemaVersion":"1.0.0",
+  "benchmarkId":"USER-A106-GRB-FULL-PIPELINE-001",
+  "qualificationMode":"benchmark",
+  "input":{
+    "material":{"family":"CS","spec":"ASTM A106-B"},
+    "allowProjectFamilyDefault":true,
+    "designTemperature":0,"temperatureUnit":"C","manufacturingRoute":"SEAMLESS",
+    "designPressure":51.1,"pressureUnit":"barg","outsideDiameter":273.0,"lengthUnit":"mm","dn":250,
+    "corrosionAllowance":6,"negativeMillTolerance":{"basis":"percent","value":12.5},
+    "dimensionStandard":"ASME B36.10M"
+  },
+  "expected":{
+    "materialId":"CS-A106-B","S_MPa":137.89514586336722,"E":1,"W":1,"Y":0.4,
+    "requiredNominalThicknessMm":12.553618958106954,"selectedWallMm":12.7,"schedule":"60","equivalentSchedules":["60","XS"]
+  }
+}

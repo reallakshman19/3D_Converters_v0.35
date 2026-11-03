@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "FbxSelectedZoneEngineeringAttributeLedger.v1",
+  "title": "FbxSelectedZoneEngineeringAttributeLedger.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "status",
+    "sourceEngineeringAttributeLedgerSchema",
+    "sourceEngineeringAttributeLedgerStatus",
+    "sourceComponentCrosswalkArtifactId",
+    "zoneGeometryArtifactId",
+    "selectedZoneId",
+    "counts",
+    "familyCounts",
+    "components",
+    "missingMappingEntryIds",
+    "diagnostics",
+    "authority",
+    "ledgerDigest",
+    "artifactId"
+  ],
+  "properties": {
+    "schema": { "const": "FbxSelectedZoneEngineeringAttributeLedger.v1" },
+    "status": { "enum": ["PASS", "BLOCKED"] },
+    "sourceEngineeringAttributeLedgerSchema": { "const": "FbxEngineeringAttributeLedger.v1" },
+    "sourceEngineeringAttributeLedgerStatus": { "enum": ["PASS", "BLOCKED"] },
+    "sourceComponentCrosswalkArtifactId": { "type": "string", "minLength": 1 },
+    "zoneGeometryArtifactId": { "type": "string", "minLength": 1 },
+    "selectedZoneId": { "type": ["string", "null"] },
+    "counts": { "type": "object" },
+    "familyCounts": { "type": "object" },
+    "components": { "type": "array" },
+    "missingMappingEntryIds": {
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true
+    },
+    "authority": { "type": "object" },
+    "ledgerDigest": { "$ref": "#/$defs/hash" },
+    "artifactId": { "type": "string", "pattern": "^FBXZENG-[0-9a-f]{32}$" }
+  },
+  "$defs": {
+    "hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  }
+}

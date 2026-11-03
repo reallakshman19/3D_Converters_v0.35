@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:reallaksh19:inputxml:resolved-relationship:v1",
+  "title": "ResolvedRelationship.v1",
+  "type": "object",
+  "required": ["schema", "relationshipId", "kind", "sourceEntityIds", "targetEntityIds", "outcome", "evidence", "diagnostics"],
+  "properties": {
+    "schema": {"const": "ResolvedRelationship.v1"},
+    "relationshipId": {"type": "string", "minLength": 1},
+    "kind": {"type": "string", "minLength": 1},
+    "sourceEntityIds": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true},
+    "targetEntityIds": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "outcome": {"enum": ["PASS", "BLOCKED"]},
+    "evidence": {"type": "array", "items": {"type": "object"}},
+    "diagnostics": {"type": "array", "items": {"type": "object"}}
+  },
+  "additionalProperties": false
+}

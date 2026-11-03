@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reallaksh19.github.io/3D_Converters/node-history/schemas/RegistrySnapshotManifest.v1.schema.json",
+  "title": "RegistrySnapshotManifest.v1",
+  "type": "object",
+  "required": [
+    "schema", "projectId", "zoneId", "schemaVersions", "policy", "pool",
+    "lineHistories", "validation", "registrySnapshotHash"
+  ],
+  "properties": {
+    "schema": {"const": "RegistrySnapshotManifest.v1"},
+    "projectId": {"type": "string", "minLength": 1},
+    "zoneId": {"type": "string", "minLength": 1},
+    "schemaVersions": {
+      "type": "object",
+      "required": ["zoneRegistry", "lineHistory", "registryPatch", "snapshotManifest"],
+      "properties": {
+        "zoneRegistry": {"const": "PsiNodeZoneRegistry.v1"},
+        "lineHistory": {"const": "PsiNodeLineHistory.v1"},
+        "registryPatch": {"const": "TopoNodeRegistryPatch.v1"},
+        "snapshotManifest": {"const": "RegistrySnapshotManifest.v1"}
+      },
+      "additionalProperties": false
+    },
+    "policy": {
+      "type": "object",
+      "required": ["registryVersion", "allocationPolicyVersion", "registryConfigVersion"],
+      "properties": {
+        "registryVersion": {"const": "1.0.0"},
+        "allocationPolicyVersion": {"type": "string", "minLength": 1},
+        "registryConfigVersion": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "pool": {"$ref": "#/$defs/pool"},
+    "lineHistories": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/lineHistoryRef"}
+    },
+    "validation": {"$ref": "#/$defs/validation"},
+    "registrySnapshotHash": {"$ref": "#/$defs/hash"},
+    "audit": {"type": "object"}
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"},
+    "mainLineKey": {"type": "string", "pattern": "^/[A-Z0-9][A-Z0-9._-]*(/[A-Z0-9][A-Z0-9._-]*)*$"},
+    "namespace": {
+      "type": "object",
+      "required": ["minimum", "maximum", "defaultStep"],
+      "properties": {
+        "minimum": {"type": "integer", "minimum": 0},
+        "maximum": {"type": "integer", "minimum": 0},
+        "defaultStep": {"type": "integer", "minimum": 1}
+      },
+      "additionalProperties": false
+    },
+    "range": {
+      "type": "object",
+      "required": ["start", "end", "step"],
+      "properties": {
+        "start": {"type": "integer", "minimum": 0},
+        "end": {"type": "integer", "minimum": 0},
+        "step": {"type": "integer", "minimum": 1}
+      },
+      "additionalProperties": false
+    },
+    "lease": {
+      "type": "object",
+      "required": ["leaseId", "mainLineKey", "status", "ranges", "firstObservedRevision", "lastObservedRevision", "evidence"],
+      "properties": {
+        "leaseId": {"type": "string", "minLength": 1},
+        "mainLineKey": {"$ref": "#/$defs/mainLineKey"},
+        "status": {"enum": ["ACTIVE", "RETIRED"]},
+        "ranges": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/range"}},
+        "firstObservedRevision": {"type": "string", "minLength": 1},
+        "lastObservedRevision": {"type": "string", "minLength": 1},
+        "evidence": {
+          "type": "object",
+          "required": ["authority", "revisionId"],
+          "properties": {
+            "authority": {"type": "string", "minLength": 1},
+            "revisionId": {"type": "string", "minLength": 1}
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "lineHistoryRef": {
+      "type": "object",
+      "required": ["mainLineKey", "path", "lineHistoryHash"],
+      "properties": {
+        "mainLineKey": {"$ref": "#/$defs/mainLineKey"},
+        "path": {"type": "string", "minLength": 1},
+        "lineHistoryHash": {"$ref": "#/$defs/hash"}
+      },
+      "additionalProperties": false
+    },
+    "pool": {
+      "type": "object",
+      "required": [
+        "schema", "registryVersion", "projectId", "zoneId", "policyVersion",
+        "configVersion", "namespace", "leases", "lineHistoryRefs",
+        "coordinateRegistrationRefs", "zoneRegistryHash"
+      ],
+      "properties": {
+        "schema": {"const": "PsiNodeZoneRegistry.v1"},
+        "registryVersion": {"const": "1.0.0"},
+        "projectId": {"type": "string", "minLength": 1},
+        "zoneId": {"type": "string", "minLength": 1},
+        "policyVersion": {"type": "string", "minLength": 1},
+        "configVersion": {"type": "string", "minLength": 1},
+        "namespace": {"$ref": "#/$defs/namespace"},
+        "leases": {"type": "array", "items": {"$ref": "#/$defs/lease"}},
+        "lineHistoryRefs": {"type": "array", "items": {"$ref": "#/$defs/lineHistoryRef"}},
+        "coordinateRegistrationRefs": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+        "zoneRegistryHash": {"$ref": "#/$defs/hash"}
+      },
+      "additionalProperties": false
+    },
+    "validation": {
+      "type": "object",
+      "required": ["status", "blockers", "reviewItems", "warnings"],
+      "properties": {
+        "status": {"enum": ["PASS", "REVIEW_REQUIRED", "BLOCKED"]},
+        "blockers": {"type": "array"},
+        "reviewItems": {"type": "array"},
+        "warnings": {"type": "array"}
+      },
+      "additionalProperties": false
+    }
+  }
+}

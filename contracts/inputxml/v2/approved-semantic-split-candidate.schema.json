@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:reallaksh19:inputxml:approved-semantic-split-candidate:v1",
+  "title": "ApprovedSemanticSplitCandidate.v1",
+  "type": "object",
+  "required": ["schema", "approvalStatus", "approvalId", "mode", "sourceHashSha256", "approvedCanonicalFile", "approvedCanonicalHashSha256", "expectedCanonicalTopologyFile", "expectedCanonicalTopologyHashSha256", "rationale", "overflowElements", "artifactHashSha256"],
+  "properties": {
+    "schema": {"const": "ApprovedSemanticSplitCandidate.v1"},
+    "approvalStatus": {"const": "UNAPPROVED"},
+    "approvalId": {"type": "string", "pattern": "^IAS-[A-Za-z0-9._-]+$"},
+    "mode": {"const": "ADAPTED_CANONICAL"},
+    "sourceHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "approvedCanonicalFile": {"type": "string", "pattern": "^[^/\\\\]+\\.xml$"},
+    "approvedCanonicalHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "expectedCanonicalTopologyFile": {"type": "string", "pattern": "^[^/\\\\]+\\.json$"},
+    "expectedCanonicalTopologyHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "rationale": {"type": "string", "minLength": 1},
+    "overflowElements": {"type": "array", "minItems": 1, "items": {"type": "object"}},
+    "artifactHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "additionalProperties": false
+}

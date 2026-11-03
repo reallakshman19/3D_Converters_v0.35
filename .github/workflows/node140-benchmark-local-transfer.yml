@@ -1,0 +1,75 @@
+name: Node140 benchmark local transfer
+
+on:
+  push:
+    branches:
+      - agent/xml-cii-node140-gap-benchmark-rca
+    paths:
+      - '.github/workflows/node140-benchmark-local-transfer.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  package-exact-benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout transfer branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/xml-cii-node140-gap-benchmark-rca
+          path: transfer-branch
+          fetch-depth: 1
+
+      - name: Checkout exact benchmark commit
+        uses: actions/checkout@v4
+        with:
+          ref: 432c87e022674822cc4ddaf2faddeffd68fe883e
+          path: benchmark-repo
+          fetch-depth: 1
+
+      - name: Verify immutable benchmark blobs and extract payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd benchmark-repo
+          test "$(git rev-parse HEAD)" = "432c87e022674822cc4ddaf2faddeffd68fe883e"
+          test "$(git hash-object Benchmarks/css/SYS-0010.xml)" = "1c6e2d817c9488839d1743da46927e8e104fa824"
+          test "$(git hash-object Benchmarks/css/css3_managed_stage.zip)" = "86da3f48cb53b7cb7f3520072edcf0d3ed0d1806"
+          mkdir -p ../node140-benchmark
+          cp Benchmarks/css/SYS-0010.xml ../node140-benchmark/
+          cp Benchmarks/css/css3_managed_stage.zip ../node140-benchmark/
+          unzip -p Benchmarks/css/css3_managed_stage.zip css3_managed_stage.json > ../node140-benchmark/css3_managed_stage.json
+          sha256sum Benchmarks/css/SYS-0010.xml Benchmarks/css/css3_managed_stage.zip > ../node140-benchmark/SHA256SUMS
+          printf 'commit=432c87e022674822cc4ddaf2faddeffd68fe883e\nxml_blob=1c6e2d817c9488839d1743da46927e8e104fa824\nzip_blob=86da3f48cb53b7cb7f3520072edcf0d3ed0d1806\n' > ../node140-benchmark/PROVENANCE.txt
+          sha256sum ../node140-benchmark/css3_managed_stage.json >> ../node140-benchmark/SHA256SUMS
+
+      - name: Materialize exact text payload on transfer branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf transfer-branch/.node140-transfer
+          mkdir -p transfer-branch/.node140-transfer
+          cp node140-benchmark/SYS-0010.xml transfer-branch/.node140-transfer/
+          cp node140-benchmark/css3_managed_stage.json transfer-branch/.node140-transfer/
+          cp node140-benchmark/SHA256SUMS transfer-branch/.node140-transfer/
+          cp node140-benchmark/PROVENANCE.txt transfer-branch/.node140-transfer/
+          cd transfer-branch
+          git config user.name 'node140-benchmark-transfer'
+          git config user.email 'node140-benchmark-transfer@users.noreply.github.com'
+          git add .node140-transfer
+          if git diff --cached --quiet; then
+            echo 'Transfer payload already materialized.'
+          else
+            git commit -m 'chore(node140): materialize exact benchmark payload'
+            git push origin HEAD:agent/xml-cii-node140-gap-benchmark-rca
+          fi
+
+      - name: Upload exact benchmark
+        uses: actions/upload-artifact@v4
+        with:
+          name: node140-exact-benchmark-432c87e
+          path: node140-benchmark/
+          if-no-files-found: error
+          retention-days: 1

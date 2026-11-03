@@ -1,0 +1,32 @@
+const assert = require('assert');
+const fs = require('fs');
+const path = require('path');
+const root = path.resolve(__dirname, '..');
+
+const panel = fs.readFileSync(path.join(root, 'tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-weight-validation-report.js'), 'utf8');
+assert(panel.includes("from '../../../converters/empirical-weight/index.js'"));
+assert(panel.includes('createEmpiricalWeightValidator'));
+assert(panel.includes('downloadEmpiricalWeightValidationEvidenceZip'));
+assert(panel.includes('abnormalityThresholdPct: 30'));
+assert(panel.includes('validationRowsFromResolvedIssues'));
+assert(panel.includes("inputScope = 'RESOLVED_WEIGHT_MATCH_COMPONENTS'"));
+assert(panel.includes('xml-cii-weight-validator-ready'));
+assert(panel.includes('__xmlCiiPendingValidation'));
+assert(panel.includes("card.querySelector('#mc-wm-refresh')"));
+assert(panel.includes('rigidWeightFinal'));
+assert(panel.includes('rigidWeightMatch1'));
+assert(panel.includes('Save abnormal CSV'));
+assert(panel.includes('Save audit JSON'));
+assert(panel.includes('Save validation evidence ZIP'));
+assert(panel.includes('stateRef.current.empiricalWeightValidationReport = report'));
+assert(panel.includes('stateRef.current.empiricalWeightValidationEvidenceManifest = manifest'));
+assert(!panel.includes('targetRows(masterRows'), 'App validation must not validate the master table against itself.');
+assert(!panel.includes('Math.exp('), 'UI consumer must not duplicate empirical formulas.');
+assert(!panel.includes('LOG1') && !panel.includes('LOG2') && !panel.includes('RAW1') && !panel.includes('RAW2'), 'UI consumer must call API, not hardcode A1 models.');
+
+const wm = fs.readFileSync(path.join(root, 'tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-weight-match-v2.js'), 'utf8');
+assert(wm.includes('appendEmpiricalWeightValidationReport(card, stateRef)'));
+const sharedRenderer = fs.readFileSync(path.join(root, 'tabs/model-converters/converters/xmltocii2019_helper/weight-match-renderer.js'), 'utf8');
+assert(sharedRenderer.includes('xml-cii-weight-validator-ready'), 'Shared Weight Match must expose resolved issues to the read-only validator.');
+assert(sharedRenderer.includes('issues: localIssues'));
+console.log('Empirical weight resolved-component validation app wiring checks passed.');

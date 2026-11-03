@@ -1,0 +1,164 @@
+{
+  "schema": "T29ControlledSourceContract.v1",
+  "mechanismId": "cavitationFlashing",
+  "calculationId": "VIB.CAVITATION.FLASHING",
+  "sourceIssue": 545,
+  "parentProgramme": 450,
+  "baseCommit": "d2d02ed56ee1c94d89ddc4c63fa58f0ce97a84df",
+  "controlledSource": {
+    "repository": "reallaksh19/Common",
+    "commit": "fb549185b9b27edc2379734240320a85c5bef9f6",
+    "path": "EI - AVIFF Guidelines 2nd Edition.pdf",
+    "gitBlobSha1": "sha1:9d3eccc56429411e17c07a579bdebbd13cb0bdc5",
+    "sizeBytes": 10348594,
+    "edition": "2nd Edition",
+    "section": "T2.9 / T2.9.2",
+    "documentEvidenceExecution": "NOT_RUN_ENVIRONMENT_BLOCKED",
+    "pageSelection": null,
+    "pageHashes": [],
+    "sectionHash": null
+  },
+  "currentMasterRegister": {
+    "masterId": "EI_AVIFF.T2.9.VALVE_RECOVERY_FACTORS.v1",
+    "dataType": "TABLE",
+    "sourceState": "RECONCILIATION_REQUIRED",
+    "locator": null,
+    "extractionReceipt": null
+  },
+  "existingCandidate": {
+    "origin": "merged PR #481",
+    "candidatePath": "docs/Masters/Vibration/ei-aviff-t29-valve-recovery-factors.candidate.csv",
+    "provenancePath": "ValidationRecords/VibrationMasters/ei-aviff-t29-valve-recovery-candidate-v1.json",
+    "sourceRole": "SECONDARY_PUBLICATION_NAVIGATION_AND_RECONCILIATION_ONLY",
+    "rows": [
+      { "rowId": "T29-FL-001", "valveType": "Ball", "FL": 0.6 },
+      { "rowId": "T29-FL-002", "valveType": "Butterfly", "FL": 0.62 },
+      { "rowId": "T29-FL-003", "valveType": "Globe", "FL": 0.9 },
+      { "rowId": "T29-FL-004", "valveType": "Gate", "FL": 0.6 }
+    ],
+    "recordedRelation": "delta = FL^2 * (P1 - 0.96 * Pv)",
+    "unknownValveType": "NOT_READY",
+    "nearestFallbackForbidden": true,
+    "publicationState": "CANDIDATE",
+    "qualificationStatus": "NOT_QUALIFIED",
+    "masterValuesPublished": false
+  },
+  "conflictingSynthesis": {
+    "repository": "reallaksh19/Advanced_Analysis",
+    "commit": "76eb4bd075ce2e8e2442d02b2798df7be491fb4b",
+    "path": "docs/EI data/P1_Valve_Transient_and_Cavitation.md",
+    "gitBlobSha1": "sha1:f27764534a9bee88e3b4e2d1b12da046ccfced5d",
+    "classification": "CORROBORATION_INVESTIGATION_ONLY",
+    "productionUse": "PROHIBITED_UNTIL_CONTROLLED_SOURCE_RECONCILIATION",
+    "claimsRequiringReconciliation": {
+      "equations": [
+        "sigma = (P_upstream - Pv) / (P_upstream - P_downstream)",
+        "Kc = 0.80 * FL^2",
+        "DeltaP_choked = FL^2 * (P_upstream - FF * Pv)",
+        "FF = 0.96 - 0.28 * sqrt(Pv / Pc)"
+      ],
+      "decisionBranches": [
+        { "claim": "sigma <= 1.00", "phenomenon": "FLASHING", "claimedLof": 1.0 },
+        { "claim": "1.00 < sigma <= 1/Kc", "phenomenon": "SEVERE_CAVITATION", "claimedLof": 1.0 },
+        { "claim": "1/Kc < sigma <= 1.2/Kc", "phenomenon": "INCIPIENT_CAVITATION_MARGIN", "claimedLof": 0.5 },
+        { "claim": "sigma > 1.2/Kc", "phenomenon": "CAVITATION_FREE", "claimedLof": 0.2 }
+      ],
+      "additionalFlExamples": [
+        { "valveDescription": "Ball Valve - Full Bore / full open", "FL": 0.5 },
+        { "valveDescription": "Ball Valve - Segmented / V-Notch", "FL": 0.75 },
+        { "valveDescription": "Butterfly - Standard Concentric / full open", "FL": 0.55 },
+        { "valveDescription": "Butterfly - Standard Concentric / 60 degree throttling", "FL": 0.68 },
+        { "valveDescription": "Globe - Single Port / flow-to-open", "FL": 0.9 },
+        { "valveDescription": "Globe - Single Port / flow-to-close", "FL": 0.8 }
+      ]
+    },
+    "observedConflicts": [
+      {
+        "id": "T29-CONFLICT-FL-BALL",
+        "status": "UNRESOLVED_SCOPE_OR_VALUE_CONFLICT",
+        "candidate": "Ball FL=0.60",
+        "synthesis": "Full-bore ball FL=0.50; segmented/V-notch ball FL=0.75",
+        "decision": "DO_NOT_NORMALIZE_OR_SELECT_WITHOUT_CONTROLLED_EI_EVIDENCE"
+      },
+      {
+        "id": "T29-CONFLICT-FL-BUTTERFLY",
+        "status": "UNRESOLVED_SCOPE_OR_VALUE_CONFLICT",
+        "candidate": "Butterfly FL=0.62",
+        "synthesis": "Standard concentric butterfly FL=0.55 full-open or 0.68 at 60-degree throttling",
+        "decision": "DO_NOT_NORMALIZE_OR_SELECT_WITHOUT_CONTROLLED_EI_EVIDENCE"
+      },
+      {
+        "id": "T29-CONFLICT-EQUATION-PV-FACTOR",
+        "status": "UNRESOLVED_METHOD_CONFLICT",
+        "candidate": "delta = FL^2 * (P1 - 0.96 * Pv)",
+        "synthesis": "DeltaP_choked = FL^2 * (P1 - FF * Pv), with FF pressure-dependent",
+        "decision": "NO_PRODUCTION_EQUATION_UNTIL_CONTROLLED_EI_RECONCILIATION"
+      },
+      {
+        "id": "T29-CONFLICT-DECISION-TREE",
+        "status": "UNVERIFIED_SECONDARY_RULE_GRAPH",
+        "candidate": "#481 did not qualify full T2.9 decision logic",
+        "synthesis": "sigma/Kc four-regime tree with LOF 1.0/1.0/0.5/0.2",
+        "decision": "NO_BRANCH_PREDICATE_OR_LOF_IMPLEMENTATION_UNTIL_CONTROLLED_EI_RECONCILIATION"
+      }
+    ]
+  },
+  "controlledPredicates": [
+    { "id": "T29-PRED-001", "name": "upstreamPressureDefinition", "status": "PENDING_CONTROLLED_SOURCE" },
+    { "id": "T29-PRED-002", "name": "downstreamPressureDefinition", "status": "PENDING_CONTROLLED_SOURCE" },
+    { "id": "T29-PRED-003", "name": "pressureBasisAbsoluteVsGauge", "status": "PENDING_CONTROLLED_SOURCE" },
+    { "id": "T29-PRED-004", "name": "flowingTemperatureSemantics", "status": "PENDING_CONTROLLED_SOURCE" },
+    { "id": "T29-PRED-005", "name": "vapourPressureSemanticsAndCustody", "status": "PENDING_CONTROLLED_SOURCE" },
+    { "id": "T29-PRED-006", "name": "supportedFluidPhase", "status": "PENDING_CONTROLLED_SOURCE" },
+    { "id": "T29-PRED-007", "name": "supportedDeviceScope", "status": "PENDING_CONTROLLED_SOURCE" },
+    { "id": "T29-PRED-008", "name": "FLApplicabilityAndLookupTaxonomy", "status": "PENDING_CONTROLLED_SOURCE" },
+    { "id": "T29-PRED-009", "name": "governingEquationsAndConstants", "status": "PENDING_CONTROLLED_SOURCE" },
+    { "id": "T29-PRED-010", "name": "flashingDefinition", "status": "PENDING_CONTROLLED_SOURCE" },
+    { "id": "T29-PRED-011", "name": "cavitationDefinition", "status": "PENDING_CONTROLLED_SOURCE" },
+    { "id": "T29-PRED-012", "name": "noCavitationDefinition", "status": "PENDING_CONTROLLED_SOURCE" },
+    { "id": "T29-PRED-013", "name": "exactEqualityDirections", "status": "PENDING_CONTROLLED_SOURCE" },
+    { "id": "T29-PRED-014", "name": "incipientSevereSubdivision", "status": "PENDING_CONTROLLED_SOURCE" },
+    { "id": "T29-PRED-015", "name": "sourceDefinedOutputAndLofSemantics", "status": "PENDING_CONTROLLED_SOURCE" },
+    { "id": "T29-PRED-016", "name": "specialistEscalationAndExclusions", "status": "PENDING_CONTROLLED_SOURCE" },
+    { "id": "T29-PRED-017", "name": "boundaryFromAivAndT28", "status": "PENDING_CONTROLLED_SOURCE" }
+  ],
+  "propertyCustody": {
+    "vapourPressure": {
+      "projectExplicitPrecedence": true,
+      "appendixBCandidateAvailable": true,
+      "appendixBAutomaticAcceptance": false,
+      "missingPvBehavior": "NOT_READY",
+      "zeroAsMissingSentinelForbidden": true
+    }
+  },
+  "implementationHardStops": [
+    "CONTROLLED_T29_DOCUMENT_EVIDENCE_NOT_EXECUTED",
+    "EXACT_BRANCH_PREDICATES_UNRESOLVED",
+    "PRESSURE_BASIS_UNRESOLVED",
+    "PV_CUSTODY_UNRESOLVED",
+    "FL_SCOPE_CONFLICT_UNRESOLVED",
+    "SECONDARY_DECISION_TREE_UNVERIFIED"
+  ],
+  "qualification": {
+    "takeoverAuthority": "READ_ONLY",
+    "appendixA": {
+      "A1": 18,
+      "A2": 12,
+      "A3": 18,
+      "A4": 13,
+      "A5": 16,
+      "total": 77,
+      "requiredTotal": 92,
+      "requiredMinimumEach": 17,
+      "disposition": "NOT_QUALIFIED_FOR_T29_NUMERICAL_MUTATION"
+    }
+  },
+  "authority": {
+    "engineeringAuthority": "NONE",
+    "screeningAuthority": "NOT_AUTHORIZED",
+    "designAuthority": false,
+    "masterValuesPublished": false,
+    "productionEquationAuthorized": false
+  },
+  "exactNextAction": "Materialize the exact controlled EI PDF bytes in a capable runtime, perform reviewer-selected T2.9 source extraction/DocumentEvidence, reconcile the four FL rows and all T29-PRED-* predicates, then rescore Appendix A before any production numerical mutation."
+}

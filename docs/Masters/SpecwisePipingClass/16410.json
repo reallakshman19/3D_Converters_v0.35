@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "specKey": "16410",
+  "rowCount": 8,
+  "generatedAt": "2026-06-09T02:27:27.047Z",
+  "source": "../Piping_class_master.json",
+  "rows": [
+    {
+      "Piping Class": "16410",
+      "Size": "0.5",
+      "SCH": "10S",
+      "Wall thickness": "2.1082000000000001",
+      "Material_Name": "ASTM B861-2",
+      "PMSMat_Categories": "Titanium",
+      "PMSMat_Cat": "Ti",
+      "Rating": "150",
+      "Corrosion": "0",
+      "convertedBore": 15,
+      "_sourceRowIndex": 3536
+    },
+    {
+      "Piping Class": "16410",
+      "Size": "0.75",
+      "SCH": "10S",
+      "Wall thickness": "2.1082000000000001",
+      "Material_Name": "ASTM B861-2",
+      "PMSMat_Categories": "Titanium",
+      "PMSMat_Cat": "Ti",
+      "Rating": "150",
+      "Corrosion": "0",
+      "convertedBore": 20,
+      "_sourceRowIndex": 3537
+    },
+    {
+      "Piping Class": "16410",
+      "Size": "1",
+      "SCH": "10S",
+      "Wall thickness": "2.77",
+      "Material_Name": "ASTM B861-2",
+      "PMSMat_Categories": "Titanium",
+      "PMSMat_Cat": "Ti",
+      "Rating": "150",
+      "Corrosion": "0",
+      "convertedBore": 25,
+      "_sourceRowIndex": 3538
+    },
+    {
+      "Piping Class": "16410",
+      "Size": "1.5",
+      "SCH": "10S",
+      "Wall thickness": "2.77",
+      "Material_Name": "ASTM B861-2",
+      "PMSMat_Categories": "Titanium",
+      "PMSMat_Cat": "Ti",
+      "Rating": "150",
+      "Corrosion": "0",
+      "convertedBore": 40,
+      "_sourceRowIndex": 3539
+    },
+    {
+      "Piping Class": "16410",
+      "Size": "2",
+      "SCH": "10S",
+      "Wall thickness": "2.77",
+      "Material_Name": "ASTM B861-2",
+      "PMSMat_Categories": "Titanium",
+      "PMSMat_Cat": "Ti",
+      "Rating": "150",
+      "Corrosion": "0",
+      "convertedBore": 50,
+      "_sourceRowIndex": 3540
+    },
+    {
+      "Piping Class": "16410",
+      "Size": "3",
+      "SCH": "10S",
+      "Wall thickness": "3.048",
+      "Material_Name": "ASTM B861-2",
+      "PMSMat_Categories": "Titanium",
+      "PMSMat_Cat": "Ti",
+      "Rating": "150",
+      "Corrosion": "0",
+      "convertedBore": 80,
+      "_sourceRowIndex": 3541
+    },
+    {
+      "Piping Class": "16410",
+      "Size": "4",
+      "SCH": "10S",
+      "Wall thickness": "3.048",
+      "Material_Name": "ASTM B861-2",
+      "PMSMat_Categories": "Titanium",
+      "PMSMat_Cat": "Ti",
+      "Rating": "150",
+      "Corrosion": "0",
+      "convertedBore": 100,
+      "_sourceRowIndex": 3542
+    },
+    {
+      "Piping Class": "16410",
+      "Size": "6",
+      "SCH": "10S",
+      "Wall thickness": "3.4036",
+      "Material_Name": "ASTM B861-2",
+      "PMSMat_Categories": "Titanium",
+      "PMSMat_Cat": "Ti",
+      "Rating": "150",
+      "Corrosion": "0",
+      "convertedBore": 150,
+      "_sourceRowIndex": 3543
+    }
+  ]
+}

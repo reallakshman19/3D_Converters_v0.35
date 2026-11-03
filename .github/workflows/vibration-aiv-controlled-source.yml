@@ -1,0 +1,247 @@
+name: Vibration AIV Controlled Source Qualification
+
+on:
+  pull_request:
+    paths:
+      - 'converters/engineering-calculations/pending-definitions.js'
+      - 'converters/vibration/aiv/**'
+      - 'converters/vibration/topology/graph.js'
+      - 'tabs/vibration-aiv-*'
+      - 'tests/vibration-aiv-*'
+      - 'tests/vibration-module-boundaries.test.mjs'
+      - 'scripts/extract-aiv-ei-t27-source.mjs'
+      - 'scripts/extract-aiv-ei-d23-source.mjs'
+      - 'scripts/extract-aiv-workbook-sources.mjs'
+      - 'scripts/verify-aiv-t27-reconciliation.mjs'
+      - 'scripts/verify-aiv-d23-flm1-reconciliation.mjs'
+      - 'scripts/verify-aiv-workbook-reconciliation.mjs'
+      - 'scripts/verify-aiv-independent-benchmarks.mjs'
+      - 'docs/vibration/AIV-*'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/vibration-aiv-controlled-source.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'converters/vibration/aiv/**'
+      - 'converters/vibration/topology/graph.js'
+      - 'tabs/vibration-aiv-*'
+      - 'tests/vibration-aiv-*'
+      - 'scripts/extract-aiv-ei-t27-source.mjs'
+      - 'scripts/extract-aiv-ei-d23-source.mjs'
+      - 'scripts/extract-aiv-workbook-sources.mjs'
+      - 'scripts/verify-aiv-t27-reconciliation.mjs'
+      - 'scripts/verify-aiv-d23-flm1-reconciliation.mjs'
+      - 'scripts/verify-aiv-workbook-reconciliation.mjs'
+      - 'scripts/verify-aiv-independent-benchmarks.mjs'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/vibration-aiv-controlled-source.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  controlled-source-qualification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout 3D Converters
+        uses: actions/checkout@v6
+
+      - name: Checkout pinned Common main-guidance source
+        uses: actions/checkout@v6
+        with:
+          repository: reallaksh19/Common
+          ref: aef163a5def3bfe04ca0ba860da05728a27daf42
+          path: Common
+          fetch-depth: 1
+
+      - name: Checkout pinned Common worked-example PDF source
+        uses: actions/checkout@v6
+        with:
+          repository: reallaksh19/Common
+          ref: fb549185b9b27edc2379734240320a85c5bef9f6
+          path: CommonExamples
+          fetch-depth: 1
+
+      - name: Checkout pinned CRF retained-workbook migration source
+        uses: actions/checkout@v6
+        with:
+          repository: reallaksh19/CRF-4-1
+          ref: 68dc8e1fa2ef67073c59b3afc56f1bf40953d535
+          path: CRF-4-1
+          fetch-depth: 1
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
+      - name: Install repository dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Install PDF text extractor
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y poppler-utils
+          pdftotext -v
+
+      - name: Verify exact controlled EI PDF and extract T2.7 page hashes
+        shell: bash
+        run: |
+          node scripts/extract-aiv-ei-t27-source.mjs \
+            'Common/EI - AVIFF Guidelines 2nd Edition.pdf' \
+            --out "$RUNNER_TEMP/aiv-t27-source-manifest.json"
+          node - "$RUNNER_TEMP/aiv-t27-source-manifest.json" <<'NODE'
+          const fs = require('node:fs');
+          const manifest = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
+          const expectedBlob = 'sha1:9d3eccc56429411e17c07a579bdebbd13cb0bdc5';
+          if (manifest.schema !== 'AivT27SourceExtraction.v1') throw new Error('Unexpected extraction schema.');
+          if (manifest.source.gitBlobSha1 !== expectedBlob) throw new Error(`Controlled source mismatch: ${manifest.source.gitBlobSha1}`);
+          if (manifest.extraction.firstPage !== 59 || manifest.extraction.lastPage !== 62 || manifest.extraction.pageCount !== 4) throw new Error('T2.7 extraction must contain exactly pages 59-62.');
+          if (manifest.qualification.productionEquationAuthorized !== false) throw new Error('Extraction must not authorize production equations.');
+          if (manifest.qualification.humanEquationReconciliationRequired !== true) throw new Error('Human equation reconciliation must remain required.');
+          if (manifest.qualification.page61OfficialErrataReconciliationRequired !== true) throw new Error('Page-61 errata reconciliation must remain required.');
+          console.log(JSON.stringify(manifest, null, 2));
+          NODE
+
+      - name: Verify exact EI examples PDF and extract D.2.3 evidence hashes
+        shell: bash
+        run: |
+          node scripts/extract-aiv-ei-d23-source.mjs \
+            'CommonExamples/EI examples.pdf' \
+            --out "$RUNNER_TEMP/aiv-d23-source-manifest.json" \
+            --section-text-out "$RUNNER_TEMP/aiv-d23-private-review.txt"
+          node - "$RUNNER_TEMP/aiv-d23-source-manifest.json" <<'NODE'
+          const fs = require('node:fs');
+          const manifest = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
+          if (manifest.schema !== 'AivD23ExamplesSourceExtraction.v1') throw new Error('Unexpected D.2.3 extraction schema.');
+          if (manifest.source.gitBlobSha1 !== 'sha1:1ddef94f81bd30570d1b1f86b1d3e2acdcc17dec') throw new Error('EI examples PDF blob mismatch.');
+          if (manifest.source.sizeBytes !== 1602640) throw new Error('EI examples PDF byte-size mismatch.');
+          if (!manifest.publishedAnchors.every((anchor) => anchor.observed === true)) throw new Error('D.2.3 published anchor missing.');
+          if (manifest.qualification.directPinnedPdfExtractionComplete !== true) throw new Error('Pinned D.2.3 PDF extraction did not complete.');
+          if (manifest.qualification.publishedFinalLofObserved !== true) throw new Error('Published final LOF=0.29 was not observed in the pinned PDF section.');
+          if (manifest.qualification.publishedFlm1ArithmeticReconciliationRequired !== true) throw new Error('FLM1 arithmetic reconciliation gate must remain open.');
+          if (manifest.qualification.productionEquationAuthorized !== false) throw new Error('D.2.3 extraction cannot authorize production equations.');
+          console.log(JSON.stringify(manifest, null, 2));
+          NODE
+
+      - name: Inventory exact retained AIV workbook migration sources
+        shell: bash
+        run: |
+          node scripts/extract-aiv-workbook-sources.mjs \
+            'CRF-4-1' \
+            --out "$RUNNER_TEMP/aiv-workbook-source-inventory.json" \
+            --details-dir "$RUNNER_TEMP/aiv-workbook-private-details"
+          node - "$RUNNER_TEMP/aiv-workbook-source-inventory.json" <<'NODE'
+          const fs = require('node:fs');
+          const inventory = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
+          const expected = new Map([
+            ['AIV-WB-KS-PR-CAL-0087', 'sha1:2566d41c02768a2345513ed42d270b123fe5087c'],
+            ['AIV-WB-AIV-FIV', 'sha1:048332ed93abd258ffced6b83af0ae343dfcbc9d'],
+            ['AIV-WB-CLOSED-RV', 'sha1:83eeb40d9b224ddd5020c26410a659e01bcea991'],
+          ]);
+          if (inventory.schema !== 'AivWorkbookSourceInventory.v1') throw new Error('Unexpected AIV workbook source inventory schema.');
+          if (inventory.baseline.repository !== 'reallaksh19/CRF-4-1' || inventory.baseline.commit !== '68dc8e1fa2ef67073c59b3afc56f1bf40953d535') throw new Error('Retained workbook baseline changed unexpectedly.');
+          if (inventory.workbooks.length !== 3) throw new Error('Expected exactly three retained AIV workbooks.');
+          for (const workbook of inventory.workbooks) {
+            if (expected.get(workbook.workbookId) !== workbook.gitBlobSha1) throw new Error(`Retained workbook blob mismatch for ${workbook.workbookId}.`);
+            if (!/^sha256:[0-9a-f]{64}$/.test(workbook.privateDetailsSha256)) throw new Error(`Private workbook detail hash missing for ${workbook.workbookId}.`);
+            if (workbook.migrationEvidenceOnly !== true || workbook.productionAuthority !== false || workbook.formulaImplementationAuthorized !== false || workbook.eiReconciliationRequired !== true) throw new Error(`Workbook authority boundary invalid for ${workbook.workbookId}.`);
+            if (!Array.isArray(workbook.sheets) || workbook.sheetCount !== workbook.sheets.length) throw new Error(`Workbook sheet inventory incomplete for ${workbook.workbookId}.`);
+          }
+          if (inventory.authority.evidenceClass !== 'MIGRATION_REFERENCE_ONLY' || inventory.authority.productionEquationAuthorized !== false) throw new Error('Workbook inventory cannot promote AIV production authority.');
+          console.log(JSON.stringify(inventory, null, 2));
+          NODE
+
+      - name: Generate page-hash-bound human T2.7 reconciliation template
+        shell: bash
+        run: |
+          node scripts/verify-aiv-t27-reconciliation.mjs \
+            "$RUNNER_TEMP/aiv-t27-source-manifest.json" \
+            --template-out "$RUNNER_TEMP/aiv-t27-reconciliation-template.json"
+          node - "$RUNNER_TEMP/aiv-t27-reconciliation-template.json" <<'NODE'
+          const fs = require('node:fs');
+          const template = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
+          if (template.schema !== 'AivT27Reconciliation.v1') throw new Error('Unexpected reconciliation schema.');
+          if (template.records.length !== 9) throw new Error('Expected complete nine-item T2.7 trace template.');
+          if (!template.records.every((record) => record.reviewState === 'PENDING')) throw new Error('CI must never auto-complete human review.');
+          if (template.authority.productionEquationAuthorized !== false) throw new Error('Reconciliation template must not authorize production equations.');
+          const t26 = template.records.find((record) => record.traceId === 'AIV-EQ-T2-6-001');
+          if (!t26 || t26.sourcePage !== 61 || t26.errataDisposition !== 'PENDING') throw new Error('T2-6 page-61 errata review must remain pending.');
+          NODE
+
+      - name: Generate D.2.3 FLM1 human reconciliation template
+        shell: bash
+        run: |
+          node scripts/verify-aiv-d23-flm1-reconciliation.mjs \
+            "$RUNNER_TEMP/aiv-d23-source-manifest.json" \
+            --template-out "$RUNNER_TEMP/aiv-d23-flm1-reconciliation-template.json"
+          node - "$RUNNER_TEMP/aiv-d23-flm1-reconciliation-template.json" <<'NODE'
+          const fs = require('node:fs');
+          const template = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
+          if (template.schema !== 'AivD23Flm1Reconciliation.v1') throw new Error('Unexpected D.2.3 FLM1 reconciliation schema.');
+          if (template.review.state !== 'PENDING') throw new Error('CI must never auto-complete FLM1 human review.');
+          if (template.mainGuidance.reviewedTranscriptionSha256 !== null) throw new Error('CI cannot invent a reviewed T2-6 transcription hash.');
+          if (template.discrepancy.publishedFlm1 !== 1.2133) throw new Error('Published FLM1 evidence changed unexpectedly.');
+          if (Math.abs(template.discrepancy.recalculatedFlm1FromDisplayedInputs - 1.2109758194311824) > 1e-12) throw new Error('Independent FLM1 arithmetic changed unexpectedly.');
+          if (template.authority.productionEquationAuthorized !== false) throw new Error('FLM1 template cannot authorize production equations.');
+          NODE
+
+      - name: Generate retained-workbook human reconciliation template
+        shell: bash
+        run: |
+          node scripts/verify-aiv-workbook-reconciliation.mjs \
+            "$RUNNER_TEMP/aiv-workbook-source-inventory.json" \
+            --template-out "$RUNNER_TEMP/aiv-workbook-reconciliation-template.json"
+          node - "$RUNNER_TEMP/aiv-workbook-reconciliation-template.json" <<'NODE'
+          const fs = require('node:fs');
+          const template = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
+          if (template.schema !== 'AivWorkbookReconciliation.v1') throw new Error('Unexpected workbook reconciliation schema.');
+          if (template.records.length !== 3) throw new Error('Expected one workbook review record for each retained source.');
+          if (!template.records.every((record) => record.reviewState === 'PENDING')) throw new Error('CI must never auto-complete retained workbook review.');
+          if (!template.records.every((record) => /^sha256:[0-9a-f]{64}$/.test(record.privateDetailsSha256))) throw new Error('Workbook review must bind the private formula-detail hashes.');
+          if (template.authority.productionEquationAuthorized !== false) throw new Error('Workbook reconciliation template cannot authorize production equations.');
+          NODE
+
+      - name: Generate independent sonic/multi-source benchmark review template
+        shell: bash
+        run: |
+          node scripts/verify-aiv-independent-benchmarks.mjs \
+            --template-out "$RUNNER_TEMP/aiv-independent-benchmark-review-template.json"
+          node - "$RUNNER_TEMP/aiv-independent-benchmark-review-template.json" <<'NODE'
+          const fs = require('node:fs');
+          const template = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
+          if (template.schema !== 'AivIndependentBenchmarkReview.v1') throw new Error('Unexpected independent benchmark review schema.');
+          if (template.records.length !== 3) throw new Error('Expected sonic plus two multi-source analytical vectors.');
+          if (!template.records.every((record) => record.reviewState === 'PENDING')) throw new Error('CI must never auto-accept independent benchmarks.');
+          if (!template.records.every((record) => Object.values(record.traceTranscriptionSha256).every((value) => value === null))) throw new Error('CI cannot invent reviewed EI trace hashes.');
+          if (template.authority.productionEquationAuthorized !== false) throw new Error('Benchmark review template cannot authorize production equations.');
+          NODE
+
+      - name: Run focused AIV qualification regressions
+        run: |
+          node --experimental-default-type=module --test tests/vibration-aiv-source-extraction-contract.test.mjs
+          node --experimental-default-type=module --test tests/vibration-aiv-d23-source-extraction-contract.test.mjs
+          node --experimental-default-type=module --test tests/vibration-aiv-d23-pdf-revalidation.test.mjs
+          node --experimental-default-type=module --test tests/vibration-aiv-d23-flm1-reconciliation.test.mjs
+          node --experimental-default-type=module --test tests/vibration-aiv-workbook-source-inventory.test.mjs
+          node --experimental-default-type=module --test tests/vibration-aiv-workbook-reconciliation.test.mjs
+          node --experimental-default-type=module --test tests/vibration-aiv-independent-benchmarks.test.mjs
+          node --experimental-default-type=module --test tests/vibration-aiv-independent-benchmark-review.test.mjs
+          node --experimental-default-type=module --test tests/vibration-aiv-t27-reconciliation.test.mjs
+          node --experimental-default-type=module --test tests/vibration-aiv-errata-benchmark.test.mjs
+          node --experimental-default-type=module --test tests/vibration-aiv-qualification-evidence.test.mjs
+          node --experimental-default-type=module --test tests/vibration-aiv-readiness.test.mjs
+          node --experimental-default-type=module --test tests/vibration-aiv-topology-view.test.mjs
+          node --experimental-default-type=module --test tests/vibration-module-boundaries.test.mjs
+
+      - name: Run AIV canvas release suite
+        run: npm run verify:aiv-canvas-release
+
+      - name: Diff hygiene
+        run: git diff --check

@@ -1,0 +1,28 @@
+UnitId,QuantityType,UnitSymbol,CanonicalUnit,ScaleToCanonical,OffsetToCanonical,PressureBasisAllowed,Description,Status
+U-LEN-MM,LENGTH,mm,m,0.001,0,,millimetre,ACTIVE
+U-LEN-M,LENGTH,m,m,1.0,0,,metre,ACTIVE
+U-LEN-IN,LENGTH,in,m,0.0254,0,,inch,ACTIVE
+U-LEN-FT,LENGTH,ft,m,0.3048,0,,foot,ACTIVE
+U-PRESS-PA,PRESSURE,Pa,Pa,1.0,0,YES,pascal,ACTIVE
+U-PRESS-KPA,PRESSURE,kPa,Pa,1000.0,0,YES,kilopascal,ACTIVE
+U-PRESS-BAR,PRESSURE,bar,Pa,100000.0,0,YES,bar,ACTIVE
+U-PRESS-MPA,PRESSURE,MPa,Pa,1000000.0,0,YES,megapascal,ACTIVE
+U-PRESS-PSI,PRESSURE,psi,Pa,6894.757,0,YES,pounds per square inch,ACTIVE
+U-TEMP-K,TEMPERATURE,K,K,1.0,0,,kelvin,ACTIVE
+U-TEMP-C,TEMPERATURE,degC,K,1.0,273.15,,degree Celsius,ACTIVE
+U-TEMP-F,TEMPERATURE,degF,K,0.5555555555555556,255.3722222222222,,degree Fahrenheit,ACTIVE
+U-MFLOW-KGS,MASS_FLOW,kg/s,kg/s,1.0,0,,kilogram per second,ACTIVE
+U-MFLOW-KGH,MASS_FLOW,kg/h,kg/s,0.0002777777777777778,0,,kilogram per hour,ACTIVE
+U-MFLOW-LBH,MASS_FLOW,lb/h,kg/s,0.00012599788,0,,pound per hour,ACTIVE
+U-DENS-KGM3,DENSITY,kg/m3,kg/m3,1.0,0,,kilogram per cubic metre,ACTIVE
+U-VEL-MS,VELOCITY,m/s,m/s,1.0,0,,metre per second,ACTIVE
+U-VEL-FTS,VELOCITY,ft/s,m/s,0.3048,0,,foot per second,ACTIVE
+U-DVISC-PAS,DYNAMIC_VISCOSITY,Pa.s,Pa.s,1.0,0,,pascal second,ACTIVE
+U-DVISC-CP,DYNAMIC_VISCOSITY,cP,Pa.s,0.001,0,,centipoise,ACTIVE
+U-MW-GMOL,MOLECULAR_WEIGHT,g/mol,g/mol,1.0,0,,gram per mole,ACTIVE
+U-MW-KGKMOL,MOLECULAR_WEIGHT,kg/kmol,g/mol,1.0,0,,kilogram per kilomole,ACTIVE
+U-FREQ-HZ,FREQUENCY,Hz,Hz,1.0,0,,hertz,ACTIVE
+U-DB,ACOUSTIC_LEVEL,dB,dB,1.0,0,,decibel,ACTIVE
+U-POWER-W,POWER,W,W,1.0,0,,watt,ACTIVE
+U-POWER-KW,POWER,kW,W,1000.0,0,,kilowatt,ACTIVE
+U-DIMLESS,DIMENSIONLESS,-,-,1.0,0,,dimensionless factor / ratio,ACTIVE

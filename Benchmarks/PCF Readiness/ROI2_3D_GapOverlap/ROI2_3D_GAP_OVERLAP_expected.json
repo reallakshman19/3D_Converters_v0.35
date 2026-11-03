@@ -1,0 +1,125 @@
+{
+  "schema": "rvm-pcf-readiness-benchmark/expected-outcome/v1",
+  "benchmarkName": "ROI2_3D_GAP_OVERLAP_BROKEN",
+  "input": {
+    "pcf": "ROI2_3D_GAP_OVERLAP_BROKEN.pcf",
+    "stagedJson": "ROI2_3D_GAP_OVERLAP_BROKEN_staged.json"
+  },
+  "componentInventory": {
+    "totalComponentBlocks": 48,
+    "pipe": 17,
+    "bend": 6,
+    "tee": 2,
+    "olet": 1,
+    "valve": 5,
+    "flange": 7,
+    "gasket": 4,
+    "reducer": 1,
+    "support": 5
+  },
+  "topologyContract": {
+    "supportPipeContinuityPorts": 0,
+    "topoComponentCountExcludingSupports": 43,
+    "pipeSegmentCount": 17,
+    "topoPortCount": 88,
+    "pipePorts": 34,
+    "teePorts": 6,
+    "oletPorts": 2,
+    "valvePorts": 10,
+    "flangePorts": 14,
+    "gasketPorts": 8,
+    "bendPorts": 12,
+    "reducerPorts": 2
+  },
+  "intentionalDefects": [
+    {
+      "code": "GAP-4MM-PIPE-FLANGE",
+      "rows": [1, 2],
+      "distanceMm": 4,
+      "expectedClassification": "EXACT_WITHIN_6MM_CONNECT_TOLERANCE"
+    },
+    {
+      "code": "GAP-3MM-TEE-BRANCH-PIPE",
+      "rows": [10, 11],
+      "distanceMm": 3,
+      "expectedClassification": "EXACT_WITHIN_6MM_CONNECT_TOLERANCE"
+    },
+    {
+      "code": "GAP-6MM-TEE-MAIN-PIPE",
+      "rows": [10, 12],
+      "distanceMm": 6,
+      "expectedClassification": "EXACT_WITHIN_6MM_CONNECT_TOLERANCE"
+    },
+    {
+      "code": "GAP-20MM-PIPE-FLANGE",
+      "rows": [14, 15],
+      "distanceMm": 20,
+      "expectedClassification": "TOPO-GAP-CANDIDATE",
+      "expectedFutureAction": "MOVE_PIPE_ENDPOINT_ONLY"
+    },
+    {
+      "code": "GAP-15MM-OLET-BRANCH-PIPE",
+      "rows": [20, 21],
+      "distanceMm": 15,
+      "expectedClassification": "TOPO-GAP-CANDIDATE",
+      "expectedFutureAction": "MOVE_PIPE_ENDPOINT_ONLY"
+    },
+    {
+      "code": "OVERLAP-15MM-PIPE-TEE",
+      "rows": [32, 33],
+      "distanceMm": 15,
+      "expectedClassification": "TOPO-OVERLAP-CANDIDATE",
+      "expectedFutureAction": "TRIM_PIPE_ENDPOINT_ONLY"
+    },
+    {
+      "code": "GAP-15MM-FLANGE-BEND-FIXED-FIXED",
+      "rows": [47, 48],
+      "distanceMm": 15,
+      "expectedClassification": "DISCONNECTED_REQUIRED_PORT",
+      "expectedFutureAction": "NO_AUTO_FIX_BOTH_FIXED"
+    }
+  ],
+  "expectedReadinessBeforeFix": {
+    "pcfReady": false,
+    "exportAllowed": false,
+    "rowMutationCount": 0,
+    "fittingMovedCount": 0,
+    "fittingTrimmedCount": 0,
+    "pipeEndpointModifiedCount": 0,
+    "crossPipelineAutoAcceptedCount": 0,
+    "ambiguousAutoAcceptedCount": 0,
+    "oletSegmentTapCount": 1,
+    "gapCandidateCountMinimum": 3,
+    "overlapCandidateCountMinimum": 1,
+    "safeFixPlanCountMinimum": 3,
+    "blockedFixPlanCountMinimum": 1,
+    "supportPipeContinuityPorts": 0
+  },
+  "expectedAfterApplySafeFix": {
+    "transactionCommitted": true,
+    "gapFixedCountMinimum": 3,
+    "overlapFixedCountMinimum": 0,
+    "fittingMovedCount": 0,
+    "fittingTrimmedCount": 0,
+    "fixesAboveToleranceCount": 0,
+    "pipeZeroLengthAfterFixCount": 0,
+    "newFatalIssueCount": 0,
+    "newTeeIssueCount": 0,
+    "newOletIssueCount": 0,
+    "remainingKnownIssue": "Rows 47 and 48 remain fixed-fixed flange-to-bend gap and should require manual correction or upstream modelling fix."
+  },
+  "caUnitExpectations": {
+    "ca1MissingUnitCount": 0,
+    "ca2MissingUnitCount": 0,
+    "ca5MissingUnitCount": 0,
+    "ca8MissingUnitCount": 0,
+    "ca10MissingUnitCount": 0
+  },
+  "emissionExpectations": {
+    "pipeSkeyInsidePipeBlocks": 0,
+    "fakeOriginCoordinateLines": 0,
+    "nps8EmittedAs8Count": 0,
+    "nps10EmittedAs10Count": 0,
+    "nps14EmittedAs14Count": 0
+  }
+}

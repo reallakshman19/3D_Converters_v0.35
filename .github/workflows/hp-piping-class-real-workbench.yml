@@ -1,0 +1,32 @@
+name: HP Piping Class Real Workbench
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - agent/hp-ui-real-workspace-recovery
+  pull_request:
+    paths:
+      - 'tabs/hp-piping-class-workbench-tab.js'
+      - 'tabs/hp-piping-class-workbench-state.js'
+      - 'tabs/hp-piping-class-reference-samples.js'
+      - 'tabs/engineering-workspace-tab.js'
+      - 'tests/hp-piping-class-real-workbench.test.mjs'
+      - 'tests/hp-piping-class-native-editors.test.mjs'
+      - 'scripts/verify-hp-piping-class-real-workbench.mjs'
+      - '.github/workflows/hp-piping-class-real-workbench.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  hp-real-workbench:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify HP Piping Class real workbench
+        run: node scripts/verify-hp-piping-class-real-workbench.mjs

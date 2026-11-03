@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "FbxSourceGraph.v1",
+  "title": "FbxSourceGraph.v1",
+  "type": "object",
+  "required": [
+    "schema", "file", "documentMetadata", "globalSettings",
+    "sourceObjects", "occurrences", "geometries",
+    "hierarchyEdges", "connectionEdges", "warnings",
+    "unsupportedRecords", "unresolvedReferences"
+  ],
+  "properties": {
+    "schema": { "const": "FbxSourceGraph.v1" },
+    "file": { "type": "object" },
+    "documentMetadata": { "type": "object" },
+    "globalSettings": { "type": "object" },
+    "sourceObjects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "sourceObjectId", "elementId", "typedId", "class", "subtype",
+          "name", "customProperties"
+        ],
+        "properties": {
+          "sourceObjectId": { "type": "string", "minLength": 1 },
+          "elementId": { "type": "integer", "minimum": 0 },
+          "typedId": { "type": "integer", "minimum": 0 },
+          "class": {
+            "enum": [
+              "NODE", "MESH", "NURBS_CURVE", "LINE_CURVE",
+              "NURBS_SURFACE", "UNKNOWN", "OTHER"
+            ]
+          },
+          "subtype": { "type": "string" },
+          "name": { "type": "string" },
+          "customProperties": { "type": "array" }
+        }
+      }
+    },
+    "occurrences": { "type": "array" },
+    "geometries": { "type": "array" },
+    "hierarchyEdges": { "type": "array" },
+    "connectionEdges": { "type": "array" },
+    "warnings": { "type": "array" },
+    "unsupportedRecords": { "type": "array" },
+    "unresolvedReferences": { "type": "array" }
+  }
+}

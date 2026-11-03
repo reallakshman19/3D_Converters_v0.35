@@ -1,0 +1,110 @@
+{
+  "currentLogicalNodes": [
+    {
+      "logicalNodeId": "C1",
+      "projectId": "P1",
+      "zoneId": "Z1",
+      "mainLineKey": "/A",
+      "logicalRole": "ROUTE",
+      "identityNamespace": "SYS",
+      "stableSourcePortId": "PORT-10"
+    },
+    {
+      "logicalNodeId": "C2",
+      "projectId": "P1",
+      "zoneId": "Z1",
+      "mainLineKey": "/A",
+      "logicalRole": "ROUTE",
+      "identityNamespace": "SYS",
+      "reviewedAliases": [
+        {"value": "REF-X", "aliasType": "REF", "reviewId": "REVIEW-1", "approved": true}
+      ]
+    },
+    {
+      "logicalNodeId": "C3",
+      "projectId": "P1",
+      "zoneId": "Z1",
+      "mainLineKey": "/A",
+      "logicalRole": "ROUTE",
+      "identityNamespace": "SYS",
+      "stableSourcePortId": "PORT-77"
+    },
+    {
+      "logicalNodeId": "C4",
+      "projectId": "P1",
+      "zoneId": "Z1",
+      "mainLineKey": "/A",
+      "logicalRole": "ROUTE",
+      "identityNamespace": "SYS",
+      "stableSourcePortId": "PORT-88"
+    },
+    {
+      "logicalNodeId": "C5",
+      "projectId": "P1",
+      "zoneId": "Z1",
+      "mainLineKey": "/A",
+      "logicalRole": "ROUTE",
+      "coordinates": {"x": 1, "y": 2, "z": 3}
+    }
+  ],
+  "previousRegistry": {
+    "registrySnapshotHash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+    "lineHistories": [
+      {
+        "projectId": "P1",
+        "zoneId": "Z1",
+        "mainLineKey": "/A",
+        "historyNodes": [
+          {
+            "historyNodeId": "H1",
+            "lifecycleStatus": "ACTIVE",
+            "logicalRole": "ROUTE",
+            "identityEvidence": [
+              {"kind": "SOURCE_PORT", "value": "PORT-10", "namespace": "SYS", "authority": "SOURCE"},
+              {"kind": "REVIEWED_ALIAS", "value": "REF-X", "aliasType": "REF", "namespace": "SYS", "reviewId": "REVIEW-1", "approved": true}
+            ]
+          },
+          {
+            "historyNodeId": "H2",
+            "lifecycleStatus": "RETIRED",
+            "logicalRole": "ROUTE",
+            "coordinates": {"x": 1, "y": 2, "z": 3},
+            "identityEvidence": [
+              {"kind": "REVIEWED_ALIAS", "value": "REF-X", "aliasType": "REF", "namespace": "SYS", "reviewId": "REVIEW-1", "approved": true}
+            ]
+          }
+        ]
+      },
+      {
+        "projectId": "P1",
+        "zoneId": "Z1",
+        "mainLineKey": "/B",
+        "historyNodes": [
+          {
+            "historyNodeId": "H3",
+            "lifecycleStatus": "ACTIVE",
+            "logicalRole": "SUPPORT",
+            "identityEvidence": [
+              {"kind": "SOURCE_PORT", "value": "PORT-77", "namespace": "SYS", "authority": "SOURCE"}
+            ]
+          }
+        ]
+      },
+      {
+        "projectId": "P2",
+        "zoneId": "Z1",
+        "mainLineKey": "/A",
+        "historyNodes": [
+          {
+            "historyNodeId": "H4",
+            "lifecycleStatus": "ACTIVE",
+            "logicalRole": "ROUTE",
+            "identityEvidence": [
+              {"kind": "SOURCE_PORT", "value": "PORT-88", "namespace": "SYS", "authority": "SOURCE"}
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

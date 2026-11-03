@@ -1,0 +1,85 @@
+{
+  "schema": "InputXmlCiiProjectionContract.v1",
+  "generatedAt": "2026-07-15",
+  "authority": {
+    "repository": "reallaksh19/3D_Converters",
+    "baseline": "9125e8b54ae96fa6a44c6db2cf5408a395fe1575",
+    "writer": "converters/scripts/inputxml_to_cii2019.py"
+  },
+  "gatePolicy": {
+    "unknownFields": "BLOCK_UNLESS_PRESERVE_EXTENSION_LEDGER_RECORD",
+    "unsupportedEngineeringData": "BLOCK",
+    "criticalCompatibilityDefault": "BLOCK",
+    "minimumConfidence": {
+      "identity": 1.0,
+      "topology": 1.0,
+      "ciiProjection": 1.0
+    },
+    "countSource": "recomputed canonical model; source NUM* attributes are assertions only"
+  },
+  "sectionOrder": [
+    "VERSION",
+    "CONTROL",
+    "ELEMENTS",
+    "AUX_DATA",
+    "NODENAME",
+    "BEND",
+    "RIGID",
+    "EXPJT",
+    "RESTRANT",
+    "DISPLMNT",
+    "FORCMNT",
+    "UNIFORM",
+    "WIND",
+    "OFFSETS",
+    "ALLOWBLS",
+    "SIF&TEES",
+    "REDUCERS",
+    "FLANGES",
+    "EQUIPMNT",
+    "MISCEL_1",
+    "UNITS",
+    "COORDS"
+  ],
+  "controlEquations": {
+    "elements": "count(PIPINGELEMENT)",
+    "nozzles": "count(WRC_297_NOZZLE|API650_NOZZLE|PD5500_NOZZLE|CUSTOM_NOZZLE)",
+    "hangers": "count(active HANGER)",
+    "bends": "count(PIPINGELEMENT/BEND)",
+    "rigids": "count(PIPINGELEMENT/RIGID)",
+    "expjts": "count(canonical EXPANSION_JOINT projections)",
+    "restraints": "count(PIPINGELEMENT with one or more active RESTRAINT)",
+    "displmnt": "count(active DISPLACEMENTS records)",
+    "forcmnt": "count(active FORCESMOMENTS records)",
+    "uniform": "count(active UNIFORM records)",
+    "wind": "count(active WIND records)",
+    "offsets": "count(active OFFSETS records)",
+    "allowbls": "count(active ALLOWABLESTRESS records)",
+    "sifs": "count(PIPINGELEMENT with one or more active SIF)",
+    "reducers": "count(approved REDUCER projections)",
+    "flanges": "count(approved FLANGES projections)"
+  },
+  "projectionGroups": [
+    {"groupId":"PG-ROOT","source":["CAESARII@VERSION","PIPINGMODEL@JOBNAME","PIPINGMODEL@TIME"],"target":["VERSION"],"status":"PROJECTED"},
+    {"groupId":"PG-TOPOLOGY","source":["PIPINGELEMENT@FROM_NODE","@TO_NODE","@DELTA_X","@DELTA_Y","@DELTA_Z"],"target":["ELEMENTS","COORDS"],"status":"PROJECTED","failConditions":["missing node","non-finite delta","coordinate-cycle mismatch","fabricated node reference"]},
+    {"groupId":"PG-SECTION","source":["@DIAMETER","@WALL_THICK","@INSUL_THICK","@CORR_ALLOW"],"target":["ELEMENTS.REL"],"status":"PROJECTED"},
+    {"groupId":"PG-CASES","source":["@TEMP_EXP_C1..9","@PRESSURE_C1..9","@HYDRO_PRESSURE"],"target":["ELEMENTS.REL"],"status":"PROJECTED"},
+    {"groupId":"PG-DENSITY","source":["@INSUL_DENSITY","@FLUID_DENSITY"],"target":["ELEMENTS.REL[31..32]"],"status":"PROJECTED"},
+    {"groupId":"PG-MATERIAL","source":["@MATERIAL_NUM"],"target":["MISCEL_1 material IDs"],"status":"PROJECTED"},
+    {"groupId":"PG-NAMES","source":["@FROM_NAME","@TO_NAME","@LINE"],"target":["NODENAME","ELEMENTS line pointer"],"status":"PROJECTED"},
+    {"groupId":"PG-BEND","source":["BEND@*"],"target":["BEND","ELEMENTS bend pointer"],"status":"PROJECTED","equation":"accepted bends == BEND records == nonzero bend pointers"},
+    {"groupId":"PG-RIGID","source":["RIGID@WEIGHT"],"target":["RIGID","ELEMENTS rigid pointer"],"status":"PROJECTED","equation":"accepted rigids == RIGID records == nonzero rigid pointers"},
+    {"groupId":"PG-RESTRAINT","source":["RESTRAINT@*"],"target":["RESTRANT","ELEMENTS restraint pointer"],"status":"PROJECTED","capacity":6,"capacityPolicy":"BLOCK; never truncate or renumber without approved ledgered reprojection"},
+    {"groupId":"PG-SIF","source":["SIF@NODE"],"target":["SIF&TEES","ELEMENTS SIF pointer"],"status":"PARTIAL_BLOCKING","notes":"Only NODE is consumed; any other meaningful SIF field blocks."},
+    {"groupId":"PG-HANGER","source":["HANGER@*"],"target":["MISCEL_1 hanger payload","CONTROL hanger count"],"status":"PROJECTED_WITH_DEFAULT_AUDIT_REQUIRED"},
+    {"groupId":"PG-NOZZLE","source":["WRC_297_NOZZLE|API650_NOZZLE|PD5500_NOZZLE|CUSTOM_NOZZLE"],"target":["MISCEL_1 VFLEX payload","CONTROL nozzle count"],"status":"PROJECTED_WITH_FAMILY_VALIDATION_REQUIRED","recordWidth":22},
+    {"groupId":"PG-ALLOWABLE","source":["ALLOWABLESTRESS/CASE"],"target":["ALLOWBLS"],"status":"UNSUPPORTED_BLOCKING"},
+    {"groupId":"PG-UNSUPPORTED-AUX","source":["DISPLACEMENTS","FORCESMOMENTS","UNIFORM","WIND","OFFSETS","EXPANSION_JOINT","REDUCER","FLANGES"],"target":["corresponding CII auxiliary section"],"status":"UNSUPPORTED_BLOCKING"}
+  ],
+  "pointerIntegrityRules": [
+    "Every nonzero ELEMENTS auxiliary pointer resolves to exactly one record of the expected section.",
+    "Every emitted auxiliary record has at least one owning ELEMENTS pointer unless the neutral-file specification explicitly defines global ownership.",
+    "Pointer indexes are one-based and contiguous within each section.",
+    "No source auxiliary is represented only by a CONTROL count."
+  ]
+}

@@ -1,0 +1,165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reallaksh19.github.io/3D_Converters/contracts/fbx/fbx-support-benchmark-report.v1.schema.json",
+  "title": "FbxSupportBenchmarkReport.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "identityPolicyId",
+    "toleranceProfileId",
+    "referenceInventory",
+    "actualInventory",
+    "coverage",
+    "ledgerEntries",
+    "summary"
+  ],
+  "properties": {
+    "schema": { "const": "FbxSupportBenchmarkReport.v1" },
+    "identityPolicyId": { "type": "string", "minLength": 1 },
+    "toleranceProfileId": { "type": "string", "minLength": 1 },
+    "referenceInventory": { "$ref": "#/$defs/inventory" },
+    "actualInventory": { "$ref": "#/$defs/inventory" },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "referenceLedgerCount",
+        "actualLedgerCount",
+        "referencesCoveredExactlyOnce",
+        "actualsCoveredExactlyOnce",
+        "discardedReferenceCount",
+        "discardedActualCount",
+        "invariantsPassed"
+      ],
+      "properties": {
+        "referenceLedgerCount": { "type": "integer", "minimum": 0 },
+        "actualLedgerCount": { "type": "integer", "minimum": 0 },
+        "referencesCoveredExactlyOnce": { "type": "boolean" },
+        "actualsCoveredExactlyOnce": { "type": "boolean" },
+        "discardedReferenceCount": { "type": "integer" },
+        "discardedActualCount": { "type": "integer" },
+        "invariantsPassed": { "type": "boolean" }
+      }
+    },
+    "ledgerEntries": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/ledgerEntry" }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["countsByMatchState", "countsByDisposition", "status"],
+      "properties": {
+        "countsByMatchState": { "$ref": "#/$defs/countMap" },
+        "countsByDisposition": { "$ref": "#/$defs/countMap" },
+        "status": {
+          "enum": ["PASS", "PASS_WITH_OBSERVATIONS", "FAIL", "BLOCKED", "NOT_APPLICABLE"]
+        }
+      }
+    }
+  },
+  "$defs": {
+    "countMap": {
+      "type": "object",
+      "additionalProperties": { "type": "integer", "minimum": 0 }
+    },
+    "inventory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "supportCount",
+        "countsByRawType",
+        "countsByClass",
+        "unclassifiedCount",
+        "unassignedOwnerCount",
+        "classConflictCount",
+        "rawTypeConflictCount",
+        "duplicateTagGroups"
+      ],
+      "properties": {
+        "supportCount": { "type": "integer", "minimum": 0 },
+        "countsByRawType": { "$ref": "#/$defs/countMap" },
+        "countsByClass": { "$ref": "#/$defs/countMap" },
+        "unclassifiedCount": { "type": "integer", "minimum": 0 },
+        "unassignedOwnerCount": { "type": "integer", "minimum": 0 },
+        "classConflictCount": { "type": "integer", "minimum": 0 },
+        "rawTypeConflictCount": { "type": "integer", "minimum": 0 },
+        "duplicateTagGroups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["supportTag", "recordIds"],
+            "properties": {
+              "supportTag": { "type": "string" },
+              "recordIds": {
+                "type": "array",
+                "minItems": 2,
+                "items": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "recordView": {
+      "type": ["object", "null"],
+      "additionalProperties": true
+    },
+    "ledgerEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ledgerKey",
+        "disposition",
+        "matchState",
+        "reference",
+        "actual",
+        "identityResult",
+        "fieldResults"
+      ],
+      "properties": {
+        "ledgerKey": { "type": "string", "minLength": 1 },
+        "disposition": { "enum": ["PASS", "FAIL", "BLOCKED", "OBSERVATION"] },
+        "matchState": {
+          "enum": [
+            "EXACT_MATCH",
+            "APPROVED_EQUIVALENT",
+            "TYPE_MISMATCH",
+            "POSITION_MISMATCH",
+            "ORIENTATION_MISMATCH",
+            "PROPERTY_MISMATCH",
+            "HOST_MISMATCH",
+            "MISSING_ACTUAL",
+            "UNEXPECTED_ACTUAL",
+            "DUPLICATE_IDENTITY",
+            "ORPHAN_SUPPORT",
+            "AMBIGUOUS_MATCH",
+            "BLOCKED"
+          ]
+        },
+        "reference": { "$ref": "#/$defs/recordView" },
+        "actual": { "$ref": "#/$defs/recordView" },
+        "identityResult": { "type": "object", "additionalProperties": true },
+        "classResult": { "type": "object", "additionalProperties": true },
+        "hostResult": { "type": "object", "additionalProperties": true },
+        "fieldResults": {
+          "type": "array",
+          "items": { "type": "object", "additionalProperties": true }
+        }
+      },
+      "allOf": [
+        {
+          "not": {
+            "properties": {
+              "reference": { "type": "null" },
+              "actual": { "type": "null" }
+            },
+            "required": ["reference", "actual"]
+          }
+        }
+      ]
+    }
+  }
+}

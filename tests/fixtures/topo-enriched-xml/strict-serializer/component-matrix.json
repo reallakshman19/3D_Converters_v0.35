@@ -1,0 +1,842 @@
+{
+  "projectId": "PROJECT-TE004",
+  "zoneId": "ZONE-TE004",
+  "sourceInventoryHash": "sha256:source-te004",
+  "logicalTopologyHash": "sha256:topology-te004",
+  "baseRegistrySnapshotHash": "sha256:registry-te004",
+  "configHash": "sha256:config-te004",
+  "evaluatedAt": "2026-07-20T01:30:45Z",
+  "config": {
+    "projectName": "TE004 PROJECT",
+    "mdbName": "/TE004",
+    "pipeName": "/TE004-PIPE"
+  },
+  "sequencePlan": {
+    "schema": "TopoSequencePlan.v1",
+    "projectId": "PROJECT-TE004",
+    "zoneId": "ZONE-TE004",
+    "sourceInventoryHash": "sha256:source-te004",
+    "logicalTopologyHash": "sha256:topology-te004",
+    "branches": [
+      {
+        "sourceBranch": "/LINE-A/B1",
+        "canonicalMainLine": "/LINE-A"
+      },
+      {
+        "sourceBranch": "/LINE-A/B2",
+        "canonicalMainLine": "/LINE-A"
+      }
+    ],
+    "components": [
+      {
+        "sourceEntityId": "SE-PIPE",
+        "sourceBranch": "/LINE-A/B1"
+      },
+      {
+        "sourceEntityId": "SE-ELBO",
+        "sourceBranch": "/LINE-A/B1"
+      },
+      {
+        "sourceEntityId": "SE-BEND",
+        "sourceBranch": "/LINE-A/B1"
+      },
+      {
+        "sourceEntityId": "SE-TEE",
+        "sourceBranch": "/LINE-A/B1"
+      },
+      {
+        "sourceEntityId": "SE-OLET",
+        "sourceBranch": "/LINE-A/B1"
+      },
+      {
+        "sourceEntityId": "SE-REDU",
+        "sourceBranch": "/LINE-A/B1"
+      },
+      {
+        "sourceEntityId": "SE-REDUCER",
+        "sourceBranch": "/LINE-A/B1"
+      },
+      {
+        "sourceEntityId": "SE-VALV",
+        "sourceBranch": "/LINE-A/B1"
+      },
+      {
+        "sourceEntityId": "SE-FLAN",
+        "sourceBranch": "/LINE-A/B2"
+      },
+      {
+        "sourceEntityId": "SE-GASK",
+        "sourceBranch": "/LINE-A/B2"
+      },
+      {
+        "sourceEntityId": "SE-INST",
+        "sourceBranch": "/LINE-A/B2"
+      },
+      {
+        "sourceEntityId": "SE-FBLI",
+        "sourceBranch": "/LINE-A/B2"
+      },
+      {
+        "sourceEntityId": "SE-ATTA",
+        "sourceBranch": "/LINE-A/B2"
+      },
+      {
+        "sourceEntityId": "SE-SUPPORT",
+        "sourceBranch": "/LINE-A/B2"
+      },
+      {
+        "sourceEntityId": "SE-ANCI",
+        "sourceBranch": "/LINE-A/B2"
+      },
+      {
+        "sourceEntityId": "SE-RIGI",
+        "sourceBranch": "/LINE-A/B2"
+      }
+    ],
+    "validation": {
+      "status": "PASS",
+      "blockers": [],
+      "reviewItems": [],
+      "warnings": []
+    }
+  },
+  "records": [
+    {
+      "sourceEntityId": "SE-PIPE",
+      "sourceRecordId": "REC-PIPE",
+      "name": "PIPE-1",
+      "ref": "REF-PIPE",
+      "componentType": "PIPE",
+      "attrs": {
+        "APOS": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "LPOS": {
+          "x": 50,
+          "y": 0,
+          "z": 0
+        },
+        "T1": 120,
+        "T2": 80,
+        "T3": 10,
+        "P1": 2500000,
+        "P2": 1500000,
+        "P3": 500000
+      },
+      "enrichedAttributes": {
+        "nominalBoreMm": 100,
+        "pipeOdMm": 114.3,
+        "wallThicknessMm": 6.02,
+        "corrosionAllowanceMm": 1.5,
+        "insulationThicknessMm": 25,
+        "componentWeightKg": 12.5
+      },
+      "dtxr": "DTXR-PIPE"
+    },
+    {
+      "sourceEntityId": "SE-ELBO",
+      "sourceRecordId": "REC-ELBO",
+      "name": "ELBO-1",
+      "ref": "REF-ELBO",
+      "componentType": "ELBO",
+      "attrs": {
+        "APOS": {
+          "x": 100,
+          "y": 0,
+          "z": 0
+        },
+        "LPOS": {
+          "x": 150,
+          "y": 10,
+          "z": 0
+        },
+        "RADI": 152.4
+      },
+      "enrichedAttributes": {
+        "nominalBoreMm": 100,
+        "pipeOdMm": 114.3,
+        "wallThicknessMm": 6.02,
+        "corrosionAllowanceMm": 1.5,
+        "insulationThicknessMm": 25,
+        "componentWeightKg": 13.5
+      },
+      "dtxr": "DTXR-ELBO"
+    },
+    {
+      "sourceEntityId": "SE-BEND",
+      "sourceRecordId": "REC-BEND",
+      "name": "BEND-1",
+      "ref": "REF-BEND",
+      "componentType": "BEND",
+      "attrs": {
+        "APOS": {
+          "x": 200,
+          "y": 0,
+          "z": 0
+        },
+        "LPOS": {
+          "x": 250,
+          "y": 10,
+          "z": 0
+        },
+        "RADI": 101.6
+      },
+      "enrichedAttributes": {
+        "nominalBoreMm": 100,
+        "pipeOdMm": 114.3,
+        "wallThicknessMm": 6.02,
+        "corrosionAllowanceMm": 1.5,
+        "insulationThicknessMm": 25,
+        "componentWeightKg": 14.5
+      },
+      "dtxr": "DTXR-BEND"
+    },
+    {
+      "sourceEntityId": "SE-TEE",
+      "sourceRecordId": "REC-TEE",
+      "name": "TEE-1",
+      "ref": "REF-TEE",
+      "componentType": "TEE",
+      "attrs": {
+        "APOS": {
+          "x": 300,
+          "y": 0,
+          "z": 0
+        },
+        "LPOS": {
+          "x": 350,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "enrichedAttributes": {
+        "nominalBoreMm": 100,
+        "pipeOdMm": 114.3,
+        "wallThicknessMm": 6.02,
+        "corrosionAllowanceMm": 1.5,
+        "insulationThicknessMm": 25,
+        "componentWeightKg": 15.5
+      },
+      "dtxr": "DTXR-TEE"
+    },
+    {
+      "sourceEntityId": "SE-OLET",
+      "sourceRecordId": "REC-OLET",
+      "name": "OLET-1",
+      "ref": "REF-OLET",
+      "componentType": "OLET",
+      "attrs": {
+        "APOS": {
+          "x": 400,
+          "y": 0,
+          "z": 0
+        },
+        "LPOS": {
+          "x": 450,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "enrichedAttributes": {
+        "nominalBoreMm": 100,
+        "pipeOdMm": 114.3,
+        "wallThicknessMm": 6.02,
+        "corrosionAllowanceMm": 1.5,
+        "insulationThicknessMm": 25,
+        "componentWeightKg": 16.5
+      },
+      "dtxr": "DTXR-OLET"
+    },
+    {
+      "sourceEntityId": "SE-REDU",
+      "sourceRecordId": "REC-REDU",
+      "name": "REDU-1",
+      "ref": "REF-REDU",
+      "componentType": "REDU",
+      "attrs": {
+        "APOS": {
+          "x": 500,
+          "y": 0,
+          "z": 0
+        },
+        "LPOS": {
+          "x": 550,
+          "y": 0,
+          "z": 0
+        },
+        "ABORE": 100,
+        "LBORE": 80,
+        "ANGL": 7.5
+      },
+      "enrichedAttributes": {
+        "nominalBoreMm": 100,
+        "pipeOdMm": 114.3,
+        "wallThicknessMm": 6.02,
+        "corrosionAllowanceMm": 1.5,
+        "insulationThicknessMm": 25,
+        "componentWeightKg": 17.5
+      },
+      "dtxr": "DTXR-REDU"
+    },
+    {
+      "sourceEntityId": "SE-REDUCER",
+      "sourceRecordId": "REC-REDUCER",
+      "name": "REDUCER-1",
+      "ref": "REF-REDUCER",
+      "componentType": "REDUCER",
+      "attrs": {
+        "APOS": {
+          "x": 600,
+          "y": 0,
+          "z": 0
+        },
+        "LPOS": {
+          "x": 650,
+          "y": 0,
+          "z": 0
+        },
+        "ABORE": 100,
+        "LBORE": 80,
+        "ANGL": 6.25
+      },
+      "enrichedAttributes": {
+        "nominalBoreMm": 100,
+        "pipeOdMm": 114.3,
+        "wallThicknessMm": 6.02,
+        "corrosionAllowanceMm": 1.5,
+        "insulationThicknessMm": 25,
+        "componentWeightKg": 18.5
+      },
+      "dtxr": "DTXR-REDUCER"
+    },
+    {
+      "sourceEntityId": "SE-VALV",
+      "sourceRecordId": "REC-VALV",
+      "name": "VALV-1",
+      "ref": "REF-VALV",
+      "componentType": "VALV",
+      "attrs": {
+        "POS": {
+          "x": 700,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "enrichedAttributes": {
+        "nominalBoreMm": 100,
+        "pipeOdMm": 114.3,
+        "wallThicknessMm": 6.02,
+        "corrosionAllowanceMm": 1.5,
+        "insulationThicknessMm": 25,
+        "componentWeightKg": 19.5
+      },
+      "dtxr": "DTXR-VALV",
+      "sourceWeightKg": 45
+    },
+    {
+      "sourceEntityId": "SE-FLAN",
+      "sourceRecordId": "REC-FLAN",
+      "name": "FLAN-1",
+      "ref": "REF-FLAN",
+      "componentType": "FLAN",
+      "attrs": {
+        "POS": {
+          "x": 800,
+          "y": 0,
+          "z": 0
+        },
+        "T1": 95,
+        "T2": 60,
+        "P1": 1800000
+      },
+      "enrichedAttributes": {
+        "nominalBoreMm": 100,
+        "pipeOdMm": 114.3,
+        "wallThicknessMm": 6.02,
+        "corrosionAllowanceMm": 1.5,
+        "insulationThicknessMm": 25,
+        "componentWeightKg": 20.5
+      },
+      "dtxr": "DTXR-FLAN",
+      "sourceWeightKg": 10
+    },
+    {
+      "sourceEntityId": "SE-GASK",
+      "sourceRecordId": "REC-GASK",
+      "name": "GASK-1",
+      "ref": "REF-GASK",
+      "componentType": "GASK",
+      "attrs": {
+        "POS": {
+          "x": 900,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "enrichedAttributes": {
+        "nominalBoreMm": 100,
+        "pipeOdMm": 114.3,
+        "wallThicknessMm": 6.02,
+        "corrosionAllowanceMm": 1.5,
+        "insulationThicknessMm": 25,
+        "componentWeightKg": 21.5
+      },
+      "dtxr": "DTXR-GASK"
+    },
+    {
+      "sourceEntityId": "SE-INST",
+      "sourceRecordId": "REC-INST",
+      "name": "INST-1",
+      "ref": "REF-INST",
+      "componentType": "INST",
+      "attrs": {
+        "POS": {
+          "x": 1000,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "enrichedAttributes": {
+        "nominalBoreMm": 100,
+        "pipeOdMm": 114.3,
+        "wallThicknessMm": 6.02,
+        "corrosionAllowanceMm": 1.5,
+        "insulationThicknessMm": 25,
+        "componentWeightKg": 22.5
+      },
+      "dtxr": "DTXR-INST"
+    },
+    {
+      "sourceEntityId": "SE-FBLI",
+      "sourceRecordId": "REC-FBLI",
+      "name": "FBLI-1",
+      "ref": "REF-FBLI",
+      "componentType": "FBLI",
+      "attrs": {
+        "POS": {
+          "x": 1100,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "enrichedAttributes": {
+        "nominalBoreMm": 100,
+        "pipeOdMm": 114.3,
+        "wallThicknessMm": 6.02,
+        "corrosionAllowanceMm": 1.5,
+        "insulationThicknessMm": 25,
+        "componentWeightKg": 23.5
+      },
+      "dtxr": "DTXR-FBLI"
+    },
+    {
+      "sourceEntityId": "SE-ATTA",
+      "sourceRecordId": "REC-ATTA",
+      "name": "ATTA-1",
+      "ref": "REF-ATTA",
+      "componentType": "ATTA",
+      "attrs": {
+        "POS": {
+          "x": 1200,
+          "y": 0,
+          "z": 0
+        },
+        "SUPPORT_KIND": "GUIDE",
+        "NODEGAP": 2
+      },
+      "enrichedAttributes": {
+        "nominalBoreMm": 100,
+        "pipeOdMm": 114.3,
+        "wallThicknessMm": 6.02,
+        "corrosionAllowanceMm": 1.5,
+        "insulationThicknessMm": 25,
+        "componentWeightKg": 24.5
+      },
+      "dtxr": "DTXR-ATTA",
+      "supportTag": "PS-012",
+      "cmpStressN": "PS-012",
+      "resolved": {
+        "connectionType": "GUIDE",
+        "restraint": {
+          "type": "GUI",
+          "gap": 2,
+          "friction": 0,
+          "stiffness": 1000
+        }
+      }
+    },
+    {
+      "sourceEntityId": "SE-SUPPORT",
+      "sourceRecordId": "REC-SUPPORT",
+      "name": "SUPPORT-1",
+      "ref": "REF-SUPPORT",
+      "componentType": "SUPPORT",
+      "attrs": {
+        "POS": {
+          "x": 1300,
+          "y": 0,
+          "z": 0
+        },
+        "SUPPORT_KIND": "GUIDE",
+        "NODEGAP": 2
+      },
+      "enrichedAttributes": {
+        "nominalBoreMm": 100,
+        "pipeOdMm": 114.3,
+        "wallThicknessMm": 6.02,
+        "corrosionAllowanceMm": 1.5,
+        "insulationThicknessMm": 25,
+        "componentWeightKg": 25.5
+      },
+      "dtxr": "DTXR-SUPPORT",
+      "supportTag": "PS-013",
+      "cmpStressN": "PS-013",
+      "resolved": {
+        "connectionType": "GUIDE",
+        "restraint": {
+          "type": "GUI",
+          "gap": 2,
+          "friction": 0,
+          "stiffness": 1000
+        }
+      }
+    },
+    {
+      "sourceEntityId": "SE-ANCI",
+      "sourceRecordId": "REC-ANCI",
+      "name": "ANCI-1",
+      "ref": "REF-ANCI",
+      "componentType": "ANCI",
+      "attrs": {
+        "POS": {
+          "x": 1400,
+          "y": 0,
+          "z": 0
+        },
+        "SUPPORT_KIND": "ANCHOR",
+        "NODEGAP": 0
+      },
+      "enrichedAttributes": {
+        "nominalBoreMm": 100,
+        "pipeOdMm": 114.3,
+        "wallThicknessMm": 6.02,
+        "corrosionAllowanceMm": 1.5,
+        "insulationThicknessMm": 25,
+        "componentWeightKg": 26.5
+      },
+      "dtxr": "DTXR-ANCI",
+      "supportTag": "PS-014",
+      "cmpStressN": "PS-014",
+      "resolved": {
+        "connectionType": "ANCHOR",
+        "restraint": {
+          "type": "ANC",
+          "gap": 0,
+          "friction": 0,
+          "stiffness": 0
+        }
+      }
+    },
+    {
+      "sourceEntityId": "SE-RIGI",
+      "sourceRecordId": "REC-RIGI",
+      "name": "RIGI-1",
+      "ref": "REF-RIGI",
+      "componentType": "RIGI",
+      "attrs": {
+        "POS": {
+          "x": 1500,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "enrichedAttributes": {
+        "nominalBoreMm": 100,
+        "pipeOdMm": 114.3,
+        "wallThicknessMm": 6.02,
+        "corrosionAllowanceMm": 1.5,
+        "insulationThicknessMm": 25,
+        "componentWeightKg": 27.5
+      },
+      "dtxr": "DTXR-RIGI"
+    }
+  ],
+  "logicalNodeBySourceEntityId": {
+    "SE-PIPE": {
+      "ARRIVE": "LN-001",
+      "LEAVE": "LN-SHARED"
+    },
+    "SE-ELBO": {
+      "ARRIVE": "LN-SHARED",
+      "RESERVED_AFTER": "LN-ELBO-R"
+    },
+    "SE-BEND": {
+      "ARRIVE": "LN-BEND-E",
+      "RESERVED_AFTER": "LN-BEND-R"
+    },
+    "SE-TEE": {
+      "RESERVED_BEFORE": "LN-TEE-R",
+      "BRANCH_LEAVE": "LN-TEE-E"
+    },
+    "SE-OLET": {
+      "ARRIVE": "LN-OLET-A",
+      "LEAVE": "LN-OLET-L"
+    },
+    "SE-REDU": {
+      "RESERVED_BEFORE": "LN-REDU-R",
+      "LEAVE": "LN-REDU-E"
+    },
+    "SE-REDUCER": {
+      "RESERVED_BEFORE": "LN-REDUCER-R",
+      "LEAVE": "LN-REDUCER-E"
+    },
+    "SE-VALV": {
+      "PRIMARY": "LN-VALV"
+    },
+    "SE-FLAN": {
+      "PRIMARY": "LN-FLAN"
+    },
+    "SE-GASK": {
+      "PRIMARY": "LN-GASK"
+    },
+    "SE-INST": {
+      "PRIMARY": "LN-INST"
+    },
+    "SE-FBLI": {
+      "PRIMARY": "LN-FBLI"
+    },
+    "SE-ATTA": {
+      "PRIMARY": "LN-ATTA"
+    },
+    "SE-SUPPORT": {
+      "PRIMARY": "LN-SUPPORT"
+    },
+    "SE-ANCI": {
+      "PRIMARY": "LN-ANCI"
+    },
+    "SE-RIGI": {
+      "PRIMARY": "LN-RIGI"
+    }
+  },
+  "explicitAllocations": [
+    {
+      "sourceEntityId": "SE-PIPE",
+      "projectionRole": "ARRIVE",
+      "logicalNodeId": "LN-001",
+      "engineeringNodeNumber": 101
+    },
+    {
+      "sourceEntityId": "SE-PIPE",
+      "projectionRole": "LEAVE",
+      "logicalNodeId": "LN-SHARED",
+      "engineeringNodeNumber": 205
+    },
+    {
+      "sourceEntityId": "SE-ELBO",
+      "projectionRole": "ARRIVE",
+      "logicalNodeId": "LN-SHARED",
+      "engineeringNodeNumber": 205
+    },
+    {
+      "sourceEntityId": "SE-ELBO",
+      "projectionRole": "RESERVED_AFTER",
+      "logicalNodeId": "LN-ELBO-R",
+      "engineeringNodeNumber": 311
+    },
+    {
+      "sourceEntityId": "SE-BEND",
+      "projectionRole": "ARRIVE",
+      "logicalNodeId": "LN-BEND-E",
+      "engineeringNodeNumber": 407
+    },
+    {
+      "sourceEntityId": "SE-BEND",
+      "projectionRole": "RESERVED_AFTER",
+      "logicalNodeId": "LN-BEND-R",
+      "engineeringNodeNumber": 509
+    },
+    {
+      "sourceEntityId": "SE-TEE",
+      "projectionRole": "RESERVED_BEFORE",
+      "logicalNodeId": "LN-TEE-R",
+      "engineeringNodeNumber": 607
+    },
+    {
+      "sourceEntityId": "SE-TEE",
+      "projectionRole": "BRANCH_LEAVE",
+      "logicalNodeId": "LN-TEE-E",
+      "engineeringNodeNumber": 701
+    },
+    {
+      "sourceEntityId": "SE-OLET",
+      "projectionRole": "ARRIVE",
+      "logicalNodeId": "LN-OLET-A",
+      "engineeringNodeNumber": 809
+    },
+    {
+      "sourceEntityId": "SE-OLET",
+      "projectionRole": "LEAVE",
+      "logicalNodeId": "LN-OLET-L",
+      "engineeringNodeNumber": 907
+    },
+    {
+      "sourceEntityId": "SE-REDU",
+      "projectionRole": "RESERVED_BEFORE",
+      "logicalNodeId": "LN-REDU-R",
+      "engineeringNodeNumber": 1009
+    },
+    {
+      "sourceEntityId": "SE-REDU",
+      "projectionRole": "LEAVE",
+      "logicalNodeId": "LN-REDU-E",
+      "engineeringNodeNumber": 1103
+    },
+    {
+      "sourceEntityId": "SE-REDUCER",
+      "projectionRole": "RESERVED_BEFORE",
+      "logicalNodeId": "LN-REDUCER-R",
+      "engineeringNodeNumber": 1201
+    },
+    {
+      "sourceEntityId": "SE-REDUCER",
+      "projectionRole": "LEAVE",
+      "logicalNodeId": "LN-REDUCER-E",
+      "engineeringNodeNumber": 1301
+    },
+    {
+      "sourceEntityId": "SE-VALV",
+      "projectionRole": "PRIMARY",
+      "logicalNodeId": "LN-VALV",
+      "engineeringNodeNumber": 1409
+    },
+    {
+      "sourceEntityId": "SE-FLAN",
+      "projectionRole": "PRIMARY",
+      "logicalNodeId": "LN-FLAN",
+      "engineeringNodeNumber": 1511
+    },
+    {
+      "sourceEntityId": "SE-GASK",
+      "projectionRole": "PRIMARY",
+      "logicalNodeId": "LN-GASK",
+      "engineeringNodeNumber": 1601
+    },
+    {
+      "sourceEntityId": "SE-INST",
+      "projectionRole": "PRIMARY",
+      "logicalNodeId": "LN-INST",
+      "engineeringNodeNumber": 1709
+    },
+    {
+      "sourceEntityId": "SE-FBLI",
+      "projectionRole": "PRIMARY",
+      "logicalNodeId": "LN-FBLI",
+      "engineeringNodeNumber": 1801
+    },
+    {
+      "sourceEntityId": "SE-ATTA",
+      "projectionRole": "PRIMARY",
+      "logicalNodeId": "LN-ATTA",
+      "engineeringNodeNumber": 1907
+    },
+    {
+      "sourceEntityId": "SE-SUPPORT",
+      "projectionRole": "PRIMARY",
+      "logicalNodeId": "LN-SUPPORT",
+      "engineeringNodeNumber": 2003
+    },
+    {
+      "sourceEntityId": "SE-ANCI",
+      "projectionRole": "PRIMARY",
+      "logicalNodeId": "LN-ANCI",
+      "engineeringNodeNumber": 2111
+    },
+    {
+      "sourceEntityId": "SE-RIGI",
+      "projectionRole": "PRIMARY",
+      "logicalNodeId": "LN-RIGI",
+      "engineeringNodeNumber": 2203
+    }
+  ],
+  "branchProjectionBlueprints": {
+    "canonical": {
+      "schema": "PsiBranchProjection.v1",
+      "projectionId": "BP-CANONICAL",
+      "projectionKind": "CANONICAL",
+      "branches": [
+        {
+          "branchId": "CAN-1",
+          "branchName": "/LINE-A",
+          "canonicalMainLine": "/LINE-A",
+          "sourceBranches": [
+            "/LINE-A/B1",
+            "/LINE-A/B2"
+          ],
+          "componentSourceEntityIds": [
+            "SE-PIPE",
+            "SE-ELBO",
+            "SE-BEND",
+            "SE-TEE",
+            "SE-OLET",
+            "SE-REDU",
+            "SE-REDUCER",
+            "SE-VALV",
+            "SE-FLAN",
+            "SE-GASK",
+            "SE-INST",
+            "SE-FBLI",
+            "SE-ATTA",
+            "SE-SUPPORT",
+            "SE-ANCI",
+            "SE-RIGI"
+          ]
+        }
+      ]
+    },
+    "sourceSequential": {
+      "schema": "PsiBranchProjection.v1",
+      "projectionId": "BP-SEQUENTIAL",
+      "projectionKind": "SOURCE_SEQUENTIAL",
+      "branches": [
+        {
+          "branchId": "SEQ-1",
+          "branchName": "/LINE-A/B1",
+          "canonicalMainLine": "/LINE-A",
+          "sourceBranches": [
+            "/LINE-A/B1"
+          ],
+          "componentSourceEntityIds": [
+            "SE-PIPE",
+            "SE-ELBO",
+            "SE-BEND",
+            "SE-TEE",
+            "SE-OLET",
+            "SE-REDU",
+            "SE-REDUCER",
+            "SE-VALV"
+          ]
+        },
+        {
+          "branchId": "SEQ-2",
+          "branchName": "/LINE-A/B2",
+          "canonicalMainLine": "/LINE-A",
+          "sourceBranches": [
+            "/LINE-A/B2"
+          ],
+          "componentSourceEntityIds": [
+            "SE-FLAN",
+            "SE-GASK",
+            "SE-INST",
+            "SE-FBLI",
+            "SE-ATTA",
+            "SE-SUPPORT",
+            "SE-ANCI",
+            "SE-RIGI"
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "schema": "InputXmlCanonicalCompilerAdapterRegistry.v1",
+  "generatedAt": "2026-07-15",
+  "authority": {
+    "repository": "reallaksh19/3D_Converters",
+    "baseline": "44e5f0c0a5b2bd242a43bc58db6467dd7260d576",
+    "compiler": "scripts/inputxml_canonical_compiler.py"
+  },
+  "rule": "Every dialect in inputxml-dialect-registry.json is recognized. Implemented adapters may emit PASS only after their authoritative intake/topology gates and canonical XSD/Schematron pass. Diagnostic and excluded profiles remain intentionally non-PASS.",
+  "adapters": [
+    {"dialectId":"canonical-inputxml-v1","adapterId":"direct-canonical-validation","status":"IMPLEMENTED","resultPolicy":"PASS_ONLY_AFTER_XSD_AND_SCHEMATRON"},
+    {"dialectId":"caesar-inputxml-pressure1","adapterId":"pressure1-lineid-to-canonical","status":"IMPLEMENTED","resultPolicy":"NORMALIZE_ALIASES_INHERITANCE_AND_SENTINELS"},
+    {"dialectId":"caesar-inputxml-pressure-c","adapterId":"canonical-name-and-provenance-adapter","status":"IMPLEMENTED","resultPolicy":"NORMALIZE_PROVENANCE_AND_COUNTS"},
+    {"dialectId":"enriched-inputxml-app","adapterId":"enriched-inputxml-to-canonical","status":"IMPLEMENTED","resultPolicy":"PRESERVE_ENRICHMENT_EVIDENCE"},
+    {"dialectId":"inputxml-fragment","adapterId":"fragment-wrapper-and-context-resolver","status":"IMPLEMENTED","resultPolicy":"EXPLICIT_CONTEXT_REQUIRED"},
+    {"dialectId":"categorized-inputxml-v3","adapterId":"categorized-reconciliation-compiler","status":"IMPLEMENTED","resultPolicy":"NORMALIZED_AND_ORIGINAL_EVIDENCE_MUST_RECONCILE"},
+    {"dialectId":"cii14-inputxml","adapterId":"cii14-to-canonical-v1","status":"IMPLEMENTED","resultPolicy":"VERSIONED_INPUTXML_NORMALIZATION"},
+    {"dialectId":"xml-to-cii-diagnostic-sidecar","adapterId":"diagnostic-sidecar-reconciliation","status":"IMPLEMENTED_BLOCKING","resultPolicy":"DEFER_EXPLICITLY_UNTIL_INDEPENDENT_SOURCE_RECONCILIATION"},
+    {"dialectId":"xml-builder-root-branch-node","adapterId":"xml-cii-node-to-canonical","status":"IMPLEMENTED","resultPolicy":"AUTHORITATIVE_TOPOLOGY_ENGINE_NO_SYNTHETIC_FILLERS_AND_BLOCK_ON_LOSS"},
+    {"dialectId":"seljson-custom-root","adapterId":"seljson-custom-model-to-canonical","status":"IMPLEMENTED","resultPolicy":"EXPLICIT_DIALECT_SHARED_AUTHORITATIVE_TOPOLOGY_AND_BLOCK_ON_LOSS"},
+    {"dialectId":"managed-stage-json","adapterId":"managed-stage-to-canonical","status":"IMPLEMENTED","resultPolicy":"COMPONENT_TOPOLOGY_SOURCE_MODEL_TRACE_LEDGER_AND_FAIL_CLOSED_CII_PROJECTION"},
+    {"dialectId":"pdf-input-echo","adapterId":"pdf-input-echo-to-canonical","status":"IMPLEMENTED","resultPolicy":"TEXT_LAYER_PROVENANCE_EXPLICIT_CONTEXT_NO_PROFILE_OR_DEFAULT_FALLBACK"},
+    {"dialectId":"uxml-rvm-intake","adapterId":"uxml-rvm-to-canonical","status":"IMPLEMENTED","resultPolicy":"VALIDATED_UXML_EXACT_TOPOLOGY_EXPLICIT_ENGINEERING_AND_COORDINATE_FRAME"},
+    {"dialectId":"pipesstressexport-psi116-xml","adapterId":"psi116-to-canonical-v1","status":"IMPLEMENTED","resultPolicy":"EXACT_TE013_BYTES_STRICT_SOURCE_ACCOUNTING_POLICY_HASH_AND_NO_FALLBACK"},
+    {"dialectId":"nodeset-v1","adapterId":"none","status":"EXCLUDED","resultPolicy":"REJECT_INVALID_COMPARISON_ONLY_ARTIFACT"}
+  ]
+}

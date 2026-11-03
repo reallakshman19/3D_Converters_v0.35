@@ -1,0 +1,326 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "FbxTopologyBenchmarkReport.v1",
+  "title": "FbxTopologyBenchmarkReport.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "benchmarkIdentity", "executionIdentity", "coverage", "graphModel",
+    "branches", "relationships", "junctions", "boundaries", "anomalies",
+    "summary", "determinism", "status"
+  ],
+  "properties": {
+    "schema": { "const": "FbxTopologyBenchmarkReport.v1" },
+    "benchmarkIdentity": { "$ref": "#/$defs/identity" },
+    "executionIdentity": { "$ref": "#/$defs/identity" },
+    "coverage": { "$ref": "#/$defs/coverage" },
+    "graphModel": { "$ref": "#/$defs/graphModel" },
+    "branches": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/branch" }
+    },
+    "relationships": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/relationshipResult" }
+    },
+    "junctions": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/junction" }
+    },
+    "boundaries": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/boundary" }
+    },
+    "anomalies": { "$ref": "#/$defs/anomalies" },
+    "summary": { "$ref": "#/$defs/summary" },
+    "determinism": {
+      "oneOf": [
+        { "type": "object" },
+        { "type": "null" }
+      ]
+    },
+    "status": { "$ref": "#/$defs/resultStatus" }
+  },
+  "$defs": {
+    "identity": {
+      "type": "object",
+      "minProperties": 1
+    },
+    "nonEmptyText": { "type": "string", "minLength": 1 },
+    "nullableText": { "type": ["string", "null"] },
+    "resultStatus": { "enum": ["PASS", "PASS_WITH_OBSERVATIONS", "FAIL", "BLOCKED", "NOT_APPLICABLE"] },
+    "matchState": {
+      "enum": [
+        "EXACT_MATCH", "APPROVED_EQUIVALENT", "ENDPOINT_MISMATCH",
+        "RELATIONSHIP_KIND_CONFLICT", "RECIPROCITY_MISMATCH",
+        "ZONE_BOUNDARY_MISMATCH", "MISSING_ACTUAL", "UNEXPECTED_ACTUAL",
+        "DUPLICATE_EDGE", "SELF_CONNECTION", "DEGREE_MISMATCH",
+        "AMBIGUOUS_MATCH", "BLOCKED_IDENTITY"
+      ]
+    },
+    "relationshipKind": {
+      "enum": [
+        "BRANCH_OWNERSHIP", "FLOW_ADJACENCY", "REFERENCE_ADJACENCY",
+        "SUPPORT_HOST", "ZONE_BOUNDARY"
+      ]
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "referenceEntityCount", "actualEntityCount", "referenceRelationshipCount",
+        "actualRelationshipCount", "relationshipLedgerCount",
+        "unrepresentedReferenceEntities", "unrepresentedActualEntities",
+        "unrepresentedReferenceRelationships", "unrepresentedActualRelationships"
+      ],
+      "properties": {
+        "referenceEntityCount": { "type": "integer", "minimum": 0 },
+        "actualEntityCount": { "type": "integer", "minimum": 0 },
+        "referenceRelationshipCount": { "type": "integer", "minimum": 0 },
+        "actualRelationshipCount": { "type": "integer", "minimum": 0 },
+        "relationshipLedgerCount": { "type": "integer", "minimum": 0 },
+        "unrepresentedReferenceEntities": { "$ref": "#/$defs/textArray" },
+        "unrepresentedActualEntities": { "$ref": "#/$defs/textArray" },
+        "unrepresentedReferenceRelationships": { "$ref": "#/$defs/textArray" },
+        "unrepresentedActualRelationships": { "$ref": "#/$defs/textArray" }
+      }
+    },
+    "textArray": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/nonEmptyText" }
+    },
+    "graphModel": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["relationshipKinds", "topologyPolicyId", "toleranceProfileId"],
+      "properties": {
+        "relationshipKinds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/relationshipKind" }
+        },
+        "topologyPolicyId": { "$ref": "#/$defs/nonEmptyText" },
+        "toleranceProfileId": { "$ref": "#/$defs/nonEmptyText" }
+      }
+    },
+    "route": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sequenceAuthority", "referenceSequence", "actualSequence", "sequenceMatch",
+        "adjacencyResultIds", "islandId", "cycleIds", "status"
+      ],
+      "properties": {
+        "sequenceAuthority": { "enum": ["AUTHORITATIVE", "DIAGNOSTIC"] },
+        "referenceSequence": { "$ref": "#/$defs/textArray" },
+        "actualSequence": { "$ref": "#/$defs/textArray" },
+        "sequenceMatch": { "type": "boolean" },
+        "adjacencyResultIds": { "$ref": "#/$defs/textArray" },
+        "islandId": { "$ref": "#/$defs/nullableText" },
+        "cycleIds": { "$ref": "#/$defs/textArray" },
+        "status": { "$ref": "#/$defs/resultStatus" }
+      }
+    },
+    "branch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "branchId", "referenceBranchId", "actualBranchId", "zoneId",
+        "matchState", "route", "status"
+      ],
+      "properties": {
+        "branchId": { "$ref": "#/$defs/nonEmptyText" },
+        "referenceBranchId": { "$ref": "#/$defs/nullableText" },
+        "actualBranchId": { "$ref": "#/$defs/nullableText" },
+        "zoneId": { "$ref": "#/$defs/nullableText" },
+        "matchState": { "$ref": "#/$defs/matchState" },
+        "route": { "$ref": "#/$defs/route" },
+        "status": { "$ref": "#/$defs/resultStatus" }
+      }
+    },
+    "relationshipOccurrence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "relationshipId", "kind", "directed", "sourceEntityId", "sourcePortRole",
+        "targetEntityId", "targetPortRole", "authorityField", "rawReference",
+        "sourcePath", "endpointResidual"
+      ],
+      "properties": {
+        "relationshipId": { "$ref": "#/$defs/nonEmptyText" },
+        "kind": { "$ref": "#/$defs/relationshipKind" },
+        "directed": { "type": "boolean" },
+        "sourceEntityId": { "$ref": "#/$defs/nonEmptyText" },
+        "sourcePortRole": { "$ref": "#/$defs/nullableText" },
+        "targetEntityId": { "$ref": "#/$defs/nullableText" },
+        "targetPortRole": { "$ref": "#/$defs/nullableText" },
+        "authorityField": { "$ref": "#/$defs/nonEmptyText" },
+        "rawReference": { "$ref": "#/$defs/nullableText" },
+        "sourcePath": { "type": "string" },
+        "endpointResidual": { "type": ["number", "null"], "minimum": 0 }
+      }
+    },
+    "toleranceApplied": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["profileId", "dimension", "absoluteTolerance"],
+      "properties": {
+        "profileId": { "$ref": "#/$defs/nonEmptyText" },
+        "dimension": { "$ref": "#/$defs/nonEmptyText" },
+        "absoluteTolerance": { "type": "number", "minimum": 0 }
+      }
+    },
+    "relationshipResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ledgerId", "relationshipId", "kind", "directed", "reference", "actual",
+        "matchState", "endpointResidual", "toleranceApplied", "status"
+      ],
+      "properties": {
+        "ledgerId": { "$ref": "#/$defs/nonEmptyText" },
+        "relationshipId": { "$ref": "#/$defs/nonEmptyText" },
+        "kind": { "$ref": "#/$defs/relationshipKind" },
+        "directed": { "type": "boolean" },
+        "reference": {
+          "oneOf": [
+            { "$ref": "#/$defs/relationshipOccurrence" },
+            { "type": "null" }
+          ]
+        },
+        "actual": {
+          "oneOf": [
+            { "$ref": "#/$defs/relationshipOccurrence" },
+            { "type": "null" }
+          ]
+        },
+        "matchState": { "$ref": "#/$defs/matchState" },
+        "endpointResidual": { "type": ["number", "null"], "minimum": 0 },
+        "toleranceApplied": {
+          "oneOf": [
+            { "$ref": "#/$defs/toleranceApplied" },
+            { "type": "null" }
+          ]
+        },
+        "status": { "$ref": "#/$defs/resultStatus" }
+      }
+    },
+    "junction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ledgerId", "referenceComponentId", "actualComponentId", "junctionKind",
+        "expectedFlowDegree", "actualFlowDegree", "matchState", "status"
+      ],
+      "properties": {
+        "ledgerId": { "$ref": "#/$defs/nonEmptyText" },
+        "referenceComponentId": { "$ref": "#/$defs/nullableText" },
+        "actualComponentId": { "$ref": "#/$defs/nullableText" },
+        "junctionKind": { "$ref": "#/$defs/nonEmptyText" },
+        "expectedFlowDegree": { "type": ["integer", "null"], "minimum": 0 },
+        "actualFlowDegree": { "type": ["integer", "null"], "minimum": 0 },
+        "matchState": { "$ref": "#/$defs/matchState" },
+        "status": { "$ref": "#/$defs/resultStatus" }
+      }
+    },
+    "boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ledgerId", "boundaryId", "sourceZoneId", "targetZoneId", "sourceEntityId",
+        "sourceEndpointRole", "targetEntityId", "targetEndpointRole", "boundaryClass",
+        "referencePair", "actualPair", "status"
+      ],
+      "properties": {
+        "ledgerId": { "$ref": "#/$defs/nonEmptyText" },
+        "boundaryId": { "$ref": "#/$defs/nonEmptyText" },
+        "sourceZoneId": { "$ref": "#/$defs/nullableText" },
+        "targetZoneId": { "$ref": "#/$defs/nullableText" },
+        "sourceEntityId": { "$ref": "#/$defs/nonEmptyText" },
+        "sourceEndpointRole": { "$ref": "#/$defs/nullableText" },
+        "targetEntityId": { "$ref": "#/$defs/nullableText" },
+        "targetEndpointRole": { "$ref": "#/$defs/nullableText" },
+        "boundaryClass": { "enum": ["INTERNAL_ZONE", "CROSS_ZONE", "SHARED_BOUNDARY", "EXTERNAL_SYSTEM", "UNRESOLVED"] },
+        "referencePair": {
+          "oneOf": [
+            { "$ref": "#/$defs/relationshipOccurrence" },
+            { "type": "null" }
+          ]
+        },
+        "actualPair": {
+          "oneOf": [
+            { "$ref": "#/$defs/relationshipOccurrence" },
+            { "type": "null" }
+          ]
+        },
+        "status": { "$ref": "#/$defs/resultStatus" }
+      }
+    },
+    "anomaly": {
+      "type": "object",
+      "required": ["code"],
+      "properties": {
+        "code": { "$ref": "#/$defs/nonEmptyText" }
+      }
+    },
+    "anomalyArray": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          { "$ref": "#/$defs/anomaly" },
+          { "$ref": "#/$defs/relationshipResult" }
+        ]
+      }
+    },
+    "anomalies": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "unresolvedReferences", "ambiguousReferences", "reciprocityMismatches",
+        "duplicateEdges", "selfConnections", "orphanBranches", "disconnectedIslands",
+        "unexpectedCycles", "boundaryDiscontinuities", "relationshipKindConflicts"
+      ],
+      "properties": {
+        "unresolvedReferences": { "$ref": "#/$defs/anomalyArray" },
+        "ambiguousReferences": { "$ref": "#/$defs/anomalyArray" },
+        "reciprocityMismatches": { "$ref": "#/$defs/anomalyArray" },
+        "duplicateEdges": { "$ref": "#/$defs/anomalyArray" },
+        "selfConnections": { "$ref": "#/$defs/anomalyArray" },
+        "orphanBranches": { "$ref": "#/$defs/anomalyArray" },
+        "disconnectedIslands": { "$ref": "#/$defs/anomalyArray" },
+        "unexpectedCycles": { "$ref": "#/$defs/anomalyArray" },
+        "boundaryDiscontinuities": { "$ref": "#/$defs/anomalyArray" },
+        "relationshipKindConflicts": { "$ref": "#/$defs/anomalyArray" }
+      }
+    },
+    "statusCounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["PASS", "PASS_WITH_OBSERVATIONS", "FAIL", "BLOCKED", "NOT_APPLICABLE"],
+      "properties": {
+        "PASS": { "type": "integer", "minimum": 0 },
+        "PASS_WITH_OBSERVATIONS": { "type": "integer", "minimum": 0 },
+        "FAIL": { "type": "integer", "minimum": 0 },
+        "BLOCKED": { "type": "integer", "minimum": 0 },
+        "NOT_APPLICABLE": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "branchStatusCounts", "relationshipStatusCounts", "junctionStatusCounts",
+        "boundaryStatusCounts", "islandCount", "unexpectedCycleCount", "topologyStatus"
+      ],
+      "properties": {
+        "branchStatusCounts": { "$ref": "#/$defs/statusCounts" },
+        "relationshipStatusCounts": { "$ref": "#/$defs/statusCounts" },
+        "junctionStatusCounts": { "$ref": "#/$defs/statusCounts" },
+        "boundaryStatusCounts": { "$ref": "#/$defs/statusCounts" },
+        "islandCount": { "type": "integer", "minimum": 0 },
+        "unexpectedCycleCount": { "type": "integer", "minimum": 0 },
+        "topologyStatus": { "$ref": "#/$defs/resultStatus" }
+      }
+    }
+  }
+}

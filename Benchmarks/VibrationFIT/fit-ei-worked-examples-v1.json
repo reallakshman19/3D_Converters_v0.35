@@ -1,0 +1,390 @@
+{
+  "benchmarkSetId": "FIT-EI-WORKED-EXAMPLES-V1",
+  "authority": "EI_WORKED_EXAMPLE_BENCHMARK",
+  "engineeringAuthority": "BENCHMARK_ONLY",
+  "source": {
+    "repository": "reallaksh19/Common",
+    "commit": "fb549185b9b27edc2379734240320a85c5bef9f6",
+    "path": "EI - AVIFF Guidelines 2nd Edition_Examples.pdf",
+    "gitBlob": "3e2517d0df527a051084fc02e69cb7afa31f8d47",
+    "edition": "2nd Edition, January 2008",
+    "technicalModule": "T2.2 Flow Induced Turbulence"
+  },
+  "tolerancePolicy": {
+    "id": "FIT-EI-PUBLISHED-RECONCILIATION-V1",
+    "basis": "ABSOLUTE_PER_FIELD_FROM_INDEPENDENT_RECALCULATION_OF_PUBLISHED_INPUT_VECTOR_PLUS_HALF_PRINTED_OUTPUT_INCREMENT",
+    "authority": "BENCHMARK_RECONCILIATION_ONLY",
+    "screeningPromotionState": "RECONCILED_FOR_BENCHMARK_USE",
+    "description": "Published Appendix D values are rounded. Each tolerance is an absolute field/case allowance derived independently by applying the documented equation register to the published benchmark input vector, then adding half of the published output's least displayed increment. The policy is not tuned to production output and does not grant screening authority."
+  },
+  "cases": [
+    {
+      "id": "EI-D2-FIT-RECYCLE-SUCTION-6IN",
+      "sourceLocation": "Appendix D, Example D2, D.2.1 Steps 1-5",
+      "input": {
+        "phase": "GAS",
+        "outsideDiameterM": 0.1683,
+        "wallThicknessM": 0.00711,
+        "insideDiameterM": 0.1541,
+        "maximumUnsupportedSpanM": 6.4,
+        "massFlowKgS": 14.856111111111112,
+        "densityKgM3": 18,
+        "gasDynamicViscosityPaS": 0.00002
+      },
+      "published": {
+        "supportStiffness": "MEDIUM_STIFF",
+        "rhoV2Pa": 35294,
+        "fluidViscosityFactor": 0.141,
+        "standardFvPa": 18022,
+        "standardLof": 0.276,
+        "referenceBand": "LOF_LT_0_3"
+      },
+      "tolerance": {
+        "rhoV2Pa": 45.5,
+        "fluidViscosityFactor": 0.001,
+        "standardFvPa": 6,
+        "standardLof": 0.0012
+      },
+      "independentRecalculation": {
+        "basis": "FIT-Engineering-Method-Specification-v1 equation register applied to the published benchmark input vector",
+        "rhoV2Pa": 35249.05310921036,
+        "fluidViscosityFactor": 0.1414213562373095,
+        "standardFvPa": 18016.643513221254,
+        "standardLof": 0.27668688083478665
+      }
+    },
+    {
+      "id": "EI-D2-FIT-STREAM-4-SUPPLY-COOLER-14IN",
+      "sourceLocation": "Appendix D, Example D2, D.2.1 Steps 1-5; Stream 4",
+      "input": {
+        "phase": "GAS",
+        "outsideDiameterM": 0.3556,
+        "wallThicknessM": 0.00953,
+        "insideDiameterM": 0.33654,
+        "maximumUnsupportedSpanM": 9.9,
+        "massFlowKgS": 16.488333333333333,
+        "densityKgM3": 18,
+        "gasDynamicViscosityPaS": 0.00002
+      },
+      "published": {
+        "supportStiffness": "MEDIUM_STIFF",
+        "rhoV2Pa": 1909,
+        "fluidViscosityFactor": 0.141,
+        "standardFvPa": 19061,
+        "standardLof": 0.014,
+        "referenceBand": "LOF_LT_0_3"
+      },
+      "tolerance": {
+        "rhoV2Pa": 0.8,
+        "fluidViscosityFactor": 0.001,
+        "standardFvPa": 9.2,
+        "standardLof": 0.0007
+      },
+      "independentRecalculation": {
+        "basis": "FIT-Engineering-Method-Specification-v1 equation register applied to the published benchmark input vector",
+        "rhoV2Pa": 1908.7739001074654,
+        "fluidViscosityFactor": 0.1414213562373095,
+        "standardFvPa": 19069.625332028903,
+        "standardLof": 0.014155568817085731
+      }
+    },
+    {
+      "id": "EI-D2-FIT-STREAM-5-SUCTION-SCRUBBER-14IN",
+      "sourceLocation": "Appendix D, Example D2, D.2.1 Steps 1-5; Stream 5",
+      "input": {
+        "phase": "GAS",
+        "outsideDiameterM": 0.3556,
+        "wallThicknessM": 0.00953,
+        "insideDiameterM": 0.33654,
+        "maximumUnsupportedSpanM": 9.9,
+        "massFlowKgS": 16.488333333333333,
+        "densityKgM3": 26,
+        "gasDynamicViscosityPaS": 0.00001
+      },
+      "published": {
+        "supportStiffness": "MEDIUM_STIFF",
+        "rhoV2Pa": 1321,
+        "fluidViscosityFactor": 0.1,
+        "standardFvPa": 19061,
+        "standardLof": 0.007,
+        "referenceBand": "LOF_LT_0_3"
+      },
+      "tolerance": {
+        "rhoV2Pa": 1.0,
+        "fluidViscosityFactor": 1e-12,
+        "standardFvPa": 9.2,
+        "standardLof": 0.0006
+      },
+      "independentRecalculation": {
+        "basis": "FIT-Engineering-Method-Specification-v1 equation register applied to the published benchmark input vector",
+        "rhoV2Pa": 1321.4588539205524,
+        "fluidViscosityFactor": 0.1,
+        "standardFvPa": 19069.625332028903,
+        "standardLof": 0.00692965294761749
+      }
+    },
+    {
+      "id": "EI-D2-FIT-STREAM-6-COMPRESSOR-SUCTION-14IN",
+      "sourceLocation": "Appendix D, Example D2, D.2.1 Steps 1-5; Stream 6",
+      "input": {
+        "phase": "GAS",
+        "outsideDiameterM": 0.3556,
+        "wallThicknessM": 0.00953,
+       "insideDiameterM": 0.33654,
+        "maximumUnsupportedSpanM": 9.9,
+        "massFlowKgS": 14.856111111111112,
+        "densityKgM3": 23,
+        "gasDynamicViscosityPaS": 0.00001
+      },
+      "published": {
+        "supportStiffness": "MEDIUM_STIFF",
+        "rhoV2Pa": 1213,
+        "fluidViscosityFactor": 0.1,
+        "standardFvPa": 19061,
+        "standardLof": 0.006,
+        "referenceBand": "LOF_LT_0_3"
+      },
+      "tolerance": {
+        "rhoV2Pa": 0.8,
+        "fluidViscosityFactor": 1e-12,
+        "standardFvPa": 9.2,
+        "standardLof": 0.0009
+      },
+      "independentRecalculation": {
+        "basis": "FIT-Engineering-Method-Specification-v1 equation register applied to the published benchmark input vector",
+        "rhoV2Pa": 1212.7070923086076,
+        "fluidViscosityFactor": 0.1,
+        "standardFvPa": 19069.625332028903,
+        "standardLof": 0.006359365069809593
+      }
+    },
+    {
+      "id": "EI-D2-FIT-STREAM-7-COMPRESSOR-DISCHARGE-8IN",
+      "sourceLocation": "Appendix D, Example D2, D.2.1 Steps 1-5; Stream 7",
+      "input": {
+        "phase": "GAS",
+        "outsideDiameterM": 0.2191,
+        "wallThicknessM": 0.01826,
+        "insideDiameterM": 0.18258,
+        "maximumUnsupportedSpanM": 7.3,
+        "massFlowKgS": 14.856111111111112,
+        "densityKgM3": 62,
+        "gasDynamicViscosityPaS": 0.00002
+      },
+      "published": {
+        "supportStiffness": "MEDIUM_STIFF",
+        "rhoV2Pa": 5191,
+        "fluidViscosityFactor": 0.141,
+        "standardFvPa": 38483,
+        "standardLof": 0.019,
+        "referenceBand": "LOF_LT_0_3"
+      },
+      "tolerance": {
+        "rhoV2Pa": 2.6,
+        "fluidViscosityFactor": 0.001,
+        "standardFvPa": 42.6,
+        "standardLof": 0.0006
+      },
+      "independentRecalculation": {
+        "basis": "FIT-Engineering-Method-Specification-v1 equation register applied to the published benchmark input vector",
+        "rhoV2Pa": 5193.091976596919,
+        "fluidViscosityFactor": 0.1414213562373095,
+        "standardFvPa": 38525.09637781798,
+        "standardLof": 0.01906326471433017
+      }
+    },
+    {
+      "id": "EI-D2-FIT-RECYCLE-DISCHARGE-8IN",
+      "sourceLocation": "Appendix D, Example D2, D.2.1 Steps 1-5; Recycle line (compressor discharge)",
+      "input": {
+        "phase": "GAS",
+        "outsideDiameterM": 0.2191,
+        "wallThicknessM": 0.01826,
+        "insideDiameterM": 0.18258,
+        "maximumUnsupportedSpanM": 7.3,
+        "massFlowKgS": 14.856111111111112,
+        "densityKgM3": 62,
+        "gasDynamicViscosityPaS": 0.00002
+      },
+      "published": {
+        "supportStiffness": "MEDIUM_STIFF",
+        "rhoV2Pa": 5191,
+        "fluidViscosityFactor": 0.141,
+        "standardFvPa": 38483,
+        "standardLof": 0.019,
+        "referenceBand": "LOF_LT_0_3"
+      },
+      "tolerance": {
+        "rhoV2Pa": 2.6,
+        "fluidViscosityFactor": 0.001,
+        "standardFvPa": 42.6,
+        "standardLof": 0.0006
+      },
+      "independentRecalculation": {
+        "basis": "FIT-Engineering-Method-Specification-v1 equation register applied to the published benchmark input vector",
+        "rhoV2Pa": 5193.091976596919,
+        "fluidViscosityFactor": 0.1414213562373095,
+        "standardFvPa": 38525.09637781798,
+        "standardLof": 0.01906326471433017
+      }
+    },
+    {
+      "id": "EI-D2-FIT-RELIEF-UPSTREAM-4IN",
+      "sourceLocation": "Appendix D, Example D2, D.2.1 Steps 1-5",
+      "input": {
+        "phase": "GAS",
+        "outsideDiameterM": 0.1143,
+        "wallThicknessM": 0.0111,
+         "insideDiameterM": 0.0921,
+        "maximumUnsupportedSpanM": 5.2,
+        "massFlowKgS": 14.856111111111112,
+        "densityKgM3": 62,
+        "gasDynamicViscosityPaS": 0.00002
+      },
+      "published": {
+        "supportStiffness": "MEDIUM_STIFF",
+        "rhoV2Pa": 80203,
+        "fluidViscosityFactor": 0.141,
+        "standardFvPa": 33433,
+        "standardLof": 0.338,
+        "referenceBand": "LOF_0_3_TO_LT_0_5"
+      },
+      "tolerance": {
+        "rhoV2Pa": 2.3,
+        "fluidViscosityFactor": 0.001,
+        "standardFvPa": 1.3,
+        "standardLof": 0.0018
+      },
+      "independentRecalculation": {
+        "basis": "FIT-Engineering-Method-Specification-v1 equation register applied to the published benchmark input vector",
+        "rhoV2Pa": 80204.78976604152,
+        "fluidViscosityFactor": 0.1414213562373095,
+        "standardFvPa": 33433.742096870046,
+        "standardLof": 0.33925816956348825
+      }
+    },
+    {
+      "id": "EI-D2-FIT-RELIEF-DOWNSTREAM-6IN",
+      "sourceLocation": "Appendix D, Example D2, D.2.1 Steps 1-5",
+      "input": {
+        "phase": "GAS",
+        "outsideDiameterM": 0.1683,
+        "wallThicknessM": 0.00711,
+        "insideDiameterM": 0.1541,
+         "maximumUnsupportedSpanM": 6.4,
+        "massFlowKgS": 14.856111111111112,
+        "densityKgM3": 4,
+        "gasDynamicViscosityPaS": 0.00001
+      },
+      "published": {
+        "supportStiffness": "MEDIUM_STIFF",
+        "rhoV2Pa": 158823,
+        "fluidViscosityFactor": 0.1,
+        "standardFvPa": 18022,
+        "standardLof": 0.881,
+        "referenceBand": "LOF_0_5_TO_LT_1"
+      },
+      "tolerance": {
+        "rhoV2Pa": 203,
+        "fluidViscosityFactor": 1e-12,
+        "standardFvPa": 6,
+        "standardLof": 0.0011
+      },
+      "independentRecalculation": {
+        "basis": "FIT-Engineering-Method-Specification-v1 equation register applied to the published benchmark input vector",
+        "rhoV2Pa": 158620.73899144662,
+        "fluidViscosityFactor": 0.1,
+        "standardFvPa": 18016.643513221254,
+        "standardLof": 0.8804122636663433
+      }
+    },
+    {
+      "id": "EI-D4-FIT-SEPARATOR-INLET-20IN",
+      "sourceLocation": "Appendix D, Example D4, D.4.1 Steps 1-5",
+      "input": {
+        "phase": "MULTIPHASE",
+        "outsideDiameterM": 0.508,
+        "wallThicknessM": 0.009525,
+        "maximumUnsupportedSpanM": 5,
+        "densityKgM3": 136,
+        "fluidVelocityMS": 9.3
+      },
+      "published": {
+        "supportStiffness": "STIFF",
+        "rhoV2Pa": 11763,
+        "fluidViscosityFactor": 1,
+        "standardFvPa": 45175,
+        "standardLof": 0.26,
+        "referenceBand": "LOF_LT_0_3"
+      },
+      "tolerance": {
+        "rhoV2Pa": 0.9,
+        "fluidViscosityFactor": 1e-12,
+        "standardFvPa": 0.9,
+        "standardLof": 0.0054
+      },
+      "independentRecalculation": {
+        "basis": "FIT-Engineering-Method-Specification-v1 equation register applied to the published benchmark input vector",
+        "rhoV2Pa": 11762.640000000003,
+        "fluidViscosityFactor": 1,
+        "standardFvPa": 45174.606090173496,
+        "standardLof": 0.26038168382742455
+      }
+    },
+    {
+      "id": "EI-D4-FIT-PRODUCED-WATER-10IN",
+      "sourceLocation": "Appendix D, Example D4, D.4.1 Steps 1-5",
+      "input": {
+        "phase": "LIQUID",
+        "outsideDiameterM": 0.273,
+        "wallThicknessM": 0.009271,
+        "maximumUnsupportedSpanM": 18,
+        "densityKgM3": 988,
+        "fluidVelocityMS": 2.9
+      },
+      "published": {
+        "supportStiffness": "FLEXIBLE",
+        "supportCategory": "FLEXIBLE_LARGE",
+        "rhoV2Pa": 8309,
+        "fluidViscosityFactor": 1,
+        "standardFvPa": 2636,
+        "standardLof": 3.15,
+        "referenceBand": "LOF_GE_1"
+      },
+      "tolerance": {
+        "rhoV2Pa": 0.6,
+        "fluidViscosityFactor": 1e-12,
+        "standardFvPa": 0.7,
+        "standardLof": 0.007
+      },
+      "independentRecalculation": {
+        "basis": "FIT-Engineering-Method-Specification-v1 equation register applied to the published benchmark input vector",
+        "rhoV2Pa": 8309.08,
+        "fluidViscosityFactor": 1,
+        "standardFvPa": 2636.173852766281,
+        "standardLof": 3.1519468988287054
+      }
+    }
+  ],
+  "boundaryEvidence": {
+    "advancedNaturalFrequency": {
+      "source": "T2.2.4",
+      "rule": "1 Hz < fn <= 3 Hz",
+      "exactly1HzEligible": false,
+      "exactly3HzEligible": true
+    },
+    "largeFlexibleDiameter": {
+      "source": "Appendix D Example D4 / Table T2-2 application",
+      "diameterMm": 273,
+      "expectedCategory": "FLEXIBLE_LARGE"
+    }
+  },
+  "digitizedSource": {
+    "repository": "reallaksh19/Advanced_Analysis",
+    "commit": "04328852dced9f5c4827da8afe8a82aeb8b1a1d3",
+    "path": "docs/EI data/EI_AVIFF_Guidelines_2nd_Edition_Examples.md",
+    "gitBlob": "c050cd90802c27241c510c6f0ac43bfaf7a89e9d",
+    "role": "OWNER_SUPPLIED_DIGITIZED_CORROBORATION",
+    "authority": "CORROBORATING_TRANSCRIPTION_ONLY"
+  }
+}

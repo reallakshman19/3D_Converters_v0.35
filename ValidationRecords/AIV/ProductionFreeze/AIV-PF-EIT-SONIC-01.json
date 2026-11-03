@@ -1,0 +1,115 @@
+{
+  "schema": "AivProductionFreezeValidationRecord.v1",
+  "sliceId": "AIV-PF-EIT-SONIC-01",
+  "mission": "Remove redundant sonic-state readiness blockers for the exact controlled EI AVIFF worked-example EIT import without introducing generic sonic inference.",
+  "repository": "reallaksh19/3D_Converters",
+  "baseSha": "a49085cde69ef71518c0d6315a615477887d7b4e",
+  "branch": "agent/aiv-eit-controlled-sonic-20260815",
+  "controlledSource": {
+    "repository": "reallaksh19/Common",
+    "commit": "7bfead910f6bca91b10748ead009e40f20c82219",
+    "path": "Energy-Institute-AVIFF---Worked-Examples.eit",
+    "blob": "aaf3afe262b19f927fe05e0c44f07f08167fbfa0"
+  },
+  "before": {
+    "status": "CONFIRMED_BY_USER_AND_SOURCE_TRACE",
+    "userObservedBlockers": [
+      "EIT-SOURCE-5-1 -> EIT-ASSESS-5 : AIV_SONIC_STATE_UNRESOLVED",
+      "EIT-SOURCE-6-1 -> EIT-ASSESS-6 : AIV_SONIC_STATE_UNRESOLVED",
+      "EIT-SOURCE-8-1 -> EIT-ASSESS-8 : AIV_SONIC_STATE_UNRESOLVED"
+    ],
+    "rootCause": "Legacy AIV EIT records omit detail.sonicState; current importer maps every absent value to UNRESOLVED even when the exact controlled worked-example vector has qualified SFF=0 dB evidence."
+  },
+  "lockedResolution": {
+    "precedence": [
+      "EXPLICIT_EIT_SONIC_STATE",
+      "PINNED_WORKED_EXAMPLE_VECTOR_MATCH",
+      "UNRESOLVED"
+    ],
+    "genericPressureRatioInference": false,
+    "genericDeviceDefault": false,
+    "productionDefault": false,
+    "resolvedVectors": {
+      "EIT-SOURCE-5-1": "NON_SONIC",
+      "EIT-SOURCE-6-1": "NON_SONIC",
+      "EIT-SOURCE-8-1": "NON_SONIC"
+    }
+  },
+  "independentBenchmarks": [
+    {
+      "id": "EI-AVIFF-D23-RECYCLE-DISCHARGE",
+      "expectedEffectivePwlDb": 129.3648155401,
+      "reportPwlDb": 129.36,
+      "sonicFlowFactorDb": 0,
+      "status": "PASS",
+      "toleranceAbsDb": 1e-9
+    },
+    {
+      "id": "EI-AVIFF-D23-RECYCLE-SUCTION",
+      "expectedEffectivePwlDb": 129.0239800907,
+      "reportPwlDb": 129.02,
+      "sonicFlowFactorDb": 0,
+      "status": "PASS",
+      "toleranceAbsDb": 1e-9
+    },
+    {
+      "id": "EI-AVIFF-D23-RELIEF-DOWNSTREAM",
+      "expectedEffectivePwlDb": 164.6851759525,
+      "reportPwlDb": 164.69,
+      "sonicFlowFactorDb": 0,
+      "status": "PASS",
+      "toleranceAbsDb": 1e-9
+    }
+  ],
+  "focusedExecution": {
+    "nodeResolverQualification": {
+      "status": "PASS",
+      "cases": "5/5",
+      "negativeCases": [
+        "one-field downstream-pressure drift -> unresolved",
+        "document project identity drift -> unresolved"
+      ]
+    },
+    "chromiumResolverQualification": {
+      "status": "PASS",
+      "browser": "Chrome/144.0.7559.96",
+      "protocol": "Chrome DevTools Protocol 1.3",
+      "cases": "3 exact + 2 negative",
+      "classification": "TARGETED_BROWSER_ENGINE_EXECUTION_NOT_FULL_APPLICATION"
+    },
+    "independentPwlRecalculation": {
+      "status": "PASS",
+      "cases": "3/3"
+    }
+  },
+  "notRun": [
+    {
+      "gate": "repository-native node --test tests/vibration-aiv-eit-controlled-sonic.test.mjs",
+      "reason": "No native private repository checkout is materialized in this execution environment."
+    },
+    {
+      "gate": "npm run verify:aiv-eit-export",
+      "reason": "No native private repository checkout is materialized in this execution environment."
+    },
+    {
+      "gate": "npm run verify:aiv-canvas-release",
+      "reason": "No native private repository checkout is materialized in this execution environment."
+    },
+    {
+      "gate": "full application Chromium import and readiness workflow",
+      "reason": "Private application checkout/deployment is unavailable to Chromium in this environment."
+    },
+    {
+      "gate": "repository backup CLI",
+      "reason": "node utils/backup.js cannot run without a native checkout; immutable pre-edit Git blob custody is retained instead."
+    }
+  ],
+  "authority": {
+    "screeningResultScope": "ASSESSMENT",
+    "lineCaseSummaryAuthoritativeForScreening": false,
+    "designAuthority": false,
+    "svgPixelsAuthoritativeForDistance": false,
+    "importedHistoricalResultsAreCurrentScreeningAuthority": false
+  },
+  "disposition": "IMPLEMENTATION_CANDIDATE_READY_FOR_NATIVE_AND_FULL_APP_VALIDATION"
+}

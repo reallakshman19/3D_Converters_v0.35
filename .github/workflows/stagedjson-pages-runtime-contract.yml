@@ -1,0 +1,101 @@
+name: StagedJSON and Pages Runtime Contract
+
+on:
+  pull_request:
+    paths:
+      - '.nojekyll'
+      - 'contracts/stagedjson-contract.js'
+      - 'core/app-standalone-runtime.js'
+      - 'tabs/model-converters-tab.js'
+      - 'tabs/model-converters/index.js'
+      - 'tabs/model-converters/ModelConvertersTab.js'
+      - 'tabs/model-converters/xml-cii-workflow-bridge.js'
+      - 'tabs/model-converters/converter-registry.js'
+      - 'tabs/model-converters/legacy-adapter.js'
+      - 'tabs/model-converters/xml-cii-rich-worker-cache-bust.js'
+      - 'tabs/model-converters/converters/stagedjson-to-xml.js'
+      - 'tabs/model-converters/converters/stagedjson-xml-helpers.js'
+      - 'tabs/model-converters/converters/inputxml-to-cii2019.js'
+      - 'tabs/model-converters/converters/inputxml-blocked-diagnostics.js'
+      - 'converters/inputxml-runtime-manifest.json'
+      - 'converters/inputxml-release-runtime-loader.js'
+      - 'converters/inputxml-runtime-cache.js'
+      - 'converters/inputxml-release-worker.js'
+      - 'converters/py-worker.js'
+      - 'converters/BrowserConverterExecutor.js'
+      - 'scripts/inputxml_compiler/**'
+      - 'tests/stagedjson-to-xml-envelope-contract.test.mjs'
+      - 'tests/inputxml-pages-runtime-publication.test.mjs'
+      - 'tests/inputxml-runtime-transient-recovery.test.mjs'
+      - 'tests/inputxml-runtime-cache.test.mjs'
+      - 'tests/inputxml-blocked-diagnostics-ui.test.mjs'
+      - 'tests/inputxml-pages-live-release.test.mjs'
+      - 'tests/inputxml-live-release-static.test.mjs'
+      - 'tests/inputxml-browser-offline-smoke.test.mjs'
+      - '.github/workflows/stagedjson-pages-runtime-contract.yml'
+      - '.github/workflows/inputxml-pages-live-release.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - name: Run focused contracts
+        id: contracts
+        shell: bash
+        run: |
+          set +e
+          node tests/stagedjson-to-xml-envelope-contract.test.mjs > stagedjson-contract.log 2>&1
+          staged_status=$?
+          node tests/inputxml-pages-runtime-publication.test.mjs > pages-runtime-contract.log 2>&1
+          pages_status=$?
+          node tests/inputxml-runtime-transient-recovery.test.mjs > inputxml-runtime-recovery.log 2>&1
+          recovery_status=$?
+          node tests/inputxml-runtime-cache.test.mjs > inputxml-runtime-cache.log 2>&1
+          cache_status=$?
+          node tests/inputxml-blocked-diagnostics-ui.test.mjs > inputxml-blocked-diagnostics-ui.log 2>&1
+          diagnostics_status=$?
+          node --check tests/inputxml-pages-live-release.test.mjs > inputxml-pages-live-release-syntax.log 2>&1
+          live_syntax_status=$?
+          node tests/inputxml-live-release-static.test.mjs > inputxml-live-release-static.log 2>&1
+          live_static_status=$?
+          node tests/inputxml-browser-offline-smoke.test.mjs > inputxml-browser-offline-smoke.log 2>&1
+          smoke_status=$?
+          test -f .nojekyll
+          nojekyll_status=$?
+          test -f scripts/inputxml_compiler/__init__.py
+          initializer_status=$?
+          cat stagedjson-contract.log
+          cat pages-runtime-contract.log
+          cat inputxml-runtime-recovery.log
+          cat inputxml-runtime-cache.log
+          cat inputxml-blocked-diagnostics-ui.log
+          cat inputxml-pages-live-release-syntax.log
+          cat inputxml-live-release-static.log
+          cat inputxml-browser-offline-smoke.log
+          if (( staged_status || pages_status || recovery_status || cache_status || diagnostics_status || live_syntax_status || live_static_status || smoke_status || nojekyll_status || initializer_status )); then
+            exit 1
+          fi
+      - name: Upload contract diagnostics
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: stagedjson-pages-runtime-contract
+          path: |
+            stagedjson-contract.log
+            pages-runtime-contract.log
+            inputxml-runtime-recovery.log
+            inputxml-runtime-cache.log
+            inputxml-blocked-diagnostics-ui.log
+            inputxml-pages-live-release-syntax.log
+            inputxml-live-release-static.log
+            inputxml-browser-offline-smoke.log
+          if-no-files-found: error

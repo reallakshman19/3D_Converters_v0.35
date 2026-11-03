@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/reallaksh19/3D_Converters/contracts/fbx/fbx-geometry-bundle-v1.schema.json",
+  "title": "FbxGeometryBundle.v1 manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "sourceGraphSchema",
+    "sourceGraphSha256",
+    "sourceIdentity",
+    "parserIdentity",
+    "coordinateUnit",
+    "byteOrder",
+    "triangleDerivation",
+    "limitsVersion",
+    "geometries",
+    "buffers",
+    "bundleDigest"
+  ],
+  "properties": {
+    "schema": { "const": "FbxGeometryBundle.v1" },
+    "sourceGraphSchema": { "const": "FbxSourceGraph.v2" },
+    "sourceGraphSha256": { "$ref": "#/$defs/sha256" },
+    "sourceIdentity": { "$ref": "#/$defs/sourceIdentity" },
+    "parserIdentity": { "$ref": "#/$defs/parserIdentity" },
+    "coordinateUnit": { "const": "millimetre" },
+    "byteOrder": { "const": "little-endian" },
+    "triangleDerivation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "rule"],
+      "properties": {
+        "status": { "const": "not-derived" },
+        "rule": { "type": "null" }
+      }
+    },
+    "limitsVersion": { "const": "FbxGeometryLimits.v1" },
+    "geometries": {
+      "type": "array",
+      "maxItems": 65536,
+      "items": { "$ref": "#/$defs/geometry" }
+    },
+    "buffers": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/buffer" }
+    },
+    "bundleDigest": { "$ref": "#/$defs/sha256" }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "decimalId": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]{0,19})$",
+      "maxLength": 20
+    },
+    "sourceIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sha256", "byteLength", "fbxVersion"],
+      "properties": {
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "byteLength": { "type": "integer", "minimum": 1 },
+        "fbxVersion": { "type": "integer", "minimum": 3000, "maximum": 7700 }
+      }
+    },
+    "parserIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provenanceSchema", "upstreamRevision", "sourceSha256", "wasmSha256"],
+      "properties": {
+        "provenanceSchema": { "type": "string", "minLength": 1 },
+        "upstreamRevision": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "sourceSha256": { "$ref": "#/$defs/sha256" },
+        "wasmSha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "bufferIds": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["controlPointsMm", "polygonOffsets", "polygonVertexIndices"],
+      "properties": {
+        "controlPointsMm": { "type": "string", "pattern": "^geometry/(0|[1-9][0-9]{0,19})/control-points-mm$" },
+        "polygonOffsets": { "type": "string", "pattern": "^geometry/(0|[1-9][0-9]{0,19})/polygon-offsets$" },
+        "polygonVertexIndices": { "type": "string", "pattern": "^geometry/(0|[1-9][0-9]{0,19})/polygon-vertex-indices$" }
+      }
+    },
+    "geometry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "geometryObjectId",
+        "sourceObjectId",
+        "controlPointCount",
+        "polygonCount",
+        "polygonVertexCount",
+        "emptyPolygonCount",
+        "pointPolygonCount",
+        "linePolygonCount",
+        "reversedWinding",
+        "bufferIds"
+      ],
+      "properties": {
+        "geometryObjectId": { "$ref": "#/$defs/decimalId" },
+        "sourceObjectId": { "$ref": "#/$defs/decimalId" },
+        "controlPointCount": { "type": "integer", "minimum": 0, "maximum": 8388608 },
+        "polygonCount": { "type": "integer", "minimum": 0, "maximum": 16777215 },
+        "polygonVertexCount": { "type": "integer", "minimum": 0, "maximum": 67108864 },
+        "emptyPolygonCount": { "type": "integer", "minimum": 0 },
+        "pointPolygonCount": { "type": "integer", "minimum": 0 },
+        "linePolygonCount": { "type": "integer", "minimum": 0 },
+        "reversedWinding": { "type": "boolean" },
+        "bufferIds": { "$ref": "#/$defs/bufferIds" }
+      }
+    },
+    "buffer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "bufferId",
+        "geometryObjectId",
+        "role",
+        "scalarType",
+        "componentCount",
+        "count",
+        "alignment",
+        "byteLength",
+        "sha256"
+      ],
+      "properties": {
+        "bufferId": { "type": "string", "pattern": "^geometry/(0|[1-9][0-9]{0,19})/(control-points-mm|polygon-offsets|polygon-vertex-indices)$" },
+        "geometryObjectId": { "$ref": "#/$defs/decimalId" },
+        "role": { "enum": ["control-points-mm", "polygon-offsets", "polygon-vertex-indices"] },
+        "scalarType": { "enum": ["Float64", "Uint32"] },
+        "componentCount": { "enum": [1, 3] },
+        "count": { "type": "integer", "minimum": 0 },
+        "alignment": { "enum": [4, 8] },
+        "byteLength": { "type": "integer", "minimum": 0, "maximum": 268435456 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    }
+  }
+}

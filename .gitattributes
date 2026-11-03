@@ -1,0 +1,2 @@
+# Governed evidence files must preserve exact Git blob bytes on every platform.
+"Benchmarks/fbx BM/StaggedJsonBMforFBX" -text

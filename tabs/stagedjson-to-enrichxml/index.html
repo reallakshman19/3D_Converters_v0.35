@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StagedJSON → Enriched XML</title>
+  <meta name="description" content="Zero-touch conversion of PDMS/E3D StagedJSON to PSI-116 enriched XML compatible with XML→CII(2019) standalone.">
+  <link rel="stylesheet" href="./sj-app.css">
+</head>
+<body>
+  <main id="sj-app"></main>
+  <script type="module">
+    const v = Date.now();
+    import(`./sj-app.js?v=${v}`).then(m => {
+      document.addEventListener('DOMContentLoaded', () => m.mountApp('sj-app'));
+      if (document.readyState === 'interactive' || document.readyState === 'complete') m.mountApp('sj-app');
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+export const XML_COMPARE_DIAGNOSTICS_PANEL_SCHEMA='xml-compare-diagnostics-panel/v1';
+const esc=(v)=>String(v??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#039;');
+export function renderXmlCompareDiagnosticsPanelHtml({diagnostics=[]}={}){const rows=(diagnostics||[]).slice(0,80);return `<section class="xml-compare-bottom-panel" data-xml-compare-diagnostics><header>Diagnostics <span>${rows.length}</span></header>${rows.length?`<table class="xml-compare-mini-table"><tbody>${rows.map((d)=>`<tr><td>${esc(d.code||d.type||'DIAGNOSTIC')}</td><td>${esc(d.uid||d.nodeNumber||d.branchName||'')}</td><td>${esc(d.message||d.reason||'')}</td></tr>`).join('')}</tbody></table>`:'<div class="xml-compare-empty">No diagnostics yet.</div>'}</section>`;}
+export const _test=Object.freeze({esc});

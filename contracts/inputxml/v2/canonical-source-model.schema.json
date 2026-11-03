@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:reallaksh19:inputxml:canonical-source-model:v1",
+  "title": "CanonicalSourceModel.v1",
+  "type": "object",
+  "required": ["schema", "sourceHashSha256", "dialect", "records", "relationships", "diagnostics"],
+  "properties": {
+    "schema": {"const": "CanonicalSourceModel.v1"},
+    "sourceHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "dialect": {"type": "string", "minLength": 1},
+    "records": {"type": "array", "items": {"type": "object", "required": ["sourceEntityId", "sourceType", "fields"], "properties": {"sourceEntityId": {"type": "string", "minLength": 1}, "sourceType": {"type": "string", "minLength": 1}, "fields": {"type": "object"}, "sourcePaths": {"type": "array", "items": {"type": "string"}}}, "additionalProperties": false}},
+    "relationships": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "diagnostics": {"type": "array", "items": {"type": "object"}}
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,44 @@
+name: FBX2 Browser Managed Reference
+
+on:
+  pull_request:
+    paths:
+      - 'tabs/model-converters/converters/fbx-to-stagedjson.js'
+      - 'tabs/model-converters/converters/fbx/browser-zip.js'
+      - 'tabs/model-converters/converters/fbx/fbx2-browser-inputs.js'
+      - 'tabs/model-converters/converters/fbx/selected-zone-promotion.js'
+      - 'tabs/model-converters/fbx-review-ui-addon.js'
+      - 'tabs/model-converters/ModelConvertersTab-fbx2-managed-reference.js'
+      - 'tabs/model-converters/index.js'
+      - 'tabs/model-converters-tab.js'
+      - 'tests/fbx/test-fbx2-browser-inputs.mjs'
+      - 'tests/fbx/test-fbx2-managed-reference-promotion.mjs'
+      - 'tests/fbx/test-fbx2-managed-reference-static.mjs'
+      - 'tests/fbx/run-fbx2-browser-managed-reference.mjs'
+      - '.github/workflows/fbx2-browser-managed-reference.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  managed-reference:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax check browser modules
+        run: |
+          node --check tabs/model-converters/converters/fbx-to-stagedjson.js
+          node --check tabs/model-converters/converters/fbx/browser-zip.js
+          node --check tabs/model-converters/converters/fbx/fbx2-browser-inputs.js
+          node --check tabs/model-converters/converters/fbx/selected-zone-promotion.js
+          node --check tabs/model-converters/fbx-review-ui-addon.js
+          node --check tabs/model-converters/ModelConvertersTab-fbx2-managed-reference.js
+          node --check tabs/model-converters/index.js
+          node --check tabs/model-converters-tab.js
+      - name: Run managed-reference qualification
+        run: node tests/fbx/run-fbx2-browser-managed-reference.mjs

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:reallaksh19:inputxml:compatibility-request:v1",
+  "title": "InputXmlCompatibilityRequest.v1",
+  "type": "object",
+  "required": ["schema", "converterId", "direction", "mode", "sourceName", "sourceHashSha256", "approvedSemanticSplitId", "requestHashSha256"],
+  "properties": {
+    "schema": {"const": "InputXmlCompatibilityRequest.v1"},
+    "converterId": {
+      "enum": [
+        "stagedjson_to_inputxml",
+        "seljson_to_inputxml",
+        "pdf_to_inputxml",
+        "pdf_to_inputxml_cii14",
+        "inputxml_to_xml",
+        "inputxml_to_cii",
+        "inputxml14_to_cii",
+        "inputxml_to_cii2019",
+        "component_topology_inputxml_writer"
+      ]
+    },
+    "direction": {"enum": ["INPUTXML_PRODUCER", "INPUTXML_CONSUMER", "TOPOLOGY_WRITER"]},
+    "mode": {"enum": ["CANONICAL_STRICT", "ADAPTED_CANONICAL", "DIAGNOSTIC_ONLY"]},
+    "sourceName": {"type": "string", "minLength": 1},
+    "sourceHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "approvedSemanticSplitId": {"type": ["string", "null"], "minLength": 1},
+    "requestHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"approvedSemanticSplitId": {"type": "string"}}},
+      "then": {"properties": {"mode": {"const": "ADAPTED_CANONICAL"}}}
+    }
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,153 @@
+{
+  "schema": "EngineeringWorkPack.v1",
+  "workpackId": "VIB-AIV",
+  "capabilityId": "VIB.AIV.ACOUSTIC",
+  "ownerIssue": 441,
+  "familyIssue": 429,
+  "driftIssue": 566,
+  "productionFreezeIssue": 513,
+  "capabilityLifecycle": {
+    "state": "UNMAPPED_LEGACY",
+    "inferred": false,
+    "mappingStatus": "EXPLICITLY_UNMAPPED",
+    "note": "AIV predates the merged capability lifecycle convention; registry membership does not infer lifecycle state."
+  },
+  "adapter": {
+    "path": "converters/engineering-calculations/adapters/vibration-aiv.js",
+    "exportName": "VIBRATION_AIV_ENGINEERING_CALCULATION_DEFINITION"
+  },
+  "registry": {
+    "path": "converters/engineering-calculations/default-registry.js",
+    "exportName": "ACTIVE_ENGINEERING_CALCULATION_DEFINITIONS",
+    "state": "ACTIVE"
+  },
+  "calculator": { "path": "converters/vibration/aiv/aiv-calculator.js" },
+  "assumptionProfile": {
+    "path": "converters/vibration/aiv/aiv-assumption-profile.js",
+    "exportName": "AIV_DEFAULT_ASSUMPTION_PROFILE"
+  },
+  "methodRevision": "ei-aviff2-aiv-auto-screening-v1",
+  "authority": {
+    "calculationState": "IMPLEMENTED",
+    "qualificationState": "SCREENING",
+    "engineeringAuthority": "SCREENING",
+    "screeningAuthority": "AUTHORIZED",
+    "screeningResultScope": "ASSESSMENT",
+    "lineCaseSummaryAuthoritativeForScreening": false,
+    "designAuthority": false,
+    "codeCompliance": false,
+    "fullVibrationAssessmentComplete": false
+  },
+  "boundedMethod": {
+    "stage8Model": "CONFIGURED_D23_INTERMEDIATES",
+    "scopeRule": "SCREENING authority is bounded to the currently qualified implementation and does not imply unrestricted AIV applicability.",
+    "dependencies": [
+      { "path": "benchmark.publishedA", "classification": "BOUNDED_CONFIGURED_IMPLEMENTATION_DEPENDENCY", "runtimeRole": "retained T2-6 configured evidence" },
+      { "path": "benchmark.publishedS", "classification": "BOUNDED_CONFIGURED_IMPLEMENTATION_DEPENDENCY", "runtimeRole": "retained T2-6 configured evidence" },
+      { "path": "benchmark.publishedB", "classification": "BOUNDED_CONFIGURED_IMPLEMENTATION_DEPENDENCY", "runtimeRole": "active errata log10N input" },
+      { "path": "benchmark.flm1Published", "classification": "BOUNDED_CONFIGURED_IMPLEMENTATION_DEPENDENCY", "runtimeRole": "selected when flm1Mode=PUBLISHED" },
+      { "path": "benchmark.flm1Recalculated", "classification": "BOUNDED_CONFIGURED_IMPLEMENTATION_DEPENDENCY", "runtimeRole": "selected when flm1Mode=RECALCULATED" },
+      { "path": "benchmark.flm2", "classification": "BENCHMARK_ORACLE_ONLY", "runtimeRole": "benchmark/evidence value; production FLM2 is calculated from combined point PWL" },
+      { "path": "benchmark.lossFactor", "classification": "BENCHMARK_ORACLE_ONLY", "runtimeRole": "benchmark/evidence value; production Lf is calculated" },
+      { "path": "benchmark.d23FirstDiscontinuityLof", "classification": "BENCHMARK_ORACLE_ONLY", "runtimeRole": "comparison expected value only" },
+      { "path": "benchmark.workedExampleReliefLineLof", "classification": "BOUNDED_CONFIGURED_IMPLEMENTATION_DEPENDENCY", "runtimeRole": "configured LINE_CASE_SUMMARY reference; non-authoritative" }
+    ]
+  },
+  "assumptionCustody": {
+    "missingEngineeringInputsMayBeAssumed": true,
+    "assumptionsMustBeVisible": true,
+    "assumptionsMustBeEditable": true,
+    "assumptionsMustBeExportedWithResults": true,
+    "screeningAuthorityImplied": false,
+    "designAuthority": false,
+    "defaultReason": "MISSING_INPUT_DEFAULTED",
+    "defaultProvenance": "USER_CONFIGURABLE_ASSUMPTION",
+    "precedence": "EXPLICIT_PROJECT_OR_USER > QUALIFIED_EXACT_MASTER > VISIBLE_ACCEPTED_ASSUMPTION"
+  },
+  "benchmarks": {
+    "independentEvidence": {
+      "path": "converters/vibration/aiv/aiv-independent-benchmark-evidence.js",
+      "exportName": "AIV_INDEPENDENT_BENCHMARKS"
+    },
+    "independentVectors": [
+      { "id": "AIV-HAND-SONIC-SFF6-001", "class": "B2_INDEPENDENT_ANALYTICAL", "expected": { "nonSonicReferencePwlDb": 156.72433464037815, "sonicPwlDb": 162.72433464037815, "sonicDeltaDb": 6 } },
+      { "id": "AIV-HAND-MULTI-SOURCE-EQUAL-001", "class": "B2_INDEPENDENT_ANALYTICAL", "expected": { "combinedPwlDb": 163.0102999566398, "increaseAboveSingleSourceDb": 3.010299956639812 } },
+      { "id": "AIV-HAND-MULTI-SOURCE-ASYM-001", "class": "B2_INDEPENDENT_ANALYTICAL", "expected": { "combinedPwlDb": 160.41392685158226, "increaseAboveDominantSourceDb": 0.4139268515822578 } }
+    ],
+    "controlledFamilies": ["B1_EI_D2_3_REGISTERED_PRODUCT_PATH", "B2_INDEPENDENT_ANALYTICAL_VECTORS", "B3_API_BATCH_RESULT_SCOPE_REGRESSION", "B4_UI_CANVAS_EXPORT_REGRESSION"],
+    "oracleRule": "Production output may consume but may never populate or correct frozen expected values."
+  },
+  "probeModules": {
+    "aiv": {
+      "path": "engineering/workpacks/probes/vib-aiv.mjs",
+      "exports": [
+        "verifyAuthorityState", "verifyScreeningScope", "verifyLineCaseSummaryBoundary", "verifyDesignAuthority",
+        "verifyAssumptionProvenance", "verifyAssumptionAuthorityBoundary", "verifyBoundedMethodCustody",
+        "verifyIndependentBenchmarks", "verifyBenchmarkIndependence", "verifyProductFreezeOwnership", "verifyOverlapClassification"
+      ]
+    }
+  },
+  "consoleProjectionRules": [{
+    "path": "tabs/engineering-calculation-console-view.js",
+    "requiredStrings": ["isAivQualificationWorkspace(definition)", "pill(definitionState(definition), authorityPillKind(definition))"],
+    "forbiddenStrings": ["${pill('QUALIFICATION WORKSPACE', 'warn')} ${pill('BLOCKED', 'bad')}"]
+  }],
+  "familyProjectionRules": [{
+    "path": "tabs/engineering-calculation-vibration-family.js",
+    "requiredStrings": ["TABLES / explicit engineering contracts = engineering facts", "SVG / pixel geometry = presentation only"],
+    "forbiddenStrings": ["No 3D viewer or canvas is embedded here."]
+  }],
+  "resultScopeProjectionRules": [{
+    "path": "tabs/vibration-aiv-result-view.js",
+    "requiredStrings": ["Assessment Screening Results", "NON-AUTHORITATIVE"],
+    "forbiddenStrings": []
+  }],
+  "canvasAuthorityRules": [{
+    "path": "tests/vibration-aiv-unified-canvas-cutover.test.mjs",
+    "requiredStrings": ["assert.equal(source.includes('Math.log10('), false)", "assert.equal(source.includes('svgPixelsAuthoritativeForDistance: true'), false)"],
+    "forbiddenStrings": []
+  }],
+  "documentRules": [{
+    "path": "docs/vibration/AIV-Artifact-Classification-v1.md",
+    "classification": "CURRENT_AUTHORITY_RECONCILIATION",
+    "requiredStrings": ["AIV-Independent-Promotion-Review-v1.md", "HISTORICAL_PRE_PROMOTION_QUALIFICATION", "AIV-Release-Validation-v1.md", "QUALIFICATION_EVIDENCE_PROTOCOL", "AIV-Independent-Sonic-MultiSource-Benchmarks-v1.md", "HISTORICAL_PRE_PROMOTION_BENCHMARK_EVIDENCE", "Current authority: `IMPLEMENTED / SCREENING / AUTHORIZED` for `ASSESSMENT` results only."],
+    "forbiddenStrings": []
+  }],
+  "productFreeze": {
+    "programOwnerIssue": 513,
+    "overallFrozen": "NOT_INFERRED_HERE",
+    "qualificationIndependent": true,
+    "rule": "Only issue #513 protocol/evidence may establish final Product Freeze disposition."
+  },
+  "activeOverlap": [
+    { "ref": "PR#517", "classification": "COORDINATION_REQUIRED", "boundary": "PF-02 readiness/execution parity; do not solve here" },
+    { "ref": "PR#506", "classification": "COORDINATION_REQUIRED", "boundary": "salvage/evidence candidate; not current baseline" },
+    { "ref": "ISSUE#526", "classification": "WORDING_ONLY", "boundary": "unified canvas exists on main; no runtime ownership redesign" },
+    { "ref": "ISSUE#453", "classification": "EXTERNAL_ACCEPTANCE_UMBRELLA", "boundary": "this Work Pack does not close production acceptance" }
+  ],
+  "checks": [
+    { "id": "AIV-WP-001", "type": "MODULE_EXPORT_EQUALS", "severity": "ERROR", "config": { "moduleRef": "adapter", "property": "id", "expectedRef": "capabilityId" } },
+    { "id": "AIV-WP-002", "type": "MODULE_EXPORT_EQUALS", "severity": "ERROR", "config": { "moduleRef": "adapter", "property": "methodRevision", "expectedRef": "methodRevision" } },
+    { "id": "AIV-WP-003", "type": "REGISTRY_CONTAINS", "severity": "ERROR", "config": { "moduleRef": "registry", "idRef": "capabilityId", "stateRef": "registry.state", "requiredState": "ACTIVE" } },
+    { "id": "AIV-WP-004", "type": "CUSTOM_DECLARED_PROBE", "severity": "ERROR", "config": { "probeModule": "aiv", "exportName": "verifyAuthorityState" } },
+    { "id": "AIV-WP-005", "type": "CUSTOM_DECLARED_PROBE", "severity": "ERROR", "config": { "probeModule": "aiv", "exportName": "verifyScreeningScope" } },
+    { "id": "AIV-WP-006", "type": "CUSTOM_DECLARED_PROBE", "severity": "ERROR", "config": { "probeModule": "aiv", "exportName": "verifyLineCaseSummaryBoundary" } },
+    { "id": "AIV-WP-007", "type": "CUSTOM_DECLARED_PROBE", "severity": "ERROR", "config": { "probeModule": "aiv", "exportName": "verifyDesignAuthority" } },
+    { "id": "AIV-WP-008", "type": "MODULE_EXPORT_EQUALS", "severity": "ERROR", "config": { "moduleRef": "adapter", "property": "authority.codeCompliance", "expectedRef": "authority.codeCompliance" } },
+    { "id": "AIV-WP-009", "type": "CUSTOM_DECLARED_PROBE", "severity": "ERROR", "config": { "probeModule": "aiv", "exportName": "verifyAssumptionProvenance" } },
+    { "id": "AIV-WP-010", "type": "CUSTOM_DECLARED_PROBE", "severity": "ERROR", "config": { "probeModule": "aiv", "exportName": "verifyAssumptionAuthorityBoundary" } },
+    { "id": "AIV-WP-011", "type": "CUSTOM_DECLARED_PROBE", "severity": "ERROR", "config": { "probeModule": "aiv", "exportName": "verifyBoundedMethodCustody" } },
+    { "id": "AIV-WP-012", "type": "CUSTOM_DECLARED_PROBE", "severity": "ERROR", "config": { "probeModule": "aiv", "exportName": "verifyIndependentBenchmarks" } },
+    { "id": "AIV-WP-013", "type": "CUSTOM_DECLARED_PROBE", "severity": "ERROR", "config": { "probeModule": "aiv", "exportName": "verifyBenchmarkIndependence" } },
+    { "id": "AIV-WP-014", "type": "SOURCE_RULES", "severity": "ERROR", "config": { "rulesRef": "consoleProjectionRules" } },
+    { "id": "AIV-WP-015", "type": "SOURCE_RULES", "severity": "ERROR", "config": { "rulesRef": "familyProjectionRules" } },
+    { "id": "AIV-WP-016", "type": "DOCUMENT_CLASSIFICATION", "severity": "ERROR", "config": { "rulesRef": "documentRules" } },
+    { "id": "AIV-WP-017", "type": "SOURCE_RULES", "severity": "ERROR", "config": { "rulesRef": "resultScopeProjectionRules" } },
+    { "id": "AIV-WP-018", "type": "SOURCE_RULES", "severity": "ERROR", "config": { "rulesRef": "canvasAuthorityRules" } },
+    { "id": "AIV-WP-019", "type": "CUSTOM_DECLARED_PROBE", "severity": "ERROR", "config": { "probeModule": "aiv", "exportName": "verifyProductFreezeOwnership" } },
+    { "id": "AIV-WP-020", "type": "CUSTOM_DECLARED_PROBE", "severity": "ERROR", "config": { "probeModule": "aiv", "exportName": "verifyOverlapClassification" } }
+  ],
+  "requiredQualificationCommands": ["npm run workpack:verify -- VIB-AIV", "node --test tests/vibration-aiv-workpack-drift.test.mjs", "npm run workpack:verify -- VIB-FIT", "node --test tests/engineering-workpack-framework.test.mjs", "npm run verify:aiv-screening-release", "npm run verify:aiv-canvas-release"],
+  "protectedInvariants": ["screeningAuthority=AUTHORIZED only for ASSESSMENT result scope", "line/case summary remains non-authoritative", "designAuthority=false", "codeCompliance=false", "assumption presence does not create screening authority", "configured D.2.3 dependencies do not imply unrestricted AIV authority", "independent benchmark expected values are not generated by production", "SVG/pixel geometry never creates engineering physical distance", "full vibration integrity is not established by AIV alone", "Product Freeze cannot be inferred from method qualification"],
+  "forbiddenPaths": ["converters/vibration/aiv numerical equations", "AIV equation coefficients or empirical constants", "AIV benchmark expected values or tolerances", "AIV assumption numerical defaults or policy", "AIV screening applicability expansion", "AIV readiness/PF-02 execution behavior", "AIV canvas runtime ownership or physical-distance semantics", ".github/workflows/*"]
+}

@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "specKey": "151374",
+  "rowCount": 8,
+  "generatedAt": "2026-06-09T02:27:27.132Z",
+  "source": "../Piping_class_master.json",
+  "rows": [
+    {
+      "Piping Class": "151374",
+      "Size": "0.5",
+      "SCH": "XXS",
+      "Wall thickness": "7.4676",
+      "Material_Name": "ASTM A106-B",
+      "PMSMat_Categories": "Carbon steel M-Sour PWHT",
+      "PMSMat_Cat": "CS",
+      "Rating": "1500",
+      "Corrosion": "3",
+      "convertedBore": 15,
+      "_sourceRowIndex": 2875
+    },
+    {
+      "Piping Class": "151374",
+      "Size": "0.75",
+      "SCH": "XXS",
+      "Wall thickness": "7.8231999999999999",
+      "Material_Name": "ASTM A106-B",
+      "PMSMat_Categories": "Carbon steel M-Sour PWHT",
+      "PMSMat_Cat": "CS",
+      "Rating": "1500",
+      "Corrosion": "3",
+      "convertedBore": 20,
+      "_sourceRowIndex": 2876
+    },
+    {
+      "Piping Class": "151374",
+      "Size": "1",
+      "SCH": "XXS",
+      "Wall thickness": "9.0931999999999995",
+      "Material_Name": "ASTM A106-B",
+      "PMSMat_Categories": "Carbon steel M-Sour PWHT",
+      "PMSMat_Cat": "CS",
+      "Rating": "1500",
+      "Corrosion": "3",
+      "convertedBore": 25,
+      "_sourceRowIndex": 2877
+    },
+    {
+      "Piping Class": "151374",
+      "Size": "1.5",
+      "SCH": "XXS",
+      "Wall thickness": "10.16",
+      "Material_Name": "ASTM A106-B",
+      "PMSMat_Categories": "Carbon steel M-Sour PWHT",
+      "PMSMat_Cat": "CS",
+      "Rating": "1500",
+      "Corrosion": "3",
+      "convertedBore": 40,
+      "_sourceRowIndex": 2878
+    },
+    {
+      "Piping Class": "151374",
+      "Size": "2",
+      "SCH": "XXS",
+      "Wall thickness": "11.074400000000001",
+      "Material_Name": "ASTM A106-B",
+      "PMSMat_Categories": "Carbon steel M-Sour PWHT",
+      "PMSMat_Cat": "CS",
+      "Rating": "1500",
+      "Corrosion": "3",
+      "convertedBore": 50,
+      "_sourceRowIndex": 2879
+    },
+    {
+      "Piping Class": "151374",
+      "Size": "3",
+      "SCH": "XXS",
+      "Wall thickness": "15.24",
+      "Material_Name": "ASTM A106-B",
+      "PMSMat_Categories": "Carbon steel M-Sour PWHT",
+      "PMSMat_Cat": "CS",
+      "Rating": "1500",
+      "Corrosion": "3",
+      "convertedBore": 80,
+      "_sourceRowIndex": 2880
+    },
+    {
+      "Piping Class": "151374",
+      "Size": "4",
+      "SCH": "XXS",
+      "Wall thickness": "17.119599999999998",
+      "Material_Name": "ASTM A106-B",
+      "PMSMat_Categories": "Carbon steel M-Sour PWHT",
+      "PMSMat_Cat": "CS",
+      "Rating": "1500",
+      "Corrosion": "3",
+      "convertedBore": 100,
+      "_sourceRowIndex": 2881
+    },
+    {
+      "Piping Class": "151374",
+      "Size": "6",
+      "SCH": "XXS",
+      "Wall thickness": "21.945599999999999",
+      "Material_Name": "ASTM A106-B",
+      "PMSMat_Categories": "Carbon steel M-Sour PWHT",
+      "PMSMat_Cat": "CS",
+      "Rating": "1500",
+      "Corrosion": "3",
+      "convertedBore": 150,
+      "_sourceRowIndex": 2882
+    }
+  ]
+}

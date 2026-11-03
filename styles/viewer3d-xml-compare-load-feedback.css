@@ -1,0 +1,98 @@
+.v3d-xc-file {
+  position: relative;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.v3d-xc-file small {
+  display: inline-block;
+  max-width: 118px;
+  margin-left: 6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #cbd5e1;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+  vertical-align: bottom;
+}
+
+.v3d-xc-file[data-v3d-xc-file-state="empty"] small {
+  display: none;
+}
+
+.v3d-xc-file.is-loaded {
+  border-color: rgba(74, 222, 128, 0.45);
+  background: rgba(20, 83, 45, 0.22);
+  color: #bbf7d0;
+}
+
+.v3d-xc-file.is-loaded small {
+  color: #dcfce7;
+}
+
+.v3d-xc-file.is-loaded::after {
+  content: 'OK';
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 6px;
+  border-radius: 999px;
+  color: #bbf7d0;
+  font-size: 9px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.v3d-xc-status {
+  flex-wrap: wrap;
+}
+
+.v3d-xc-status [data-v3d-xc-load-status] {
+  min-width: min(100%, 260px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.v3d-xc-status.is-info [data-v3d-xc-load-status] {
+  color: #bfdbfe;
+}
+
+.v3d-xc-status.is-ok [data-v3d-xc-load-status] {
+  color: #bbf7d0;
+  font-weight: 700;
+}
+
+.v3d-xc-status.is-error [data-v3d-xc-load-status] {
+  color: #fecaca;
+  font-weight: 700;
+}
+
+.v3d-xc-route-card.is-reading {
+  border-color: rgba(96, 165, 250, 0.42);
+  background: rgba(30, 64, 175, 0.14);
+}
+
+.v3d-xc-route-file-meta {
+  color: #e2e8f0;
+  font-weight: 700;
+}
+
+@media (max-width: 760px) {
+  .v3d-xc-file small {
+    max-width: calc(100vw - 180px);
+  }
+
+  .v3d-xc-status [data-v3d-xc-load-status] {
+    width: 100%;
+    text-align: left;
+  }
+}

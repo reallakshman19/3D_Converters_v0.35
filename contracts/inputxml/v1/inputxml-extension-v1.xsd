@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="urn:reallaksh19:inputxml:extension:v1"
+           xmlns:ext="urn:reallaksh19:inputxml:extension:v1"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+  <xs:annotation>
+    <xs:documentation>
+      Explicit preservation namespace for engineering evidence that is not part of
+      canonical InputXML v1. Extension records never make unsupported data convertible.
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:simpleType name="DispositionType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="PRESERVE_EXTENSION"/>
+      <xs:enumeration value="DEFER_EXPLICITLY"/>
+      <xs:enumeration value="UNSUPPORTED_BLOCKING"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ConfidenceType">
+    <xs:restriction base="xs:decimal">
+      <xs:minInclusive value="0"/>
+      <xs:maxInclusive value="1"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="CriticalityType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="BLOCKING"/>
+      <xs:enumeration value="HIGH"/>
+      <xs:enumeration value="MEDIUM"/>
+      <xs:enumeration value="LOW"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="RecordType" mixed="true">
+    <xs:attribute name="name" type="xs:NCName" use="required"/>
+    <xs:attribute name="sourceRepository" type="xs:string" use="optional"/>
+    <xs:attribute name="sourcePath" type="xs:string" use="required"/>
+    <xs:attribute name="sourceEntityId" type="xs:string" use="optional"/>
+    <xs:attribute name="sourceField" type="xs:string" use="optional"/>
+    <xs:attribute name="unit" type="xs:string" use="optional"/>
+    <xs:attribute name="dataType" type="xs:string" use="optional"/>
+    <xs:attribute name="disposition" type="ext:DispositionType" use="required"/>
+    <xs:attribute name="criticality" type="ext:CriticalityType" use="required"/>
+    <xs:attribute name="confidence" type="ext:ConfidenceType" use="required"/>
+    <xs:attribute name="evidenceHash" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="ExtensionType">
+    <xs:sequence>
+      <xs:element name="Record" type="ext:RecordType" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="schema" type="xs:string" use="required" fixed="inputxml-extension/v1"/>
+    <xs:attribute name="producer" type="xs:string" use="required"/>
+    <xs:attribute name="dialect" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:element name="Extension" type="ext:ExtensionType"/>
+</xs:schema>

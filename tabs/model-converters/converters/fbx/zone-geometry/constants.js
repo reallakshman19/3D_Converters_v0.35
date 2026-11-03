@@ -1,0 +1,35 @@
+export const FBX_ZONE_GEOMETRY_SCHEMA = 'FbxZoneGeometryEvidence.v1';
+export const FBX_DERIVED_PORT_SCHEMA = 'FbxDerivedPortEvidence.v1';
+export const FBX_DERIVED_PORT_TOLERANCE_PROFILE = Object.freeze({
+  profile: 'FbxDerivedPortToleranceProfile.v1',
+  minimumRadiusMm: 0.000001,
+  planarityAbsoluteMm: 0.01,
+  planarityRadiusRatio: 0.0001,
+  circularAbsoluteMm: 0.05,
+  circularRadiusRatio: 0.001,
+  comparison: 'inclusive',
+});
+
+export const ZONE_GEOMETRY_STATUS = Object.freeze({
+  PASS: 'ZONE_GEOMETRY_PASS',
+  BINDING: 'BLOCKED_ZONE_GEOMETRY_BINDING',
+  SCOPE: 'BLOCKED_ZONE_GEOMETRY_SCOPE',
+  TOPOLOGY: 'BLOCKED_ZONE_GEOMETRY_TOPOLOGY',
+  LOOP: 'BLOCKED_DERIVED_PORT_LOOP',
+  FIT: 'BLOCKED_DERIVED_PORT_FIT',
+  RESOURCE: 'BLOCKED_ZONE_GEOMETRY_RESOURCE',
+  CANCELLED: 'BLOCKED_ZONE_GEOMETRY_CANCELLED',
+});
+
+export const GEOMETRY_BUFFER_ROLES = Object.freeze([
+  'control-points-mm', 'polygon-offsets', 'polygon-vertex-indices',
+]);
+
+export const REJECTION_REASON_ORDER = Object.freeze([
+  'NON_MANIFOLD_SHELL', 'NON_MANIFOLD_EDGE', 'AMBIGUOUS_EDGE_INCIDENCE',
+  'OPEN_CHAIN', 'BRANCHING_BOUNDARY', 'DEGENERATE_LOOP', 'AMBIGUOUS_WINDING',
+  'LOCAL_FIT_SINGULAR', 'LOCAL_WINDING_DEGENERATE', 'RADIUS_BELOW_MINIMUM',
+  'UNSUPPORTED_INHERITANCE', 'MISSING_TRANSFORM', 'SINGULAR_TRANSFORM',
+  'SHEAR_TRANSFORM', 'NON_UNIFORM_SCALE', 'MIRRORED_ORIENTATION_MISMATCH',
+  'NON_PLANAR', 'NON_CIRCULAR', 'NON_FINITE_RESULT',
+]);

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:reallaksh19:inputxml:selected-output-manifest:v1",
+  "title": "SelectedOutputManifest.v1",
+  "type": "object",
+  "$defs": {"artifact": {"type": "object", "required": ["fileName", "sha256", "bytes"], "properties": {"fileName": {"type": "string", "pattern": "^[^/\\\\]+$"}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "bytes": {"type": "integer", "minimum": 0}}, "additionalProperties": false}},
+  "required": ["schema", "status", "contractVersion", "sourceHashSha256", "compatibilityMode", "artifacts", "approvedSemanticSplit", "manifestHashSha256"],
+  "properties": {
+    "schema": {"const": "SelectedOutputManifest.v1"},
+    "status": {"const": "PASS"},
+    "contractVersion": {"const": "inputxml-v2"},
+    "sourceHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "compatibilityMode": {"enum": ["CANONICAL_STRICT", "ADAPTED_CANONICAL"]},
+    "artifacts": {"type": "object", "required": ["canonicalInputXml", "cii", "compatibilityRequest", "compatibilityPolicy", "canonicalizationLedger", "canonicalValidation", "normalizationPlan", "diagnosticReport", "resolverTrace", "canonicalSourceModel", "resolvedRelationships", "canonicalTopology", "topoNodePlan", "numberedTopologyProjection", "parsedInputXmlTopology", "topologyParityReport", "assuranceLedger", "ciiProjectionLedger"], "properties": {"canonicalInputXml": {"$ref": "#/$defs/artifact"}, "cii": {"$ref": "#/$defs/artifact"}, "compatibilityRequest": {"$ref": "#/$defs/artifact"}, "compatibilityPolicy": {"$ref": "#/$defs/artifact"}, "canonicalizationLedger": {"$ref": "#/$defs/artifact"}, "canonicalValidation": {"$ref": "#/$defs/artifact"}, "normalizationPlan": {"$ref": "#/$defs/artifact"}, "diagnosticReport": {"$ref": "#/$defs/artifact"}, "resolverTrace": {"$ref": "#/$defs/artifact"}, "canonicalSourceModel": {"$ref": "#/$defs/artifact"}, "resolvedRelationships": {"$ref": "#/$defs/artifact"}, "canonicalTopology": {"$ref": "#/$defs/artifact"}, "topoNodePlan": {"$ref": "#/$defs/artifact"}, "numberedTopologyProjection": {"$ref": "#/$defs/artifact"}, "parsedInputXmlTopology": {"$ref": "#/$defs/artifact"}, "topologyParityReport": {"$ref": "#/$defs/artifact"}, "assuranceLedger": {"$ref": "#/$defs/artifact"}, "ciiProjectionLedger": {"$ref": "#/$defs/artifact"}, "approvedSemanticSplitEvidence": {"$ref": "#/$defs/artifact"}}, "additionalProperties": false},
+    "approvedSemanticSplit": {"type": ["object", "null"], "properties": {"approvalId": {"type": "string"}, "artifactHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}, "required": ["approvalId", "artifactHashSha256"], "additionalProperties": false},
+    "manifestHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "allOf": [{"if": {"properties": {"approvedSemanticSplit": {"type": "object"}}}, "then": {"properties": {"artifacts": {"required": ["approvedSemanticSplitEvidence"]}}}}],
+  "additionalProperties": false
+}

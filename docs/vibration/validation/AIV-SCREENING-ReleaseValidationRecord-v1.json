@@ -1,0 +1,27 @@
+{
+  "schema": "AivReleaseValidationRecord.v1",
+  "methodId": "VIB.AIV.ACOUSTIC",
+  "repository": "reallaksh19/3D_Converters",
+  "releaseTarget": "SCREENING",
+  "exactHeadSha": "613e1ec48335db3794e5208b0c3435d387683b04",
+  "execution": {
+    "source": "LOCAL_CONTROLLED_CHECKOUT",
+    "actualExecution": true,
+    "runnerId": null,
+    "runnerName": null,
+    "environment": "OpenAI container Node v22.16.0; networkless sparse exact-head AIV screening checkout; 21 executed/scanned source files matched exact Git blob SHA-1 values",
+    "startedAt": "2026-08-13T01:45:00Z",
+    "completedAt": "2026-08-13T01:45:45.387Z"
+  },
+  "checks": [
+    {"groupId":"AIV_FOCUSED_NODE_TESTS","status":"PASS","command":"node tests/stage20-screening-qualification.mjs","exitCode":0,"outputSha256":"sha256:5e4bd1dea51df13b7444d8147f71498fc238cb200fe9739458dcc8fe55eef76f","notes":"All eight screening qualification assertions passed."},
+    {"groupId":"AIV_CONTROLLED_BENCHMARK_PARITY","status":"PASS","command":"node scripts/run-aiv-d23-product-path-validation.mjs","exitCode":0,"outputSha256":"sha256:b63293aec97da2ec01651c1351eed75a42b3c11fe1f697b08da34ce7679c4b2f","notes":"EI D.2.3 remains 22/22 PASS."},
+    {"groupId":"AIV_BROWSER_WORKSPACE_SMOKE","status":"PASS","command":"node tests/stage19-local-validation.mjs --group browser","exitCode":0,"outputSha256":"sha256:947c38470161036f32426831fed411571ea065a9cd40048968e0677e8e8db9bb","notes":"Benchmark rendering, edit invalidation and export smoke passed."},
+    {"groupId":"AIV_MODULE_BOUNDARY_CHECK","status":"PASS","command":"node tests/stage19-local-validation.mjs --group boundaries","exitCode":0,"outputSha256":"sha256:947c38470161036f32426831fed411571ea065a9cd40048968e0677e8e8db9bb","notes":"Exact-source module boundary checks passed."},
+    {"groupId":"AIV_REAL_PRODUCT_PATH_PARITY","status":"PASS","command":"node tests/stage20-screening-qualification.mjs --group real-product-path","exitCode":0,"outputSha256":"sha256:13c8e3ac987f1323b505d0b10f27cd4535338e81b33a65448d37c3101ba44766","notes":"10-stage screening candidate path executes assessment-scope result with line summary non-authoritative."},
+    {"groupId":"AIV_SINGLE_BATCH_PARITY","status":"PASS","command":"node tests/stage20-screening-qualification.mjs --group single-batch","exitCode":0,"outputSha256":"sha256:3ddc3901facb7256cec2c271bc289e508e98cf4ce3585a3cc15d92c27fa74771","notes":"Two screening cases match byte-structure values between single and same-kernel batch execution."},
+    {"groupId":"AIV_PROJECT_INPUT_BROWSER_FLOW","status":"PASS","command":"node tests/stage20-screening-qualification.mjs --group project-flow","exitCode":0,"outputSha256":"sha256:1ec08e6855ebf42d07a1a2f626a9e66eb1dcf5f4e360c96c7954109dfacf8201","notes":"Blank project rows resolve 56 visible assumptions; explicit mass-flow override is preserved and changes result."},
+    {"groupId":"AIV_EXPORT_PROVENANCE","status":"PASS","command":"node tests/stage20-screening-qualification.mjs --group export","exitCode":0,"outputSha256":"sha256:0a119a7e81c64f0adb20d272f1bb9e42d03640479a9eedf8d0debc54aba8ae07","notes":"Export retains inputs, assumption trace, stage order, source trace and designAuthority=false."}
+  ],
+  "authority": {"authorityTransitionApplied":false,"designAuthority":false}
+}

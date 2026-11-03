@@ -1,0 +1,79 @@
+{
+  "schema": "VibrationMasterSecondarySourceCandidate.v1",
+  "masterId": "EI_AVIFF.T2.9.VALVE_RECOVERY_FACTORS.v1",
+  "candidateFile": "docs/Masters/Vibration/ei-aviff-t29-valve-recovery-factors.candidate.csv",
+  "controlledSource": {
+    "repository": "reallaksh19/Common",
+    "commit": "fb549185b9b27edc2379734240320a85c5bef9f6",
+    "path": "EI - AVIFF Guidelines 2nd Edition.pdf",
+    "gitBlobSha1": "sha1:9d3eccc56429411e17c07a579bdebbd13cb0bdc5",
+    "sizeBytes": 10348594,
+    "section": "T2.9.2",
+    "printedPage": 69,
+    "locator": "Valve Type / FL typical values table",
+    "executionStatus": "BLOCKED_ENVIRONMENT"
+  },
+  "requestedWorkbookAudit": {
+    "repository": "reallaksh19/CRF-4-1",
+    "commit": "68dc8e1fa2ef67073c59b3afc56f1bf40953d535",
+    "root": "Extended calc2",
+    "status": "TARGET_TABLE_NOT_FOUND",
+    "fivWorkbook": {
+      "path": "Extended calc2/FIV.xlsx",
+      "gitBlobSha1": "sha1:bc0aedbefac54c1a2e5d643e76c047cb890bf14d",
+      "sizeBytes": 154500,
+      "sharedStringsCount": 179,
+      "sharedStringsCrc32": "fe58bb23",
+      "sheet5Crc32": "df699df1",
+      "sheet5Title": "APP C - Liquid or Multiphase Valve Opening",
+      "finding": "T2.8 valve transient workbook; no T2.9 cavitation/flashing or FL lookup label."
+    }
+  },
+  "siblingWorkbookAudit": {
+    "path": "Enhanced stress report/extended calc/KS-PR-CAL-0089 Vibration Assessment - Cavitation & Flashing Calculation V and V.xlsx",
+    "gitBlobSha1": "sha1:8c6c3e9771675d9463ed15361ff0f6035dab8c87",
+    "sizeBytes": 903076,
+    "workbookSheets": ["Coversheet", "Checklist"],
+    "sharedStringsCount": 54,
+    "sharedStringsCrc32": "89e74d7b",
+    "finding": "Verification/checklist shell; no numerical FL table in workbook cells."
+  },
+  "independentEiCorroboration": {
+    "status": "PASS",
+    "role": "SECONDARY_PUBLICATION_NAVIGATION_AND_RECONCILIATION_ONLY",
+    "publication": "Guidelines for the Avoidance of Vibration Induced Fatigue Failure in Process Pipework, 2nd edition",
+    "section": "T2.9.2",
+    "printedPage": 69,
+    "copiesChecked": 4,
+    "equationForValve": "delta = FL^2 * (P1 - 0.96 * Pv)",
+    "rows": [
+      {"valveType": "Ball", "FL": 0.6},
+      {"valveType": "Butterfly", "FL": 0.62},
+      {"valveType": "Globe", "FL": 0.9},
+      {"valveType": "Gate", "FL": 0.6}
+    ],
+    "workedCalculationCorroboration": {
+      "valveType": "Globe",
+      "FL": 0.9,
+      "P1_Pa": 13789500,
+      "Pv_Pa": 152926,
+      "expectedDelta_Pa": 11050579.7424
+    }
+  },
+  "lookupBehavior": {
+    "unknownValveType": "NOT_READY",
+    "nearestFallbackForbidden": true
+  },
+  "reconciliation": {
+    "status": "CONTROLLED_SOURCE_RECONCILIATION_REQUIRED",
+    "reason": "Exact controlled EI PDF has not been executed through the canonical DocumentEvidence path."
+  },
+  "publicationState": "CANDIDATE",
+  "qualificationStatus": "NOT_QUALIFIED",
+  "masterValuesPublished": false,
+  "authority": {
+    "engineeringAuthority": "NONE",
+    "screeningAuthority": "NOT_AUTHORIZED",
+    "designAuthority": false
+  }
+}

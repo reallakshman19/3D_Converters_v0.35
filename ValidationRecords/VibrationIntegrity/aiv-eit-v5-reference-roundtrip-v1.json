@@ -1,0 +1,147 @@
+{
+  "schema": "AivEitRoundTripValidationRecord.v1",
+  "validationId": "AIV-EIT-V5-CONTROLLED-REFERENCE-ROUNDTRIP-V1",
+  "createdDate": "2026-08-14",
+  "scope": "Controlled EI AVIFF v5 compatibility import, authority classification, preservation, and current-screening readiness boundary",
+  "implementationCandidate": {
+    "repository": "reallaksh19/3D_Converters",
+    "branch": "agent/aiv-eit-import-ui",
+    "baseSha": "994f43521b5aa6e4dd397efd9300ce21943d056d",
+    "calculationId": "VIB.AIV.ACOUSTIC",
+    "designAuthority": false
+  },
+  "controlledSource": {
+    "repository": "reallaksh19/Common",
+    "commit": "3c8ddb89044061dd26f593604d4b547438c006f0",
+    "path": "Energy-Institute-AVIFF---Worked-Examples.eit",
+    "gitBlob": "aaf3afe262b19f927fe05e0c44f07f08167fbfa0",
+    "sizeBytes": 10414,
+    "version": 5,
+    "shape": {
+      "lines": 12,
+      "pipes": 7,
+      "streams": 15,
+      "aivLines": 3
+    },
+    "historicalAivAnchors": [
+      { "lineReference": "Recycle discharge", "aiv": 0.29, "pwlDb": 129.36 },
+      { "lineReference": "Recycle suction", "aiv": 0.29, "pwlDb": 129.02 },
+      { "lineReference": "Relief line (downstream of PSV)", "aiv": 1.48, "pwlDb": 164.69 }
+    ]
+  },
+  "authorityExpectation": {
+    "allImportedHistoricalAivResults": "REVIEW_REQUIRED",
+    "importedResultKind": "LEGACY_LINE_LEVEL_RESULT",
+    "currentScreeningAuthority": false,
+    "requiredActionForCurrentAuthority": "RUN_REGISTERED_AIV_SCREENING",
+    "currentScreeningResultScope": "ASSESSMENT",
+    "lineCaseSummaryAuthoritativeForScreening": false,
+    "designAuthority": false
+  },
+  "importExpectations": {
+    "aivSourceRows": 3,
+    "aivAssessmentRows": 3,
+    "sourceAssessmentRows": 3,
+    "legacyUnits": {
+      "massFlow": "kg/h",
+      "pressure": "bar ABSOLUTE",
+      "temperature": "C",
+      "molecularWeight": "g/mol",
+      "geometry": "mm"
+    },
+    "preserveOriginalDocument": true,
+    "preserveNonAivModules": true,
+    "preserveUnknownFields": true,
+    "syntheticTopologyAuthority": {
+      "connectivityOnly": true,
+      "syntheticDirectPathProjection": true,
+      "svgPixelsAuthoritativeForDistance": false
+    }
+  },
+  "currentScreeningReadinessBoundary": {
+    "status": "BLOCKED_MISSING_MODERN_ENGINEERING_EVIDENCE",
+    "reason": "The historical v5 source does not carry every field required by the current qualified AIV screening contract.",
+    "knownBlockingClasses": [
+      "SONIC_STATE_UNRESOLVED",
+      "PHYSICAL_DISTANCE_REQUIRED"
+    ],
+    "policy": [
+      "Do not invent physical distance from SVG or topology presentation.",
+      "Do not infer sonic state from a historical result value.",
+      "Do not promote imported line.aiv to current Assessment screening authority."
+    ]
+  },
+  "antiDrift": {
+    "sourceIdentityPinned": true,
+    "v5ShapePinned": true,
+    "historicalAnchorsPinned": true,
+    "roundTripIdentityLock": "AIV_EIT_ROUND_TRIP_IDENTITY_CHANGED",
+    "unknownFieldPreservationRequired": true,
+    "mixedModuleMaxLofPreserved": true
+  },
+  "validationSteps": [
+    {
+      "step": 1,
+      "name": "Fetch exact controlled v5 source",
+      "expected": "Pinned Common commit/path/blob/size",
+      "observed": "GitHub connector fetched the exact controlled file at the pinned commit.",
+      "status": "PASS"
+    },
+    {
+      "step": 2,
+      "name": "Parse v5 document contract",
+      "expected": "options.version=5 and controlled collection shape",
+      "observed": "Permanent automated test is implemented but has not executed in this runtime.",
+      "status": "NOT_RUN"
+    },
+    {
+      "step": 3,
+      "name": "Classify historical AIV result authority",
+      "expected": "REVIEW_REQUIRED; never current screening authority",
+      "observed": "Permanent automated test is implemented but has not executed in this runtime.",
+      "status": "NOT_RUN"
+    },
+    {
+      "step": 4,
+      "name": "Build editable Source / Assessment / Relationship records",
+      "expected": "3 / 3 / 3 imported AIV working records",
+      "observed": "Permanent automated test seam is implemented; exact controlled-source execution pending.",
+      "status": "NOT_RUN"
+    },
+    {
+      "step": 5,
+      "name": "Check current screening readiness",
+      "expected": "Fail closed until missing sonic-state and explicit-distance evidence are resolved",
+      "observed": "Contract inspection identifies historical evidence gaps; no current screening result is claimed.",
+      "status": "BLOCKED_INPUT_EVIDENCE"
+    },
+    {
+      "step": 6,
+      "name": "Compatibility-preserving re-export after registered rerun",
+      "expected": "Preserve non-AIV modules/unknown fields and replace only current AIV fields",
+      "observed": "Permanent mixed-module and unknown-field tests are implemented but not yet executed.",
+      "status": "NOT_RUN"
+    },
+    {
+      "step": 7,
+      "name": "Real-browser import/download acceptance",
+      "expected": "Import control populates working state; rerun/export downloads .eit",
+      "observed": "No real browser available in current execution environment.",
+      "status": "NOT_RUN"
+    }
+  ],
+  "execution": {
+    "focusedCommand": "npm run verify:aiv-eit-export",
+    "focusedAutomatedTests": "NOT_RUN",
+    "fullAivRelease": "NOT_RUN",
+    "realBrowserAcceptance": "NOT_RUN",
+    "externalEiConsumerRoundTrip": "NOT_RUN"
+  },
+  "overallStatus": "IMPLEMENTED_VALIDATION_PENDING_AND_HISTORICAL_RERUN_INPUT_BLOCKED",
+  "notes": [
+    "This record deliberately separates file compatibility from current AIV numerical authority.",
+    "A historical 1.48 AIV line value is retained as legacy evidence only.",
+    "Current screening authority can only be established by a registered VIB.AIV.ACOUSTIC rerun after readiness.",
+    "PASS is not claimed for automated or browser work that has not executed."
+  ]
+}

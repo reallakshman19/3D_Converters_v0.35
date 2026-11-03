@@ -1,0 +1,209 @@
+{
+  "schema": "bm-cii-isonote-restraint-validation/v1",
+  "generatedBy": "scripts/bm-cii/isonote-restraint-validation.mjs",
+  "rules": {
+    "restraintCarryForward": false,
+    "isonoteSourceTextExact": true,
+    "validationScope": "ISONOTE intent vs approved InputXML Basic restraint records"
+  },
+  "summary": {
+    "total": 4,
+    "MISSING_IN_INPUTXML": 2,
+    "PASS": 2
+  },
+  "records": [
+    {
+      "node": "35",
+      "isonote": ":/PS-123 :ISONOTE 'REST(28kN), GUIDE(6kN),LINE STOP(15kN)'",
+      "parsedIntents": [
+        "REST",
+        "GUIDE",
+        "LINE_STOP"
+      ],
+      "actualRestraints": [
+        {
+          "node": "35",
+          "sourceItem": "+Y",
+          "family": "REST",
+          "axisPipeBasis": "VERTICAL",
+          "cosine": "VERTICAL AXIS",
+          "renderKind": "REST"
+        },
+        {
+          "node": "35",
+          "sourceItem": "X",
+          "family": "AXIS_RESTRAINT",
+          "axisPipeBasis": "AXIAL",
+          "cosine": "X",
+          "renderKind": "AXIS_PAIR_X"
+        },
+        {
+          "node": "35",
+          "sourceItem": "Z",
+          "family": "AXIS_RESTRAINT",
+          "axisPipeBasis": "AXIAL",
+          "cosine": "Z",
+          "renderKind": "AXIS_PAIR_Z"
+        }
+      ],
+      "checks": [
+        {
+          "intent": "REST",
+          "status": "PASS",
+          "remark": "REST present in InputXML restraint records."
+        },
+        {
+          "intent": "GUIDE",
+          "status": "MISSING_IN_INPUTXML",
+          "remark": "ISONOTE expects GUIDE but no GUIDE family was found."
+        },
+        {
+          "intent": "LINE_STOP",
+          "status": "MISSING_IN_INPUTXML",
+          "remark": "ISONOTE expects LINE STOP but no LINE_STOP/LIMIT family was found."
+        }
+      ],
+      "status": "MISSING_IN_INPUTXML"
+    },
+    {
+      "node": "130",
+      "isonote": ":ISONOTE 'REST NOT DEFINED, SINGLE AXIS Z'",
+      "parsedIntents": [
+        "REST_NOT_DEFINED",
+        "SINGLE_AXIS_Z"
+      ],
+      "actualRestraints": [
+        {
+          "node": "130",
+          "sourceItem": "+Z",
+          "family": "LINE_STOP",
+          "axisPipeBasis": "AXIAL",
+          "cosine": "+Z",
+          "renderKind": "LINESTOP"
+        }
+      ],
+      "checks": [
+        {
+          "intent": "REST_NOT_DEFINED",
+          "status": "PASS",
+          "remark": "ISONOTE says REST NOT DEFINED and no REST family is present."
+        },
+        {
+          "intent": "SINGLE_AXIS_Z",
+          "status": "PASS",
+          "remark": "Single-axis Z intent has an explicit Z-axis restraint record."
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "node": "255",
+      "isonote": ":ISONOTE 'REST(3kN), GUIDE(1kN)'",
+      "parsedIntents": [
+        "REST",
+        "GUIDE"
+      ],
+      "actualRestraints": [
+        {
+          "node": "255",
+          "sourceItem": "GUIDE",
+          "family": "GUIDE",
+          "axisPipeBasis": "LATERAL",
+          "cosine": "AS PER NODE DATA",
+          "renderKind": "GUIDE"
+        },
+        {
+          "node": "255",
+          "sourceItem": "+Y",
+          "family": "REST",
+          "axisPipeBasis": "VERTICAL",
+          "cosine": "VERTICAL AXIS",
+          "renderKind": "REST"
+        }
+      ],
+      "checks": [
+        {
+          "intent": "REST",
+          "status": "PASS",
+          "remark": "REST present in InputXML restraint records."
+        },
+        {
+          "intent": "GUIDE",
+          "status": "PASS",
+          "remark": "GUIDE present in InputXML restraint records."
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "node": "205",
+      "isonote": ":/PS-456 :ISONOTE 'REST(10kN), HOLDDOWN,LINE STOP(6kN), Holddown without Guide Can Spring'",
+      "parsedIntents": [
+        "REST",
+        "GUIDE",
+        "LINE_STOP",
+        "HOLDDOWN",
+        "SPRING_WARNING"
+      ],
+      "actualRestraints": [
+        {
+          "node": "205",
+          "sourceItem": "LIM",
+          "family": "LIMIT",
+          "axisPipeBasis": "AXIAL",
+          "cosine": "AXIAL TO PIPE",
+          "renderKind": "LIMIT"
+        },
+        {
+          "node": "205",
+          "sourceItem": "Y",
+          "family": "REST",
+          "axisPipeBasis": "VERTICAL",
+          "cosine": "VERTICAL AXIS",
+          "renderKind": "REST"
+        },
+        {
+          "node": "205",
+          "sourceItem": "HANGER",
+          "family": "HANGER / SPRING",
+          "axisPipeBasis": "LATERAL / VERTICAL HANGER",
+          "cosine": "VERTICAL AXIS",
+          "renderKind": "SPRING"
+        }
+      ],
+      "checks": [
+        {
+          "intent": "REST",
+          "status": "PASS",
+          "remark": "REST present in InputXML restraint records."
+        },
+        {
+          "intent": "GUIDE",
+          "status": "MISSING_IN_INPUTXML",
+          "remark": "ISONOTE expects GUIDE but no GUIDE family was found."
+        },
+        {
+          "intent": "LINE_STOP",
+          "status": "PASS",
+          "remark": "LINE STOP intent is covered by LINE_STOP/LIMIT restraint."
+        },
+        {
+          "intent": "HOLDDOWN",
+          "status": "NEEDS_ENGINEERING_REVIEW",
+          "remark": "ISONOTE mentions HOLDDOWN; InputXML has HANGER/SPRING. Verify holddown/spring modelling basis."
+        },
+        {
+          "intent": "SPRING_WARNING",
+          "status": "NEEDS_ENGINEERING_REVIEW",
+          "remark": "ISONOTE spring warning retained for engineering review."
+        },
+        {
+          "intent": "WARNING",
+          "status": "NEEDS_ENGINEERING_REVIEW",
+          "remark": "ISONOTE contains spring-related warning text. Requires engineering review."
+        }
+      ],
+      "status": "MISSING_IN_INPUTXML"
+    }
+  ]
+}

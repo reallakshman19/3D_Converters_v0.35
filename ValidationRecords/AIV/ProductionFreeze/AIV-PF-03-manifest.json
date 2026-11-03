@@ -1,0 +1,142 @@
+{
+  "schema": "AivProductionFreezeManifest.v1",
+  "sliceId": "PF-03",
+  "issueId": 513,
+  "repository": "reallaksh19/3D_Converters",
+  "initialBaseSha": "d659e670a2f8fe0a35fc8072382512f6493898cf",
+  "baseSha": "5ad2288d41e031ef23df0cb3e600763081b4ac62",
+  "baseTree": "84e426dccaced396bd6ee7aa6206ad09a3bb343e",
+  "candidateSha": "8cd30a464435658e833ddf297c5727e68e979d4d",
+  "branch": "agent/aiv-pf03-simultaneous-source-semantics-20260815",
+  "qualification": {
+    "status": "QUALIFIED_FOR_AIV_PRODUCTION_FREEZE",
+    "issueCommentId": 5301819610
+  },
+  "progressionWaiver": {
+    "fromSlice": "PF-02",
+    "status": "OWNER_WAIVER_FOR_PROGRESSION_ONLY",
+    "issueCommentId": 5302118299,
+    "doesNotConvertPriorSliceToPass": true
+  },
+  "chromiumWaiver": {
+    "status": "OWNER_WAIVER_PF03_CHROMIUM_ONLY",
+    "issueCommentId": 5302589137,
+    "browserStatus": "NOT_RUN_OWNER_WAIVED",
+    "fullBrowserPass": false
+  },
+  "mainAdvanceReconciliation": {
+    "from": "d659e670a2f8fe0a35fc8072382512f6493898cf",
+    "to": "5ad2288d41e031ef23df0cb3e600763081b4ac62",
+    "aheadBy": 2,
+    "pf03CriticalPathOverlap": false,
+    "mergeCommit": "8cd30a464435658e833ddf297c5727e68e979d4d"
+  },
+  "chromiumVersion": "Chromium 144.0.7559.96 built on Debian GNU/Linux 13 (trixie)",
+  "appBuildIdentity": {
+    "status": "LOCAL_EXACT_SOURCE_DEPENDENCY_CUSTODY",
+    "candidateCodeHead": "8cd30a464435658e833ddf297c5727e68e979d4d",
+    "nativeFullAppServed": false
+  },
+  "browserStartUrl": null,
+  "loadedDatasetIdentity": [
+    "AIV.EI.D2.3.WORKED_EXAMPLE.v1",
+    "PF03_SIM-SRC-1+SIM-SRC-2/SIM-GROUP-1",
+    "SMALL-FLARE-2RV-SUBHEADER-001"
+  ],
+  "implementationCustody": [
+    {
+      "path": "converters/vibration/aiv/aiv-kernel-candidate.js",
+      "preFixBlob": "647cbf5bd19e2015dbc28708d8b6740269f1e5b4",
+      "candidateBlob": "b0967c4c2e9fb98c90b6a3e9028ce9851e9bbcbb"
+    },
+    {
+      "path": "tests/vibration-aiv-canvas-integration.test.mjs",
+      "preFixBlob": "9f101f0092ec2c3a2ce148e92b3dead0c7209442",
+      "candidateBlob": "36d983018d6e7ef3fc7cd7bda60bdab5bfe3097d"
+    }
+  ],
+  "benchmarkSources": [
+    {
+      "id": "AIV-HAND-MULTI-SOURCE-EQUAL-001+AIV-HAND-MULTI-SOURCE-ASYM-001",
+      "repository": "reallaksh19/3D_Converters",
+      "path": "converters/vibration/aiv/aiv-independent-benchmark-evidence.js",
+      "commit": "d659e670a2f8fe0a35fc8072382512f6493898cf",
+      "blob": "21d1e687dca0c537f4170e961b2d7b1894d710cc"
+    },
+    {
+      "id": "EI-D2.3-AIV",
+      "repository": "reallaksh19/Advanced_Analysis",
+      "path": "docs/EI data/EI_AVIFF_Guidelines_2nd_Edition_Examples.md",
+      "commit": "04328852dced9f5c4827da8afe8a82aeb8b1a1d3",
+      "blob": "c050cd90802c27241c510c6f0ac43bfaf7a89e9d"
+    },
+    {
+      "id": "AIV_REGISTERED_MULTI_SOURCE_PRODUCT_FIXTURE_PRE_FIX",
+      "repository": "reallaksh19/3D_Converters",
+      "path": "tests/vibration-aiv-canvas-integration.test.mjs",
+      "commit": "d659e670a2f8fe0a35fc8072382512f6493898cf",
+      "blob": "9f101f0092ec2c3a2ce148e92b3dead0c7209442"
+    },
+    {
+      "id": "AIV_2RV_FLARE_FIXTURE",
+      "repository": "reallaksh19/3D_Converters",
+      "path": "tabs/vibration-aiv-mock-flare-network.js",
+      "commit": "d659e670a2f8fe0a35fc8072382512f6493898cf",
+      "blob": "0da9c525148de7eb6e12db2912636c2780ba0ba8"
+    }
+  ],
+  "expectedOracles": [
+    {
+      "id": "B1-D23",
+      "reliefRawSourcePwlDb": 164.6851759525391,
+      "reliefPointPwlDb": 164.3734876408508,
+      "assessmentLof": 0.29,
+      "absoluteToleranceDb": 1e-10
+    },
+    {
+      "id": "B2-160+160",
+      "expected": 163.0102999566398,
+      "unit": "dB",
+      "absoluteTolerance": 1e-09,
+      "requiredSourceCanonicalIds": [
+        "SIM-SRC-1",
+        "SIM-SRC-2"
+      ],
+      "requiredSimultaneousSourceGroup": "SIM-GROUP-1"
+    },
+    {
+      "id": "B3-160+150",
+      "expected": 160.41392685158226,
+      "unit": "dB",
+      "absoluteTolerance": 1e-09,
+      "requiredSourceCanonicalIds": [
+        "SIM-SRC-1",
+        "SIM-SRC-2"
+      ],
+      "requiredSimultaneousSourceGroup": "SIM-GROUP-1"
+    },
+    {
+      "id": "B8-DISTINCT-GROUPS",
+      "expectedDisposition": "FAIL_CLOSED",
+      "errorCode": "AIV_MULTIPLE_SIMULTANEOUS_GROUPS_UNSUPPORTED",
+      "governingGroupAlgorithmAuthorized": false
+    }
+  ],
+  "masterSourceIdentity": {
+    "status": "NOT_ACTIVE_IN_PF03_CONTROLLED_INPUTS",
+    "rule": "Pinned Git identity alone never establishes master engineering qualification."
+  },
+  "comparisonTolerancePolicy": "Frozen source values/tolerances are unchanged. Exact identifiers/group labels are exact; floating values use only their pre-existing declared absolute tolerances.",
+  "authorityBoundaries": {
+    "tablesAreEngineeringSourceOfTruth": true,
+    "svgGeometryIsEngineeringDistanceAuthority": false,
+    "screeningResultScope": "ASSESSMENT",
+    "lineCaseSummaryAuthoritative": false,
+    "designAuthority": false
+  },
+  "localValidationStatus": "PF03_APPLICABLE_BENCHMARKS_PASS",
+  "environmentDisposition": "CHROMIUM_OWNER_WAIVED_LOCAL_EXACT_SOURCE_EXECUTION_COMPLETE",
+  "createdAt": "2026-08-15T15:59:00+04:00",
+  "updatedAt": "2026-08-15T18:08:38+04:00",
+  "operator": "GPT-5.6 Sol via connected GitHub + local Node exact-source execution"
+}

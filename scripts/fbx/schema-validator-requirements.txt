@@ -1,0 +1,4 @@
+# Pinned Python dependencies for executable FbxSourceGraph.v2 Draft 2020-12 validation.
+# Install into an isolated environment; do not rely on the Ubuntu system jsonschema package.
+jsonschema==4.23.0
+referencing==0.35.1

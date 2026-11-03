@@ -1,0 +1,167 @@
+{
+  "schema": "AivProductionFreezeSourceQualification.v1",
+  "sliceId": "AIV-PF-03",
+  "qualificationClass": "EXTERNAL_PINNED_SOURCE_AND_INDEPENDENT_ORACLE_QUALIFICATION",
+  "status": "QUALIFIED_EXAMPLE_AND_ORACLE_BASIS",
+  "repositoryBaseline": {
+    "repository": "reallaksh19/3D_Converters",
+    "mainSha": "d659e670a2f8fe0a35fc8072382512f6493898cf",
+    "branch": "agent/aiv-pf03-simultaneous-source-semantics-20260815"
+  },
+  "ownerAuthorization": {
+    "issue": 513,
+    "commentId": 5302366192,
+    "disposition": "OWNER_AUTHORIZED_SOURCE_EXAMPLE_QUALIFICATION",
+    "browserPassGranted": false
+  },
+  "primarySource": {
+    "repository": "reallaksh19/Advanced_Analysis",
+    "commit": "04328852dced9f5c4827da8afe8a82aeb8b1a1d3",
+    "path": "docs/EI data/EI_AVIFF_Guidelines_2nd_Edition_Examples.md",
+    "blob": "c050cd90802c27241c510c6f0ac43bfaf7a89e9d",
+    "locator": "D.2.3 High Frequency Acoustic Excitation (T2.7)"
+  },
+  "supportingSources": [
+    {
+      "path": "docs/EI data/README.md",
+      "blob": "72730d065bcd2aa80976f0ad2870aafacff0bb4c",
+      "purpose": "governance and authority hierarchy"
+    },
+    {
+      "path": "docs/EI data/AIV misc/README.md",
+      "blob": "4dc89a14de916bbc5dd49067d65a00c6715b3205",
+      "purpose": "AIV master database provenance"
+    },
+    {
+      "path": "docs/EI data/AIV misc/masters/M_PIPE_DIMENSION.csv",
+      "blob": "7aaee1609329f00273a40637052705eed251b30b",
+      "purpose": "pipe dimensional corroboration"
+    }
+  ],
+  "d23SourceInputs": {
+    "relief": {
+      "upstreamPressureBarg": 98,
+      "downstreamPressureBarg": 0,
+      "referencePressureBar": 1,
+      "massFlowKgHr": 53482,
+      "temperatureDegC": 137,
+      "molecularWeightGPerMol": 21.75,
+      "sonicFlowFactorDb": 0,
+      "publishedSourcePwlDb": 164.7
+    },
+    "recycle": {
+      "upstreamPressureBarg": 87,
+      "downstreamPressureBarg": 25,
+      "referencePressureBar": 1,
+      "massFlowKgHr": 53482,
+      "temperatureDegC": 136.7,
+      "molecularWeightGPerMol": 21.75,
+      "sonicFlowFactorDb": 0,
+      "publishedSourcePwlDb": 159.4,
+      "manufacturerTrimReductionDb": 30
+    },
+    "firstDiscontinuity": {
+      "type": "WELDOLET",
+      "physicalDistanceM": 0.8,
+      "mainOutsideDiameterMm": 168.3,
+      "mainWallThicknessMm": 7.11,
+      "mainInsideDiameterWorkedExampleMm": 154.1,
+      "mainInsideDiameterMasterMm": 154.08,
+      "branchOutsideDiameterMm": 60.3,
+      "publishedPointPwlDb": 164.4,
+      "publishedLof": 0.29
+    }
+  },
+  "independentRecalculation": {
+    "reliefRawSourcePwlDb": {
+      "actual": 164.6851759525391,
+      "publishedRounded": 164.7,
+      "status": "PASS"
+    },
+    "recycleRawSourcePwlDb": {
+      "actual": 159.36481554007995,
+      "publishedRounded": 159.4,
+      "status": "PASS"
+    },
+    "recycleAfterTrimPwlDb": {
+      "actual": 129.36481554007995,
+      "thresholdDb": 155,
+      "status": "PASS_BELOW_THRESHOLD"
+    },
+    "reliefPointUsingApplicationRounded154mm": {
+      "attenuationDb": 0.3116883116883117,
+      "actual": 164.3734876408508,
+      "publishedRounded": 164.4,
+      "status": "PASS"
+    },
+    "reliefPointUsingPinnedMaster154_08mm": {
+      "attenuationDb": 0.3115264797507788,
+      "actual": 164.37364947278834,
+      "publishedRounded": 164.4,
+      "status": "PASS"
+    },
+    "applicationVsMasterIdRoundingDeltaDb": -0.00016183193753249725,
+    "stage8": {
+      "log10N": 9.902567870507482,
+      "publishedLog10N": 9.9026,
+      "N": 7990388037.921443,
+      "publishedN": "7.99E9",
+      "diameterRatio": 2.7910447761194033,
+      "recalculatedFlm1": 1.2109758194311824,
+      "publishedFlm1": 1.2133,
+      "flm2": 0.2009306328510857,
+      "publishedFlm2": 0.2009,
+      "lossFactor": 0.31287602368755874,
+      "publishedLossFactor": 0.31,
+      "lof": 0.29,
+      "publishedLof": 0.29,
+      "status": "PASS"
+    }
+  },
+  "pf03IndependentOracles": [
+    {
+      "id": "AIV-HAND-MULTI-SOURCE-EQUAL-001",
+      "inputsDb": [160, 160],
+      "expectedCombinedDb": 163.0102999566398,
+      "toleranceAbsDb": 1e-9,
+      "recalculatedCombinedDb": 163.0102999566398,
+      "status": "INDEPENDENT_ANALYTICAL_PASS"
+    },
+    {
+      "id": "AIV-HAND-MULTI-SOURCE-ASYM-001",
+      "inputsDb": [160, 150],
+      "expectedCombinedDb": 160.41392685158226,
+      "toleranceAbsDb": 1e-9,
+      "recalculatedCombinedDb": 160.41392685158226,
+      "status": "INDEPENDENT_ANALYTICAL_PASS"
+    }
+  ],
+  "semanticQualification": {
+    "eiD23AdditionalSourcesStatement": "NO_ADDITIONAL_SOURCES_IN_WORKED_EXAMPLE",
+    "sameGroupMultiSourceArithmetic": "QUALIFIED_BY_INDEPENDENT_ANALYTICAL_ORACLES",
+    "multipleDistinctGroupsSameAssessmentCase": "MUST_FAIL_CLOSED_UNTIL_SEPARATELY_QUALIFIED_GROUP_SCENARIO_CONTRACT_EXISTS",
+    "governingGroupAlgorithmAuthorized": false
+  },
+  "precisionDisposition": {
+    "applicationMainInsideDiameterMm": 154,
+    "workedExampleMainInsideDiameterMm": 154.1,
+    "masterMainInsideDiameterMm": 154.08,
+    "classification": "ROUNDING_TRANSCRIPTION_NOT_BENCHMARK_REGRESSION",
+    "reason": "Both source/master dimensional values and the existing application rounded value reproduce the published 164.4 dB discontinuity value; the high-precision delta is 0.00016183193753249725 dB and no frozen expected value or tolerance was changed."
+  },
+  "authority": {
+    "tablesAreEngineeringSourceOfTruth": true,
+    "svgEngineeringDistanceAuthority": false,
+    "screeningResultScope": "ASSESSMENT",
+    "lineCaseSummaryAuthoritative": false,
+    "designAuthority": false
+  },
+  "acceptanceBoundaries": {
+    "exampleSourceQualification": "PASS",
+    "independentNumericalOracleQualification": "PASS",
+    "registeredApplicationB2B3Execution": "NOT_RUN",
+    "distinctGroupRegisteredApplicationExecution": "NOT_RUN",
+    "fullBrowserPass": "NOT_RUN",
+    "pf03FullQualification": false
+  }
+}

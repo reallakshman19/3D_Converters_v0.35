@@ -1,0 +1,15 @@
+{
+  "currentLogicalNodes": [
+    {"logicalNodeId":"C2","projectId":"P1","zoneId":"Z1","mainLineKey":"/A","logicalRole":"ROUTE","position":{"x":100,"y":0,"z":0},"topologySignature":"SIG-B"},
+    {"logicalNodeId":"C1","projectId":"P1","zoneId":"Z1","mainLineKey":"/A","logicalRole":"ROUTE","position":{"x":0,"y":0,"z":0},"topologySignature":"SIG-A"}
+  ],
+  "histories": [
+    {"historyNodeId":"H2","lifecycleStatus":"ACTIVE"},
+    {"historyNodeId":"H1","lifecycleStatus":"ACTIVE"}
+  ],
+  "positions": [
+    {"historyNodeId":"H2","position":{"x":101,"y":0,"z":0},"coordinateFrameId":"HISTORY-FRAME","corroboration":{"logicalRole":"ROUTE","topologySignature":"SIG-B"}},
+    {"historyNodeId":"H1","position":{"x":1,"y":0,"z":0},"coordinateFrameId":"HISTORY-FRAME","corroboration":{"logicalRole":"ROUTE","topologySignature":"SIG-A"}}
+  ],
+  "unmatchedIds": ["C2", "C1"]
+}

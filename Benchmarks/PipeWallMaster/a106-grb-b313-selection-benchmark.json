@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "1.0.0",
+  "benchmarkId": "USER-A106-GRB-B313-PIPE-WALL-SELECTION-001",
+  "description": "Selection of project-master B36.10M schedule walls for the user-supplied A106 Gr B B31.3 DN benchmark required nominal thicknesses.",
+  "sourceAuthority": "USER_SUPPLIED_B313_REQUIREMENTS_PLUS_PROJECT_PIPE_WALL_MASTER",
+  "dimensionStandard": "ASME B36.10M",
+  "pipeWallSourcePath": "docs/Masters/NPS_OD_BORE_SCHEDULE_MASTER.tsv",
+  "pipeWallSourceBlobSha": "7e83f7283b4ca9f35a86a45c008ca0b52a053fcc",
+  "rows": [
+    {"dn":15,"requiredNominalThicknessMm":7.301593190295001,"expected":{"selectedWallMm":7.4676,"schedule":"XXS","equivalentSchedules":["XXS"],"marginMm":0.16600680970499937}},
+    {"dn":20,"requiredNominalThicknessMm":7.41427073954484,"expected":{"selectedWallMm":7.8232,"schedule":"XXS","equivalentSchedules":["XXS"],"marginMm":0.4089292604551602}},
+    {"dn":25,"requiredNominalThicknessMm":7.554074365465937,"expected":{"selectedWallMm":9.0932,"schedule":"XXS","equivalentSchedules":["XXS"],"marginMm":1.539125634534063}},
+    {"dn":40,"requiredNominalThicknessMm":7.864980936544198,"expected":{"selectedWallMm":10.16,"schedule":"XXS","equivalentSchedules":["XXS"],"marginMm":2.2950190634558023}},
+    {"dn":50,"requiredNominalThicknessMm":8.11537549043273,"expected":{"selectedWallMm":8.7376,"schedule":"160","equivalentSchedules":["160"],"marginMm":0.6222245095672712}},
+    {"dn":80,"requiredNominalThicknessMm":8.712149177200397,"expected":{"selectedWallMm":11.1252,"schedule":"160","equivalentSchedules":["160"],"marginMm":2.413050822799603}},
+    {"dn":100,"requiredNominalThicknessMm":9.242150982931122,"expected":{"selectedWallMm":11.1252,"schedule":"120","equivalentSchedules":["120"],"marginMm":1.8830490170688776}},
+    {"dn":150,"requiredNominalThicknessMm":10.368926475429515,"expected":{"selectedWallMm":10.9728,"schedule":"80","equivalentSchedules":["80","XS"],"marginMm":0.6038735245704849}},
+    {"dn":200,"requiredNominalThicknessMm":11.428930086890963,"expected":{"selectedWallMm":12.7,"schedule":"80","equivalentSchedules":["80","XS"],"marginMm":1.2710699131090362}},
+    {"dn":250,"requiredNominalThicknessMm":12.553618958106954,"expected":{"selectedWallMm":12.7,"schedule":"60","equivalentSchedules":["60","XS"],"marginMm":0.14638104189304535}},
+    {"dn":300,"requiredNominalThicknessMm":13.613622569568404,"expected":{"selectedWallMm":14.2748,"schedule":"60","equivalentSchedules":["60"],"marginMm":0.6611774304315965}},
+    {"dn":350,"requiredNominalThicknessMm":14.277168137373012,"expected":{"selectedWallMm":15.0876,"schedule":"60","equivalentSchedules":["60"],"marginMm":0.810431862626988}}
+  ]
+}

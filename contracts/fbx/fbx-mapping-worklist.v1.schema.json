@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "FbxMappingWorklist.v1",
+  "title": "FbxMappingWorklist.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "worklistId", "source", "parser", "sourceGraph", "scopePolicy", "workItems", "retainedEvidence"],
+  "properties": {
+    "schema": { "const": "FbxMappingWorklist.v1" },
+    "worklistId": { "$ref": "#/$defs/sha256" },
+    "source": { "$ref": "#/$defs/source" },
+    "parser": { "$ref": "#/$defs/parser" },
+    "sourceGraph": { "$ref": "#/$defs/sourceGraph" },
+    "scopePolicy": { "$ref": "#/$defs/scopePolicy" },
+    "workItems": { "type": "array", "items": { "$ref": "#/$defs/workItem" } },
+    "retainedEvidence": { "type": "array", "items": { "$ref": "#/$defs/retainedEvidence" } }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "sourceId": { "type": "string", "pattern": "^\\d+$" },
+    "occurrenceId": { "type": "string", "pattern": "^occ:\\d+$" },
+    "source": {
+      "type": "object", "additionalProperties": false,
+      "required": ["sha256", "byteLength", "fbxVersion"],
+      "properties": {
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "byteLength": { "type": "integer", "minimum": 1 },
+        "fbxVersion": { "type": "integer", "minimum": 3000, "maximum": 7700 }
+      }
+    },
+    "parser": {
+      "type": "object", "additionalProperties": false,
+      "required": ["wasmSha256", "upstreamRevision", "sourceSha256", "provenanceSchema"],
+      "properties": {
+        "wasmSha256": { "$ref": "#/$defs/sha256" },
+        "upstreamRevision": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "sourceSha256": { "$ref": "#/$defs/sha256" },
+        "provenanceSchema": { "type": "string", "minLength": 1 }
+      }
+    },
+    "sourceGraph": {
+      "type": "object", "additionalProperties": false,
+      "required": ["schema", "canonicalSha256"],
+      "properties": {
+        "schema": { "const": "FbxSourceGraph.v2" },
+        "canonicalSha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "scopePolicy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "authority", "requiredElementType", "requiredDisposition", "identityJoin", "namesAuthoritative", "geometryAuthoritativeForClassification"],
+      "properties": {
+        "id": { "const": "SOURCE_GRAPH_SUPPORTED_OCCURRENCES_V1" },
+        "authority": { "const": "FbxSourceGraph.v2" },
+        "requiredElementType": { "const": "NODE" },
+        "requiredDisposition": { "const": "supported-occurrence" },
+        "identityJoin": { "const": "occurrence.sourceModelObjectId" },
+        "namesAuthoritative": { "const": false },
+        "geometryAuthoritativeForClassification": { "const": false }
+      }
+    },
+    "typeEvidence": {
+      "type": "object", "additionalProperties": false,
+      "required": ["ufbxElementId", "ufbxTypedId", "ufbxElementType", "ufbxElementTypeValue", "nodeAttributeType", "nodeAttributeTypeValue", "sourceDocumentOrder"],
+      "properties": {
+        "ufbxElementId": { "type": "integer", "minimum": 0 },
+        "ufbxTypedId": { "type": "integer", "minimum": 0 },
+        "ufbxElementType": { "type": "string", "minLength": 1 },
+        "ufbxElementTypeValue": { "type": "integer", "minimum": 0 },
+        "nodeAttributeType": { "type": ["string", "null"] },
+        "nodeAttributeTypeValue": { "type": ["integer", "null"], "minimum": 0 },
+        "sourceDocumentOrder": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "nameEvidence": {
+      "type": "object", "additionalProperties": false,
+      "required": ["authority", "domClass", "domSubtype", "domSourceName", "displayName"],
+      "properties": {
+        "authority": { "const": "NON_AUTHORITATIVE" },
+        "domClass": { "type": "string", "minLength": 1 },
+        "domSubtype": { "type": "string" },
+        "domSourceName": { "type": "string" },
+        "displayName": { "type": "string" }
+      }
+    },
+    "geometryEvidence": {
+      "type": "object", "additionalProperties": false,
+      "required": ["geometryObjectId", "kind", "pointAuthority", "governedPointCount"],
+      "properties": {
+        "geometryObjectId": { "$ref": "#/$defs/sourceId" },
+        "kind": { "enum": ["MESH", "NURBS_CURVE"] },
+        "pointAuthority": { "enum": ["MESH_VERTEX", "NURBS_CONTROL_POINT"] },
+        "governedPointCount": { "type": "integer", "minimum": 0 }
+      },
+      "allOf": [
+        { "if": { "properties": { "kind": { "const": "MESH" } } }, "then": { "properties": { "pointAuthority": { "const": "MESH_VERTEX" } } } },
+        { "if": { "properties": { "kind": { "const": "NURBS_CURVE" } } }, "then": { "properties": { "pointAuthority": { "const": "NURBS_CONTROL_POINT" } } } }
+      ]
+    },
+    "workItem": {
+      "type": "object", "additionalProperties": false,
+      "required": ["workItemId", "sourceModelObjectId", "sourceOccurrenceId", "sourceGeometryObjectIds", "typeEvidence", "nameEvidence", "sourceRecordDisposition", "geometryEvidence", "reviewState"],
+      "properties": {
+        "workItemId": { "type": "string", "pattern": "^work-[0-9a-f]{64}$" },
+        "sourceModelObjectId": { "$ref": "#/$defs/sourceId" },
+        "sourceOccurrenceId": { "$ref": "#/$defs/occurrenceId" },
+        "sourceGeometryObjectIds": { "type": "array", "items": { "$ref": "#/$defs/sourceId" }, "uniqueItems": true },
+        "typeEvidence": { "$ref": "#/$defs/typeEvidence" },
+        "nameEvidence": { "$ref": "#/$defs/nameEvidence" },
+        "sourceRecordDisposition": { "const": "supported-occurrence" },
+        "geometryEvidence": { "type": "array", "items": { "$ref": "#/$defs/geometryEvidence" } },
+        "reviewState": { "const": "PENDING" }
+      }
+    },
+    "retainedEvidence": {
+      "type": "object", "additionalProperties": false,
+      "required": ["sourceObjectId", "typeEvidence", "nameEvidence", "sourceRecordDisposition", "evidenceRole"],
+      "properties": {
+        "sourceObjectId": { "$ref": "#/$defs/sourceId" },
+        "typeEvidence": { "$ref": "#/$defs/typeEvidence" },
+        "nameEvidence": { "$ref": "#/$defs/nameEvidence" },
+        "sourceRecordDisposition": { "enum": ["supported-occurrence", "supported-geometry", "retained-evidence", "unresolved-unknown"] },
+        "evidenceRole": { "const": "NON_OCCURRENCE_TRACE" }
+      }
+    }
+  }
+}

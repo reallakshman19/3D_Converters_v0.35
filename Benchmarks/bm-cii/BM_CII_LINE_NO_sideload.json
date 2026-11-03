@@ -1,0 +1,11 @@
+{
+  "records": [
+    {
+      "node": 10,
+      "LINE_NO": "LINE XYZ",
+      "scope": "TOPOLOGY_CARRY_FORWARD",
+      "appliesTo": "COMPONENT_PROPERTIES_ONLY",
+      "remark": "Mock BM_CII Line No sideload anchor; do not apply to restraints/support records"
+    }
+  ]
+}

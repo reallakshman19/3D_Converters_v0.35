@@ -1,0 +1,106 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourcePath": "docs/Masters/NPS_OD_BORE_SCHEDULE_MASTER.tsv",
+  "sourceBlobSha": "7e83f7283b4ca9f35a86a45c008ca0b52a053fcc",
+  "cases": [
+    {
+      "id": "PW-001",
+      "description": "A106 Gr B DN250 requirement selects 12.7 mm B36.10M wall",
+      "query": {
+        "dimensionStandard": "ASME B36.10M",
+        "dn": 250,
+        "requiredNominalThicknessMm": 12.553618958106954
+      },
+      "expected": {
+        "nominalWallMm": 12.7,
+        "schedule": "60",
+        "equivalentSchedules": ["60", "XS"]
+      }
+    },
+    {
+      "id": "PW-002",
+      "description": "Exact 15.0876 mm boundary selects schedule 80",
+      "query": {
+        "dimensionStandard": "ASME B36.10M",
+        "nps": 10,
+        "requiredNominalThicknessMm": 15.0876
+      },
+      "expected": {
+        "nominalWallMm": 15.0876,
+        "schedule": "80",
+        "equivalentSchedules": ["80"]
+      }
+    },
+    {
+      "id": "PW-003",
+      "description": "One micron above schedule 80 selects schedule 100",
+      "query": {
+        "dimensionStandard": "ASME B36.10M",
+        "nps": 10,
+        "requiredNominalThicknessMm": 15.087601
+      },
+      "expected": {
+        "nominalWallMm": 18.2626,
+        "schedule": "100",
+        "equivalentSchedules": ["100"]
+      }
+    },
+    {
+      "id": "PW-004",
+      "description": "B36.19M namespace stays separate and selects 80S",
+      "query": {
+        "dimensionStandard": "ASME B36.19M",
+        "nps": 10,
+        "requiredNominalThicknessMm": 10
+      },
+      "expected": {
+        "nominalWallMm": 12.7,
+        "schedule": "80S",
+        "equivalentSchedules": ["80S"]
+      }
+    },
+    {
+      "id": "PW-005",
+      "description": "DN100 requirement selects 8.5598 mm under B36.10M",
+      "query": {
+        "dimensionStandard": "B36.10",
+        "dn": 100,
+        "requiredNominalThicknessMm": 7
+      },
+      "expected": {
+        "nominalWallMm": 8.5598,
+        "schedule": "80",
+        "equivalentSchedules": ["80", "XS"]
+      }
+    }
+  ],
+  "negativeCases": [
+    {
+      "id": "PW-N001",
+      "query": {
+        "dimensionStandard": "ASME B36.10M",
+        "nps": 10,
+        "requiredNominalThicknessMm": 40
+      },
+      "expectedCode": "NO_ADEQUATE_PIPE_WALL"
+    },
+    {
+      "id": "PW-N002",
+      "query": {
+        "dimensionStandard": "ASME B36.19M",
+        "nps": 52,
+        "requiredNominalThicknessMm": 5
+      },
+      "expectedCode": "PIPE_WALL_SIZE_MISS"
+    },
+    {
+      "id": "PW-N003",
+      "query": {
+        "dimensionStandard": "ASME B36.10M",
+        "nps": 10,
+        "requiredNominalThicknessMm": 0
+      },
+      "expectedCode": "INVALID_REQUIRED_NOMINAL_THICKNESS"
+    }
+  ]
+}

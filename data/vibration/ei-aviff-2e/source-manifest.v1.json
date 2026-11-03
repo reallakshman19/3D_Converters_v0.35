@@ -1,0 +1,19 @@
+{
+  "schema": "VibrationMasterSourceManifest.v1",
+  "packageId": "EI_AVIFF_2E_ADVANCED_ANALYSIS_6111DDBC",
+  "repository": "reallaksh19/Advanced_Analysis",
+  "commit": "6111ddbc0f27dd95b50a80c569a2c4daba3b3921",
+  "rootPath": "docs/EI data",
+  "runtimeFetchAllowed": false,
+  "files": [
+    {"role":"SBC_T3_CANDIDATE_SOURCE","path":"docs/EI data/P0_SBC_Master_Data.md","gitBlobSha1":"5312c9e2cf86af9e940ba722fcbee64702aeccd3","sizeBytes":21154},
+    {"role":"WORKED_EXAMPLE_ORACLE","path":"docs/EI data/EI_AVIFF_Guidelines_2nd_Edition_Examples.md","gitBlobSha1":"c050cd90802c27241c510c6f0ac43bfaf7a89e9d","sizeBytes":99120},
+    {"role":"CONSOLIDATED_CORROBORATION","path":"docs/EI data/EI_AVIFF_Complete_Master_Register.md","gitBlobSha1":"51bca43473be8018d4ce48fb440ee4d7bd0abc82","sizeBytes":32592},
+    {"role":"PACKAGE_GOVERNANCE","path":"docs/EI data/README.md","gitBlobSha1":"72730d065bcd2aa80976f0ad2870aafacff0bb4c","sizeBytes":3472}
+  ],
+  "stage1Disposition": {
+    "tablesT3_1_T3_2_T3_3": "CANDIDATE_SOURCE_PARITY_PASS",
+    "curvesT3_1_T3_2_T3_3_T3_4": "BLOCKED_SOURCE_DATA_CONFLICT",
+    "authorityEffect": "NONE"
+  }
+}

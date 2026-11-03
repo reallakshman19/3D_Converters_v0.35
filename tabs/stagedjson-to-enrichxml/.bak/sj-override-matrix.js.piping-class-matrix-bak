@@ -1,0 +1,129 @@
+/**
+ * Functionality: collects unique unresolved patterns from the enriched
+ * record set, groups them by field and unique key, and returns a
+ * structured matrix ready for the override UI.
+ * Parameters: explicit. Outputs: {field -> UniquePattern[]}. Pure.
+ */
+
+/**
+ * Build an override matrix from enriched records.
+ * @param {EnrichedRecord[]} records
+ * @returns {OverrideMatrix}
+ *   { rating: PatternRow[], wall: PatternRow[], corr: PatternRow[],
+ *     restraint: PatternRow[], weight: PatternRow[] }
+ */
+export function buildOverrideMatrix(records) {
+  const rating    = new Map(); // spre → {count, sample}
+  const wall      = new Map(); // dtxr → {count, boreMm, sample}
+  const corr      = new Map(); // spre-prefix → {count, sample}
+  const restraint = new Map(); // supportKind → {count, sample}
+  const weight    = new Map(); // componentType+bore → {count, sample}
+
+  for (const rec of records) {
+    const res = rec.resolved || {};
+
+    if (res.ratingConfidence === 'NONE') {
+      const key = rec.spre || rec.ispe || '(blank SPRE)';
+      const row = rating.get(key) || { key, count: 0, sample: rec.spre };
+      row.count++;
+      rating.set(key, row);
+    }
+
+    if (res.wallConfidence === 'NONE') {
+      const key = rec.dtxr || '(blank DTXR)';
+      const row = wall.get(key) || { key, count: 0, boreMm: rec.boreMm, sample: rec.dtxr };
+      row.count++;
+      wall.set(key, row);
+    }
+
+    if (res.corrConfidence === 'LOW') {
+      const prefix = sprePrefix(rec.spre);
+      const row = corr.get(prefix) || { key: prefix, count: 0, sample: rec.spre };
+      row.count++;
+      corr.set(prefix, row);
+    }
+
+    if (rec.isSupport && res.restraint?.confidence === 'NONE') {
+      const key = rec.supportKind || rec.supportType || '(blank kind)';
+      const row = restraint.get(key) || { key, count: 0, sample: rec.supportKind };
+      row.count++;
+      restraint.set(key, row);
+    }
+
+    if (res.weightConfidence === 'NONE' && isRigid(rec.componentType)) {
+      const key = `${rec.componentType}|${rec.boreMm || '?'}`;
+      const row = weight.get(key) || { key, count: 0, type: rec.componentType, boreMm: rec.boreMm };
+      row.count++;
+      weight.set(key, row);
+    }
+  }
+
+  return {
+    rating:    sortedRows(rating),
+    wall:      sortedRows(wall),
+    corr:      sortedRows(corr),
+    restraint: sortedRows(restraint),
+    weight:    sortedRows(weight),
+  };
+}
+
+/**
+ * Apply user overrides to a config object, returning a new config.
+ * @param {Object} baseConfig
+ * @param {UserOverrides} overrides
+ *   { rating: {spre→number}, wall: {dtxr→schedule}, corr: {prefix→mm},
+ *     restraint: {kind→type}, weight: {key→kg} }
+ * @returns {Object}
+ */
+export function applyOverridesToConfig(baseConfig, overrides = {}) {
+  const cfg = structuredClone ? structuredClone(baseConfig) : JSON.parse(JSON.stringify(baseConfig));
+
+  // Rating: inject SPRE prefix overrides into ratingSequence
+  if (overrides.rating) {
+    const extras = Object.entries(overrides.rating)
+      .filter(([, v]) => v !== '' && v !== null && Number.isFinite(Number(v)))
+      .map(([spre, val]) => [sprePrefix(spre) || spre, Number(val)]);
+    cfg.ratingSequence = [...extras, ...(cfg.ratingSequence || [])];
+  }
+
+  // Wall: inject schedule overrides into dtxrScheduleOverrides
+  if (overrides.wall) {
+    cfg.dtxrScheduleOverrides = { ...(cfg.dtxrScheduleOverrides || {}), ...overrides.wall };
+  }
+
+  // Corrosion: inject class prefix overrides
+  if (overrides.corr) {
+    const existing = cfg.corrosionOverrides || {};
+    cfg.corrosionOverrides = {};
+    for (const [k, v] of Object.entries(overrides.corr)) {
+      if (v !== '' && Number.isFinite(Number(v))) cfg.corrosionOverrides[k] = Number(v);
+    }
+    cfg.corrosionOverrides = { ...existing, ...cfg.corrosionOverrides };
+  }
+
+  // Restraint: inject kind overrides into restraintKindOverrides
+  if (overrides.restraint) {
+    cfg.restraintKindOverrides = { ...(cfg.restraintKindOverrides || {}), ...overrides.restraint };
+  }
+
+  // Weight: inject key overrides into weightKgOverrides
+  if (overrides.weight) {
+    cfg.weightKgOverrides = { ...(cfg.weightKgOverrides || {}), ...overrides.weight };
+  }
+
+  return cfg;
+}
+
+// ─── Helpers ─────────────────────────────────────────────────────
+
+function sortedRows(map) {
+  return [...map.values()].sort((a, b) => b.count - a.count);
+}
+
+function sprePrefix(spre) {
+  return String(spre ?? '').replace(/^\/+/, '').split('/').pop().split('-')[0].toUpperCase();
+}
+
+function isRigid(t) {
+  return ['VALV', 'FLAN', 'GASK'].includes(String(t || '').toUpperCase());
+}

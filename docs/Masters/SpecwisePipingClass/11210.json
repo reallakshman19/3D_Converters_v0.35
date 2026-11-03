@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "specKey": "11210",
+  "rowCount": 7,
+  "generatedAt": "2026-06-09T02:27:27.029Z",
+  "source": "../Piping_class_master.json",
+  "rows": [
+    {
+      "Piping Class": "11210",
+      "Size": "2",
+      "SCH": "80",
+      "Wall thickness": "5.5372000000000003",
+      "Material_Name": "ASTM A106-B",
+      "PMSMat_Categories": "Carbon steel",
+      "PMSMat_Cat": "CS",
+      "Rating": "150",
+      "Corrosion": "3",
+      "convertedBore": 50,
+      "_sourceRowIndex": 1278
+    },
+    {
+      "Piping Class": "11210",
+      "Size": "3",
+      "SCH": "80",
+      "Wall thickness": "7.62",
+      "Material_Name": "ASTM A106-B",
+      "PMSMat_Categories": "Carbon steel",
+      "PMSMat_Cat": "CS",
+      "Rating": "150",
+      "Corrosion": "3",
+      "convertedBore": 80,
+      "_sourceRowIndex": 1279
+    },
+    {
+      "Piping Class": "11210",
+      "Size": "4",
+      "SCH": "80",
+      "Wall thickness": "8.5597999999999992",
+      "Material_Name": "ASTM A106-B",
+      "PMSMat_Categories": "Carbon steel",
+      "PMSMat_Cat": "CS",
+      "Rating": "150",
+      "Corrosion": "3",
+      "convertedBore": 100,
+      "_sourceRowIndex": 1280
+    },
+    {
+      "Piping Class": "11210",
+      "Size": "6",
+      "SCH": "80",
+      "Wall thickness": "10.972799999999999",
+      "Material_Name": "ASTM A106-B",
+      "PMSMat_Categories": "Carbon steel",
+      "PMSMat_Cat": "CS",
+      "Rating": "150",
+      "Corrosion": "3",
+      "convertedBore": 150,
+      "_sourceRowIndex": 1281
+    },
+    {
+      "Piping Class": "11210",
+      "Size": "8",
+      "SCH": "80",
+      "Wall thickness": "12.7",
+      "Material_Name": "ASTM A106-B",
+      "PMSMat_Categories": "Carbon steel",
+      "PMSMat_Cat": "CS",
+      "Rating": "150",
+      "Corrosion": "3",
+      "convertedBore": 200,
+      "_sourceRowIndex": 1282
+    },
+    {
+      "Piping Class": "11210",
+      "Size": "10",
+      "SCH": "80",
+      "Wall thickness": "15.0876",
+      "Material_Name": "ASTM A106-B",
+      "PMSMat_Categories": "Carbon steel",
+      "PMSMat_Cat": "CS",
+      "Rating": "150",
+      "Corrosion": "3",
+      "convertedBore": 250,
+      "_sourceRowIndex": 1283
+    },
+    {
+      "Piping Class": "11210",
+      "Size": "12",
+      "SCH": "80",
+      "Wall thickness": "17.475200000000001",
+      "Material_Name": "ASTM A106-B",
+      "PMSMat_Categories": "Carbon steel",
+      "PMSMat_Cat": "CS",
+      "Rating": "150",
+      "Corrosion": "3",
+      "convertedBore": 300,
+      "_sourceRowIndex": 1284
+    }
+  ]
+}

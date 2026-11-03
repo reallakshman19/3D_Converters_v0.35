@@ -1,0 +1,103 @@
+/* Supplemental hardening for the 3D Model Converters tab.
+ * Keep this file small and additive so the large legacy stylesheet remains stable.
+ */
+.model-converters-root,
+.model-converters-right,
+.model-converters-card,
+.model-converters-workflow-popup,
+.model-converters-workflow-popup-body {
+  min-width: 0;
+}
+
+.model-converters-root *,
+.model-converters-root *::before,
+.model-converters-root *::after {
+  box-sizing: border-box;
+}
+
+.model-converters-right {
+  min-height: 0;
+  overflow: auto;
+}
+
+.model-converters-workflow-popup {
+  max-width: 96vw;
+  max-height: 94vh;
+}
+
+.model-converters-workflow-popup-tabs {
+  overflow-x: auto;
+}
+
+.model-converters-workflow-popup-actions,
+.model-converters-workflow-run-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.model-converters-workflow-regex-field select {
+  max-width: 100%;
+  min-width: 0;
+}
+
+.model-converters-workflow-run-status-row span:not(.model-converters-workflow-run-status-icon) {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.model-converters-workflow-run-status-icon {
+  flex: 0 0 auto;
+}
+
+.model-converters-root table,
+.model-converters-workflow-popup table {
+  max-width: 100%;
+}
+
+.model-converters-root pre,
+.model-converters-root code,
+.model-converters-workflow-popup pre,
+.model-converters-workflow-popup code {
+  max-width: 100%;
+  overflow: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 980px) {
+  .model-converters-root {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .model-converters-left {
+    max-height: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .model-converters-workflow-popup-overlay {
+    align-items: stretch;
+    padding: 8px;
+  }
+
+  .model-converters-workflow-popup {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+  }
+
+  .model-converters-workflow-popup-head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .model-converters-workflow-popup-tabs {
+    flex-wrap: nowrap;
+  }
+}

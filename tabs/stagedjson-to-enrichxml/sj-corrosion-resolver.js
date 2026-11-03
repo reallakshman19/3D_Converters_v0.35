@@ -1,0 +1,105 @@
+/**
+ * Functionality: resolves corrosion allowance (mm) from piping class
+ * string using a configurable prefix→mm table. Defaults are
+ * material-family based (CS=1.5mm, SS=0mm, DSS=0mm).
+ * Parameters: explicit. Outputs: {corrMm, source, confidence}. Pure.
+ */
+
+/**
+ * Default corrosion allowance table.
+ * Key = piping class prefix (upper case), Value = mm.
+ * Matched by startsWith on the cleaned piping-class token.
+ */
+export const DEFAULT_CORROSION_TABLE = Object.freeze([
+  // Stainless / duplex → 0
+  { prefix: 'SS',  corrMm: 0.0 },
+  { prefix: 'DSS', corrMm: 0.0 },
+  { prefix: 'SDSS',corrMm: 0.0 },
+  { prefix: '316', corrMm: 0.0 },
+  { prefix: '304', corrMm: 0.0 },
+  // HDPE / GRP → 0
+  { prefix: 'GRP', corrMm: 0.0 },
+  { prefix: 'FRP', corrMm: 0.0 },
+  { prefix: 'PE',  corrMm: 0.0 },
+  // Carbon / low-alloy steel → 1.5
+  { prefix: '',    corrMm: 1.5 },  // catch-all
+]);
+
+/**
+ * Extract the token part of a piping class path that represents
+ * the class code (last segment, letters only prefix).
+ * e.g. "/91261M7r01-AMF1/E90B-150" → "E90B"
+ * @param {string} spreValue
+ * @returns {string}
+ */
+export function extractClassToken(spreValue) {
+  const raw = String(spreValue ?? '').trim();
+  const last = raw.replace(/^\/+/, '').split('/').pop() || '';
+  // Take only the alphabetic prefix before any dash+numeric suffix
+  return last.split('-')[0].toUpperCase();
+}
+
+/**
+ * Resolve corrosion allowance.
+ * Strategy 0: class+bore override from config
+ * Strategy 1: class prefix matching against table
+ * @param {string} spreValue
+ * @param {number} boreMm
+ * @param {object} config
+ * @returns {{corrMm: number, source: string, confidence: string}}
+ */
+export function resolveCorrosion(spreValue, boreMm, config = {}) {
+  // Strategy 0: class+bore override (e.g. "31441C4r01-AMF1||50": 1.5)
+  const corrMap = config.classCorrOverrides;
+  if (corrMap && spreValue) {
+    const cls = pipingClassFromSpre(spreValue);
+    const key = `${cls}||${boreMm || 0}`;
+    const overCorr = corrMap[key];
+    if (overCorr != null && Number.isFinite(Number(overCorr))) {
+      return { corrMm: Number(overCorr), source: `class-override:${key}`, confidence: 'HIGH' };
+    }
+  }
+
+  // Build table with legacy prefix overrides if any
+  const table = buildCorrosionTable(config.corrosionOverrides || {}, DEFAULT_CORROSION_TABLE);
+
+  // Strategy 1: Prefix match
+  const token = extractClassToken(spreValue);
+  if (!token && !spreValue) {
+    return { corrMm: config.corrDefault != null ? Number(config.corrDefault) : 1.5, source: 'default', confidence: 'LOW' };
+  }
+  
+  const sorted = [...table].sort((a, b) => b.prefix.length - a.prefix.length);
+  for (const row of sorted) {
+    const prefix = String(row.prefix).toUpperCase();
+    if (prefix && token.startsWith(prefix)) {
+      return { corrMm: Number(row.corrMm), source: `class-prefix:${prefix}`, confidence: 'MED' };
+    }
+    if (!prefix) {
+      return { corrMm: Number(row.corrMm), source: 'class-default', confidence: 'LOW' };
+    }
+  }
+  return { corrMm: config.corrDefault != null ? Number(config.corrDefault) : 1.5, source: 'default', confidence: 'LOW' };
+}
+
+/** Extract piping class prefix from a SPRE path. */
+function pipingClassFromSpre(spre) {
+  const parts = String(spre || '').replace(/^\/+/, '').split('/');
+  return parts.length >= 2 ? parts.slice(0, -1).join('/') : (parts[0] || '');
+}
+
+/**
+ * Build a mutable corrosion override table from a config object.
+ * Config format: { "SS": 0, "E90B": 1.5, ... }
+ * @param {Record<string,number>} overridesMap
+ * @param {Array} baseTable
+ * @returns {Array<{prefix:string, corrMm:number}>}
+ */
+export function buildCorrosionTable(overridesMap = {}, baseTable = DEFAULT_CORROSION_TABLE) {
+  const extra = Object.entries(overridesMap).map(([prefix, corrMm]) => ({
+    prefix: String(prefix).toUpperCase(),
+    corrMm: Number(corrMm),
+  }));
+  // Extra overrides go first (higher priority than defaults)
+  return [...extra, ...baseTable];
+}

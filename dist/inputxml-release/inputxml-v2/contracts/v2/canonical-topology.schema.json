@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:reallaksh19:inputxml:canonical-topology:v2",
+  "title": "CanonicalTopology.v2",
+  "type": "object",
+  "required": ["schema", "sourceIdentity", "coordinateFrame", "nodes", "edges", "supports", "summary", "canonicalTopologyHashSha256"],
+  "properties": {
+    "schema": {"const": "CanonicalTopology.v2"},
+    "sourceIdentity": {"type": "object"},
+    "coordinateFrame": {"type": "object"},
+    "toleranceMm": {"type": "number", "minimum": 0},
+    "nodes": {"type": "array", "items": {"type": "object", "required": ["id", "position", "sourcePortIds"], "properties": {"id": {"type": "string", "minLength": 1}, "position": {"type": "object", "required": ["x", "y", "z"], "properties": {"x": {"type": "number"}, "y": {"type": "number"}, "z": {"type": "number"}}, "additionalProperties": false}, "sourcePortIds": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}, "sourceEntityIds": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}}, "additionalProperties": true}},
+    "edges": {"type": "array", "items": {"type": "object", "required": ["id", "fromNodeId", "toNodeId", "sourceEntityIds", "inputXmlElementIds"], "properties": {"id": {"type": "string", "minLength": 1}, "fromNodeId": {"type": "string", "minLength": 1}, "toNodeId": {"type": "string", "minLength": 1}, "sourceEntityIds": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}, "inputXmlElementIds": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}}, "additionalProperties": true}},
+    "supports": {"type": "array", "items": {"type": "object"}},
+    "pointFeatures": {"type": "array", "items": {"type": "object"}},
+    "junctions": {"type": "array", "items": {"type": "object"}},
+    "boundaries": {"type": "array", "items": {"type": "object"}},
+    "rigids": {"type": "array", "items": {"type": "object"}},
+    "buildIssues": {"type": "array", "items": {"type": "object"}},
+    "summary": {"type": "object"},
+    "canonicalTopologyHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "additionalProperties": false
+}

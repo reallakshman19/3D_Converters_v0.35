@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "TopoEnrichedXmlCiiProofResult.v1",
+  "title": "TopoEnrichedXmlCiiProofResult.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "status", "acceptedCiiArtifact", "acceptedCiiBytes", "canonicalInputXml", "canonicalHashSha256", "assuranceLedger", "projectionLedger", "reparseEvidence", "lossAccounting", "nodeNumberMismatches", "unaccountedOccurrences", "evidence", "diagnostics", "proofResultHashSha256"],
+  "properties": {
+    "schema": {"const": "TopoEnrichedXmlCiiProofResult.v1"},
+    "status": {"enum": ["PASS", "BLOCKED"]},
+    "acceptedCiiArtifact": {"type": ["object", "null"]},
+    "acceptedCiiBytes": {"type": ["string", "null"]},
+    "canonicalInputXml": {"type": ["string", "null"]},
+    "canonicalHashSha256": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
+    "assuranceLedger": {"type": ["object", "null"]},
+    "projectionLedger": {"type": ["object", "null"]},
+    "reparseEvidence": {"type": ["object", "null"]},
+    "lossAccounting": {"type": "object"},
+    "nodeNumberMismatches": {"type": "integer", "minimum": 0},
+    "unaccountedOccurrences": {"type": "integer", "minimum": 0},
+    "evidence": {"type": "object"},
+    "diagnostics": {"type": "array", "items": {"type": "object"}},
+    "proofResultHashSha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "PASS"}}},
+      "then": {
+        "properties": {
+          "acceptedCiiArtifact": {"type": "object"},
+          "acceptedCiiBytes": {"type": "string", "minLength": 1},
+          "canonicalInputXml": {"type": "string", "minLength": 1},
+          "projectionLedger": {"type": "object"},
+          "reparseEvidence": {"type": "object"},
+          "nodeNumberMismatches": {"const": 0},
+          "unaccountedOccurrences": {"const": 0}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"status": {"const": "BLOCKED"}}},
+      "then": {
+        "properties": {
+          "acceptedCiiArtifact": {"type": "null"},
+          "acceptedCiiBytes": {"type": "null"}
+        }
+      }
+    }
+  ]
+}

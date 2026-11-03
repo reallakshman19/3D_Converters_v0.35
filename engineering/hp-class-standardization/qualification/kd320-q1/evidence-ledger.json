@@ -1,0 +1,153 @@
+{
+  "schema": "kd320-qualification-evidence-ledger/v1",
+  "recordId": "VR-B313-CH9-KD320-NATIVE-001-Q1",
+  "stage": "Q1_CONTROLLED_SEMANTIC_CONTRACT",
+  "authority": {
+    "nativeCoreKd3Qualified": false,
+    "methodQualification": "NOT_QUALIFIED",
+    "softwareQualification": "NOT_STARTED",
+    "productQualification": "NOT_STARTED",
+    "codeCompliance": false,
+    "canUseForDesignAuthority": false,
+    "automaticPromotionAllowed": false
+  },
+  "qualificationLayers": [
+    {
+      "layerId": "METHOD_QUALIFICATION",
+      "status": "BLOCKED_PENDING_G0_G1",
+      "requiredGates": ["G0", "G1"],
+      "promotionEffect": "MAY_AUTHORIZE_Q2_ORACLE_COMPLETION_ONLY",
+      "canEnableProductionKernel": false,
+      "canEnableDesignAuthority": false
+    },
+    {
+      "layerId": "SOFTWARE_QUALIFICATION",
+      "status": "NOT_STARTED",
+      "requiredGates": ["G2", "G3", "G4", "G5"],
+      "dependsOn": ["METHOD_QUALIFICATION"],
+      "canEnableProductionKernel": false,
+      "canEnableDesignAuthority": false
+    },
+    {
+      "layerId": "PRODUCT_RELEASE",
+      "status": "NOT_STARTED",
+      "requiredGates": ["G6"],
+      "dependsOn": ["METHOD_QUALIFICATION", "SOFTWARE_QUALIFICATION"],
+      "requiresSeparateOwnerAuthorization": true,
+      "canEnableDesignAuthority": false
+    }
+  ],
+  "evidence": [
+    {
+      "evidenceId": "E01",
+      "title": "Controlled ASME B31.3-2024 source",
+      "status": "PENDING",
+      "supportRefs": ["Q1-SRC-B313-2024"],
+      "acceptance": "Exact edition, secure source identity, document SHA-256 and invocation/applicability locators independently verified"
+    },
+    {
+      "evidenceId": "E02",
+      "title": "Controlled ASME VIII-3-2025 source",
+      "status": "PENDING",
+      "supportRefs": ["Q1-SRC-VIII3-2025"],
+      "acceptance": "Exact secure source bytes/hash reconciled and KD-3/KD320 method locators independently verified"
+    },
+    {
+      "evidenceId": "E03",
+      "title": "KD320 semantic extraction sheet",
+      "status": "PENDING",
+      "supportRefs": ["semantic-contract.json"],
+      "acceptance": "Every required semantic item extracted with exact locator, units, sign/selection/applicability rules and no hidden default"
+    },
+    {
+      "evidenceId": "E04",
+      "title": "Stress and mean-stress definitions",
+      "status": "PENDING",
+      "supportRefs": ["KD320-SEM-002", "KD320-SEM-003", "KD320-SEM-004", "KD320-SEM-005"],
+      "acceptance": "Stress selection, associated mean quantity, sign convention and compression/zero branch are independently established"
+    },
+    {
+      "evidenceId": "E05",
+      "title": "Mean-stress correction parameter custody",
+      "status": "PENDING",
+      "supportRefs": ["KD320-SEM-006", "KD320-SEM-007", "KD320-SEM-013"],
+      "acceptance": "Every correction parameter, material dependency, limit and failure rule is independently established"
+    },
+    {
+      "evidenceId": "E06",
+      "title": "Fatigue-curve custody",
+      "status": "PENDING",
+      "supportRefs": ["KD320-SEM-008", "KD320-SEM-009", "KD320-SEM-010"],
+      "acceptance": "Applicable curve identity, scope, endpoint/interpolation/extrapolation rules and permissible-cycle semantics independently verified"
+    },
+    {
+      "evidenceId": "E07",
+      "title": "Material and temperature rules",
+      "status": "PENDING",
+      "supportRefs": ["KD320-SEM-006", "KD320-SEM-011"],
+      "acceptance": "All controlled material properties and temperature-selection/interpolation rules required by the method are established"
+    },
+    {
+      "evidenceId": "E08",
+      "title": "Applicability envelope",
+      "status": "PENDING",
+      "supportRefs": ["KD320-SEM-001", "KD320-SEM-012"],
+      "acceptance": "Qualified geometry, wall state, loading, material/environment and explicit exclusions are independently established"
+    },
+    {
+      "evidenceId": "E09",
+      "title": "Independent numerical oracle set",
+      "status": "PENDING_Q2",
+      "supportRefs": ["../kd3-oracle/catalog.json"],
+      "acceptance": "Native benchmark cases receive frozen independent expected values only after Q1 controlled semantics are independently checked"
+    },
+    {
+      "evidenceId": "E10",
+      "title": "Negative and fail-closed tests",
+      "status": "PARTIAL_FOUNDATION",
+      "supportRefs": ["../kd3-oracle/catalog.json", "KD320-SEM-005", "KD320-SEM-009", "KD320-SEM-012", "KD320-SEM-013"],
+      "acceptance": "All controlled invalid, missing, ambiguous, edition, applicability and curve-boundary conditions block deterministically"
+    },
+    {
+      "evidenceId": "E11",
+      "title": "Independent checker",
+      "status": "PENDING",
+      "supportRefs": ["KD320-SEM-014"],
+      "acceptance": "Source extraction, method contract, oracle admission and implementation are reviewed by a checker independent of the implementer"
+    },
+    {
+      "evidenceId": "E12",
+      "title": "Release authorization",
+      "status": "PENDING",
+      "supportRefs": ["KD320-SEM-014"],
+      "acceptance": "Separate owner/release-authority decision after method and software qualification; no automatic promotion"
+    }
+  ],
+  "gates": [
+    {"gateId": "G0", "title": "Source identity and custody", "status": "BLOCKED_PENDING_E01_E02", "evidenceRefs": ["E01", "E02"]},
+    {"gateId": "G1", "title": "Semantic extraction", "status": "BLOCKED_PENDING_E03_E08", "evidenceRefs": ["E03", "E04", "E05", "E06", "E07", "E08"]},
+    {"gateId": "G2", "title": "Pure-kernel implementation", "status": "NOT_STARTED_Q3", "evidenceRefs": ["E03", "E04", "E05", "E06", "E07", "E08"]},
+    {"gateId": "G3", "title": "Independent benchmark qualification", "status": "NOT_STARTED_Q2_Q4", "evidenceRefs": ["E09"]},
+    {"gateId": "G4", "title": "Negative testing and invariants", "status": "PARTIAL_FOUNDATION", "evidenceRefs": ["E10"]},
+    {"gateId": "G5", "title": "Independent engineering review", "status": "PENDING", "evidenceRefs": ["E11"]},
+    {"gateId": "G6", "title": "Authority release", "status": "PENDING_SEPARATE_RELEASE", "evidenceRefs": ["E12"]}
+  ],
+  "q1ExitCriteria": {
+    "required": [
+      "E01=PASS",
+      "E02=PASS",
+      "E03=PASS",
+      "E04=PASS",
+      "E05=PASS",
+      "E06=PASS",
+      "E07=PASS",
+      "E08=PASS",
+      "G0=PASS",
+      "G1=PASS",
+      "independent semantic-contract checker sign-off recorded"
+    ],
+    "effectOnExit": "Q2 may populate independently sourced native oracle expectations; production native KD320 remains prohibited",
+    "nativeCoreKd3QualifiedAfterQ1": false,
+    "canUseForDesignAuthorityAfterQ1": false
+  }
+}

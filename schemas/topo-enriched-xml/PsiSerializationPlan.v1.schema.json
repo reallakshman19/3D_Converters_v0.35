@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reallaksh19.github.io/3D_Converters/schemas/topo-enriched-xml/PsiSerializationPlan.v1.schema.json",
+  "title": "PsiSerializationPlan.v1",
+  "type": "object",
+  "required": ["schema", "projectId", "zoneId", "nodePlanHash", "occurrencePlanHash", "profile", "branches", "occurrences", "validation", "serializationPlanHash"],
+  "properties": {
+    "schema": {"const": "PsiSerializationPlan.v1"},
+    "projectId": {"type": "string", "minLength": 1},
+    "zoneId": {"type": "string", "minLength": 1},
+    "nodePlanHash": {"type": "string", "minLength": 1},
+    "occurrencePlanHash": {"type": "string", "minLength": 1},
+    "profile": {"enum": ["STRICT_PSI", "AUDIT_EXTENDED"]},
+    "branches": {"type": "array", "items": {"$ref": "#/$defs/sourceBranch"}},
+    "occurrences": {"type": "array", "items": {"$ref": "#/$defs/serializationOccurrence"}},
+    "validation": {"$ref": "#/$defs/validation"},
+    "serializationPlanHash": {"type": "string", "minLength": 1}
+  },
+  "additionalProperties": true,
+  "allOf": [{"$ref": "#/$defs/noRelativeNumberFields"}],
+  "$defs": {
+    "noRelativeNumberFields": {
+      "if": {"type": "object"},
+      "then": {"propertyNames": {"not": {"enum": ["offset", "numberOffset", "nodeOffset", "derivedFromOccurrenceId", "startNodeNumber", "nodeCounter", "numberingSpan", "increment", "relativeTo", "baseNodeNumber"]}}, "additionalProperties": {"$ref": "#/$defs/noRelativeNumberFields"}},
+      "else": {"if": {"type": "array"}, "then": {"items": {"$ref": "#/$defs/noRelativeNumberFields"}}}
+    },
+    "serializationOccurrence": {
+      "type": "object",
+      "required": ["occurrenceId", "logicalNodeId", "componentProjectionId", "engineeringNodeNumber", "disposition"],
+      "properties": {"occurrenceId": {"type": "string", "minLength": 1}, "logicalNodeId": {"type": "string", "minLength": 1}, "componentProjectionId": {"type": "string", "minLength": 1}, "engineeringNodeNumber": {"type": "integer", "minimum": 0}, "disposition": {"enum": ["EMITTED", "RESERVED"]}},
+      "additionalProperties": true
+    },
+    "sourceBranch": {"type": "object", "required": ["sourceBranch"], "properties": {"sourceBranch": {"type": "string", "minLength": 1}, "canonicalMainLine": {"type": "string", "minLength": 1}}, "additionalProperties": true},
+    "validation": {
+      "type": "object",
+      "required": ["status", "blockers", "reviewItems", "warnings"],
+      "properties": {"status": {"enum": ["PASS", "REVIEW_REQUIRED", "BLOCKED"]}, "blockers": {"type": "array"}, "reviewItems": {"type": "array"}, "warnings": {"type": "array"}},
+      "additionalProperties": false,
+      "allOf": [
+        {"if": {"properties": {"status": {"const": "PASS"}}, "required": ["status"]}, "then": {"properties": {"blockers": {"maxItems": 0}, "reviewItems": {"maxItems": 0}}}},
+        {"if": {"properties": {"status": {"const": "REVIEW_REQUIRED"}}, "required": ["status"]}, "then": {"properties": {"blockers": {"maxItems": 0}, "reviewItems": {"minItems": 1}}}},
+        {"if": {"properties": {"status": {"const": "BLOCKED"}}, "required": ["status"]}, "then": {"properties": {"blockers": {"minItems": 1}}}}
+      ]
+    }
+  }
+}

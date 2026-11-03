@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "FbxTopologyBenchmarkPolicy.v1",
+  "title": "FbxTopologyBenchmarkPolicy.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "policyId", "branchSequenceAuthority", "reciprocalKinds",
+    "approvedOneWayReciprocityKeys", "cyclePolicy"
+  ],
+  "properties": {
+    "schema": { "const": "FbxTopologyBenchmarkPolicy.v1" },
+    "policyId": { "type": "string", "minLength": 1 },
+    "branchSequenceAuthority": { "enum": ["AUTHORITATIVE", "DIAGNOSTIC"] },
+    "reciprocalKinds": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "BRANCH_OWNERSHIP", "FLOW_ADJACENCY", "REFERENCE_ADJACENCY",
+          "SUPPORT_HOST", "ZONE_BOUNDARY"
+        ]
+      }
+    },
+    "approvedOneWayReciprocityKeys": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "cyclePolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "allowedCycleClosingRelationshipIds"],
+      "properties": {
+        "mode": { "enum": ["FAIL_ALL", "REFERENCE_AND_ALLOW_LIST"] },
+        "allowedCycleClosingRelationshipIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "authoritySha256": "64df4cddbb5e6b244adfcd50bae8c31ae225fcf4937e2e6529b1f44ac191b012",
+  "benchmarkCommit": "ecd841cd41cc7a8df1764cec502e0873f578a5dc",
+  "invocation": {
+    "candidateInputKind": "RMSS_ATTRIBUTE_TEXT",
+    "generationCommandStatus": "UNBOUND",
+    "inputIdentityStatus": "UNBOUND",
+    "routingOptionsStatus": "UNBOUND",
+    "supportMapperConfigStatus": "UNBOUND"
+  },
+  "producers": [
+    {
+      "blobSha1": "01bb27d744161dc8a551be6c26b008d97b838230",
+      "entrypoints": [
+        "parseRmssAttributes"
+      ],
+      "path": "converters/rmss-attribute-parser.js",
+      "producerId": "RMSS_ATTRIBUTE_PARSER",
+      "ruleIds": [
+        "FIND_SITE_ANCESTOR",
+        "ROUTE_BRANCH_PIPES",
+        "TO_NODE_SUPPORT",
+        "TYPE_ALIASES"
+      ]
+    },
+    {
+      "blobSha1": "079d2d67251295b931687d2b3c4e4507b41bb9af",
+      "entrypoints": [
+        "buildRvmAttrResponseFromAttText"
+      ],
+      "path": "tabs/model-converters/converters/rvmattr-to-xml.js",
+      "producerId": "RVMATTR_CONVERTER_ENTRYPOINT",
+      "ruleIds": [
+        "PARSE_RMSS_WITH_RVM_ROUTING_OPTIONS"
+      ]
+    },
+    {
+      "blobSha1": "8c60af16d645b74fc3da845aab3b694a43a8b6e0",
+      "entrypoints": [
+        "resolveKindPure"
+      ],
+      "path": "support/SupportKindResolver.js",
+      "producerId": "SUPPORT_KIND_RESOLVER",
+      "ruleIds": [
+        "DEFAULT_KIND_MAP",
+        "DEFAULT_RULES",
+        "SUPPORT_KIND_PIPELINE"
+      ]
+    },
+    {
+      "blobSha1": "d7027c6a75137aaba9091c40da4a1c0971f0673b",
+      "entrypoints": [
+        "getAllRules",
+        "resolveKindFromAttrs"
+      ],
+      "path": "rvm-viewer/RvmSupportMapper.js",
+      "producerId": "RVM_SUPPORT_MAPPER",
+      "ruleIds": [
+        "BUILTIN_RULE_OVERRIDES",
+        "LOCAL_STORAGE_USER_RULES"
+      ]
+    },
+    {
+      "blobSha1": "d3775ab3876742f995c07f37699f852b20225a82",
+      "entrypoints": [
+        "buildStagedSupportIndex",
+        "resolveXmlCiiSupportDescriptor"
+      ],
+      "path": "converters/xml-cii2019-core/support-mapping.js",
+      "producerId": "XML_CII_SUPPORT_MAPPING",
+      "ruleIds": [
+        "EXPLICIT_KIND",
+        "LEGACY_RVM_SUPPORT_MAPPER",
+        "SUPPORT_MAPPING_CONFIG"
+      ]
+    }
+  ],
+  "schema": "FbxBenchmarkProducerAuthority.v1",
+  "status": "BLOCKED"
+}

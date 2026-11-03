@@ -1,0 +1,29 @@
+schema: AgentClaim.v1
+pr_or_wip: PR518
+claim_state: ACTIVE
+files:
+  exact:
+    - converters/vibration/aiv/aiv-kernel-candidate.js
+    - tests/vibration-aiv-canvas-integration.test.mjs
+    - ValidationRecords/AIV/ProductionFreeze/AIV-PF-03-manifest.json
+    - ValidationRecords/AIV/ProductionFreeze/AIV-PF-03-before.json
+    - ValidationRecords/AIV/ProductionFreeze/AIV-PF-03-after.json
+    - ValidationRecords/AIV/ProductionFreeze/AIV-PF-03-benchmark.json
+    - ValidationRecords/AIV/ProductionFreeze/AIV-PF-03-source-qualification.json
+    - agents/PR518_workreport.md
+    - agents/status/PR518.yaml
+    - agents/claims/PR518.yaml
+  prefixes: []
+authority_domains:
+  - AIV_SIMULTANEOUS_SOURCE_GROUP_SEMANTICS
+  - AIV_PRODUCTION_FREEZE_EVIDENCE
+claim_modes:
+  - EXCLUSIVE
+  - SHARED_READ
+notes:
+  - "PF-03 owns only same-group arithmetic/identity preservation and fail-closed distinct-group semantics."
+  - "The implemented grouping guard is in the existing kernel combiner; no PF-02 readiness contract or governing-group algorithm was imported."
+  - "PF-03 does not claim PF-04 async, PF-05 master custody, PF-06 export roundtrip, PF-07 UI/performance, or equation/oracle changes."
+  - "Chromium is NOT_RUN_OWNER_WAIVED by issue comment 5302589137; FULL_BROWSER_PASS is not claimed."
+  - "No merge authority is claimed."
+last_verified_head: 8cd30a464435658e833ddf297c5727e68e979d4d

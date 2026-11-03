@@ -1,0 +1,108 @@
+schema: AgentClaim.v1
+pr_or_wip: PR528
+claim_state: ACTIVE
+files:
+  exact:
+    - index.html
+    - main-rhbg-fitguard.js
+    - core/app.js
+    - core/engineering-tabs-extension.js
+    - tabs/engineering-workspace-tab.js
+    - tabs/engineering-calculations-tab.js
+    - tabs/vibration-aiv-state.js
+    - tabs/vibration-aiv-dataset-loader.js
+    - tabs/vibration-aiv-execution.js
+    - tabs/vibration-aiv-qualification-tab.js
+    - tabs/vibration-aiv-qualification-view.js
+    - tabs/vibration-aiv-input-view.js
+    - tabs/vibration-aiv-workspace-loaders.js
+    - tabs/vibration-aiv-workspace-browser.js
+    - tabs/vibration-aiv-qualification.css
+    - tabs/vibration-aiv-engineering-revision.js
+    - tabs/vibration-aiv-mode-transition.js
+    - tabs/vibration-aiv-network-transaction.js
+    - tabs/vibration-aiv-master-currentness.js
+    - tabs/vibration-aiv-master-db-controller.js
+    - tabs/vibration-aiv-canvas-selection.js
+    - tabs/vibration-aiv-unified-canvas-projection.js
+    - tabs/vibration-aiv-unified-canvas-view.js
+    - tabs/vibration-aiv-unified-canvas-controller.js
+    - tabs/vibration-aiv-unified-canvas-author.js
+    - tabs/vibration-aiv-unified-canvas-author-view.js
+    - tabs/vibration-aiv-unified-canvas-inspector.js
+    - tabs/vibration-aiv-unified-canvas-editor.js
+    - tabs/vibration-aiv-unified-canvas-editor-controller.js
+    - tabs/vibration-aiv-unified-canvas-editor-view.js
+    - tabs/vibration-aiv-unified-canvas-table-author.js
+    - tabs/vibration-aiv-unified-canvas-workflow.js
+    - tabs/vibration-aiv-unified-canvas-labels.js
+    - tabs/vibration-aiv-unified-canvas-editor.css
+    - tests/vibration-aiv-engineering-revision.test.mjs
+    - tests/vibration-aiv-mode-transition.test.mjs
+    - tests/vibration-aiv-network-transaction.test.mjs
+    - tests/vibration-aiv-master-currentness.test.mjs
+    - tests/vibration-aiv-input-mode-integration.test.mjs
+    - tests/vibration-aiv-unified-canvas-projection.test.mjs
+    - tests/vibration-aiv-unified-canvas-cutover.test.mjs
+    - tests/vibration-aiv-runtime-cache-chain.test.mjs
+    - tests/vibration-aiv-unified-canvas-editor-state.test.mjs
+    - tests/vibration-aiv-unified-canvas-editor-author.test.mjs
+    - tests/vibration-aiv-unified-canvas-table-author.test.mjs
+    - tests/vibration-aiv-unified-canvas-user-workflow.test.mjs
+    - tests/vibration-aiv-unified-canvas-labels.test.mjs
+    - ValidationRecords/AIV/PR528-local-chromium-evidence.json
+    - ValidationRecords/AIV/PR528-single-integrated-canvas-chromium-evidence.json
+    - ValidationRecords/AIV/PR528-full-scale-editor-local-chromium-evidence.json
+    - ValidationRecords/AIV/PR528-stage7-user-workflow-local-chromium-evidence.json
+    - ValidationRecords/AIV/PR528-stage8-canvas-label-modes-local-chromium-evidence.json
+    - agents/PR528_workreport.md
+    - agents/status/PR528.yaml
+    - agents/claims/PR528.yaml
+  prefixes:
+    - tabs/vibration-aiv-unified-canvas-
+authority_domains:
+  - AIV_UNIFIED_CANVAS_RUNTIME_OWNERSHIP
+  - AIV_UNIFIED_CANVAS_EDITOR_MUTATION_SURFACE
+  - AIV_UNIFIED_CANVAS_INPUT_EDITING
+  - AIV_SCRATCH_NETWORK_AUTHORING
+  - AIV_FAST_RV_BRANCH_AUTHORING
+  - AIV_EDITOR_COMPLETENESS_GUIDANCE
+  - AIV_CANVAS_CURRENTNESS_PRESENTATION
+  - AIV_CANVAS_LABEL_MODE_PRESENTATION
+  - AIV_CANVAS_FIELD_PROJECTION
+  - AIV_REGISTERED_RESULT_LABEL_PRESENTATION
+  - AIV_INPUT_MODE_AUTHORITY_STATE
+  - AIV_PRESENTATION_VS_ENGINEERING_REVISION_CUSTODY
+  - AIV_NETWORK_PATH_PRESENTATION
+  - AIV_UI_ASYNC_CURRENTNESS
+  - AIV_MASTER_EFFECTIVE_CURRENTNESS
+  - AIV_CANVAS_CACHE_CUSTODY
+claim_modes:
+  - EXCLUSIVE
+  - COORDINATED
+  - SHARED_READ
+exclusions:
+  - converters/vibration/aiv/aiv-readiness.js
+  - converters/vibration/aiv/aiv-calculator.js
+  - converters/vibration/aiv/aiv-executable-contract.js
+  - AIV_READINESS_EXECUTABLE_PARITY
+  - AIV_NUMERICAL_EQUATIONS
+  - AIV_SIMULTANEOUS_SOURCE_SEMANTICS
+  - AIV_MASTER_ENGINEERING_AUTHORITY
+  - WORKFLOW_FILES
+notes:
+  - "Issue #526 qualification gate is satisfied by reviewer comment 5303402441."
+  - "Stages 1-7 establish explicit authority/currentness, one-canvas full editing, clean scratch-network start and late-change workflow."
+  - "Stage 8 adds Normal/Process/Geometry/Results/Completeness label modes on the same SVG; mode switching is presentation-only and revision-neutral."
+  - "Process/Geometry labels consume authoritative projected table/network fields; physical lengths/path distances remain explicit engineering evidence only."
+  - "Results labels consume registered VIB.AIV.ACOUSTIC projections only; stale registered values are suppressed until screening is rerun."
+  - "Completeness combines existing qualified readiness status with clearly guidance-only common-field presence and assumption counts; PR #517 readiness authority is unchanged."
+  - "Downstream field edits rerender the active labels through existing engineering mutation/currentness paths rather than creating a second data owner."
+  - "Fresh editor cache identity is 20260816-aiv-526-editor-3; editor-2 and earlier AIV keys are superseded while current FIV cache identity is preserved."
+  - "Stage-8 label projection reconstruction is 6/6 PASS and local Chromium replay is 18/18 PASS in ValidationRecords/AIV/PR528-stage8-canvas-label-modes-local-chromium-evidence.json."
+  - "New label module is 175 physical lines; updated unified view/controller have no content at line 285 and remain under the 300-line boundary."
+  - "Local Chromium evidence is lower-level only; hosted/full-application Chromium, full native release, exact-current-main runtime and complete B1-B10 remain NOT_RUN."
+  - "Formal AUTO MODE is not recorded because the literal uppercase token was not supplied."
+  - "No workflow files are claimed or authorized; merge authority remains Owner-only/not granted."
+last_verified_code_head: de1c27312d897aa1be81ed01cacf4b13d5e8268d
+last_verified_main: f25f721dc35c30b2f7a911f31c26ccdf8a53c6ac

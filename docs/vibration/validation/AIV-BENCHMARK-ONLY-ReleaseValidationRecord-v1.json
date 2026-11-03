@@ -1,0 +1,54 @@
+{
+  "schema": "AivReleaseValidationRecord.v1",
+  "methodId": "VIB.AIV.ACOUSTIC",
+  "repository": "reallaksh19/3D_Converters",
+  "releaseTarget": "BENCHMARK_ONLY",
+  "exactHeadSha": "32a0c4962d74940b9cded8709eb2b83a68c006ad",
+  "execution": {
+    "source": "LOCAL_CONTROLLED_CHECKOUT",
+    "actualExecution": true,
+    "runnerId": null,
+    "runnerName": null,
+    "environment": "OpenAI container Node v22.16.0; networkless sparse exact-head AIV checkout reconstructed from GitHub connector content; 19 executed/scanned source files verified against exact Git blob SHA-1 values",
+    "startedAt": "2026-08-13T01:39:00Z",
+    "completedAt": "2026-08-13T01:41:34.963Z"
+  },
+  "checks": [
+    {
+      "groupId": "AIV_FOCUSED_NODE_TESTS",
+      "status": "PASS",
+      "command": "node tests/stage19-local-validation.mjs",
+      "exitCode": 0,
+      "outputSha256": "sha256:2e338f2d231c9e2006176035321efc04b6a58173f187eb3fcc7991a92dea36d4",
+      "notes": "Exact-head source-bundle verification + product/browser/boundary assertions."
+    },
+    {
+      "groupId": "AIV_CONTROLLED_BENCHMARK_PARITY",
+      "status": "PASS",
+      "command": "node scripts/run-aiv-d23-product-path-validation.mjs",
+      "exitCode": 0,
+      "outputSha256": "sha256:b63293aec97da2ec01651c1351eed75a42b3c11fe1f697b08da34ce7679c4b2f",
+      "notes": "EI D.2.3 22/22 PASS through central 10-stage calculator."
+    },
+    {
+      "groupId": "AIV_BROWSER_WORKSPACE_SMOKE",
+      "status": "PASS",
+      "command": "node tests/stage19-local-validation.mjs --group browser",
+      "exitCode": 0,
+      "outputSha256": "sha256:2e338f2d231c9e2006176035321efc04b6a58173f187eb3fcc7991a92dea36d4",
+      "notes": "Validated result rendering, edit invalidation and export action."
+    },
+    {
+      "groupId": "AIV_MODULE_BOUNDARY_CHECK",
+      "status": "PASS",
+      "command": "node tests/stage19-local-validation.mjs --group boundaries",
+      "exitCode": 0,
+      "outputSha256": "sha256:2e338f2d231c9e2006176035321efc04b6a58173f187eb3fcc7991a92dea36d4",
+      "notes": "UI does not invoke calculator directly; AIV facade does not expose old candidate helpers."
+    }
+  ],
+  "authority": {
+    "authorityTransitionApplied": false,
+    "designAuthority": false
+  }
+}

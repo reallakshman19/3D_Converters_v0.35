@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "FbxSelectedZoneSourceGraph.v1",
+  "title": "FbxSelectedZoneSourceGraph.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "sourceGraphSchema",
+    "completeSourceGraphSha256",
+    "zoneGeometryArtifactId",
+    "selectedZone",
+    "sourceObjects",
+    "occurrences",
+    "geometries",
+    "counts",
+    "authority",
+    "graphDigest",
+    "artifactId"
+  ],
+  "properties": {
+    "schema": { "const": "FbxSelectedZoneSourceGraph.v1" },
+    "sourceGraphSchema": { "const": "FbxSourceGraph.v2" },
+    "completeSourceGraphSha256": { "$ref": "#/$defs/hash" },
+    "zoneGeometryArtifactId": { "type": "string", "minLength": 1 },
+    "selectedZone": { "type": "object" },
+    "sourceObjects": { "type": "array" },
+    "occurrences": { "type": "array" },
+    "geometries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "geometryObjectId",
+          "sourceObjectId",
+          "kind",
+          "ownerOccurrenceIds",
+          "sourcePointCount",
+          "coordinatePayloadDisposition"
+        ],
+        "properties": {
+          "geometryObjectId": { "type": "string", "pattern": "^[0-9]+$" },
+          "sourceObjectId": { "type": "string", "pattern": "^[0-9]+$" },
+          "kind": { "enum": ["MESH", "NURBS_CURVE"] },
+          "ownerOccurrenceIds": {
+            "type": "array",
+            "items": { "type": "string", "pattern": "^occ:[0-9]+$" },
+            "uniqueItems": true
+          },
+          "sourcePointCount": { "type": "integer", "minimum": 0 },
+          "coordinatePayloadDisposition": { "const": "OMITTED_BINARY_BUFFER_AUTHORITY" }
+        }
+      }
+    },
+    "counts": { "type": "object" },
+    "authority": { "type": "object" },
+    "graphDigest": { "$ref": "#/$defs/hash" },
+    "artifactId": { "type": "string", "pattern": "^FBXZGRAPH-[0-9a-f]{32}$" }
+  },
+  "$defs": {
+    "hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  }
+}

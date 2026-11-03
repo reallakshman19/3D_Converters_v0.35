@@ -1,0 +1,19 @@
+{
+  "schema": "source-blob-backup/v1",
+  "baseline": "8cfcc3717bdad85c545509937b70615ea49f135b",
+  "created": "2026-07-13",
+  "scope": "StagedJSON to InputXML Work Pack",
+  "files": {
+    "converters/scripts/stagedjson_to_inputxml.py": "8c881c424e9f91193e1b593df75c055f020fada2",
+    "converters/scripts/inputxml_bookmark.py": "bc3731d2bf4947bcbd612544dbb55e7d1efa0b60",
+    "converters/scripts/support_restraint.py": "62932f633ae5b6ce670d1fc81cdadc6efbd4eefc",
+    "converters/invocation-builder.js": "20894bd7fa4399046ab110581beb2badeefcab68",
+    "converters/py-worker.js": "0063e0194fc3e86757cfb412f8a330304a4e3a83",
+    "tabs/model-converters/converter-registry.js": "aab4e702f940e7658ba1da3f46064ad42599f269",
+    "tabs/model-converters/ModelConvertersTab.js": "0119c6bd1101f4ce00e88c91eecca92c15bdeb26",
+    "tabs/model-converters/legacy-adapter.js": "337829ef9ca452056d95a34c0c5e406b1e171cee",
+    "converters/scripts/test_chain_g4_g5.py": "fe09dc43b5854cc98b3dc496fd05dfc8b46460d3",
+    "converters/scripts/test_coord_transform.py": "87888f25c741f47037b6e43f026cf1440b8b2e51"
+  },
+  "restore": "Fetch each immutable blob SHA and replace the corresponding path."
+}

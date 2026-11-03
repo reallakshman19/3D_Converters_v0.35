@@ -1,0 +1,15 @@
+#!/usr/bin/env python3
+"""InputXML -> CII (2019) entrypoint.
+
+This wrapper reuses the shared InputXML conversion implementation and profile
+matching logic from inputxml_to_cii2014.py while exposing a dedicated script
+name for the 2019 converter mode.
+"""
+
+from __future__ import annotations
+
+from inputxml_to_cii2014 import main
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

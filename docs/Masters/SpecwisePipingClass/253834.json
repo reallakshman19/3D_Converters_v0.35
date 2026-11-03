@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "specKey": "253834",
+  "rowCount": 8,
+  "generatedAt": "2026-06-09T02:27:27.145Z",
+  "source": "../Piping_class_master.json",
+  "rows": [
+    {
+      "Piping Class": "253834",
+      "Size": "0.5",
+      "SCH": "80S",
+      "Wall thickness": "3.7338",
+      "Material_Name": "ASTM A790 UNS S31803",
+      "PMSMat_Categories": "Duplex stainless steel LT Sour",
+      "PMSMat_Cat": "DSS",
+      "Rating": "2500",
+      "Corrosion": "0",
+      "convertedBore": 15,
+      "_sourceRowIndex": 3934
+    },
+    {
+      "Piping Class": "253834",
+      "Size": "0.75",
+      "SCH": "80S",
+      "Wall thickness": "3.9116",
+      "Material_Name": "ASTM A790 UNS S31803",
+      "PMSMat_Categories": "Duplex stainless steel LT Sour",
+      "PMSMat_Cat": "DSS",
+      "Rating": "2500",
+      "Corrosion": "0",
+      "convertedBore": 20,
+      "_sourceRowIndex": 3935
+    },
+    {
+      "Piping Class": "253834",
+      "Size": "1",
+      "SCH": "80S",
+      "Wall thickness": "4.5465999999999998",
+      "Material_Name": "ASTM A790 UNS S31803",
+      "PMSMat_Categories": "Duplex stainless steel LT Sour",
+      "PMSMat_Cat": "DSS",
+      "Rating": "2500",
+      "Corrosion": "0",
+      "convertedBore": 25,
+      "_sourceRowIndex": 3936
+    },
+    {
+      "Piping Class": "253834",
+      "Size": "1.5",
+      "SCH": "80S",
+      "Wall thickness": "5.08",
+      "Material_Name": "ASTM A790 UNS S31803",
+      "PMSMat_Categories": "Duplex stainless steel LT Sour",
+      "PMSMat_Cat": "DSS",
+      "Rating": "2500",
+      "Corrosion": "0",
+      "convertedBore": 40,
+      "_sourceRowIndex": 3937
+    },
+    {
+      "Piping Class": "253834",
+      "Size": "2",
+      "SCH": "80S",
+      "Wall thickness": "5.5372000000000003",
+      "Material_Name": "ASTM A790 UNS S31803",
+      "PMSMat_Categories": "Duplex stainless steel LT Sour",
+      "PMSMat_Cat": "DSS",
+      "Rating": "2500",
+      "Corrosion": "0",
+      "convertedBore": 50,
+      "_sourceRowIndex": 3938
+    },
+    {
+      "Piping Class": "253834",
+      "Size": "3",
+      "SCH": "80S",
+      "Wall thickness": "7.62",
+      "Material_Name": "ASTM A790 UNS S31803",
+      "PMSMat_Categories": "Duplex stainless steel LT Sour",
+      "PMSMat_Cat": "DSS",
+      "Rating": "2500",
+      "Corrosion": "0",
+      "convertedBore": 80,
+      "_sourceRowIndex": 3939
+    },
+    {
+      "Piping Class": "253834",
+      "Size": "4",
+      "SCH": "120",
+      "Wall thickness": "11.1252",
+      "Material_Name": "ASTM A790 UNS S31803",
+      "PMSMat_Categories": "Duplex stainless steel LT Sour",
+      "PMSMat_Cat": "DSS",
+      "Rating": "2500",
+      "Corrosion": "0",
+      "convertedBore": 100,
+      "_sourceRowIndex": 3940
+    },
+    {
+      "Piping Class": "253834",
+      "Size": "6",
+      "SCH": "120",
+      "Wall thickness": "14.274800000000001",
+      "Material_Name": "ASTM A790 UNS S31803",
+      "PMSMat_Categories": "Duplex stainless steel LT Sour",
+      "PMSMat_Cat": "DSS",
+      "Rating": "2500",
+      "Corrosion": "0",
+      "convertedBore": 150,
+      "_sourceRowIndex": 3941
+    }
+  ]
+}

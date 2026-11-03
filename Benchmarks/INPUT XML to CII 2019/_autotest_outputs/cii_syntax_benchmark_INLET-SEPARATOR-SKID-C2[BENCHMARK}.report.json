@@ -1,0 +1,145 @@
+{
+  "ok": true,
+  "profile": "cii2019",
+  "inputFile": "C:\\Code3\\PCF_GLB_Viewer_Conv_Latest2\\Benchmarks\\INPUT XML to CII 2019\\INLET SEP\\INLET-SEPARATOR-SKID-C2[BENCHMARK}.CII",
+  "sectionsFound": [
+    "VERSION",
+    "CONTROL",
+    "ELEMENTS",
+    "AUX_DATA",
+    "BEND",
+    "RIGID",
+    "EXPJT",
+    "RESTRANT",
+    "DISPLMNT",
+    "FORCMNT",
+    "UNIFORM",
+    "WIND",
+    "OFFSETS",
+    "ALLOWBLS",
+    "SIF&TEES",
+    "REDUCERS",
+    "FLANGES",
+    "EQUIPMNT",
+    "MISCEL_1",
+    "UNITS",
+    "COORDS"
+  ],
+  "metrics": {
+    "elements": 35,
+    "nozzles": 0,
+    "hangers": 0,
+    "nodename_blocks": 0,
+    "reducers": 0,
+    "flanges": 0,
+    "bends": 11,
+    "rigids": 9,
+    "expjts": 0,
+    "restraints": 5,
+    "displmnt": 0,
+    "forcmnt": 0,
+    "uniform": 0,
+    "wind": 0,
+    "offsets": 0,
+    "allowbls": 1,
+    "sif_tees": 9,
+    "control_line3_field6": 0,
+    "equipmnt": 0,
+    "vertical_axis_flag": 0
+  },
+  "derivedBlockCounts": {
+    "BEND": {
+      "rows": 33,
+      "linesPerBlock": 3,
+      "derivedBlocks": 11,
+      "remainderRows": 0
+    },
+    "RIGID": {
+      "rows": 9,
+      "linesPerBlock": 1,
+      "derivedBlocks": 9,
+      "remainderRows": 0
+    },
+    "EXPJT": {
+      "rows": 0,
+      "linesPerBlock": 1,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    },
+    "RESTRANT": {
+      "rows": 120,
+      "linesPerBlock": 24,
+      "derivedBlocks": 5,
+      "remainderRows": 0
+    },
+    "DISPLMNT": {
+      "rows": 0,
+      "linesPerBlock": 20,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    },
+    "FORCMNT": {
+      "rows": 0,
+      "linesPerBlock": 13,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    },
+    "UNIFORM": {
+      "rows": 0,
+      "linesPerBlock": 6,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    },
+    "WIND": {
+      "rows": 0,
+      "linesPerBlock": 1,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    },
+    "OFFSETS": {
+      "rows": 0,
+      "linesPerBlock": 1,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    },
+    "ALLOWBLS": {
+      "rows": 26,
+      "linesPerBlock": 26,
+      "derivedBlocks": 1,
+      "remainderRows": 0
+    },
+    "SIF&TEES": {
+      "rows": 90,
+      "linesPerBlock": 10,
+      "derivedBlocks": 9,
+      "remainderRows": 0
+    },
+    "REDUCERS": {
+      "rows": 0,
+      "linesPerBlock": 1,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    },
+    "FLANGES": {
+      "rows": 0,
+      "linesPerBlock": 11,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    },
+    "EQUIPMNT": {
+      "rows": 0,
+      "linesPerBlock": 6,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    }
+  },
+  "errors": [],
+  "warnings": [
+    {
+      "code": "optional_section_missing",
+      "section": "NODENAME",
+      "line": 0,
+      "message": "Optional section '#$ NODENAME' is missing."
+    }
+  ]
+}

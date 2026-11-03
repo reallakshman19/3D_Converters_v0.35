@@ -1,0 +1,82 @@
+name: CAESAR v11-v14 Dropdown Qualification
+
+on:
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'main-rhbg-fitguard.js'
+      - 'core/app.js'
+      - 'tabs/model-converters-tab.js'
+      - 'tabs/model-converters/index.js'
+      - 'tabs/model-converters/ModelConvertersTab-fbx2-managed-reference.js'
+      - 'tabs/model-converters/ModelConvertersTab.js'
+      - 'tabs/model-converters/cii-v11-v14-addon.js'
+      - 'tabs/model-converters/cii-v11-v14-dropdown-integration.js'
+      - 'tabs/model-converters/converter-registry.js'
+      - 'tabs/model-converters/legacy-adapter.js'
+      - 'tabs/model-converters/converters/cii-v11-v14.js'
+      - 'converters/cii-v11-v14-worker.js'
+      - 'converters/scripts/cii_v11_v14*.py'
+      - 'converters/scripts/cii2019_section_rules.py'
+      - 'tests/cii-v11-v14-ui-static.test.mjs'
+      - '.github/workflows/cii-v11-v14-dropdown-qualification.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Check browser module syntax
+        run: |
+          node --check main-rhbg-fitguard.js
+          node --check core/app.js
+          node --check tabs/model-converters-tab.js
+          node --check tabs/model-converters/index.js
+          node --check tabs/model-converters/ModelConvertersTab-fbx2-managed-reference.js
+          node --check tabs/model-converters/ModelConvertersTab.js
+          node --check tabs/model-converters/cii-v11-v14-addon.js
+          node --check tabs/model-converters/cii-v11-v14-dropdown-integration.js
+          node --check tabs/model-converters/converters/cii-v11-v14.js
+          node --check converters/cii-v11-v14-worker.js
+
+      - name: Prove full startup chain and rendered Converter dropdown
+        run: node tests/cii-v11-v14-ui-static.test.mjs
+
+      - name: Compile CAESAR adapter Python sources
+        working-directory: converters/scripts
+        run: |
+          python -m py_compile \
+            cii_v11_v14.py \
+            cii_v11_v14_format.py \
+            cii_v11_v14_records.py \
+            cii_v11_v14_sif.py \
+            cii_v11_v14_validate.py \
+            cii2019_section_rules.py
+
+      - name: Run paired benchmark and fixed-record qualification
+        working-directory: converters/scripts
+        run: |
+          python -m unittest -v \
+            test_cii_v11_v14.py \
+            test_cii_v11_v14_allowables.py \
+            test_cii_v11_v14_mixed_records.py
+
+      - name: Protect immutable InputXML CII core
+        shell: bash
+        run: |
+          if git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.sha }}" | grep -Fx 'converters/scripts/inputxml_to_cii2019.py'; then
+            echo 'ERROR: immutable inputxml_to_cii2019.py is present in dropdown hotfix diff.' >&2
+            exit 1
+          fi

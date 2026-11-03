@@ -1,0 +1,102 @@
+{
+  "att": {
+    "fieldMap": {
+      "DTXR":         "description",
+      "PSPE":         "spec",
+      "ABORE":        "bore",
+      "LBORE":        "boreLeaving",
+      "APOS":         "posStart",
+      "LPOS":         "posEnd",
+      "POS":          "posCenter",
+      "ANGL":         "angle",
+      "TEMP":         "temperature",
+      "PRES":         "pressure",
+      "MTXX":         "material",
+      "SPRE":         "catref",
+      "OWNER":        "ownerPath",
+      "CREF":         "branchRef",
+      "STEX":         "supportName",
+      ":CMPSUPTYPE":  "supportType",
+      ":MDSSUPPTYPE": "supportSubType"
+    },
+    "typeMap": {
+      "ELBO": "ELBOW",
+      "FLAN": "FLANGE",
+      "GASK": "GASKET",
+      "VALV": "VALVE",
+      "INST": "MISC",
+      "ATTA": "MISC",
+      "REDU": "REDU",
+      "BRAN": "BRANCH",
+      "PIPE": "PIPE",
+      "TUBE": "PIPE",
+      "OLET": "OLET",
+      "TEE":  "TEE"
+    },
+    "miscPreserveOriginal": true,
+    "branchIdentification": {
+      "primaryKey": "CREF",
+      "fallbackKey": "OWNER",
+      "splitChar": "/",
+      "pipeSegments": "all-except-last",
+      "branchSegment": "last"
+    },
+    "attaRule": {
+      "field": "APOS",
+      "matchField": "LPOS",
+      "onMatch": "Support",
+      "onNoMatch": "Misc",
+      "supportNameField": "STEX"
+    }
+  },
+  "psi": {
+    "fieldMap": {
+      "ComponentType":  "type",
+      "Position":       "posCenter",
+      "BendRadius":     "bendRadius",
+      "OutsideDiameter":"outsideDiameter",
+      "WallThickness":  "wallThickness",
+      "SIF":            "sif",
+      "NodeName":       "name",
+      "ComponentRefNo": "ref"
+    },
+    "typeMap": {
+      "RIGID": "RIGID",
+      "BEND":  "ELBOW",
+      "REDU":  "REDU",
+      "PCOM":  "PIPE",
+      "ATTA":  "MISC",
+      "VALV":  "VALVE"
+    },
+    "miscPreserveOriginal": true
+  },
+  "rev": {
+    "typeKeywords": {
+      "ELBOW":      "ELBOW",
+      "TEE":        "TEE",
+      "VALVE":      "VALVE",
+      "FLANGE":     "FLANGE",
+      "GASKET":     "GASKET",
+      "INSTRUMENT": "MISC",
+      "ATTA":       "MISC"
+    },
+    "miscPreserveOriginal": true
+  },
+  "pcf": {
+    "fieldMap": {
+      "PIPELINE-REFERENCE": "spec",
+      "NOMINAL-BORE":       "bore",
+      "SKEY":               "type",
+      "GUID":               "supportName"
+    },
+    "typeMap": {
+      "ELBOW":  "ELBOW",
+      "TEE":    "TEE",
+      "VALVE":  "VALVE",
+      "FLANGE": "FLANGE",
+      "OLET":   "OLET"
+    },
+    "miscPreserveOriginal": true
+  },
+  "mergePriority": ["PSI_XML", "PCF", "ATT_TXT", "REV", "JSON"]
+}

@@ -1,0 +1,260 @@
+{
+  "ok": false,
+  "profile": "cii2019",
+  "inputFile": "Benchmarks\\INPUT XML to CII 2019\\_autotest_outputs\\cii_syntax_bad_numeric.cii",
+  "sectionsFound": [
+    "VERSION",
+    "CONTROL",
+    "ELEMENTS",
+    "AUX_DATA",
+    "NODENAME",
+    "BEND",
+    "RIGID",
+    "EXPJT",
+    "RESTRANT",
+    "DISPLMNT",
+    "FORCMNT",
+    "UNIFORM",
+    "WIND",
+    "OFFSETS",
+    "ALLOWBLS",
+    "SIF&TEES",
+    "REDUCERS",
+    "FLANGES",
+    "EQUIPMNT",
+    "MISCEL_1",
+    "UNITS",
+    "COORDS"
+  ],
+  "metrics": {
+    "elements": 40,
+    "nozzles": 0,
+    "hangers": 1,
+    "nodename_blocks": 2,
+    "reducers": 0,
+    "flanges": 0,
+    "bends": 7,
+    "rigids": 15,
+    "expjts": 0,
+    "restraints": 8,
+    "displmnt": 0,
+    "forcmnt": 0,
+    "uniform": 0,
+    "wind": 0,
+    "offsets": 0,
+    "allowbls": 1,
+    "sif_tees": 9,
+    "control_line3_field6": 0,
+    "equipmnt": 0,
+    "vertical_axis_flag": 0
+  },
+  "derivedBlockCounts": {
+    "BEND": {
+      "rows": 21,
+      "linesPerBlock": 3,
+      "derivedBlocks": 7,
+      "remainderRows": 0
+    },
+    "RIGID": {
+      "rows": 15,
+      "linesPerBlock": 1,
+      "derivedBlocks": 15,
+      "remainderRows": 0
+    },
+    "EXPJT": {
+      "rows": 0,
+      "linesPerBlock": 1,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    },
+    "RESTRANT": {
+      "rows": 192,
+      "linesPerBlock": 24,
+      "derivedBlocks": 8,
+      "remainderRows": 0
+    },
+    "DISPLMNT": {
+      "rows": 0,
+      "linesPerBlock": 20,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    },
+    "FORCMNT": {
+      "rows": 0,
+      "linesPerBlock": 13,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    },
+    "UNIFORM": {
+      "rows": 0,
+      "linesPerBlock": 6,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    },
+    "WIND": {
+      "rows": 0,
+      "linesPerBlock": 1,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    },
+    "OFFSETS": {
+      "rows": 0,
+      "linesPerBlock": 1,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    },
+    "ALLOWBLS": {
+      "rows": 26,
+      "linesPerBlock": 26,
+      "derivedBlocks": 1,
+      "remainderRows": 0
+    },
+    "SIF&TEES": {
+      "rows": 90,
+      "linesPerBlock": 10,
+      "derivedBlocks": 9,
+      "remainderRows": 0
+    },
+    "REDUCERS": {
+      "rows": 0,
+      "linesPerBlock": 1,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    },
+    "FLANGES": {
+      "rows": 0,
+      "linesPerBlock": 11,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    },
+    "EQUIPMNT": {
+      "rows": 0,
+      "linesPerBlock": 6,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    }
+  },
+  "errors": [
+    {
+      "code": "elements_numeric_format",
+      "section": "ELEMENTS",
+      "line": 69,
+      "message": "ELEMENTS row 1 of element 1 has non-real token 'BAD.NUM'."
+    },
+    {
+      "code": "elements_numeric_format",
+      "section": "ELEMENTS",
+      "line": 84,
+      "message": "ELEMENTS row 1 of element 2 has non-real token 'BAD.NUM'."
+    },
+    {
+      "code": "elements_numeric_format",
+      "section": "ELEMENTS",
+      "line": 99,
+      "message": "ELEMENTS row 1 of element 3 has non-real token 'BAD.NUM'."
+    },
+    {
+      "code": "elements_numeric_format",
+      "section": "ELEMENTS",
+      "line": 114,
+      "message": "ELEMENTS row 1 of element 4 has non-real token 'BAD.NUM'."
+    },
+    {
+      "code": "elements_numeric_format",
+      "section": "ELEMENTS",
+      "line": 129,
+      "message": "ELEMENTS row 1 of element 5 has non-real token 'BAD.NUM'."
+    },
+    {
+      "code": "elements_numeric_format",
+      "section": "ELEMENTS",
+      "line": 144,
+      "message": "ELEMENTS row 1 of element 6 has non-real token 'BAD.NUM'."
+    },
+    {
+      "code": "elements_numeric_format",
+      "section": "ELEMENTS",
+      "line": 159,
+      "message": "ELEMENTS row 1 of element 7 has non-real token 'BAD.NUM'."
+    },
+    {
+      "code": "elements_numeric_format",
+      "section": "ELEMENTS",
+      "line": 174,
+      "message": "ELEMENTS row 1 of element 8 has non-real token 'BAD.NUM'."
+    },
+    {
+      "code": "elements_numeric_format",
+      "section": "ELEMENTS",
+      "line": 189,
+      "message": "ELEMENTS row 1 of element 9 has non-real token 'BAD.NUM'."
+    },
+    {
+      "code": "elements_numeric_format",
+      "section": "ELEMENTS",
+      "line": 204,
+      "message": "ELEMENTS row 1 of element 10 has non-real token 'BAD.NUM'."
+    },
+    {
+      "code": "elements_numeric_format",
+      "section": "ELEMENTS",
+      "line": 219,
+      "message": "ELEMENTS row 1 of element 11 has non-real token 'BAD.NUM'."
+    },
+    {
+      "code": "elements_numeric_format",
+      "section": "ELEMENTS",
+      "line": 234,
+      "message": "ELEMENTS row 1 of element 12 has non-real token 'BAD.NUM'."
+    },
+    {
+      "code": "elements_numeric_format",
+      "section": "ELEMENTS",
+      "line": 249,
+      "message": "ELEMENTS row 1 of element 13 has non-real token 'BAD.NUM'."
+    },
+    {
+      "code": "elements_numeric_format",
+      "section": "ELEMENTS",
+      "line": 264,
+      "message": "ELEMENTS row 1 of element 14 has non-real token 'BAD.NUM'."
+    },
+    {
+      "code": "elements_numeric_format",
+      "section": "ELEMENTS",
+      "line": 279,
+      "message": "ELEMENTS row 1 of element 15 has non-real token 'BAD.NUM'."
+    },
+    {
+      "code": "elements_numeric_format",
+      "section": "ELEMENTS",
+      "line": 294,
+      "message": "ELEMENTS row 1 of element 16 has non-real token 'BAD.NUM'."
+    },
+    {
+      "code": "elements_numeric_format",
+      "section": "ELEMENTS",
+      "line": 309,
+      "message": "ELEMENTS row 1 of element 17 has non-real token 'BAD.NUM'."
+    },
+    {
+      "code": "elements_numeric_format",
+      "section": "ELEMENTS",
+      "line": 324,
+      "message": "ELEMENTS row 1 of element 18 has non-real token 'BAD.NUM'."
+    },
+    {
+      "code": "elements_numeric_format",
+      "section": "ELEMENTS",
+      "line": 339,
+      "message": "ELEMENTS row 1 of element 19 has non-real token 'BAD.NUM'."
+    },
+    {
+      "code": "elements_numeric_format",
+      "section": "ELEMENTS",
+      "line": 354,
+      "message": "ELEMENTS row 1 of element 20 has non-real token 'BAD.NUM'."
+    }
+  ],
+  "warnings": []
+}

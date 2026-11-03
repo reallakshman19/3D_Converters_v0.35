@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:reallaksh19:inputxml:numbered-topology-projection:v1",
+  "title": "NumberedTopologyProjection.v1",
+  "type": "object",
+  "required": ["schema", "canonicalTopologyHashSha256", "topoNodePlanHashSha256", "authority", "nodes", "numberedTopologyProjectionHashSha256"],
+  "properties": {
+    "schema": {"const": "NumberedTopologyProjection.v1"},
+    "canonicalTopologyHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "topoNodePlanHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "authority": {"const": "TopoNodePlan.v1"},
+    "nodes": {"type": "array", "items": {"type": "object", "required": ["canonicalNodeId", "logicalNodeId", "engineeringNodeNumber"], "properties": {"canonicalNodeId": {"type": "string", "minLength": 1}, "logicalNodeId": {"type": "string", "minLength": 1}, "engineeringNodeNumber": {"type": "integer", "minimum": 1}}, "additionalProperties": false}},
+    "numberedTopologyProjectionHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "additionalProperties": false
+}

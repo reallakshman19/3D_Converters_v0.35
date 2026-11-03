@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<exchange xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://download.autodesk.com/us/navisworks/schemas/nw-exchange-12.0.xsd" units="m" filename="BUD-BUD1-09272023.nwd" filepath="G:\UEF\99-Project Data\2022-074 Budour Tayseer Gas Project  Offplot  FEED+DD\3. PIPING\3.4 DRAWINGS\Template directory\5. Check prints\Model\60% External model review\Pig Launchers">
+  <viewpoints>
+    <view name="Tag View 1" guid="d3ab9983-21c4-4662-93bd-5909e23be90f">
+      <viewpoint tool="none" render="shaded" lighting="headlight" focal="7.2161694959" linear="18.9306050001" angular="0.7853981634">
+        <camera projection="persp" near="0.1990442275" far="199.0442274971" aspect="1.8813096862" height="0.7853980000">
+          <position>
+            <pos3f x="152.1668779015" y="127.1326354411" z="102.1761082920"/>
+          </position>
+          <rotation>
+            <quaternion a="0.1280697311" b="0.5955538475" c="0.7753167319" d="0.1667264946"/>
+          </rotation>
+        </camera>
+        <viewer radius="0.3000000000" height="1.8000000000" actual_height="1.8000000000" eye_height="0.1500000000" avatar="construction_worker" camera_mode="first" first_to_third_angle="0.0000000000" first_to_third_distance="3.0000000000" first_to_third_param="1.0000000000" first_to_third_correction="1" collision_detection="0" auto_crouch="0" gravity="0" gravity_value="9.8000000000" terminal_velocity="50.0000000000"/>
+        <up>
+          <vec3f x="0.0000000000" y="0.0000000000" z="1.0000000000"/>
+        </up>
+      </viewpoint>
+      <clipplaneset linked="0" current="0" mode="planes" enabled="0">
+        <range>
+          <box3f>
+            <min>
+              <pos3f x="1.0000000000" y="1.0000000000" z="1.0000000000"/>
+            </min>
+            <max>
+              <pos3f x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
+            </max>
+          </box3f>
+        </range>
+        <clipplanes>
+          <clipplane state="default" distance="0.0000000000" alignment="top">
+            <plane distance="0.0000000000">
+              <vec3f x="0.0000000000" y="1.0000000000" z="0.0000000000"/>
+            </plane>
+          </clipplane>
+          <clipplane state="default" distance="0.0000000000" alignment="bottom">
+            <plane distance="0.0000000000">
+              <vec3f x="0.0000000000" y="1.0000000000" z="0.0000000000"/>
+            </plane>
+          </clipplane>
+          <clipplane state="default" distance="0.0000000000" alignment="front">
+            <plane distance="0.0000000000">
+              <vec3f x="0.0000000000" y="1.0000000000" z="0.0000000000"/>
+            </plane>
+          </clipplane>
+          <clipplane state="default" distance="0.0000000000" alignment="back">
+            <plane distance="0.0000000000">
+              <vec3f x="0.0000000000" y="1.0000000000" z="0.0000000000"/>
+            </plane>
+          </clipplane>
+          <clipplane state="default" distance="0.0000000000" alignment="left">
+            <plane distance="0.0000000000">
+              <vec3f x="0.0000000000" y="1.0000000000" z="0.0000000000"/>
+            </plane>
+          </clipplane>
+          <clipplane state="default" distance="0.0000000000" alignment="right">
+            <plane distance="0.0000000000">
+              <vec3f x="0.0000000000" y="1.0000000000" z="0.0000000000"/>
+            </plane>
+          </clipplane>
+        </clipplanes>
+        <box>
+          <box3f>
+            <min>
+              <pos3f x="1.0000000000" y="1.0000000000" z="1.0000000000"/>
+            </min>
+            <max>
+              <pos3f x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
+            </max>
+          </box3f>
+        </box>
+        <box-rotation>
+          <rotation>
+            <quaternion a="0.0000000000" b="0.0000000000" c="0.0000000000" d="1.0000000000"/>
+          </rotation>
+        </box-rotation>
+      </clipplaneset>
+      <comments>
+        <comment id="1" status="new">
+          <user>muc5407</user>
+          <body>Model monofl ball valve (typ)</body>
+          <createddate>
+            <date year="2023" month="10" day="2" hour="7" minute="11" second="52"/>
+          </createddate>
+        </comment>
+      </comments>
+      <redlines>
+        <rltag thickness="3" pattern="65535" id="1" commentid="1">
+          <colour red="1.0000000000" green="0.0000000000" blue="0.0000000000"/>
+          <pos1>
+            <pos2f x="-0.2299930163" y="0.0039556538"/>
+          </pos1>
+          <pos2>
+            <pos2f x="-0.2299930163" y="0.0039556538"/>
+          </pos2>
+          <pos3d>
+            <pos3f x="151.7639234984" y="125.0518443733" z="101.6344626546"/>
+          </pos3d>
+          <bounds>
+            <box3f>
+              <min>
+                <pos3f x="151.6825054921" y="124.9424999990" z="101.6144448839"/>
+              </min>
+              <max>
+                <pos3f x="151.7975054942" y="125.0575000010" z="101.6694448874"/>
+              </max>
+            </box3f>
+          </bounds>
+        </rltag>
+      </redlines>
+    </view>
+    <view name="Tag View 2" guid="1997d087-dc85-4787-bc0b-3a2d15af63e7">
+      <viewpoint tool="none" render="shaded" lighting="headlight" focal="9.0668153987" linear="18.9306050001" angular="0.7853981634">
+        <camera projection="persp" near="0.1961573711" far="196.1573711369" aspect="1.8813096862" height="0.7853980000">
+          <position>
+            <pos3f x="152.3909082739" y="117.3826623144" z="102.6927219775"/>
+          </position>
+          <rotation>
+            <quaternion a="0.1278758911" b="0.5646964619" c="0.7951976861" d="0.1800730474"/>
+          </rotation>
+        </camera>
+        <viewer radius="0.3000000000" height="1.8000000000" actual_height="1.8000000000" eye_height="0.1500000000" avatar="construction_worker" camera_mode="first" first_to_third_angle="0.0000000000" first_to_third_distance="3.0000000000" first_to_third_param="1.0000000000" first_to_third_correction="1" collision_detection="0" auto_crouch="0" gravity="0" gravity_value="9.8000000000" terminal_velocity="50.0000000000"/>
+        <up>
+          <vec3f x="0.0000000000" y="0.0000000000" z="1.0000000000"/>
+        </up>
+      </viewpoint>
+      <clipplaneset linked="0" current="0" mode="planes" enabled="0">
+        <range>
+          <box3f>
+            <min>
+              <pos3f x="1.0000000000" y="1.0000000000" z="1.0000000000"/>
+            </min>
+            <max>
+              <pos3f x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
+            </max>
+          </box3f>
+        </range>
+        <clipplanes>
+          <clipplane state="default" distance="0.0000000000" alignment="top">
+            <plane distance="0.0000000000">
+              <vec3f x="0.0000000000" y="1.0000000000" z="0.0000000000"/>
+            </plane>
+          </clipplane>
+          <clipplane state="default" distance="0.0000000000" alignment="bottom">
+            <plane distance="0.0000000000">
+              <vec3f x="0.0000000000" y="1.0000000000" z="0.0000000000"/>
+            </plane>
+          </clipplane>
+          <clipplane state="default" distance="0.0000000000" alignment="front">
+            <plane distance="0.0000000000">
+              <vec3f x="0.0000000000" y="1.0000000000" z="0.0000000000"/>
+            </plane>
+          </clipplane>
+          <clipplane state="default" distance="0.0000000000" alignment="back">
+            <plane distance="0.0000000000">
+              <vec3f x="0.0000000000" y="1.0000000000" z="0.0000000000"/>
+            </plane>
+          </clipplane>
+          <clipplane state="default" distance="0.0000000000" alignment="left">
+            <plane distance="0.0000000000">
+              <vec3f x="0.0000000000" y="1.0000000000" z="0.0000000000"/>
+            </plane>
+          </clipplane>
+          <clipplane state="default" distance="0.0000000000" alignment="right">
+            <plane distance="0.0000000000">
+              <vec3f x="0.0000000000" y="1.0000000000" z="0.0000000000"/>
+            </plane>
+          </clipplane>
+        </clipplanes>
+        <box>
+          <box3f>
+            <min>
+              <pos3f x="1.0000000000" y="1.0000000000" z="1.0000000000"/>
+            </min>
+            <max>
+              <pos3f x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
+            </max>
+          </box3f>
+        </box>
+        <box-rotation>
+          <rotation>
+            <quaternion a="0.0000000000" b="0.0000000000" c="0.0000000000" d="1.0000000000"/>
+          </rotation>
+        </box-rotation>
+      </clipplaneset>
+      <comments>
+        <comment id="2" status="new">
+          <user>muc5407</user>
+          <body>Update 3/4&quot; size monofl ball valve as per comment (typ)</body>
+          <createddate>
+            <date year="2023" month="10" day="2" hour="7" minute="13" second="11"/>
+          </createddate>
+        </comment>
+      </comments>
+      <redlines>
+        <rltag thickness="3" pattern="65535" id="2" commentid="2">
+          <colour red="1.0000000000" green="0.0000000000" blue="0.0000000000"/>
+          <pos1>
+            <pos2f x="0.0762876098" y="0.0322103241"/>
+          </pos1>
+          <pos2>
+            <pos2f x="0.0762876098" y="0.0322103241"/>
+          </pos2>
+          <pos3d>
+            <pos3f x="151.0408497760" y="115.0525000021" z="101.8516982529"/>
+          </pos3d>
+          <bounds>
+            <box3f>
+              <min>
+                <pos3f x="150.8872743994" y="114.9474999979" z="101.6218014956"/>
+              </min>
+              <max>
+                <pos3f x="151.2153562158" y="115.0525000021" z="102.1342028379"/>
+              </max>
+            </box3f>
+          </bounds>
+        </rltag>
+      </redlines>
+    </view>
+    <view name="Tag View 3" guid="d7fad3a9-8e88-4b27-a755-a0da0febaf33">
+      <viewpoint tool="none" render="shaded" lighting="headlight" focal="2.6544042058" linear="18.9306050001" angular="0.7853981634">
+        <camera projection="persp" near="0.2185192120" far="218.5192120143" aspect="1.8813096862" height="0.7853980000">
+          <position>
+            <pos3f x="147.8332726117" y="128.5439130354" z="102.4786936327"/>
+          </position>
+          <rotation>
+            <quaternion a="0.1789024226" b="0.4102298291" c="0.8197051134" d="0.3574757861"/>
+          </rotation>
+        </camera>
+        <viewer radius="0.3000000000" height="1.8000000000" actual_height="1.8000000000" eye_height="0.1500000000" avatar="construction_worker" camera_mode="first" first_to_third_angle="0.0000000000" first_to_third_distance="3.0000000000" first_to_third_param="1.0000000000" first_to_third_correction="1" collision_detection="0" auto_crouch="0" gravity="0" gravity_value="9.8000000000" terminal_velocity="50.0000000000"/>
+        <up>
+          <vec3f x="0.0000000000" y="0.0000000000" z="1.0000000000"/>
+        </up>
+      </viewpoint>
+      <clipplaneset linked="0" current="0" mode="planes" enabled="0">
+        <range>
+          <box3f>
+            <min>
+              <pos3f x="1.0000000000" y="1.0000000000" z="1.0000000000"/>
+            </min>
+            <max>
+              <pos3f x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
+            </max>
+          </box3f>
+        </range>
+        <clipplanes>
+          <clipplane state="default" distance="0.0000000000" alignment="top">
+            <plane distance="0.0000000000">
+              <vec3f x="0.0000000000" y="1.0000000000" z="0.0000000000"/>
+            </plane>
+          </clipplane>
+          <clipplane state="default" distance="0.0000000000" alignment="bottom">
+            <plane distance="0.0000000000">
+              <vec3f x="0.0000000000" y="1.0000000000" z="0.0000000000"/>
+            </plane>
+          </clipplane>
+          <clipplane state="default" distance="0.0000000000" alignment="front">
+            <plane distance="0.0000000000">
+              <vec3f x="0.0000000000" y="1.0000000000" z="0.0000000000"/>
+            </plane>
+          </clipplane>
+          <clipplane state="default" distance="0.0000000000" alignment="back">
+            <plane distance="0.0000000000">
+              <vec3f x="0.0000000000" y="1.0000000000" z="0.0000000000"/>
+            </plane>
+          </clipplane>
+          <clipplane state="default" distance="0.0000000000" alignment="left">
+            <plane distance="0.0000000000">
+              <vec3f x="0.0000000000" y="1.0000000000" z="0.0000000000"/>
+            </plane>
+          </clipplane>
+          <clipplane state="default" distance="0.0000000000" alignment="right">
+            <plane distance="0.0000000000">
+              <vec3f x="0.0000000000" y="1.0000000000" z="0.0000000000"/>
+            </plane>
+          </clipplane>
+        </clipplanes>
+        <box>
+          <box3f>
+            <min>
+              <pos3f x="1.0000000000" y="1.0000000000" z="1.0000000000"/>
+            </min>
+            <max>
+              <pos3f x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
+            </max>
+          </box3f>
+        </box>
+        <box-rotation>
+          <rotation>
+            <quaternion a="0.0000000000" b="0.0000000000" c="0.0000000000" d="1.0000000000"/>
+          </rotation>
+        </box-rotation>
+      </clipplaneset>
+      <comments>
+        <comment id="3" status="new">
+          <user>muc5407</user>
+          <body>Delete ps for drain line</body>
+          <createddate>
+            <date year="2023" month="10" day="2" hour="7" minute="19" second="12"/>
+          </createddate>
+        </comment>
+      </comments>
+      <redlines>
+        <rltag thickness="3" pattern="65535" id="3" commentid="3">
+          <colour red="1.0000000000" green="0.0000000000" blue="0.0000000000"/>
+          <pos1>
+            <pos2f x="0.1192347087" y="-0.0898498516"/>
+          </pos1>
+          <pos2>
+            <pos2f x="0.1192347087" y="-0.0898498516"/>
+          </pos2>
+          <pos3d>
+            <pos3f x="146.2063568123" y="127.4581881510" z="100.7423403478"/>
+          </pos3d>
+          <bounds>
+            <box3f>
+              <min>
+                <pos3f x="146.1063568108" y="127.2913955599" z="100.6575805657"/>
+              </min>
+              <max>
+                <pos3f x="146.2063568123" y="127.6163955778" z="100.7575805672"/>
+              </max>
+            </box3f>
+          </bounds>
+        </rltag>
+      </redlines>
+    </view>
+    <view name="Tag View 4" guid="a4890dd5-f3ce-45ad-b052-b56c4520e33a">
+      <viewpoint tool="none" render="shaded" lighting="headlight" focal="5.6547302275" linear="18.9306050001" angular="0.7853981634">
+        <camera projection="persp" near="0.0628459361" far="62.8459361468" aspect="1.8813096862" height="0.7853980000">
+          <position>
+            <pos3f x="146.5656220525" y="122.8166158336" z="102.3845193642"/>
+          </position>
+          <rotation>
+            <quaternion a="-0.4916340135" b="0.2148818843" c="0.3379656219" d="-0.7732405906"/>
+          </rotation>
+        </camera>
+        <viewer radius="0.3000000000" height="1.8000000000" actual_height="1.8000000000" eye_height="0.1500000000" avatar="construction_worker" camera_mode="first" first_to_third_angle="0.0000000000" first_to_third_distance="3.0000000000" first_to_third_param="1.0000000000" first_to_third_correction="1" collision_detection="0" auto_crouch="0" gravity="0" gravity_value="9.8000000000" terminal_velocity="50.0000000000"/>
+        <up>
+          <vec3f x="0.0000000000" y="0.0000000000" z="1.0000000000"/>
+        </up>
+      </viewpoint>
+      <clipplaneset linked="0" current="0" mode="planes" enabled="0">
+        <range>
+          <box3f>
+            <min>
+              <pos3f x="1.0000000000" y="1.0000000000" z="1.0000000000"/>
+            </min>
+            <max>
+              <pos3f x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
+            </max>
+          </box3f>
+        </range>
+        <clipplanes>
+          <clipplane state="default" distance="0.0000000000" alignment="top">
+            <plane distance="0.0000000000">
+              <vec3f x="0.0000000000" y="1.0000000000" z="0.0000000000"/>
+            </plane>
+          </clipplane>
+          <clipplane state="default" distance="0.0000000000" alignment="bottom">
+            <plane distance="0.0000000000">
+              <vec3f x="0.0000000000" y="1.0000000000" z="0.0000000000"/>
+            </plane>
+          </clipplane>
+          <clipplane state="default" distance="0.0000000000" alignment="front">
+            <plane distance="0.0000000000">
+              <vec3f x="0.0000000000" y="1.0000000000" z="0.0000000000"/>
+            </plane>
+          </clipplane>
+          <clipplane state="default" distance="0.0000000000" alignment="back">
+            <plane distance="0.0000000000">
+              <vec3f x="0.0000000000" y="1.0000000000" z="0.0000000000"/>
+            </plane>
+          </clipplane>
+          <clipplane state="default" distance="0.0000000000" alignment="left">
+            <plane distance="0.0000000000">
+              <vec3f x="0.0000000000" y="1.0000000000" z="0.0000000000"/>
+            </plane>
+          </clipplane>
+          <clipplane state="default" distance="0.0000000000" alignment="right">
+            <plane distance="0.0000000000">
+              <vec3f x="0.0000000000" y="1.0000000000" z="0.0000000000"/>
+            </plane>
+          </clipplane>
+        </clipplanes>
+        <box>
+          <box3f>
+            <min>
+              <pos3f x="1.0000000000" y="1.0000000000" z="1.0000000000"/>
+            </min>
+            <max>
+              <pos3f x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
+            </max>
+          </box3f>
+        </box>
+        <box-rotation>
+          <rotation>
+            <quaternion a="0.0000000000" b="0.0000000000" c="0.0000000000" d="1.0000000000"/>
+          </rotation>
+        </box-rotation>
+      </clipplaneset>
+      <comments>
+        <comment id="4" status="new">
+          <user>muc5407</user>
+          <body>Delete this ps, will be reviewd with stress engineer </body>
+          <createddate>
+            <date year="2023" month="10" day="2" hour="7" minute="37" second="15"/>
+          </createddate>
+        </comment>
+      </comments>
+      <redlines>
+        <rltag thickness="3" pattern="65535" id="4" commentid="4">
+          <colour red="1.0000000000" green="0.0000000000" blue="0.0000000000"/>
+          <pos1>
+            <pos2f x="-0.0921102252" y="0.1452290054"/>
+          </pos1>
+          <pos2>
+            <pos2f x="-0.0921102252" y="0.1452290054"/>
+          </pos2>
+          <pos3d>
+            <pos3f x="148.0918155414" y="124.5249053948" z="101.6942994401"/>
+          </pos3d>
+          <bounds>
+            <box3f>
+              <min>
+                <pos3f x="148.0466384888" y="124.5249053948" z="101.6436645500"/>
+              </min>
+              <max>
+                <pos3f x="148.4976425171" y="124.6249053963" z="101.7436645515"/>
+              </max>
+            </box3f>
+          </bounds>
+        </rltag>
+      </redlines>
+    </view>
+    <view name="Tag View 5" guid="a5ae310a-3275-4971-82dd-a845173a7cac">
+      <viewpoint tool="none" render="shaded" lighting="headlight" focal="5.7294975580" linear="18.9306050001" angular="0.7853981634">
+        <camera projection="persp" near="0.2024738211" far="202.4738210562" aspect="1.8813096862" height="0.7853980000">
+          <position>
+            <pos3f x="133.5157756325" y="142.3029073950" z="105.7006949693"/>
+          </position>
+          <rotation>
+            <quaternion a="-0.1693856251" b="-0.2997208150" c="-0.8173703557" d="-0.4619325110"/>
+          </rotation>
+        </camera>
+        <viewer radius="0.3000000000" height="1.8000000000" actual_height="1.8000000000" eye_height="0.1500000000" avatar="construction_worker" camera_mode="first" first_to_third_angle="0.0000000000" first_to_third_distance="3.0000000000" first_to_third_param="1.0000000000" first_to_third_correction="1" collision_detection="0" auto_crouch="0" gravity="0" gravity_value="9.8000000000" terminal_velocity="50.0000000000"/>
+        <up>
+          <vec3f x="0.0000000000" y="0.0000000000" z="1.0000000000"/>
+        </up>
+      </viewpoint>
+      <clipplaneset linked="0" current="0" mode="planes" enabled="0">
+        <range>
+          <box3f>
+            <min>
+              <pos3f x="1.0000000000" y="1.0000000000" z="1.0000000000"/>
+            </min>
+            <max>
+              <pos3f x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
+            </max>
+          </box3f>
+        </range>
+        <clipplanes>
+          <clipplane state="default" distance="0.0000000000" alignment="top">
+            <plane distance="0.0000000000">
+              <vec3f x="0.0000000000" y="1.0000000000" z="0.0000000000"/>
+            </plane>
+          </clipplane>
+          <clipplane state="default" distance="0.0000000000" alignment="bottom">
+            <plane distance="0.0000000000">
+              <vec3f x="0.0000000000" y="1.0000000000" z="0.0000000000"/>
+            </plane>
+          </clipplane>
+          <clipplane state="default" distance="0.0000000000" alignment="front">
+            <plane distance="0.0000000000">
+              <vec3f x="0.0000000000" y="1.0000000000" z="0.0000000000"/>
+            </plane>
+          </clipplane>
+          <clipplane state="default" distance="0.0000000000" alignment="back">
+            <plane distance="0.0000000000">
+              <vec3f x="0.0000000000" y="1.0000000000" z="0.0000000000"/>
+            </plane>
+          </clipplane>
+          <clipplane state="default" distance="0.0000000000" alignment="left">
+            <plane distance="0.0000000000">
+              <vec3f x="0.0000000000" y="1.0000000000" z="0.0000000000"/>
+            </plane>
+          </clipplane>
+          <clipplane state="default" distance="0.0000000000" alignment="right">
+            <plane distance="0.0000000000">
+              <vec3f x="0.0000000000" y="1.0000000000" z="0.0000000000"/>
+            </plane>
+          </clipplane>
+        </clipplanes>
+        <box>
+          <box3f>
+            <min>
+              <pos3f x="1.0000000000" y="1.0000000000" z="1.0000000000"/>
+            </min>
+            <max>
+              <pos3f x="0.0000000000" y="0.0000000000" z="0.0000000000"/>
+            </max>
+          </box3f>
+        </box>
+        <box-rotation>
+          <rotation>
+            <quaternion a="0.0000000000" b="0.0000000000" c="0.0000000000" d="1.0000000000"/>
+          </rotation>
+        </box-rotation>
+      </clipplaneset>
+      <comments>
+        <comment id="5" status="new">
+          <user>muc5407</user>
+          <body>Shift flange set inside fence</body>
+          <createddate>
+            <date year="2023" month="10" day="2" hour="11" minute="18" second="49"/>
+          </createddate>
+        </comment>
+      </comments>
+      <redlines>
+        <rltag thickness="3" pattern="65535" id="5" commentid="5">
+          <colour red="1.0000000000" green="0.0000000000" blue="0.0000000000"/>
+          <pos1>
+            <pos2f x="-0.0062160275" y="-0.0141273352"/>
+          </pos1>
+          <pos2>
+            <pos2f x="-0.0062160275" y="-0.0141273352"/>
+          </pos2>
+          <pos3d>
+            <pos3f x="130.6429903330" y="140.5415273610" z="101.5985101640"/>
+          </pos3d>
+          <bounds>
+            <box3f>
+              <min>
+                <pos3f x="130.1299969256" y="140.5029926965" z="101.0299984515"/>
+              </min>
+              <max>
+                <pos3f x="130.7699969709" y="140.5957927027" z="101.6699984968"/>
+              </max>
+            </box3f>
+          </bounds>
+        </rltag>
+      </redlines>
+    </view>
+  </viewpoints>
+</exchange>

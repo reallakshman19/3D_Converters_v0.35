@@ -1,0 +1,18 @@
+{
+  "objects": [
+    {
+      "name": "/PR7/B1",
+      "type": "BRANCH",
+      "attributes": {"TYPE":"BRANCH","NAME":"/PR7/B1","HPOS":{"x":0,"y":0,"z":0},"TPOS":{"x":1,"y":0,"z":0}},
+      "children": []
+    }
+  ],
+  "branches": [
+    {
+      "name": "/PR7/B2",
+      "type": "BRANCH",
+      "attributes": {"TYPE":"BRANCH","NAME":"/PR7/B2","HPOS":{"x":0,"y":1,"z":0},"TPOS":{"x":1,"y":1,"z":0}},
+      "children": []
+    }
+  ]
+}

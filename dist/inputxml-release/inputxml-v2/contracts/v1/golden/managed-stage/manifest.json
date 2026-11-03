@@ -1,0 +1,125 @@
+{
+  "schema": "InputXmlManagedStageGoldenCorpus.v1",
+  "profileId": "managed-stage-json",
+  "adapterId": "managed-stage-to-canonical",
+  "differenceClassifications": [
+    "NO_CHANGE",
+    "INTENDED_ACCOUNTING_CORRECTION",
+    "INTENDED_PROFILE_CORRECTION",
+    "REPRESENTATION_ONLY",
+    "ENGINEERING_CHANGE_WITH_AUTHORITY",
+    "UNKNOWN — BLOCK MERGE"
+  ],
+  "cases": [
+    {
+      "caseId": "straight-pipe",
+      "category": "positive",
+      "source": "positive/straight-pipe.json",
+      "expectedStatus": "PASS",
+      "differenceClassification": "NO_CHANGE"
+    },
+    {
+      "caseId": "multiple-branches",
+      "category": "positive",
+      "source": "positive/multiple-branches.json",
+      "expectedStatus": "PASS",
+      "differenceClassification": "NO_CHANGE"
+    },
+    {
+      "caseId": "safe-deferred-attachment",
+      "category": "positive",
+      "source": "positive/safe-deferred-attachment.json",
+      "expectedStatus": "PASS",
+      "differenceClassification": "INTENDED_ACCOUNTING_CORRECTION"
+    },
+    {
+      "caseId": "bend-projection-gap",
+      "category": "blocked-with-candidate",
+      "source": "blocked-with-candidate/bend-projection-gap.json",
+      "expectedStatus": "BLOCKED",
+      "expectedBlockedAt": "LEDGER_GATE",
+      "expectedOutcomeKind": "BLOCKED_WITH_CANDIDATE",
+      "expectedDiagnostic": "MANAGED_STAGE_BEND_PROJECTION_GAP",
+      "differenceClassification": "INTENDED_ACCOUNTING_CORRECTION"
+    },
+    {
+      "caseId": "unsupported-valve",
+      "category": "blocked-with-candidate",
+      "source": "blocked-with-candidate/unsupported-valve.json",
+      "expectedStatus": "BLOCKED",
+      "expectedBlockedAt": "LEDGER_GATE",
+      "expectedOutcomeKind": "BLOCKED_WITH_CANDIDATE",
+      "expectedDiagnostic": "MANAGED_STAGE_UNSUPPORTED_ENGINEERING",
+      "differenceClassification": "INTENDED_ACCOUNTING_CORRECTION"
+    },
+    {
+      "caseId": "duplicate-json-key",
+      "category": "negative",
+      "source": "negative/duplicate-key.json",
+      "expectedStatus": "BLOCKED",
+      "expectedBlockedAt": "MEDIA_INSPECTION_GATE",
+      "expectedOutcomeKind": "BLOCKED_NO_CANDIDATE",
+      "expectedDiagnostic": "MANAGED_STAGE_JSON_INVALID",
+      "differenceClassification": "INTENDED_PROFILE_CORRECTION"
+    },
+    {
+      "caseId": "ambiguous-wrapper",
+      "category": "blocked-without-candidate",
+      "source": "blocked-without-candidate/ambiguous-wrapper.json",
+      "dialectOverride": "managed-stage-json",
+      "expectedStatus": "BLOCKED",
+      "expectedBlockedAt": "PROFILE_INTAKE_GATE",
+      "expectedOutcomeKind": "BLOCKED_NO_CANDIDATE",
+      "expectedDiagnostic": "MANAGED_STAGE_ROOT_AMBIGUOUS",
+      "differenceClassification": "INTENDED_PROFILE_CORRECTION"
+    },
+    {
+      "caseId": "artifact-hash-mismatch",
+      "category": "adversarial",
+      "verificationTest": "ManagedStageArtifactClosureTests.test_stale_artifact_hashes_block",
+      "differenceClassification": "INTENDED_ACCOUNTING_CORRECTION"
+    },
+    {
+      "caseId": "missing-entity-trace",
+      "category": "adversarial",
+      "verificationTest": "ManagedStageArtifactClosureTests.test_duplicate_missing_and_extra_trace_records_block",
+      "differenceClassification": "INTENDED_ACCOUNTING_CORRECTION"
+    },
+    {
+      "caseId": "orphan-port",
+      "category": "adversarial",
+      "verificationTest": "ManagedStageArtifactClosureTests.test_missing_and_duplicate_source_ports_block",
+      "differenceClassification": "INTENDED_ACCOUNTING_CORRECTION"
+    },
+    {
+      "caseId": "inputxml-parity-mismatch",
+      "category": "adversarial",
+      "verificationTest": "ManagedStageArtifactClosureTests.test_forged_successful_parity_report_blocks_after_rehash",
+      "differenceClassification": "INTENDED_ACCOUNTING_CORRECTION"
+    },
+    {
+      "caseId": "source-accounting-tamper",
+      "category": "adversarial",
+      "verificationTest": "ManagedStageSourceAccountingTests.test_generic_inventory_record_cannot_certify_removed_decision",
+      "differenceClassification": "INTENDED_ACCOUNTING_CORRECTION"
+    },
+    {
+      "caseId": "asim-1835-benchmark",
+      "category": "benchmark",
+      "verificationTest": "component-topology-artifacts-asim-1835.test.mjs",
+      "differenceClassification": "NO_CHANGE"
+    },
+    {
+      "caseId": "1885-nc-benchmark",
+      "category": "benchmark",
+      "verificationTest": "component-topology-artifacts-1885-nc.test.mjs",
+      "differenceClassification": "NO_CHANGE"
+    },
+    {
+      "caseId": "psi116-regression",
+      "category": "benchmark",
+      "verificationTest": "component-topology-psi116-regression.test.mjs",
+      "differenceClassification": "NO_CHANGE"
+    }
+  ]
+}

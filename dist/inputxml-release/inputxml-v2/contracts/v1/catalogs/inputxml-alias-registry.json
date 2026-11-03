@@ -1,0 +1,43 @@
+{
+  "schema":"InputXmlAliasRegistry.v1",
+  "generatedAt":"2026-07-15",
+  "authority":{"repository":"reallaksh19/3D_Converters","baseline":"9125e8b54ae96fa6a44c6db2cf5408a395fe1575"},
+  "rule":"Aliases are accepted only by dialect adapters. Canonical InputXML contains canonicalName only.",
+  "unknownFieldPolicy":"PRESERVE_IN_EXTENSION_OR_BLOCK",
+  "casePolicy":"XML names are case-sensitive; adapters may match case-insensitively only when exactly one target is possible.",
+  "patternAliases":[
+    {"parentElement":"PIPINGELEMENT","aliasPattern":"TEMP_EXPC{n}","canonicalPattern":"TEMP_EXP_C{n}","indexes":[1,2,3,4,5,6,7,8,9],"aliasKind":"FIELD_NAME"},
+    {"parentElement":"PIPINGELEMENT","aliasPattern":"TEMPEXPC{n}","canonicalPattern":"TEMP_EXP_C{n}","indexes":[1,2,3,4,5,6,7,8,9],"aliasKind":"FIELD_NAME"},
+    {"parentElement":"PIPINGELEMENT","aliasPattern":"PRESSURE{n}","canonicalPattern":"PRESSURE_C{n}","indexes":[1,2,3,4,5,6,7,8,9],"aliasKind":"FIELD_NAME"}
+  ],
+  "aliases":[
+    {"parentElement":"PIPINGELEMENT","alias":"LINE_ID","canonicalName":"LINE","aliasKind":"FIELD_NAME"},
+    {"parentElement":"RESTRAINT","alias":"MU","canonicalName":"FRIC_COEF","aliasKind":"FIELD_NAME"},
+    {"parentElement":"PIPINGELEMENT","alias":"WALL_THICKNESS","canonicalName":"WALL_THICK","aliasKind":"FIELD_NAME"},
+    {"parentElement":"PIPINGELEMENT","alias":"WALLTHICK","canonicalName":"WALL_THICK","aliasKind":"FIELD_NAME"},
+    {"parentElement":"PIPINGELEMENT","alias":"INSULATION_THICK","canonicalName":"INSUL_THICK","aliasKind":"FIELD_NAME"},
+    {"parentElement":"PIPINGELEMENT","alias":"INSULATION_THICKNESS","canonicalName":"INSUL_THICK","aliasKind":"FIELD_NAME"},
+    {"parentElement":"PIPINGELEMENT","alias":"INSULTHICK","canonicalName":"INSUL_THICK","aliasKind":"FIELD_NAME"},
+    {"parentElement":"PIPINGELEMENT","alias":"CORROSION_ALLOW","canonicalName":"CORR_ALLOW","aliasKind":"FIELD_NAME"},
+    {"parentElement":"PIPINGELEMENT","alias":"CORROSION_ALLOWANCE","canonicalName":"CORR_ALLOW","aliasKind":"FIELD_NAME"},
+    {"parentElement":"PIPINGELEMENT","alias":"CORRALLOW","canonicalName":"CORR_ALLOW","aliasKind":"FIELD_NAME"},
+    {"parentElement":"PIPINGELEMENT","alias":"INSULATION_DENSITY","canonicalName":"INSUL_DENSITY","aliasKind":"FIELD_NAME"},
+    {"parentElement":"PIPINGELEMENT","alias":"INSULDENSITY","canonicalName":"INSUL_DENSITY","aliasKind":"FIELD_NAME"},
+    {"parentElement":"PIPINGELEMENT","alias":"FLUIDDENSITY","canonicalName":"FLUID_DENSITY","aliasKind":"FIELD_NAME"},
+    {"parentElement":"PIPINGELEMENT","alias":"HYDROTEST_PRESSURE","canonicalName":"HYDRO_PRESSURE","aliasKind":"FIELD_NAME"},
+    {"parentElement":"PIPINGELEMENT","alias":"HYDROPRESSURE","canonicalName":"HYDRO_PRESSURE","aliasKind":"FIELD_NAME"},
+    {"parentElement":"PIPINGELEMENT","alias":"MATERIAL_NUMBER","canonicalName":"MATERIAL_NUM","aliasKind":"FIELD_NAME"},
+    {"parentElement":"PIPINGELEMENT","alias":"MATERIALNUM","canonicalName":"MATERIAL_NUM","aliasKind":"FIELD_NAME"},
+    {"parentElement":"NOZZLE","alias":"WRC_297","canonicalName":"WRC_297_NOZZLE","aliasKind":"ELEMENT_NAME"},
+    {"parentElement":"NOZZLE","alias":"WRC","canonicalName":"WRC_297_NOZZLE","aliasKind":"ELEMENT_NAME"},
+    {"parentElement":"NOZZLE","alias":"WRC297","canonicalName":"WRC_297_NOZZLE","aliasKind":"ELEMENT_NAME"},
+    {"parentElement":"NOZZLE","alias":"API650","canonicalName":"API650_NOZZLE","aliasKind":"ELEMENT_NAME"},
+    {"parentElement":"NOZZLE","alias":"API_650","canonicalName":"API650_NOZZLE","aliasKind":"ELEMENT_NAME"},
+    {"parentElement":"NOZZLE","alias":"API650_NOZ","canonicalName":"API650_NOZZLE","aliasKind":"ELEMENT_NAME"},
+    {"parentElement":"NOZZLE","alias":"PD5500","canonicalName":"PD5500_NOZZLE","aliasKind":"ELEMENT_NAME"},
+    {"parentElement":"NOZZLE","alias":"PD_5500","canonicalName":"PD5500_NOZZLE","aliasKind":"ELEMENT_NAME"},
+    {"parentElement":"NOZZLE","alias":"CUSTOM","canonicalName":"CUSTOM_NOZZLE","aliasKind":"ELEMENT_NAME"}
+  ],
+  "normalization":"RENAME_ONLY",
+  "collisionPolicy":"BLOCK_IF_BOTH_PRESENT_WITH_DIFFERENT_VALUES"
+}

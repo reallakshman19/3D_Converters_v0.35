@@ -1,0 +1,33 @@
+schema: AgentPrStatus.v1
+repository: reallaksh19/3D_Converters
+pr_or_wip: PR518
+mission: "Issue #513 PF-03 simultaneous-source semantics"
+workstream: AIV_PRODUCTION_FREEZE_PF03
+branch: agent/aiv-pf03-simultaneous-source-semantics-20260815
+pr_head: 8cd30a464435658e833ddf297c5727e68e979d4d
+main_head_last_checked: 5ad2288d41e031ef23df0cb3e600763081b4ac62
+merge_base: 5ad2288d41e031ef23df0cb3e600763081b4ac62
+work_intent: IMPLEMENT
+criticality: ENGINEERING_CRITICAL
+agent_state: COMPLETE_UNDER_OWNER_CHROMIUM_WAIVER
+pr_recovery_state: HEALTHY
+handover_readiness: READY
+report_path: agents/PR518_workreport.md
+report_head: 8cd30a464435658e833ddf297c5727e68e979d4d
+grounding_epoch: GE-PF03-002
+current_stage: PF03_COMPLETE_LOCAL_EXACT_SOURCE_NON_BROWSER
+browser_acceptance: NOT_RUN_OWNER_WAIVED
+full_browser_pass_claimed: false
+owner_chromium_waiver_comment: 5302589137
+production_code_changed: true
+test_code_changed: true
+candidate_kernel_blob: b0967c4c2e9fb98c90b6a3e9028ce9851e9bbcbb
+candidate_test_blob: 36d983018d6e7ef3fc7cd7bda60bdab5bfe3097d
+applicable_benchmarks: [B1, B2, B3, B4, B5, B6, B8]
+applicable_benchmarks_status: PASS
+non_applicable_or_separate_slice_benchmarks: [B7, B9, B10, B11, B12, B13, B14]
+merge_ready: false
+merge_reason: "Owner merge authorization not provided."
+next_slice_eligible: true
+exact_next_action: "Await Owner merge/progression direction; do not merge without explicit authorization."
+last_updated: 2026-08-15T18:08:38+04:00

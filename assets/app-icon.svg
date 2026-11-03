@@ -1,0 +1,16 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">PCF GLB RVM Viewer app icon</title>
+  <desc id="desc">A dark technical cube with a teal pipe elbow and amber section plane.</desc>
+  <rect width="128" height="128" rx="24" fill="#07111F"/>
+  <path d="M40 35H86L101 50V94H55L40 79V35Z" stroke="#365C9A" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M55 50H101M55 50V94M55 50L40 35M86 35L101 50" stroke="#365C9A" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M29 47H75L90 62V101H44L29 86V47Z" stroke="#8FB8FF" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M44 62H90M44 62V101M44 62L29 47M75 47L90 62" stroke="#8FB8FF" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M42 77H62C70 77 76 71 76 63V56" stroke="#2EE6C8" stroke-width="10" stroke-linecap="round"/>
+  <path d="M76 56V44" stroke="#2EE6C8" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="42" cy="77" r="6" fill="#FFFFFF"/>
+  <circle cx="76" cy="44" r="6" fill="#FFFFFF"/>
+  <path d="M80 79L103 66V92L80 105V79Z" fill="#FFB84D" fill-opacity="0.92"/>
+  <path d="M80 79L103 66V92L80 105V79Z" stroke="#FFD48A" stroke-width="3" stroke-linejoin="round"/>
+  <text x="36" y="116" fill="#8FB8FF" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" letter-spacing="1.2">RVM</text>
+</svg>

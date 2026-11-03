@@ -1,0 +1,131 @@
+{
+  "schema": "T29QualificationBenchmarkMatrix.v1",
+  "methodId": "VIB.CAVITATION.FLASHING",
+  "purpose": "INDEPENDENT_QUALIFICATION_ORACLES_NOT_PRODUCTION_OUTPUT",
+  "workedExampleEvidence": {
+    "benchmarkSetPath": "Benchmarks/VibrationIntegrity/ei-aviff-multimechanism-worked-examples-v1.json",
+    "benchmarkSetGitBlobSha1": "sha1:cb945296ea86186afc1cbb45f50ee94c017adca4",
+    "benchmarkSetAuthority": "WORKED_EXAMPLE_VALIDATION_ONLY",
+    "caseId": "EI-NO-EXAMPLE-CAV-FLASH",
+    "mechanism": "CAVITATION_FLASHING",
+    "mode": "NO_RETAINED_EXAMPLE",
+    "branchOracleAvailable": false,
+    "decision": "DO_NOT_INFER_T29_BRANCH_OR_LOF_FROM_MULTIMECHANISM_BENCHMARK_SET"
+  },
+  "arithmeticVectors": [
+    {
+      "id": "T29-ARITH-001-GLOBE-PA",
+      "evidenceClass": "SECONDARY_PUBLICATION_RELATION_ARITHMETIC_ONLY",
+      "inputs": {
+        "valveType": "Globe",
+        "FL": 0.90,
+        "P1": 13789500,
+        "Pv": 152926,
+        "pressureUnit": "Pa",
+        "pressureBasis": "PENDING_CONTROLLED_SOURCE"
+      },
+      "relation": "delta = FL^2 * (P1 - 0.96 * Pv)",
+      "expected": {
+        "delta": 11050579.7424,
+        "unit": "Pa"
+      },
+      "branchOracle": null,
+      "authority": "ARITHMETIC_REPLAY_ONLY"
+    },
+    {
+      "id": "T29-ARITH-002-GLOBE-BAR",
+      "evidenceClass": "UNIT_INVARIANCE_PAIR",
+      "inputs": {
+        "valveType": "Globe",
+        "FL": 0.90,
+        "P1": 137.895,
+        "Pv": 1.52926,
+        "pressureUnit": "bar",
+        "pressureBasis": "PENDING_CONTROLLED_SOURCE"
+      },
+      "relation": "delta = FL^2 * (P1 - 0.96 * Pv)",
+      "expected": {
+        "delta": 110.505797424,
+        "unit": "bar"
+      },
+      "pairedWith": "T29-ARITH-001-GLOBE-PA",
+      "branchOracle": null,
+      "authority": "ARITHMETIC_REPLAY_ONLY"
+    }
+  ],
+  "lookupVectors": [
+    { "id": "T29-FL-001", "valveType": "Ball", "expectedFL": 0.60, "state": "CANDIDATE_ORACLE" },
+    { "id": "T29-FL-002", "valveType": "Butterfly", "expectedFL": 0.62, "state": "CANDIDATE_ORACLE" },
+    { "id": "T29-FL-003", "valveType": "Globe", "expectedFL": 0.90, "state": "CANDIDATE_ORACLE" },
+    { "id": "T29-FL-004", "valveType": "Gate", "expectedFL": 0.60, "state": "CANDIDATE_ORACLE" },
+    { "id": "T29-FL-005", "valveType": "Rotary plug", "expectedStatus": "NOT_READY", "state": "FAIL_CLOSED_ORACLE" },
+    { "id": "T29-FL-006", "valveType": "", "expectedStatus": "NOT_READY", "state": "FAIL_CLOSED_ORACLE" }
+  ],
+  "decisionBranchVectors": [
+    {
+      "id": "T29-BRANCH-NO-CAVITATION",
+      "requiredCoverage": "NO_CAVITATION",
+      "inputs": null,
+      "expectedRegime": null,
+      "expectedLof": null,
+      "state": "PENDING_CONTROLLED_SOURCE_ORACLE"
+    },
+    {
+      "id": "T29-BRANCH-CAVITATION",
+      "requiredCoverage": "CAVITATION",
+      "inputs": null,
+      "expectedRegime": null,
+      "expectedLof": null,
+      "state": "PENDING_CONTROLLED_SOURCE_ORACLE"
+    },
+    {
+      "id": "T29-BRANCH-FLASHING",
+      "requiredCoverage": "FLASHING",
+      "inputs": null,
+      "expectedRegime": null,
+      "expectedLof": null,
+      "state": "PENDING_CONTROLLED_SOURCE_ORACLE"
+    },
+    {
+      "id": "T29-BRANCH-EQUALITY",
+      "requiredCoverage": "EXACT_CRITERION_EQUALITY",
+      "inputs": null,
+      "expectedRegime": null,
+      "expectedLof": null,
+      "state": "PENDING_CONTROLLED_SOURCE_ORACLE"
+    },
+    {
+      "id": "T29-BRANCH-BELOW",
+      "requiredCoverage": "JUST_BELOW_CRITERION",
+      "inputs": null,
+      "expectedRegime": null,
+      "expectedLof": null,
+      "state": "PENDING_CONTROLLED_SOURCE_ORACLE"
+    },
+    {
+      "id": "T29-BRANCH-ABOVE",
+      "requiredCoverage": "JUST_ABOVE_CRITERION",
+      "inputs": null,
+      "expectedRegime": null,
+      "expectedLof": null,
+      "state": "PENDING_CONTROLLED_SOURCE_ORACLE"
+    }
+  ],
+  "failureVectors": [
+    { "id": "T29-FAIL-PV-MISSING", "condition": "Pv missing", "expectedStatus": "NOT_READY" },
+    { "id": "T29-FAIL-PRESSURE-BASIS", "condition": "pressure basis unknown", "expectedStatus": "NOT_READY" },
+    { "id": "T29-FAIL-PRESSURE-ORDER", "condition": "source-invalid pressure ordering", "expectedStatus": "PENDING_CONTROLLED_SOURCE_RULE" },
+    { "id": "T29-FAIL-PHASE", "condition": "unsupported phase", "expectedStatus": "UNSUPPORTED" },
+    { "id": "T29-FAIL-DEVICE", "condition": "unsupported device", "expectedStatus": "UNSUPPORTED_OR_NOT_READY_PENDING_SOURCE" }
+  ],
+  "promotionGate": {
+    "arithmeticOracleComplete": true,
+    "lookupCandidateOracleComplete": true,
+    "workedExampleBranchOracleAvailable": false,
+    "decisionBranchOracleComplete": false,
+    "boundaryOracleComplete": false,
+    "controlledSourceReconciled": false,
+    "candidateKernelAuthorized": false,
+    "screeningAuthorityAuthorized": false
+  }
+}

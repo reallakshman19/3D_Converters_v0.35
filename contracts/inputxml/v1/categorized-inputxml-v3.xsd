@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+  <xs:annotation>
+    <xs:documentation>
+      CategorizedInputXML v3 is a review and transfer representation. It is not
+      canonical InputXML and cannot be supplied directly to the CII writer.
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:complexType name="TextWithSourceType" mixed="true">
+    <xs:attribute name="source" type="xs:string" use="optional"/>
+    <xs:attribute name="sourceField" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="NameBlockType">
+    <xs:sequence>
+      <xs:element name="FROM_NAME" type="xs:string" minOccurs="0"/>
+      <xs:element name="TO_NAME" type="xs:string" minOccurs="0"/>
+      <xs:element name="LINE_ID" type="xs:string" minOccurs="0"/>
+      <xs:element name="NAME" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="RouteGeometryBlockType">
+    <xs:sequence>
+      <xs:element name="DELTA_X" type="xs:decimal" minOccurs="0"/>
+      <xs:element name="DELTA_Y" type="xs:decimal" minOccurs="0"/>
+      <xs:element name="DELTA_Z" type="xs:decimal" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="SectionDimensionBlockType">
+    <xs:sequence>
+      <xs:element name="DIAMETER" type="xs:decimal" minOccurs="0"/>
+      <xs:element name="WALL_THICK" type="xs:decimal" minOccurs="0"/>
+      <xs:element name="INSUL_THICK" type="xs:decimal" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="DerivedBlockType">
+    <xs:sequence>
+      <xs:element name="BoreMm" type="TextWithSourceType" minOccurs="0"/>
+      <xs:element name="ElementLengthMm" type="TextWithSourceType" minOccurs="0"/>
+      <xs:element name="MaterialName" type="TextWithSourceType" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="RawReviewBlockType">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
+    </xs:sequence>
+    <xs:attribute name="scope" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="UnmappedAttributeType" mixed="true">
+    <xs:attribute name="name" type="xs:NCName" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="MiscBlockType">
+    <xs:sequence>
+      <xs:element name="UnmappedAttribute" type="UnmappedAttributeType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="CoordinateBlockType">
+    <xs:sequence>
+      <xs:element name="FROM_GLOBAL_X" type="xs:decimal" minOccurs="0"/>
+      <xs:element name="FROM_GLOBAL_Y" type="xs:decimal" minOccurs="0"/>
+      <xs:element name="FROM_GLOBAL_Z" type="xs:decimal" minOccurs="0"/>
+      <xs:element name="TO_GLOBAL_X" type="xs:decimal" minOccurs="0"/>
+      <xs:element name="TO_GLOBAL_Y" type="xs:decimal" minOccurs="0"/>
+      <xs:element name="TO_GLOBAL_Z" type="xs:decimal" minOccurs="0"/>
+      <xs:element name="GLOBAL_COORD_BASIS_NODE" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="TemperatureBlockType">
+    <xs:sequence>
+      <xs:element name="Temperature1" type="TextWithSourceType" minOccurs="0"/>
+      <xs:element name="Temperature2" type="TextWithSourceType" minOccurs="0"/>
+      <xs:element name="Temperature3" type="TextWithSourceType" minOccurs="0"/>
+      <xs:element name="Temperature4" type="TextWithSourceType" minOccurs="0"/>
+      <xs:element name="Temperature5" type="TextWithSourceType" minOccurs="0"/>
+      <xs:element name="Temperature6" type="TextWithSourceType" minOccurs="0"/>
+      <xs:element name="Temperature7" type="TextWithSourceType" minOccurs="0"/>
+      <xs:element name="Temperature8" type="TextWithSourceType" minOccurs="0"/>
+      <xs:element name="Temperature9" type="TextWithSourceType" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="source" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="NodeType">
+    <xs:sequence>
+      <xs:element name="DerivedCoordinateBlock" type="CoordinateBlockType" minOccurs="0"/>
+      <xs:element name="TemperatureBlock" type="TemperatureBlockType" minOccurs="0"/>
+      <xs:element name="RestraintsBlock" type="RawReviewBlockType" minOccurs="0"/>
+      <xs:element name="DisplacementsBlock" type="RawReviewBlockType" minOccurs="0"/>
+      <xs:element name="ForcesMomentsBlock" type="RawReviewBlockType" minOccurs="0"/>
+      <xs:element name="SifBlock" type="RawReviewBlockType" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="nodeNumber" type="xs:string" use="required"/>
+    <xs:attribute name="role" type="xs:string" use="required"/>
+    <xs:attribute name="elementKey" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="NodesBlockType">
+    <xs:sequence>
+      <xs:element name="Node" type="NodeType" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ElementType">
+    <xs:sequence>
+      <xs:element name="NameBlock" type="NameBlockType" minOccurs="0"/>
+      <xs:element name="RouteGeometryBlock" type="RouteGeometryBlockType" minOccurs="0"/>
+      <xs:element name="SectionDimensionBlock" type="SectionDimensionBlockType" minOccurs="0"/>
+      <xs:element name="DerivedBlock" type="DerivedBlockType" minOccurs="0"/>
+      <xs:element name="BendBlock" type="RawReviewBlockType" minOccurs="0"/>
+      <xs:element name="RigidBlock" type="RawReviewBlockType" minOccurs="0"/>
+      <xs:element name="FlangeBlock" type="RawReviewBlockType" minOccurs="0"/>
+      <xs:element name="MiscBlock" type="MiscBlockType" minOccurs="0"/>
+      <xs:element name="NodesBlock" type="NodesBlockType" minOccurs="0"/>
+      <xs:element name="OriginalElement" type="xs:string" minOccurs="1"/>
+    </xs:sequence>
+    <xs:attribute name="fromNode" type="xs:string" use="required"/>
+    <xs:attribute name="toNode" type="xs:string" use="required"/>
+    <xs:attribute name="elementKey" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="LineBlockType">
+    <xs:sequence>
+      <xs:element name="Branchname" type="xs:string"/>
+      <xs:element name="LineNo" type="xs:string"/>
+      <xs:element name="PipingClass" type="TextWithSourceType" minOccurs="0"/>
+      <xs:element name="Rating" type="TextWithSourceType" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="LineBlocksType">
+    <xs:sequence>
+      <xs:element name="ProcessBlock" type="RawReviewBlockType" minOccurs="0"/>
+      <xs:element name="MaterialBlock" type="RawReviewBlockType" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="LineType">
+    <xs:sequence>
+      <xs:element name="LineBlock" type="LineBlockType"/>
+      <xs:element name="LineBlocks" type="LineBlocksType" minOccurs="0"/>
+      <xs:element name="Element" type="ElementType" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="CategorizedType">
+    <xs:sequence>
+      <xs:element name="Line" type="LineType" minOccurs="1" maxOccurs="unbounded"/>
+      <xs:element name="OriginalDocument" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="schema" type="xs:string" use="required" fixed="categorized-inputxml/v3"/>
+    <xs:attribute name="sourceName" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:element name="CategorizedInputXML" type="CategorizedType"/>
+</xs:schema>

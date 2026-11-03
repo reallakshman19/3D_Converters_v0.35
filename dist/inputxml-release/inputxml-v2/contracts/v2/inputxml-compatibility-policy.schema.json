@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:reallaksh19:inputxml:compatibility-policy:v1",
+  "title": "InputXmlCompatibilityPolicy.v1",
+  "type": "object",
+  "required": ["schema", "mode", "detectedDialect", "sourceHashSha256", "status", "approvedSemanticSplitId", "diagnostics"],
+  "properties": {
+    "schema": {"const": "InputXmlCompatibilityPolicy.v1"},
+    "mode": {"enum": ["CANONICAL_STRICT", "ADAPTED_CANONICAL", "DIAGNOSTIC_ONLY"]},
+    "detectedDialect": {"type": "string", "minLength": 1},
+    "sourceHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "status": {"enum": ["PASS", "BLOCKED", "DIAGNOSTIC"]},
+    "approvedSemanticSplitId": {"type": ["string", "null"]},
+    "diagnostics": {"type": "array", "items": {"type": "object"}}
+  },
+  "allOf": [
+    {"if": {"properties": {"mode": {"const": "CANONICAL_STRICT"}}}, "then": {"properties": {"detectedDialect": {"const": "canonical-inputxml-v1"}, "approvedSemanticSplitId": {"type": "null"}}}},
+    {"if": {"properties": {"mode": {"const": "DIAGNOSTIC_ONLY"}}}, "then": {"properties": {"status": {"const": "DIAGNOSTIC"}}}}
+  ],
+  "additionalProperties": false
+}

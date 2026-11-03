@@ -1,0 +1,412 @@
+{
+  "schema": "RvmStageModel.v1",
+  "generator": {
+    "name": "3D_Viewer browser stage worker",
+    "version": "20260630-rvm-stage-model-v1-hardening-1"
+  },
+  "source": {
+    "fileName": "sample-rvm-stage-model-v1.rvm",
+    "fileSize": 4096,
+    "fileHash": "sha256-sample-stage-v1",
+    "units": "m",
+    "coordinateBasis": "rvm-native"
+  },
+  "hierarchy": {
+    "rootId": "node-root",
+    "nodes": [
+      {
+        "id": "node-000001",
+        "parentId": "node-root",
+        "name": "/RMSS/PIPE-001",
+        "path": "/RMSS/PIPE-001",
+        "kind": "RVM_STAGE_SAMPLE_NODE",
+        "componentIds": ["comp-000001"],
+        "primitiveIds": ["prim-000001"],
+        "bboxWorld": [0, -0.15, -0.15, 4, 0.15, 0.15]
+      },
+      {
+        "id": "node-000002",
+        "parentId": "node-root",
+        "name": "/RMSS/ELBOW-001",
+        "path": "/RMSS/ELBOW-001",
+        "kind": "RVM_STAGE_SAMPLE_NODE",
+        "componentIds": ["comp-000002"],
+        "primitiveIds": ["prim-000002"],
+        "bboxWorld": [3.85, -0.15, -0.15, 4.35, 0.65, 0.15]
+      },
+      {
+        "id": "node-000003",
+        "parentId": "node-root",
+        "name": "/RMSS/TEE-001",
+        "path": "/RMSS/TEE-001",
+        "kind": "RVM_STAGE_SAMPLE_NODE",
+        "componentIds": ["comp-000003"],
+        "primitiveIds": ["prim-000003", "prim-000004"],
+        "bboxWorld": [4.35, -0.15, -0.15, 6.15, 1.1, 0.15]
+      },
+      {
+        "id": "node-000004",
+        "parentId": "node-root",
+        "name": "/RMSS/FLANGE-001",
+        "path": "/RMSS/FLANGE-001",
+        "kind": "RVM_STAGE_SAMPLE_NODE",
+        "componentIds": ["comp-000004"],
+        "primitiveIds": ["prim-000005"],
+        "bboxWorld": [6.15, -0.32, -0.32, 6.45, 0.32, 0.32]
+      },
+      {
+        "id": "node-000005",
+        "parentId": "node-root",
+        "name": "/RMSS/SUPPORT-PLATE-001",
+        "path": "/RMSS/SUPPORT-PLATE-001",
+        "kind": "RVM_STAGE_SAMPLE_NODE",
+        "componentIds": ["comp-000005"],
+        "primitiveIds": ["prim-000006"],
+        "bboxWorld": [2.2, -0.4, -0.35, 2.8, -0.2, 0.35]
+      },
+      {
+        "id": "node-000006",
+        "parentId": "node-root",
+        "name": "/RMSS/FOUNDATION-001",
+        "path": "/RMSS/FOUNDATION-001",
+        "kind": "RVM_STAGE_SAMPLE_NODE",
+        "componentIds": ["comp-000006"],
+        "primitiveIds": ["prim-000007"],
+        "bboxWorld": [1.8, -0.8, -0.5, 3.2, -0.4, 0.5]
+      },
+      {
+        "id": "node-000007",
+        "parentId": "node-root",
+        "name": "/RMSS/UNKNOWN-CODE-99",
+        "path": "/RMSS/UNKNOWN-CODE-99",
+        "kind": "RVM_STAGE_SAMPLE_NODE",
+        "componentIds": ["comp-000007"],
+        "primitiveIds": ["prim-000008"],
+        "bboxWorld": [7, -0.25, -0.25, 7.5, 0.25, 0.25]
+      }
+    ]
+  },
+  "materials": [],
+  "components": [
+    {
+      "id": "comp-000001",
+      "nodeId": "node-000001",
+      "semanticType": "PIPE",
+      "name": "/RMSS/PIPE-001",
+      "ownerPath": "/RMSS/PIPE-001",
+      "primitiveIds": ["prim-000001"],
+      "bboxWorld": [0, -0.15, -0.15, 4, 0.15, 0.15],
+      "confidence": { "geometry": "native", "semantic": "attribute" },
+      "renderPolicy": {
+        "full": "native-primitives",
+        "medium": "simplified-primitives",
+        "light": "proxy-bbox",
+        "skeleton": "centerline-or-icon",
+        "hidden": "hide"
+      },
+      "diagnostics": []
+    },
+    {
+      "id": "comp-000002",
+      "nodeId": "node-000002",
+      "semanticType": "ELBOW",
+      "name": "/RMSS/ELBOW-001",
+      "ownerPath": "/RMSS/ELBOW-001",
+      "primitiveIds": ["prim-000002"],
+      "bboxWorld": [3.85, -0.15, -0.15, 4.35, 0.65, 0.15],
+      "confidence": { "geometry": "native", "semantic": "attribute" },
+      "renderPolicy": {
+        "full": "native-primitives",
+        "medium": "simplified-primitives",
+        "light": "proxy-bbox",
+        "skeleton": "centerline-or-icon",
+        "hidden": "hide"
+      },
+      "diagnostics": []
+    },
+    {
+      "id": "comp-000003",
+      "nodeId": "node-000003",
+      "semanticType": "TEE",
+      "name": "/RMSS/TEE-001",
+      "ownerPath": "/RMSS/TEE-001",
+      "primitiveIds": ["prim-000003", "prim-000004"],
+      "bboxWorld": [4.35, -0.15, -0.15, 6.15, 1.1, 0.15],
+      "confidence": { "geometry": "native", "semantic": "attribute" },
+      "renderPolicy": {
+        "full": "native-primitives",
+        "medium": "simplified-primitives",
+        "light": "proxy-bbox",
+        "skeleton": "centerline-or-icon",
+        "hidden": "hide"
+      },
+      "diagnostics": []
+    },
+    {
+      "id": "comp-000004",
+      "nodeId": "node-000004",
+      "semanticType": "FLANGE",
+      "name": "/RMSS/FLANGE-001",
+      "ownerPath": "/RMSS/FLANGE-001",
+      "primitiveIds": ["prim-000005"],
+      "bboxWorld": [6.15, -0.32, -0.32, 6.45, 0.32, 0.32],
+      "confidence": { "geometry": "native", "semantic": "attribute" },
+      "renderPolicy": {
+        "full": "native-primitives",
+        "medium": "simplified-primitives",
+        "light": "proxy-bbox",
+        "skeleton": "centerline-or-icon",
+        "hidden": "hide"
+      },
+      "diagnostics": []
+    },
+    {
+      "id": "comp-000005",
+      "nodeId": "node-000005",
+      "semanticType": "SUPPORT",
+      "name": "/RMSS/SUPPORT-PLATE-001",
+      "ownerPath": "/RMSS/SUPPORT-PLATE-001",
+      "primitiveIds": ["prim-000006"],
+      "bboxWorld": [2.2, -0.4, -0.35, 2.8, -0.2, 0.35],
+      "confidence": { "geometry": "native", "semantic": "attribute" },
+      "renderPolicy": {
+        "full": "native-primitives",
+        "medium": "simplified-primitives",
+        "light": "proxy-bbox",
+        "skeleton": "centerline-or-icon",
+        "hidden": "hide"
+      },
+      "diagnostics": []
+    },
+    {
+      "id": "comp-000006",
+      "nodeId": "node-000006",
+      "semanticType": "FOUNDATION",
+      "name": "/RMSS/FOUNDATION-001",
+      "ownerPath": "/RMSS/FOUNDATION-001",
+      "primitiveIds": ["prim-000007"],
+      "bboxWorld": [1.8, -0.8, -0.5, 3.2, -0.4, 0.5],
+      "confidence": { "geometry": "native", "semantic": "attribute" },
+      "renderPolicy": {
+        "full": "native-primitives",
+        "medium": "simplified-primitives",
+        "light": "proxy-bbox",
+        "skeleton": "centerline-or-icon",
+        "hidden": "hide"
+      },
+      "diagnostics": []
+    },
+    {
+      "id": "comp-000007",
+      "nodeId": "node-000007",
+      "semanticType": "UNKNOWN",
+      "name": "/RMSS/UNKNOWN-CODE-99",
+      "ownerPath": "/RMSS/UNKNOWN-CODE-99",
+      "primitiveIds": ["prim-000008"],
+      "bboxWorld": [7, -0.25, -0.25, 7.5, 0.25, 0.25],
+      "confidence": { "geometry": "diagnostic", "semantic": "unknown" },
+      "renderPolicy": {
+        "full": "native-primitives",
+        "medium": "simplified-primitives",
+        "light": "proxy-bbox",
+        "skeleton": "centerline-or-icon",
+        "hidden": "hide"
+      },
+      "diagnostics": [
+        {
+          "severity": "warning",
+          "code": "STAGE_FALLBACK_UNKNOWN_NATIVE_CODE",
+          "message": "Native primitive code 99 is not decoded; emitting diagnostic bbox only.",
+          "ref": {
+            "nodeId": "node-000007",
+            "componentId": "comp-000007",
+            "primitiveId": "prim-000008",
+            "nativeCode": 99,
+            "recordOffset": 9001
+          },
+          "fallback": {
+            "reason": "unknown-native-code",
+            "renderKind": "UNKNOWN_DIAGNOSTIC",
+            "recipe": "bbox-wireframe"
+          }
+        }
+      ]
+    }
+  ],
+  "primitives": [
+    {
+      "id": "prim-000001",
+      "nodeId": "node-000001",
+      "componentId": "comp-000001",
+      "native": { "recordOffset": 128, "code": 8, "kind": "CYLINDER", "decoded": true },
+      "transform": {
+        "matrix3x4": [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
+        "bboxLocal": [0, -0.15, -0.15, 4, 0.15, 0.15],
+        "bboxWorld": [0, -0.15, -0.15, 4, 0.15, 0.15]
+      },
+      "params": { "radius": 0.15, "length": 4 },
+      "confidence": { "geometry": "native", "semantic": "attribute" },
+      "renderKind": "CYLINDER",
+      "materialId": "mat-sample-steel",
+      "diagnostics": []
+    },
+    {
+      "id": "prim-000002",
+      "nodeId": "node-000002",
+      "componentId": "comp-000002",
+      "native": { "recordOffset": 256, "code": 4, "kind": "ELBOW", "decoded": true },
+      "transform": {
+        "matrix3x4": [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
+        "bboxLocal": [3.85, -0.15, -0.15, 4.35, 0.65, 0.15],
+        "bboxWorld": [3.85, -0.15, -0.15, 4.35, 0.65, 0.15]
+      },
+      "params": { "radius": 0.15, "bendRadius": 0.5, "angleDeg": 90 },
+      "confidence": { "geometry": "native", "semantic": "attribute" },
+      "renderKind": "ELBOW",
+      "materialId": "mat-sample-steel",
+      "diagnostics": []
+    },
+    {
+      "id": "prim-000003",
+      "nodeId": "node-000003",
+      "componentId": "comp-000003",
+      "native": { "recordOffset": 384, "code": 8, "kind": "CYLINDER", "decoded": true },
+      "transform": {
+        "matrix3x4": [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
+        "bboxLocal": [4.35, -0.15, -0.15, 6.15, 0.15, 0.15],
+        "bboxWorld": [4.35, -0.15, -0.15, 6.15, 0.15, 0.15]
+      },
+      "params": { "radius": 0.15, "length": 1.8 },
+      "confidence": { "geometry": "native", "semantic": "attribute" },
+      "renderKind": "CYLINDER",
+      "materialId": "mat-sample-steel",
+      "diagnostics": []
+    },
+    {
+      "id": "prim-000004",
+      "nodeId": "node-000003",
+      "componentId": "comp-000003",
+      "native": { "recordOffset": 512, "code": 8, "kind": "CYLINDER", "decoded": true },
+      "transform": {
+        "matrix3x4": [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
+        "bboxLocal": [5.1, 0, -0.12, 5.4, 1.1, 0.12],
+        "bboxWorld": [5.1, 0, -0.12, 5.4, 1.1, 0.12]
+      },
+      "params": { "radius": 0.12, "length": 1.1 },
+      "confidence": { "geometry": "native", "semantic": "attribute" },
+      "renderKind": "CYLINDER",
+      "materialId": "mat-sample-steel",
+      "diagnostics": []
+    },
+    {
+      "id": "prim-000005",
+      "nodeId": "node-000004",
+      "componentId": "comp-000004",
+      "native": { "recordOffset": 640, "code": 8, "kind": "CYLINDER", "decoded": true },
+      "transform": {
+        "matrix3x4": [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
+        "bboxLocal": [6.15, -0.32, -0.32, 6.45, 0.32, 0.32],
+        "bboxWorld": [6.15, -0.32, -0.32, 6.45, 0.32, 0.32]
+      },
+      "params": { "radius": 0.32, "length": 0.3 },
+      "confidence": { "geometry": "native", "semantic": "attribute" },
+      "renderKind": "CYLINDER",
+      "materialId": "mat-sample-steel",
+      "diagnostics": []
+    },
+    {
+      "id": "prim-000006",
+      "nodeId": "node-000005",
+      "componentId": "comp-000005",
+      "native": { "recordOffset": 768, "code": 11, "kind": "FACET_GROUP", "decoded": true },
+      "transform": {
+        "matrix3x4": [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
+        "bboxLocal": [2.2, -0.4, -0.35, 2.8, -0.2, 0.35],
+        "bboxWorld": [2.2, -0.4, -0.35, 2.8, -0.2, 0.35]
+      },
+      "params": { "facets": 12 },
+      "confidence": { "geometry": "native", "semantic": "attribute" },
+      "renderKind": "FACET_GROUP",
+      "materialId": "mat-sample-steel",
+      "diagnostics": []
+    },
+    {
+      "id": "prim-000007",
+      "nodeId": "node-000006",
+      "componentId": "comp-000006",
+      "native": { "recordOffset": 896, "code": 2, "kind": "BOX", "decoded": true },
+      "transform": {
+        "matrix3x4": [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
+        "bboxLocal": [1.8, -0.8, -0.5, 3.2, -0.4, 0.5],
+        "bboxWorld": [1.8, -0.8, -0.5, 3.2, -0.4, 0.5]
+      },
+      "params": { "size": [1.4, 0.4, 1] },
+      "confidence": { "geometry": "native", "semantic": "attribute" },
+      "renderKind": "BOX",
+      "materialId": "mat-sample-steel",
+      "diagnostics": []
+    },
+    {
+      "id": "prim-000008",
+      "nodeId": "node-000007",
+      "componentId": "comp-000007",
+      "native": { "recordOffset": 9001, "code": 99, "kind": "Unknown", "decoded": false },
+      "transform": {
+        "matrix3x4": [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
+        "bboxLocal": [7, -0.25, -0.25, 7.5, 0.25, 0.25],
+        "bboxWorld": [7, -0.25, -0.25, 7.5, 0.25, 0.25]
+      },
+      "params": { "diagnosticBBox": true },
+      "confidence": { "geometry": "diagnostic", "semantic": "unknown" },
+      "renderKind": "UNKNOWN_DIAGNOSTIC",
+      "materialId": "mat-diagnostic",
+      "diagnostics": [
+        {
+          "severity": "warning",
+          "code": "STAGE_FALLBACK_UNKNOWN_NATIVE_CODE",
+          "message": "Native primitive code 99 is not decoded; emitting diagnostic bbox only.",
+          "ref": {
+            "nodeId": "node-000007",
+            "componentId": "comp-000007",
+            "primitiveId": "prim-000008",
+            "nativeCode": 99,
+            "recordOffset": 9001
+          },
+          "fallback": {
+            "reason": "unknown-native-code",
+            "renderKind": "UNKNOWN_DIAGNOSTIC",
+            "recipe": "bbox-wireframe"
+          }
+        }
+      ]
+    }
+  ],
+  "geometryChunks": [],
+  "diagnostics": {
+    "schema": "RvmStageDiagnostics.v1",
+    "severityCounts": { "info": 0, "warning": 1, "error": 0 },
+    "nativeCodeCounts": { "99": 1 },
+    "renderKindCounts": { "UNKNOWN_DIAGNOSTIC": 1 },
+    "semanticTypeCounts": {},
+    "fallbackCounts": { "unknown-native-code": 1 },
+    "messages": [
+      {
+        "severity": "warning",
+        "code": "STAGE_FALLBACK_UNKNOWN_NATIVE_CODE",
+        "message": "Native primitive code 99 is not decoded; emitting diagnostic bbox only.",
+        "ref": {
+          "nodeId": "node-000007",
+          "componentId": "comp-000007",
+          "primitiveId": "prim-000008",
+          "nativeCode": 99,
+          "recordOffset": 9001
+        },
+        "fallback": {
+          "reason": "unknown-native-code",
+          "renderKind": "UNKNOWN_DIAGNOSTIC",
+          "recipe": "bbox-wireframe"
+        }
+      }
+    ]
+  }
+}

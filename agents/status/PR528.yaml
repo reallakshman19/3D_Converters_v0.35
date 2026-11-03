@@ -1,0 +1,62 @@
+schema: AgentPrStatus.v1
+repository: reallaksh19/3D_Converters
+pr_or_wip: PR528
+mission: "Issue #526 AIV Unified Network Canvas with explicit NETWORK_DRIVEN/TABLE_DRIVEN authority and full-scale input editing"
+workstream: AIV_UNIFIED_NETWORK_CANVAS
+branch: agent/aiv-unified-network-canvas-526
+pr_head: de1c27312d897aa1be81ed01cacf4b13d5e8268d
+main_head_last_checked: f25f721dc35c30b2f7a911f31c26ccdf8a53c6ac
+merge_base: 36f53018d5c1cf8bec609e39d6995a6067bb5d01
+work_intent: IMPLEMENT
+criticality: ENGINEERING_CRITICAL
+execution_mode: MANUAL
+formal_auto_mode: NOT_ACTIVE_LITERAL_AUTO_MODE_TOKEN_ABSENT
+agent_state: STAGE8_CANVAS_LABEL_MODES_IMPLEMENTED_LOCAL_VALIDATION_PASS
+pr_recovery_state: RECOVERABLE
+handover_readiness: READY
+report_path: agents/PR528_workreport.md
+report_basis_head: de1c27312d897aa1be81ed01cacf4b13d5e8268d
+appendix_a_status: NOT_REQUIRED_NEW_ASSIGNMENT_ISSUE_526_GATE_SATISFIED
+grounding_epoch: AIV526-GE-015
+current_stage: STAGE_8_FIELD_DRIVEN_CANVAS_LABEL_MODES_LOCAL_PASS
+last_completed_stage: STAGE_8_LABEL_PROJECTION_CACHE_CUSTODY_AND_LOCAL_CHROMIUM
+qualification_comment: 5303402441
+blocker: "No blocker for source/local Stage-8 capability. Promotion remains blocked on exact-current-main integration and full native/hosted Chromium/B1-B10 acceptance."
+highest_risk: "Do not treat label projections as new engineering authority or local page.setContent Chromium as hosted/full-application acceptance."
+completed_editor_capabilities:
+  - "Stages 1-7 retained: one SVG, explicit TABLE_DRIVEN/NETWORK_DRIVEN ownership, scratch flare-network start, fast RV authoring, auto-selection, completeness guidance and currentness feedback."
+  - "Canvas now exposes Normal, Process, Geometry, Results and Completeness label modes on the same SVG."
+  - "Process projects authoritative Source fields such as mass flow, pressure pair, phase/sonic state and Assessment classification/material fields."
+  - "Geometry projects explicit segment engineering length/endpoints and authoritative Assessment OD/WT fields; path distance comes only from existing pathEvidence/explicit distance."
+  - "Results displays registered VIB.AIV.ACOUSTIC Source/Assessment/contribution result data only; stale result numbers are suppressed and replaced by a rerun message."
+  - "Completeness displays existing qualified readiness status plus clearly guidance-only common-field presence/assumption summaries."
+  - "Label-mode switching is presentation-only and revision-neutral; it never mutates graph/table inputs, readiness or screening lineage."
+  - "Downstream authoritative field edits rerender the active label mode through the existing engineering mutation transaction."
+  - "Segment/path label groups track presentation movement; SVG coordinates remain presentation-only."
+  - "Fresh editor cache identity 20260816-aiv-526-editor-3 reaches startup, qualification, unified renderer/controller and label module while preserving FIV cache custody."
+protected_authority:
+  - AIV_READINESS_EXECUTABLE_PARITY_PR517
+  - AIV_NUMERICAL_EQUATIONS
+  - AIV_SIMULTANEOUS_SOURCE_SEMANTICS
+  - SVG_PIXELS_NEVER_DISTANCE
+  - ASSESSMENT_RESULT_SCOPE
+  - DESIGN_AUTHORITY_FALSE
+validation:
+  prior_stage6_editor_pure: "PASS 8/8 exact local reconstruction"
+  prior_stage6_editor_local_chromium: "PASS 8/8; ValidationRecords/AIV/PR528-full-scale-editor-local-chromium-evidence.json"
+  prior_stage7_user_workflow_exact_local: "PASS 5/5 reconstructed branch modules"
+  prior_stage7_local_chromium: "PASS 8/8; ValidationRecords/AIV/PR528-stage7-user-workflow-local-chromium-evidence.json"
+  stage8_label_projection_exact_local: "PASS 6/6 reconstructed label module"
+  stage8_local_chromium: "PASS 18/18; ValidationRecords/AIV/PR528-stage8-canvas-label-modes-local-chromium-evidence.json"
+  stage8_chromium_scope: "one SVG; five modes; Process/Geometry field projections; revision-neutral switching; downstream edits; registered current Results; stale result suppression"
+  module_size_policy: "PASS SOURCE INSPECTION; label module 175 lines and updated unified view/controller have no content at line 285"
+  cache_chain_regression: COMMITTED_NOT_NATIVE_EXECUTED
+  cutover_regression: COMMITTED_NOT_NATIVE_EXECUTED
+  hosted_full_application_chromium: NOT_RUN_INFRASTRUCTURE_BLOCKED
+  full_native_repo: NOT_RUN_NO_PRIVATE_CHECKOUT
+  exact_current_main_integrated_runtime: NOT_RUN
+  b1_b10: NOT_RUN_COMPLETE_MATRIX
+coordination_state: COORDINATION_REQUIRED_BOUNDARIES_PRESERVED
+exact_next_action: "Integrate/rebase onto current main in a native-capable environment, run permanent Stage-8 label/cache/cutover tests plus full AIV release and B1-B10/hosted Chromium acceptance; keep PR draft and do not merge without explicit Owner authorization."
+merge_authority: OWNER_ONLY_NOT_GRANTED
+last_updated: 2026-08-16T06:25:00+04:00

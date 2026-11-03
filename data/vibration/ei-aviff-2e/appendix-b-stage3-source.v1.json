@@ -1,0 +1,32 @@
+{
+  "schema": "VibrationMasterSourceEvidence.v1",
+  "packageId": "EI_AVIFF_2E_ADVANCED_ANALYSIS_6111DDBC",
+  "stageId": "APPENDIX_B_STAGE3",
+  "source": {
+    "repository": "reallaksh19/Advanced_Analysis",
+    "commit": "6111ddbc0f27dd95b50a80c569a2c4daba3b3921",
+    "path": "docs/EI data/Appendix_B_Defaults_and_Fluid_Properties.md",
+    "gitBlobSha1": "1d26832aa3ba1e2a99f680ea3d8243490e0ffeb6",
+    "sizeBytes": 7972
+  },
+  "corroboration": {
+    "path": "docs/EI data/EI_AVIFF_Complete_Master_Register.md",
+    "gitBlobSha1": "51bca43473be8018d4ce48fb440ee4d7bd0abc82",
+    "sizeBytes": 32592
+  },
+  "governance": {
+    "path": "docs/EI data/README.md",
+    "gitBlobSha1": "72730d065bcd2aa80976f0ad2870aafacff0bb4c",
+    "sizeBytes": 3472,
+    "precedence": [
+      "PROJECT_EXPLICIT",
+      "ACTIVE_EI_METHOD_MASTER",
+      "APPENDIX_B_DEFAULT"
+    ]
+  },
+  "publicationState": "CANDIDATE",
+  "authorityEffect": "NONE",
+  "runtimeFetchAllowed": false,
+  "interpolationAuthorized": false,
+  "extrapolationAuthorized": false
+}

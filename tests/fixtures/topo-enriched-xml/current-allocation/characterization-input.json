@@ -1,0 +1,94 @@
+[
+  {
+    "name": "/LINE-A/B1",
+    "type": "BRANCH",
+    "attributes": { "OWNER": "/LINE-A" },
+    "children": [
+      {
+        "name": "PIPE-1",
+        "type": "PIPE",
+        "enrichedAttributes": { "nominalBoreMm": 100, "pipeOdMm": 114.3, "wallThicknessMm": 6.02, "corrosionAllowanceMm": 1.5, "insulationThicknessMm": 25 },
+        "attributes": { "REF": "P1", "ABORE": "100mm", "APOS": { "x": 0, "y": 0, "z": 0 }, "LPOS": { "x": 10, "y": 0, "z": 0 } }
+      },
+      {
+        "name": "ELBO-1",
+        "type": "ELBO",
+        "enrichedAttributes": { "nominalBoreMm": 100, "pipeOdMm": 114.3, "wallThicknessMm": 6.02, "corrosionAllowanceMm": 1.5 },
+        "attributes": { "REF": "E1", "ABORE": "100mm", "APOS": { "x": 10, "y": 0, "z": 0 }, "LPOS": { "x": 20, "y": 10, "z": 0 }, "RADI": 152 }
+      },
+      {
+        "name": "BEND-1",
+        "type": "BEND",
+        "enrichedAttributes": { "nominalBoreMm": 100, "pipeOdMm": 114.3, "wallThicknessMm": 6.02, "corrosionAllowanceMm": 1.5 },
+        "attributes": { "REF": "B1", "ABORE": "100mm", "APOS": { "x": 20, "y": 10, "z": 0 }, "LPOS": { "x": 30, "y": 20, "z": 0 }, "RADI": 152 }
+      },
+      {
+        "name": "TEE-1",
+        "type": "TEE",
+        "enrichedAttributes": { "nominalBoreMm": 100, "pipeOdMm": 114.3, "wallThicknessMm": 6.02, "corrosionAllowanceMm": 1.5 },
+        "attributes": { "REF": "T1", "ABORE": "100mm", "APOS": { "x": 30, "y": 20, "z": 0 }, "LPOS": { "x": 40, "y": 20, "z": 0 }, "TPOS": { "x": 30, "y": 30, "z": 0 } }
+      },
+      {
+        "name": "OLET-1",
+        "type": "OLET",
+        "enrichedAttributes": { "nominalBoreMm": 100, "pipeOdMm": 114.3, "wallThicknessMm": 6.02, "corrosionAllowanceMm": 1.5 },
+        "attributes": { "REF": "O1", "ABORE": "100mm", "APOS": { "x": 40, "y": 20, "z": 0 }, "LPOS": { "x": 50, "y": 20, "z": 0 } }
+      },
+      {
+        "name": "REDU-1",
+        "type": "REDU",
+        "enrichedAttributes": { "nominalBoreMm": 100, "pipeOdMm": 114.3, "wallThicknessMm": 6.02, "corrosionAllowanceMm": 1.5 },
+        "attributes": { "REF": "R1", "ABORE": "100mm", "LBORE": "80mm", "APOS": { "x": 50, "y": 20, "z": 0 }, "LPOS": { "x": 60, "y": 20, "z": 0 } }
+      },
+      {
+        "name": "REDUCER-1",
+        "type": "REDUCER",
+        "enrichedAttributes": { "nominalBoreMm": 100, "pipeOdMm": 114.3, "wallThicknessMm": 6.02, "corrosionAllowanceMm": 1.5 },
+        "attributes": { "REF": "R2", "ABORE": "100mm", "LBORE": "80mm", "APOS": { "x": 60, "y": 20, "z": 0 }, "LPOS": { "x": 70, "y": 20, "z": 0 } }
+      },
+      {
+        "name": "VALVE-1",
+        "type": "VALV",
+        "enrichedAttributes": { "nominalBoreMm": 100, "pipeOdMm": 114.3, "wallThicknessMm": 6.02, "corrosionAllowanceMm": 1.5, "componentWeightKg": 45 },
+        "attributes": { "REF": "V1", "ABORE": "100mm", "APOS": { "x": 70, "y": 20, "z": 0 }, "LPOS": { "x": 80, "y": 20, "z": 0 } }
+      },
+      {
+        "name": "FLANGE-1",
+        "type": "FLAN",
+        "enrichedAttributes": { "nominalBoreMm": 100, "pipeOdMm": 114.3, "wallThicknessMm": 6.02, "corrosionAllowanceMm": 1.5, "componentWeightKg": 10 },
+        "attributes": { "REF": "F1", "ABORE": "100mm", "APOS": { "x": 80, "y": 20, "z": 0 }, "LPOS": { "x": 85, "y": 20, "z": 0 } }
+      },
+      {
+        "name": "SUPPORT-1",
+        "type": "ATTA",
+        "attributes": { "REF": "S1", "POS": { "x": 85, "y": 20, "z": 0 }, "SUPPORT_KIND": "GUIDE", "SUPPORT_TAG": "PS-001" }
+      }
+    ]
+  },
+  {
+    "name": "/LINE-B/B1",
+    "type": "BRANCH",
+    "attributes": { "OWNER": "/LINE-B" },
+    "children": [
+      {
+        "name": "PIPE-B1",
+        "type": "PIPE",
+        "enrichedAttributes": { "nominalBoreMm": 80, "pipeOdMm": 88.9, "wallThicknessMm": 5.49, "corrosionAllowanceMm": 1.5 },
+        "attributes": { "REF": "Q1", "ABORE": "80mm", "APOS": { "x": 100, "y": 0, "z": 0 }, "LPOS": { "x": 110, "y": 0, "z": 0 } }
+      }
+    ]
+  },
+  {
+    "name": "/LINE-A/B2",
+    "type": "BRANCH",
+    "attributes": { "OWNER": "/LINE-A" },
+    "children": [
+      {
+        "name": "PIPE-2",
+        "type": "PIPE",
+        "enrichedAttributes": { "nominalBoreMm": 100, "pipeOdMm": 114.3, "wallThicknessMm": 6.02, "corrosionAllowanceMm": 1.5 },
+        "attributes": { "REF": "P2", "ABORE": "100mm", "APOS": { "x": 90, "y": 20, "z": 0 }, "LPOS": { "x": 100, "y": 20, "z": 0 } }
+      }
+    ]
+  }
+]

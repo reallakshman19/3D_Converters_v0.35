@@ -1,0 +1,56 @@
+{
+  "schema": "InputXmlManagedStageCanonicalJsonVectors.v1",
+  "algorithm": "fnv1a64-canonical-json-v1",
+  "numericContract": "ECMAScript Number and JSON.stringify lexical form after negative-zero normalization",
+  "stringContract": "Strict UTF-8 strings, ECMAScript JSON.stringify escaping, UTF-16 key order, and rejection of unpaired surrogates",
+  "vectors": [
+    {"name": "zero", "source": "0", "expected": "0"},
+    {"name": "negative-zero", "source": "-0", "expected": "0"},
+    {"name": "small-fixed-boundary", "source": "0.000001", "expected": "0.000001"},
+    {"name": "small-exponent-boundary", "source": "0.0000001", "expected": "1e-7"},
+    {"name": "large-fixed-boundary", "source": "100000000000000000000", "expected": "100000000000000000000"},
+    {"name": "large-exponent-boundary", "source": "1e21", "expected": "1e+21"},
+    {"name": "unsafe-integer-coercion", "source": "9007199254740993", "expected": "9007199254740992"},
+    {"name": "negative-small-fixed", "source": "-0.000001", "expected": "-0.000001"},
+    {"name": "fractional-residual", "source": "0.12345678901234568", "expected": "0.12345678901234568"},
+    {"name": "rounding-boundary", "source": "333333333.33333329", "expected": "333333333.3333333"},
+    {"name": "coordinate-fixed", "source": "1.2345678901234567e-5", "expected": "0.000012345678901234568"},
+    {"name": "coordinate-near-threshold", "source": "1.2345678901234567e-6", "expected": "0.0000012345678901234567"},
+    {"name": "coordinate-exponent", "source": "1.2345678901234567e-7", "expected": "1.2345678901234566e-7"},
+    {"name": "maximum-finite", "source": "1.7976931348623157e308", "expected": "1.7976931348623157e+308"},
+    {"name": "minimum-positive", "source": "5e-324", "expected": "5e-324"}
+  ],
+  "stringVectors": [
+    {"name": "valid-non-bmp", "source": "\"😀\"", "expected": "\"😀\"", "expectedHash": "fnv1a64:b7151e571568949e", "policy": "ACCEPT"},
+    {"name": "line-separator", "source": "\" \"", "expected": "\" \"", "expectedHash": "fnv1a64:56bd73a13e181ad5", "policy": "ACCEPT"},
+    {"name": "paragraph-separator", "source": "\" \"", "expected": "\" \"", "expectedHash": "fnv1a64:56ba49a13e159da0", "policy": "ACCEPT"},
+    {"name": "escaped-control", "source": "\"a\\nb\"", "expected": "\"a\\nb\"", "expectedHash": "fnv1a64:401b09f5799f505e", "policy": "ACCEPT"},
+    {"name": "lone-high-surrogate", "source": "\"\\ud800\"", "policy": "REJECT"},
+    {"name": "lone-low-surrogate", "source": "\"\\udc00\"", "policy": "REJECT"}
+  ],
+  "objectVector": {
+    "value": {
+      "zero": 0,
+      "negativeZeroSource": "-0",
+      "smallFixed": 0.000001,
+      "smallExponent": 1e-7,
+      "largeFixed": 100000000000000000000,
+      "largeExponent": 1e21,
+      "unsafeIntegerSource": "9007199254740993",
+      "fraction": 333333333.33333329
+    },
+    "expectedCanonicalJson": "{\"fraction\":333333333.3333333,\"largeExponent\":1e+21,\"largeFixed\":100000000000000000000,\"negativeZero\":0,\"smallExponent\":1e-7,\"smallFixed\":0.000001,\"unsafeInteger\":9007199254740992,\"zero\":0}",
+    "expectedHash": "fnv1a64:2be8b056631cbf51"
+  },
+  "stringObjectVector": {
+    "value": {
+      "__proto__": {"x": 1},
+      "constructor": 2,
+      "prototype": 3,
+      "😀": "ok",
+      "line": "a b c\n"
+    },
+    "expectedCanonicalJson": "{\"__proto__\":{\"x\":1},\"constructor\":2,\"line\":\"a b c\\n\",\"prototype\":3,\"😀\":\"ok\"}",
+    "expectedHash": "fnv1a64:4acb2ba2d072355f"
+  }
+}

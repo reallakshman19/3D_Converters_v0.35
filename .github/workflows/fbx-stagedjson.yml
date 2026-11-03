@@ -1,0 +1,76 @@
+name: FBX StagedJSON
+
+on:
+  pull_request:
+    paths:
+      - 'tabs/model-converters/converter-registry.js'
+      - 'tabs/model-converters/converters/fbx-to-stagedjson.js'
+      - 'tabs/model-converters/converters/fbx/**'
+      - 'contracts/fbx/**'
+      - 'third_party/ufbx/**'
+      - 'scripts/fbx/**'
+      - 'tests/fbx/**'
+      - 'tests/fixtures/fbx/**'
+      - 'docs/fbx/**'
+      - '.github/workflows/fbx-stagedjson.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  certify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pinned compiler and schema validator environment
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            clang-18 \
+            lld-18 \
+            wasi-libc \
+            libclang-rt-18-dev-wasm32 \
+            python3-venv
+          python3 -m venv .venv-fbx-schema
+          .venv-fbx-schema/bin/python -m pip install \
+            --disable-pip-version-check \
+            --requirement scripts/fbx/schema-validator-requirements.txt
+          .venv-fbx-schema/bin/python - <<'PY'
+          from jsonschema import Draft202012Validator
+          from referencing import Registry, Resource
+          print('FBX schema validator dependencies: PASS')
+          PY
+      - name: Rebuild committed parser and fixtures
+        env:
+          CC: clang-18
+          WASI_SYSROOT: /usr
+        run: |
+          bash scripts/fbx/build-ufbx-wasm.sh
+          python3 scripts/fbx/generate-fixture.py
+          python3 scripts/fbx/generate-family-fixture.py
+          git diff --exit-code -- \
+            third_party/ufbx/fbx_parser.wasm \
+            tests/fixtures/fbx/two-pipes.fbx \
+            tests/fixtures/fbx/axis-geometric.fbx \
+            tests/fixtures/fbx/all-categories.fbx \
+            tests/fixtures/fbx/component-families.fbx \
+            tests/fixtures/fbx/component-families.fbxmap.json
+      - name: Run FBX certification
+        env:
+          FBX_SCHEMA_PYTHON: .venv-fbx-schema/bin/python
+        run: |
+          node tests/fbx/run-all.mjs
+          node tests/fbx/test-source-graph-v2.mjs
+          node tests/fbx/test-v1-compatibility.mjs
+          node tests/fbx/test-family-mapping.mjs
+          node tests/fbx/test-family-parser.mjs
+          node tests/fbx/test-determinism.mjs
+          node tests/fbx/test-provenance.mjs
+          node tests/fbx/test-registry.mjs
+          node tests/fbx/test-static-guards.mjs
+          node tests/fbx/test-mapping-review-bundle.mjs
+          node tests/fbx/test-mapping-fragment-assembler.mjs
+          node tests/fbx/test-mapping-review-cli.mjs
+          node tests/fbx/test-review-scale-parity.mjs
+          node tests/fbx/test-review-scale-failures.mjs
+          node tests/fbx/test-review-resource-bounds.mjs

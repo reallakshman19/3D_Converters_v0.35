@@ -1,0 +1,10 @@
+{
+  "exercised": true,
+  "fileSha256": "0c2c0600a1232541a497aea05832b728569fefcf62ea86e71dea520247fe9ca8",
+  "mappingResult": "BLOCKED_MAPPING",
+  "occurrenceCount": 19281,
+  "parseResult": "PARSE_PASS",
+  "schema": "FbxProjectProof.v1",
+  "sourceObjectCount": 50229,
+  "stagedJsonPublished": false
+}

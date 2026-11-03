@@ -1,0 +1,230 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reallaksh19.github.io/3D_Converters/contracts/fbx/fbx-benchmark-lineage-accounting-v1.schema.json",
+  "title": "FbxBenchmarkLineageAccounting.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "executionIdentity",
+    "populations",
+    "branchLedger",
+    "sourceChildLedger",
+    "benchmarkChildLedger",
+    "summary"
+  ],
+  "properties": {
+    "schema": { "const": "FbxBenchmarkLineageAccounting.v1" },
+    "executionIdentity": { "$ref": "#/$defs/executionIdentity" },
+    "populations": { "$ref": "#/$defs/populations" },
+    "branchLedger": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/branchEntry" }
+    },
+    "sourceChildLedger": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/sourceChildEntry" }
+    },
+    "benchmarkChildLedger": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/benchmarkChildEntry" }
+    },
+    "summary": { "$ref": "#/$defs/summary" }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "sourceOccurrenceId": { "type": "string", "pattern": "^occ:[0-9]+$" },
+    "benchmarkBranchId": { "type": "string", "pattern": "^branch:[0-9]+$" },
+    "benchmarkOccurrenceId": {
+      "type": "string",
+      "pattern": "^branch:[0-9]+(?:/child:[0-9]+)?$"
+    },
+    "stringSet": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "parserIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provenanceSchema", "upstreamRevision", "sourceSha256", "wasmSha256"],
+      "properties": {
+        "provenanceSchema": { "type": "string", "minLength": 1 },
+        "upstreamRevision": { "type": "string", "minLength": 1 },
+        "sourceSha256": { "$ref": "#/$defs/sha256" },
+        "wasmSha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "executionIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sourceBindingSha256",
+        "sourceAccountingProjectionSha256",
+        "benchmarkContentSha256",
+        "benchmarkByteLength",
+        "parserIdentity"
+      ],
+      "properties": {
+        "sourceBindingSha256": { "$ref": "#/$defs/sha256" },
+        "sourceAccountingProjectionSha256": { "$ref": "#/$defs/sha256" },
+        "benchmarkContentSha256": { "$ref": "#/$defs/sha256" },
+        "benchmarkByteLength": { "type": "integer", "minimum": 1 },
+        "parserIdentity": { "$ref": "#/$defs/parserIdentity" }
+      }
+    },
+    "populations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sourceBranchCount",
+        "sourceChildCount",
+        "benchmarkBranchCount",
+        "benchmarkChildCount",
+        "netBenchmarkChildDifference"
+      ],
+      "properties": {
+        "sourceBranchCount": { "type": "integer", "minimum": 0 },
+        "sourceChildCount": { "type": "integer", "minimum": 0 },
+        "benchmarkBranchCount": { "type": "integer", "minimum": 0 },
+        "benchmarkChildCount": { "type": "integer", "minimum": 0 },
+        "netBenchmarkChildDifference": { "type": "integer" }
+      }
+    },
+    "branchState": {
+      "enum": ["EXACT_ONE_TO_ONE", "SOURCE_ONLY", "BENCHMARK_ONLY", "AMBIGUOUS"]
+    },
+    "childState": {
+      "enum": [
+        "EXACT_ONE_TO_ONE",
+        "SOURCE_ONLY",
+        "BENCHMARK_ONLY",
+        "AMBIGUOUS",
+        "BRANCH_UNRESOLVED"
+      ]
+    },
+    "disposition": {
+      "enum": ["DIRECT_ENGINEERING_RECORD", "UNRESOLVED"]
+    },
+    "branchEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "lineageKey",
+        "matchState",
+        "disposition",
+        "sourceOccurrenceIds",
+        "benchmarkOccurrenceIds",
+        "identityTokens"
+      ],
+      "properties": {
+        "lineageKey": { "type": "string", "pattern": "^branch-group:[0-9]{5}$" },
+        "matchState": { "$ref": "#/$defs/branchState" },
+        "disposition": { "$ref": "#/$defs/disposition" },
+        "sourceOccurrenceIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/sourceOccurrenceId" }
+        },
+        "benchmarkOccurrenceIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/benchmarkBranchId" }
+        },
+        "identityTokens": { "$ref": "#/$defs/stringSet" }
+      }
+    },
+    "sourceChildEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sourceOccurrenceId",
+        "sourceBranchOccurrenceId",
+        "disposition",
+        "matchState",
+        "benchmarkOccurrenceIds",
+        "candidateBenchmarkOccurrenceIds",
+        "identityTokens",
+        "candidateGroupKey"
+      ],
+      "properties": {
+        "sourceOccurrenceId": { "$ref": "#/$defs/sourceOccurrenceId" },
+        "sourceBranchOccurrenceId": { "$ref": "#/$defs/sourceOccurrenceId" },
+        "disposition": { "$ref": "#/$defs/disposition" },
+        "matchState": { "$ref": "#/$defs/childState" },
+        "benchmarkOccurrenceIds": {
+          "type": "array",
+          "maxItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/benchmarkOccurrenceId" }
+        },
+        "candidateBenchmarkOccurrenceIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/benchmarkOccurrenceId" }
+        },
+        "identityTokens": { "$ref": "#/$defs/stringSet" },
+        "candidateGroupKey": { "type": "string", "minLength": 1 }
+      }
+    },
+    "benchmarkChildEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "benchmarkOccurrenceId",
+        "benchmarkBranchOccurrenceId",
+        "disposition",
+        "matchState",
+        "sourceOccurrenceIds",
+        "candidateSourceOccurrenceIds",
+        "identityTokens",
+        "candidateGroupKey"
+      ],
+      "properties": {
+        "benchmarkOccurrenceId": { "$ref": "#/$defs/benchmarkOccurrenceId" },
+        "benchmarkBranchOccurrenceId": { "$ref": "#/$defs/benchmarkBranchId" },
+        "disposition": { "$ref": "#/$defs/disposition" },
+        "matchState": { "$ref": "#/$defs/childState" },
+        "sourceOccurrenceIds": {
+          "type": "array",
+          "maxItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/sourceOccurrenceId" }
+        },
+        "candidateSourceOccurrenceIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/sourceOccurrenceId" }
+        },
+        "identityTokens": { "$ref": "#/$defs/stringSet" },
+        "candidateGroupKey": { "type": "string", "minLength": 1 }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sourceChildrenCoveredExactlyOnce",
+        "benchmarkChildrenCoveredExactlyOnce",
+        "duplicateSourceConsumptionCount",
+        "duplicateBenchmarkConsumptionCount",
+        "unresolvedSourceCount",
+        "unresolvedBenchmarkCount",
+        "unresolvedBranchCount",
+        "ambiguousGroupCount",
+        "status"
+      ],
+      "properties": {
+        "sourceChildrenCoveredExactlyOnce": { "type": "boolean" },
+        "benchmarkChildrenCoveredExactlyOnce": { "type": "boolean" },
+        "duplicateSourceConsumptionCount": { "type": "integer", "minimum": 0 },
+        "duplicateBenchmarkConsumptionCount": { "type": "integer", "minimum": 0 },
+        "unresolvedSourceCount": { "type": "integer", "minimum": 0 },
+        "unresolvedBenchmarkCount": { "type": "integer", "minimum": 0 },
+        "unresolvedBranchCount": { "type": "integer", "minimum": 0 },
+        "ambiguousGroupCount": { "type": "integer", "minimum": 0 },
+        "status": { "enum": ["PASS", "BLOCKED"] }
+      }
+    }
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "specKey": "31271",
+  "rowCount": 7,
+  "generatedAt": "2026-06-09T02:27:27.068Z",
+  "source": "../Piping_class_master.json",
+  "rows": [
+    {
+      "Piping Class": "31271",
+      "Size": "0.75",
+      "SCH": "80",
+      "Wall thickness": "3.9116",
+      "Material_Name": "ASTM A333-6",
+      "PMSMat_Categories": "Carbon steel LT [A]",
+      "PMSMat_Cat": "LT",
+      "Rating": "300",
+      "Corrosion": "1",
+      "convertedBore": 20,
+      "_sourceRowIndex": 5601
+    },
+    {
+      "Piping Class": "31271",
+      "Size": "1",
+      "SCH": "80",
+      "Wall thickness": "4.5465999999999998",
+      "Material_Name": "ASTM A333-6",
+      "PMSMat_Categories": "Carbon steel LT [A]",
+      "PMSMat_Cat": "LT",
+      "Rating": "300",
+      "Corrosion": "1",
+      "convertedBore": 25,
+      "_sourceRowIndex": 5602
+    },
+    {
+      "Piping Class": "31271",
+      "Size": "1.5",
+      "SCH": "80",
+      "Wall thickness": "5.08",
+      "Material_Name": "ASTM A333-6",
+      "PMSMat_Categories": "Carbon steel LT [A]",
+      "PMSMat_Cat": "LT",
+      "Rating": "300",
+      "Corrosion": "1",
+      "convertedBore": 40,
+      "_sourceRowIndex": 5603
+    },
+    {
+      "Piping Class": "31271",
+      "Size": "2",
+      "SCH": "80",
+      "Wall thickness": "5.5372000000000003",
+      "Material_Name": "ASTM A333-6",
+      "PMSMat_Categories": "Carbon steel LT [A]",
+      "PMSMat_Cat": "LT",
+      "Rating": "300",
+      "Corrosion": "1",
+      "convertedBore": 50,
+      "_sourceRowIndex": 5604
+    },
+    {
+      "Piping Class": "31271",
+      "Size": "3",
+      "SCH": "80",
+      "Wall thickness": "7.62",
+      "Material_Name": "ASTM A333-6",
+      "PMSMat_Categories": "Carbon steel LT [A]",
+      "PMSMat_Cat": "LT",
+      "Rating": "300",
+      "Corrosion": "1",
+      "convertedBore": 80,
+      "_sourceRowIndex": 5605
+    },
+    {
+      "Piping Class": "31271",
+      "Size": "4",
+      "SCH": "80",
+      "Wall thickness": "8.5597999999999992",
+      "Material_Name": "ASTM A333-6",
+      "PMSMat_Categories": "Carbon steel LT [A]",
+      "PMSMat_Cat": "LT",
+      "Rating": "300",
+      "Corrosion": "1",
+      "convertedBore": 100,
+      "_sourceRowIndex": 5606
+    },
+    {
+      "Piping Class": "31271",
+      "Size": "6",
+      "SCH": "80",
+      "Wall thickness": "10.972799999999999",
+      "Material_Name": "ASTM A333-6",
+      "PMSMat_Categories": "Carbon steel LT [A]",
+      "PMSMat_Cat": "LT",
+      "Rating": "300",
+      "Corrosion": "1",
+      "convertedBore": 150,
+      "_sourceRowIndex": 5607
+    }
+  ]
+}

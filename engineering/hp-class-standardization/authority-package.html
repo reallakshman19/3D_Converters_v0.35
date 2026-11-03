@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>HP Piping Class — Controlled Review Package</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body { margin:0; background:var(--bg); }
+    .package-shell { max-width:1450px; margin:0 auto; padding:20px 24px 0; }
+    .package-panel { margin:0 0 18px; }
+    .package-actions { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .package-actions input[type=file] { display:none; }
+    #appFrame { display:block; width:100%; height:calc(100vh - 330px); min-height:900px; border:0; background:white; }
+    .package-note { margin-top:8px; color:var(--muted); }
+    @media (max-width:900px) { #appFrame { height:1100px; } }
+  </style>
+</head>
+<body>
+<div class="lib-shell package-shell">
+  <section class="control-group evidence-input package-panel">
+    <div class="group-heading">
+      <div>
+        <p class="step-kicker">Controlled review package</p>
+        <h1 style="margin:0">HP Piping Class Evidence Package</h1>
+        <p>Transport engineering inputs and evidence without changing calculation authority. Native CORE KD-3 remains unqualified.</p>
+      </div>
+      <span class="group-type">JSON v1 · review custody</span>
+    </div>
+
+    <div class="notice warning">
+      <strong>Authority boundary:</strong> package lifecycle status records document/review custody only. It does not establish ASME Code compliance, CORE KD-3 qualification, or design authority.
+    </div>
+
+    <div class="form-grid">
+      <label>Package ID<input id="packageId" placeholder="e.g. HPC-NPS4-CS-001"></label>
+      <label>Revision<input id="packageRevision" placeholder="e.g. A"></label>
+      <label>Project / class reference<input id="packageProjectRef" placeholder="project / class / calculation reference"></label>
+      <label>Prepared by<input id="packagePreparedBy" placeholder="name / role"></label>
+      <label>Checked by<input id="packageCheckedBy" placeholder="independent checker identity"></label>
+      <label>Document lifecycle
+        <select id="packageLifecycle">
+          <option value="draft">Draft</option>
+          <option value="for-review">For review</option>
+          <option value="approved-record">Checked / approved document record — no design authority</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="package-actions page-actions">
+      <button id="exportPackageButton" class="primary" type="button">Export evidence package JSON</button>
+      <button id="importPackageButton" type="button">Import evidence package JSON</button>
+      <input id="packageFile" type="file" accept="application/json,.json">
+      <a href="index.html" target="_blank" rel="noopener">Open calculator-only view</a>
+    </div>
+
+    <div id="packageStatusBox" class="notice info">
+      Calculator loading. Imported calculated snapshots are never used as solver inputs.
+    </div>
+    <p class="package-note">
+      Import requires exact B31.3 / KD source-manifest compatibility. Valid packages restore controlled inputs/evidence,
+      recalculate with the merged calculator, then restore only row evidence matching the recalculated wall/cycle keys.
+      USER_CALCULATED_KD3 remains review-only and native CORE KD-3 stays fail-closed.
+    </p>
+  </section>
+</div>
+
+<iframe id="appFrame" src="index.html" title="HP piping class standardization review calculator"></iframe>
+
+<script src="authority-package-core.js"></script>
+<script src="authority-package-ui.js"></script>
+</body>
+</html>

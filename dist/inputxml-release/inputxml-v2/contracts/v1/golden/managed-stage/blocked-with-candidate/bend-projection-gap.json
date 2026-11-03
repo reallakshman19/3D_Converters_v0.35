@@ -1,0 +1,13 @@
+[
+  {
+    "name":"/PR7/B1","type":"BRANCH",
+    "attributes":{"TYPE":"BRANCH","NAME":"/PR7/B1","OWNER":"/PR7","HPOS":{"x":0,"y":0,"z":0},"TPOS":{"x":1000,"y":0,"z":0},"HBOR":"100mm","TBOR":"100mm"},
+    "children":[
+      {
+        "name":"ELBO =PR7/ELBO/1","type":"ELBO",
+        "attributes":{"TYPE":"ELBO","NAME":"=PR7/ELBO/1","REF":"=PR7/ELBO/1","OWNER":"/PR7/B1","APOS":{"x":0,"y":0,"z":0},"POS":{"x":500,"y":500,"z":0},"LPOS":{"x":1000,"y":0,"z":0},"ABORE":"100mm","LBORE":"100mm","DTXR":"ELBO"},
+        "enrichedAttributes":{"nominalBoreMm":100,"pipeOdMm":114.3,"wallThicknessMm":6.02,"insulationThicknessMm":0,"corrosionAllowanceMm":0,"designTemperatureC":100,"designPressureMpa":1,"hydroPressure":1.5,"materialCode":106,"material":"A106 Grade B","materialDensityKgM3":7833,"insulationDensityKgM3":0,"fluidDensityOpeKgM3":965,"lineNo":"PR7-L-100"}
+      }
+    ]
+  }
+]

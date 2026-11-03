@@ -1,0 +1,54 @@
+name: CII Ver 14 Merge Qualification
+
+on:
+  pull_request:
+    paths:
+      - 'Benchmarks/v11-v14.zip'
+      - 'converters/scripts/cii14_*.py'
+      - 'converters/scripts/cii2019_section_rules.py'
+      - 'tabs/model-converters/cii-ver14-merge-addon.js'
+      - 'tabs/model-converters/ModelConvertersTab.js'
+      - 'tabs/model-converters/ModelConvertersTab-fbx2-managed-reference.js'
+      - 'tabs/model-converters/index.js'
+      - 'tabs/model-converters-tab.js'
+      - 'tests/cii-ver14-merge-ui-static.test.mjs'
+      - '.github/workflows/cii14-merge-qualification.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Compile Ver 14 Python sources
+        run: |
+          python -m py_compile \
+            converters/scripts/cii14_section_rules.py \
+            converters/scripts/cii14_multi_merge.py \
+            converters/scripts/test_cii14_multi_merge.py
+
+      - name: Run Ver 14 paired benchmark qualification
+        working-directory: converters/scripts
+        run: python test_cii14_multi_merge.py -v
+
+      - name: Run Ver 14 UI static wiring test
+        run: node tests/cii-ver14-merge-ui-static.test.mjs
+
+      - name: Verify immutable InputXML CII core is not in successor diff
+        shell: bash
+        run: |
+          if git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.sha }}" | grep -Fx 'converters/scripts/inputxml_to_cii2019.py'; then
+            echo 'ERROR: immutable inputxml_to_cii2019.py is present in the Ver 14 successor diff.' >&2
+            exit 1
+          fi

@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "profileName": "PDMS/E3D staged JSON - XML to CII",
+  "scope": { "branchArray": "$", "childrenPath": "children", "attributesPath": "attributes" },
+  "basisResolvers": {
+    "PS": {
+      "enabled": true,
+      "fieldAliases": ["SUPPORT_TAG", "CMPSTRESSN", "CMPSUPREFN", "NAME", "STEX", "PREV-NAME", "MDSGUIDEREF"],
+      "regexExtractors": ["PS[-]?\\d+(?:\\.\\d+)?(?:/DATUM|/SREF)?"],
+      "normalization": { "stripLeadingSlash": true, "stripSuffixes": ["/DATUM", "/SREF", "(REF)"], "alsoTryBasePsWithoutDotSuffix": true }
+    },
+    "POS": {
+      "enabled": true,
+      "objectFieldAliases": ["POS", "APOS", "LPOS", "BPOS", "HPOS", "TPOS"],
+      "textFieldAliases": ["POSI", "ABOP", "LBOP"],
+      "exactToleranceMm": 1,
+      "nearestToleranceMm": 5
+    },
+    "NODE": { "enabled": true, "fieldAliases": ["NodeNumber", "NODE", "node", "nodeNo"] }
+  },
+  "itemExtractors": {
+    "RESTRAINT": {
+      "enabled": true,
+      "sourceFieldAliases": ["SUPPORT_KIND", "SUPPORT_MAPPER_KIND", "SUPPORT_TYPE", "CMPSUPTYPE", "NODETYPE", "DTXR", "MDSSUPPTYPE"],
+      "basisPriority": ["PS", "POS", "NODE"],
+      "includeOnlyTypes": ["SUPPORT", "ATTA"]
+    },
+    "DTXR_PS": { "enabled": true, "sourceFieldAliases": ["DTXR"], "basisPriority": ["PS"] },
+    "DTXR_POS": { "enabled": true, "sourceFieldAliases": ["DTXR"], "basisPriority": ["POS"] },
+    "WEIGHT": { "enabled": true, "sourceFieldAliases": ["WEIGHT", "PSIWEIGHT", "CMPWEIGHTDRY", "NWEI"], "basisPriority": ["PS", "POS"] },
+    "RATING": { "enabled": true, "sourceFieldAliases": ["RATING", "CLASS", "PRESSURE_CLASS", "MESC OF SPREF", "SPRE", "DTXR"], "ratingRegex": "(?:^|\\s)(150|300|600|900|1500|2500)\\s*#?", "basisPriority": ["PS", "POS"] },
+    "RESTRAINT_META": { "enabled": true, "sourceFieldAliases": ["NODEGAP", "NODESTIFF", "NODEFRICTION", "ORI", "LAXE", "MDSMOVEX", "MDSMOVEY", "MDSMOVEZ", "USTDISTROD"], "basisPriority": ["PS", "POS"] }
+  }
+}

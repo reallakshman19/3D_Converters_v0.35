@@ -1,0 +1,21 @@
+{
+  "policy": {"policyVersion":"POLICY-1","configVersion":"CONFIG-1","strategy":"LOWEST_AVAILABLE","reservedNumbers":[]},
+  "coverage": {"scope":"FULL_LINE","authoritativeForRetirement":true,"coveredMainLines":["/LINE-A"]},
+  "requests": [
+    {"logicalNodeId":"LN-A-EXISTING","mainLineKey":"/LINE-A","historyNodeId":"HN-A-100","occurrenceIds":["WO-1","WO-2"]},
+    {"logicalNodeId":"LN-A-REACT","mainLineKey":"/LINE-A","historyNodeId":"HN-A-110"},
+    {"logicalNodeId":"LN-A-NEW-1","mainLineKey":"/LINE-A"},
+    {"logicalNodeId":"LN-A-NEW-2","mainLineKey":"/LINE-A"}
+  ],
+  "matchResult": {
+    "schema":"TopoNodeHistoryMatchResult.v1",
+    "projectId":"PROJECT-TE005","zoneId":"ZONE-01","mainLineKey":"/LINE-A",
+    "coordinateFrameId":"FRAME-1","logicalTopologyHash":"sha256:topology",
+    "matches":[{"logicalNodeId":"LN-A-EXISTING","historyNodeId":"HN-A-100","outcome":"EXACT_MATCHED"}],
+    "newNodes":[{"logicalNodeId":"LN-A-NEW-1","outcome":"NO_EXACT_MATCH"},{"logicalNodeId":"LN-A-NEW-2","outcome":"NO_EXACT_MATCH"}],
+    "ambiguous":[],"conflicts":[],
+    "reactivated":[{"logicalNodeId":"LN-A-REACT","historyNodeId":"HN-A-110","outcome":"REACTIVATION_CANDIDATE"}],
+    "retirementCandidates":[],
+    "validation":{"status":"PASS","blockers":[],"reviewItems":[],"warnings":[]}
+  }
+}

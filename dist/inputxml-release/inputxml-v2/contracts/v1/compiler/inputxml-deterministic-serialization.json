@@ -1,0 +1,93 @@
+{
+  "schema": "InputXmlDeterministicSerializationPolicy.v1",
+  "policyId": "inputxml-deterministic-serialization-v1",
+  "runtimeCapabilities": {
+    "serializer": "python-lxml",
+    "policyVersion": 1
+  },
+  "xml": {
+    "encoding": "UTF-8",
+    "declaration": true,
+    "lineEnding": "LF",
+    "trailingNewline": true,
+    "prettyPrint": true,
+    "comments": "REJECT",
+    "processingInstructions": "REJECT",
+    "childOrder": "PRESERVE_ENGINEERING_ORDER",
+    "namespacePolicy": {
+      "defaultNamespace": "COADE",
+      "extensionNamespace": "urn:reallaksh19:inputxml:extension:v1",
+      "extensionPrefix": "ext",
+      "foreignAttributeNamespace": "REJECT"
+    },
+    "unlistedCanonicalAttribute": "REJECT_POLICY_DRIFT",
+    "unlistedExtensionAttribute": "LEXICAL_QNAME_ORDER",
+    "numericLexicalPolicy": {
+      "rejectNonFinite": true,
+      "normalizeNegativeZero": true,
+      "rejectCommas": true,
+      "exponentNotation": "PROHIBITED",
+      "trailingZeros": "REMOVE"
+    },
+    "attributeOrder": {
+      "{COADE}CAESARII": ["XML_TYPE", "VERSION"],
+      "PIPINGMODEL": ["JOBNAME", "TIME", "ISSUE_NO", "NUMELT", "NUMNOZ", "NOHGRS", "NUMBEND", "NUMRIGID", "NUMEXPJNT", "NUMREST", "NUMFORCMNT", "NUMUNFLOAD", "NUMWIND", "NUMELEOFF", "NUMALLOW", "NUMISECT", "NORTH_X", "NORTH_Y", "NORTH_Z"],
+      "PIPINGELEMENT": ["ID", "FROM_NODE", "TO_NODE", "DELTA_X", "DELTA_Y", "DELTA_Z", "DIAMETER", "WALL_THICK", "INSUL_THICK", "CORR_ALLOW", "TEMP_EXP_C1", "TEMP_EXP_C2", "TEMP_EXP_C3", "TEMP_EXP_C4", "TEMP_EXP_C5", "TEMP_EXP_C6", "TEMP_EXP_C7", "TEMP_EXP_C8", "TEMP_EXP_C9", "PRESSURE_C1", "PRESSURE_C2", "PRESSURE_C3", "PRESSURE_C4", "PRESSURE_C5", "PRESSURE_C6", "PRESSURE_C7", "PRESSURE_C8", "PRESSURE_C9", "HYDRO_PRESSURE", "INSUL_DENSITY", "FLUID_DENSITY", "MATERIAL_NUM", "MATERIAL_NAME", "FROM_NAME", "TO_NAME", "LINE", "FROM_X", "FROM_Y", "FROM_Z", "TO_X", "TO_Y", "TO_Z", "MODULUS", "POISSONS", "PIPE_DENSITY", "HOT_MOD1", "HOT_MOD2", "HOT_MOD3", "HOT_MOD4", "HOT_MOD5", "HOT_MOD6", "HOT_MOD7", "HOT_MOD8", "HOT_MOD9", "REFRACTORY_DENSITY", "REFRACTORY_THK", "CLADDING_DEN", "CLADDING_THK", "INSUL_CLAD_UNIT_WEIGHT", "MILL_TOL_PLUS", "MILL_TOL_MINUS", "SEAM_WELD", "NAME"],
+      "BEND": ["RADIUS", "TYPE", "ANGLE1", "NODE1", "ANGLE2", "NODE2", "ANGLE3", "NODE3", "NUM_MITER", "FITTINGTHICKNESS", "KFACTOR"],
+      "RIGID": ["WEIGHT", "TYPE"],
+      "RESTRAINT": ["NUM", "NODE", "TYPE", "STIFFNESS", "GAP", "FRIC_COEF", "CNODE", "XCOSINE", "YCOSINE", "ZCOSINE", "TAG", "GUID"],
+      "SIF": ["NODE", "TYPE", "SIF1", "SIF2", "SIF_IN", "SIF_OUT", "SIF_TORSION", "SIF_AXIAL", "SIF_PRESSURE", "STRESSINDEX_Iin", "STRESSINDEX_Iout", "STRESSINDEX_It", "STRESSINDEX_Ia", "STRESSINDEX_Ipr", "WELD_D", "FILLET", "PAD_THK", "FTG_RO", "CROTCH", "WELD_ID", "B1", "B2"],
+      "HANGER": ["NODE", "STIFFNESS", "LOAD_VAR", "OPERATING_LOAD", "RIGID_SUP", "AVAIL_SPACE", "COLD_LOAD", "HOT_LOAD", "MAX_TRAVEL", "HARDWARE_WEIGHT", "CONST_EFF_LOAD", "MULTI_LC", "FREEANCHOR1", "FREEANCHOR2", "DOFTYPE1", "NUM_HGR", "HGR_TABLE", "SHORT_RANGE", "CNODE", "TAG", "GUID"],
+      "WRC_297_NOZZLE": ["NOZZLE_NODE", "NOZ_NODE", "NODE", "NODE1", "VESSEL_NODE", "TANK_NODE", "NODE2", "NOZ_OD", "NOZZLE_OD", "OD", "NOZ_WT", "NOZZLE_WT", "WT", "VESSEL_OD", "TANK_OD", "VESSEL_WT", "TANK_WT", "REINFORCE", "NOZ_HEIGHT", "NOZZLE_HEIGHT", "FLUID_HEIGHT", "DISP_VECTOR", "FLUID_SG", "THERM_EXP_COEFF", "DELTAT", "DELTA_T", "EMOD"],
+      "API650_NOZZLE": ["NOZZLE_NODE", "NOZ_NODE", "NODE", "NODE1", "VESSEL_NODE", "TANK_NODE", "NODE2", "NOZ_OD", "NOZZLE_OD", "OD", "NOZ_WT", "NOZZLE_WT", "WT", "VESSEL_OD", "TANK_OD", "VESSEL_WT", "TANK_WT", "REINFORCE", "NOZ_HEIGHT", "NOZZLE_HEIGHT", "FLUID_HEIGHT", "DISP_VECTOR", "FLUID_SG", "THERM_EXP_COEFF", "DELTAT", "DELTA_T", "EMOD"],
+      "PD5500_NOZZLE": ["NOZZLE_NODE", "NOZ_NODE", "NODE", "NODE1", "VESSEL_NODE", "TANK_NODE", "NODE2", "NOZ_OD", "NOZZLE_OD", "OD", "NOZ_WT", "NOZZLE_WT", "WT", "VESSEL_OD", "TANK_OD", "VESSEL_WT", "TANK_WT", "REINFORCE", "NOZ_HEIGHT", "NOZZLE_HEIGHT", "FLUID_HEIGHT", "DISP_VECTOR", "FLUID_SG", "THERM_EXP_COEFF", "DELTAT", "DELTA_T", "EMOD"],
+      "CUSTOM_NOZZLE": ["NOZZLE_NODE", "NOZ_NODE", "NODE", "NODE1", "VESSEL_NODE", "TANK_NODE", "NODE2", "NOZ_OD", "NOZZLE_OD", "OD", "NOZ_WT", "NOZZLE_WT", "WT", "VESSEL_OD", "TANK_OD", "VESSEL_WT", "TANK_WT", "REINFORCE", "NOZ_HEIGHT", "NOZZLE_HEIGHT", "FLUID_HEIGHT", "DISP_VECTOR", "FLUID_SG", "THERM_EXP_COEFF", "DELTAT", "DELTA_T", "EMOD"]
+    },
+    "numericAttributes": {
+      "decimal": {
+        "PIPINGMODEL": ["NORTH_X", "NORTH_Y", "NORTH_Z"],
+        "PIPINGELEMENT": ["DELTA_X", "DELTA_Y", "DELTA_Z", "DIAMETER", "WALL_THICK", "INSUL_THICK", "CORR_ALLOW", "TEMP_EXP_C1", "TEMP_EXP_C2", "TEMP_EXP_C3", "TEMP_EXP_C4", "TEMP_EXP_C5", "TEMP_EXP_C6", "TEMP_EXP_C7", "TEMP_EXP_C8", "TEMP_EXP_C9", "PRESSURE_C1", "PRESSURE_C2", "PRESSURE_C3", "PRESSURE_C4", "PRESSURE_C5", "PRESSURE_C6", "PRESSURE_C7", "PRESSURE_C8", "PRESSURE_C9", "HYDRO_PRESSURE", "INSUL_DENSITY", "FLUID_DENSITY", "FROM_X", "FROM_Y", "FROM_Z", "TO_X", "TO_Y", "TO_Z", "MODULUS", "POISSONS", "PIPE_DENSITY", "HOT_MOD1", "HOT_MOD2", "HOT_MOD3", "HOT_MOD4", "HOT_MOD5", "HOT_MOD6", "HOT_MOD7", "HOT_MOD8", "HOT_MOD9", "REFRACTORY_DENSITY", "REFRACTORY_THK", "CLADDING_DEN", "CLADDING_THK", "INSUL_CLAD_UNIT_WEIGHT", "MILL_TOL_PLUS", "MILL_TOL_MINUS"],
+        "BEND": ["RADIUS", "ANGLE1", "ANGLE2", "ANGLE3", "FITTINGTHICKNESS", "KFACTOR"],
+        "RIGID": ["WEIGHT"],
+        "RESTRAINT": ["STIFFNESS", "GAP", "FRIC_COEF", "XCOSINE", "YCOSINE", "ZCOSINE"],
+        "SIF": ["SIF1", "SIF2", "SIF_IN", "SIF_OUT", "SIF_TORSION", "SIF_AXIAL", "SIF_PRESSURE", "STRESSINDEX_Iin", "STRESSINDEX_Iout", "STRESSINDEX_It", "STRESSINDEX_Ia", "STRESSINDEX_Ipr", "WELD_D", "FILLET", "PAD_THK", "FTG_RO", "CROTCH", "WELD_ID", "B1", "B2"],
+        "HANGER": ["STIFFNESS", "LOAD_VAR", "OPERATING_LOAD", "RIGID_SUP", "AVAIL_SPACE", "COLD_LOAD", "HOT_LOAD", "MAX_TRAVEL", "HARDWARE_WEIGHT", "CONST_EFF_LOAD", "MULTI_LC", "FREEANCHOR1", "FREEANCHOR2", "SHORT_RANGE"],
+        "WRC_297_NOZZLE": ["NOZ_OD", "NOZZLE_OD", "OD", "NOZ_WT", "NOZZLE_WT", "WT", "VESSEL_OD", "TANK_OD", "VESSEL_WT", "TANK_WT", "REINFORCE", "NOZ_HEIGHT", "NOZZLE_HEIGHT", "FLUID_HEIGHT", "FLUID_SG", "THERM_EXP_COEFF", "DELTAT", "DELTA_T", "EMOD"],
+        "API650_NOZZLE": ["NOZ_OD", "NOZZLE_OD", "OD", "NOZ_WT", "NOZZLE_WT", "WT", "VESSEL_OD", "TANK_OD", "VESSEL_WT", "TANK_WT", "REINFORCE", "NOZ_HEIGHT", "NOZZLE_HEIGHT", "FLUID_HEIGHT", "FLUID_SG", "THERM_EXP_COEFF", "DELTAT", "DELTA_T", "EMOD"],
+        "PD5500_NOZZLE": ["NOZ_OD", "NOZZLE_OD", "OD", "NOZ_WT", "NOZZLE_WT", "WT", "VESSEL_OD", "TANK_OD", "VESSEL_WT", "TANK_WT", "REINFORCE", "NOZ_HEIGHT", "NOZZLE_HEIGHT", "FLUID_HEIGHT", "FLUID_SG", "THERM_EXP_COEFF", "DELTAT", "DELTA_T", "EMOD"],
+        "CUSTOM_NOZZLE": ["NOZ_OD", "NOZZLE_OD", "OD", "NOZ_WT", "NOZZLE_WT", "WT", "VESSEL_OD", "TANK_OD", "VESSEL_WT", "TANK_WT", "REINFORCE", "NOZ_HEIGHT", "NOZZLE_HEIGHT", "FLUID_HEIGHT", "FLUID_SG", "THERM_EXP_COEFF", "DELTAT", "DELTA_T", "EMOD"]
+      },
+      "integer": {
+        "PIPINGMODEL": ["NUMELT", "NUMNOZ", "NOHGRS", "NUMBEND", "NUMRIGID", "NUMEXPJNT", "NUMREST", "NUMFORCMNT", "NUMUNFLOAD", "NUMWIND", "NUMELEOFF", "NUMALLOW", "NUMISECT"],
+        "PIPINGELEMENT": ["MATERIAL_NUM"],
+        "BEND": ["NUM_MITER"],
+        "RESTRAINT": ["NUM"],
+        "HANGER": ["NUM_HGR"]
+      }
+    }
+  },
+  "json": {
+    "encoding": "UTF-8",
+    "indentation": 2,
+    "sortKeys": true,
+    "ensureAscii": false,
+    "allowNan": false,
+    "itemSeparator": ",",
+    "keySeparator": ": ",
+    "lineEnding": "LF",
+    "trailingNewline": false
+  },
+  "ledger": {
+    "recordOrder": "AUTHORITATIVE_APPEND_ORDER",
+    "recordIdAuthority": "AUTHORITATIVE_APPEND_SEQUENCE",
+    "diagnosticOrder": ["stageSequence", "severityRank", "code", "sourceEntityId", "context", "message"],
+    "evidenceOrder": "PRODUCER_AUTHORITY_ORDER"
+  },
+  "hashScopes": {
+    "source": "RAW_SOURCE_BYTES_SHA256",
+    "canonical": "DETERMINISTIC_CANONICAL_XML_BYTES_SHA256",
+    "ledger": "DETERMINISTIC_LEDGER_JSON_BYTES_SHA256",
+    "validation": "SELF_HASH_EXCLUDED",
+    "serializationPolicy": "NORMALIZED_POLICY_JSON_SHA256"
+  }
+}

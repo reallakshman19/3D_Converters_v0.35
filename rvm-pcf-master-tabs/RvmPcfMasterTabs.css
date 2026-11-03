@@ -1,0 +1,84 @@
+.rvm-master-root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.rvm-master-tabbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px;
+  border-bottom: 1px solid #303642;
+  background: #161b24;
+}
+
+.rvm-master-tab,
+.rvm-master-btn {
+  border: 1px solid #43506a;
+  background: #252d3d;
+  color: #dce6f7;
+  border-radius: 5px;
+  padding: 5px 9px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.rvm-master-tab.is-active {
+  border-color: #4a9eff;
+  color: #fff;
+  background: rgba(74, 158, 255, 0.18);
+}
+
+.rvm-master-content {
+  min-height: 0;
+  flex: 1;
+  overflow: auto;
+  padding: 10px;
+}
+
+.rvm-master-toolbar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.rvm-master-count,
+.rvm-master-note,
+.rvm-master-empty {
+  color: #9aa9bd;
+  font-size: 12px;
+}
+
+.rvm-master-table-wrap {
+  overflow: auto;
+  border: 1px solid #303642;
+  border-radius: 6px;
+}
+
+.rvm-master-table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 900px;
+  font-size: 12px;
+}
+
+.rvm-master-table th,
+.rvm-master-table td {
+  border-bottom: 1px solid #303642;
+  padding: 5px 7px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.rvm-master-table th {
+  background: #111722;
+  color: #9dc4ff;
+}
+
+.rvm-master-diagnostics-host {
+  min-height: 240px;
+}

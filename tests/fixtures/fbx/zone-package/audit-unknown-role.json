@@ -1,0 +1,27 @@
+{
+  "schema": "FbxSelectedZonePackageAudit.v1",
+  "manifestSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+  "fileRoles": [
+    {
+      "role": "UNKNOWN_ROLE",
+      "path": "manifest.json",
+      "disposition": "PRESENT",
+      "sha256": "3333333333333333333333333333333333333333333333333333333333333333"
+    },
+    {
+      "role": "STAGEDJSON",
+      "path": "stagedjson.json",
+      "disposition": "OMITTED_BLOCKED",
+      "sha256": null
+    },
+    {
+      "role": "SUPPORT_EVIDENCE",
+      "path": "support-evidence.json",
+      "disposition": "OMITTED_BLOCKED",
+      "sha256": null
+    }
+  ],
+  "supportSemantics": "NOT_AUTHORIZED",
+  "geometryCount": 1,
+  "packageDigest": "4444444444444444444444444444444444444444444444444444444444444444"
+}

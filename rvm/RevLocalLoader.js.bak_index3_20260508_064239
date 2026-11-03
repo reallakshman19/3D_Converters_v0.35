@@ -1,0 +1,399 @@
+﻿import {
+  buildConverterWorkerRequest,
+  validateConverterWorkerResponse,
+} from '../converters/worker-contract.js';
+
+/**
+ * Local REV import bridge for 3D RVM Viewer.
+ *
+ * Workflow:
+ * - Run existing in-browser converter worker with `rev_to_xml`.
+ * - Parse generated PSI-style XML nodes into staged hierarchy objects.
+ * - Return hierarchy compatible with `AvevaJsonLoader` (`BRANCH` roots + `children` + attributes).
+ *
+ * Input:
+ * - Browser `File` object (.rev/.txt REV content)
+ *
+ * Output:
+ * - Array of staged branch objects ready for `loadRvmSource({ kind: 'aveva-json' })`.
+ *
+ * Fallback:
+ * - Raises explicit errors when worker conversion or XML parsing fails.
+ */
+function _toText(value) {
+  if (value === undefined || value === null) return '';
+  return String(value);
+}
+
+function _toFinite(value) {
+  const numeric = Number(value);
+  return Number.isFinite(numeric) ? numeric : null;
+}
+
+function _parsePosition(value) {
+  const text = _toText(value).trim();
+  if (!text) return null;
+  const rawTokens = text.split(/\s+/g).filter(Boolean);
+  if (rawTokens.length < 3) return null;
+  const x = _toFinite(rawTokens[0]);
+  const y = _toFinite(rawTokens[1]);
+  const z = _toFinite(rawTokens[2]);
+  if (!Number.isFinite(x) || !Number.isFinite(y) || !Number.isFinite(z)) return null;
+  return { x, y, z };
+}
+
+function _midpoint(a, b) {
+  if (!a || !b) return null;
+  return {
+    x: (a.x + b.x) * 0.5,
+    y: (a.y + b.y) * 0.5,
+    z: (a.z + b.z) * 0.5,
+  };
+}
+
+function _vector(a, b) {
+  if (!a || !b) return null;
+  return { x: b.x - a.x, y: b.y - a.y, z: b.z - a.z };
+}
+
+function _vectorLength(v) {
+  if (!v) return 0;
+  return Math.sqrt((v.x * v.x) + (v.y * v.y) + (v.z * v.z));
+}
+
+function _normalize(v) {
+  const len = _vectorLength(v);
+  if (!(len > 0)) return null;
+  return { x: v.x / len, y: v.y / len, z: v.z / len };
+}
+
+function _dot(a, b) {
+  if (!a || !b) return 0;
+  return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
+}
+
+function _mapRevType(typeText) {
+  const t = _toText(typeText).trim().toUpperCase();
+  if (t === 'RIGID') return 'PIPE';
+  if (t === 'PCOM') return 'PIPE';
+  if (t === 'VALV' || t === 'VALVE') return 'VALVE';
+  if (t === 'FLAN' || t === 'FLANGE') return 'FLANGE';
+  if (t === 'ELBO' || t === 'ELBOW' || t === 'BEND') return 'ELBOW';
+  if (t === 'TEE') return 'TEE';
+  if (t === 'BRAN') return 'OLET';
+  if (t === 'OLET') return 'OLET';
+  if (t === 'REDU' || t === 'REDUCER') return 'REDUCER';
+  if (t === 'GASK') return 'GASK';
+  if (t === 'ATTA' || t === 'ANCI' || t === 'SUPPORT') return 'SUPPORT';
+  if (t === 'INST') return 'INST';
+  return t || 'PIPE';
+}
+
+function _resolveComponentLength(component) {
+  const attrs = component?.attributes || {};
+  return _vectorLength(_vector(attrs.APOS || null, attrs.LPOS || null));
+}
+
+function _quantile(sortedValues, ratio) {
+  if (!Array.isArray(sortedValues) || sortedValues.length === 0) return 0;
+  const clamped = Math.min(1, Math.max(0, ratio));
+  const index = Math.floor(clamped * (sortedValues.length - 1));
+  return sortedValues[index];
+}
+
+function _resolveDominantAxis(components) {
+  const axisCandidates = [];
+  for (const component of components) {
+    const attrs = component?.attributes || {};
+    const sourceType = _toText(attrs.SOURCE_TYPE).toUpperCase();
+    if (sourceType === 'BRAN' || sourceType === 'PCOM') continue;
+    const v = _vector(attrs.APOS || null, attrs.LPOS || null);
+    const len = _vectorLength(v);
+    if (!(len > 1)) continue;
+    const n = _normalize(v);
+    if (!n) continue;
+    axisCandidates.push({ n, len });
+  }
+  if (!axisCandidates.length) return null;
+  axisCandidates.sort((a, b) => b.len - a.len);
+  const sampleCount = Math.max(1, Math.floor(axisCandidates.length * 0.3));
+  const sample = axisCandidates.slice(0, sampleCount);
+  const seed = sample[0].n;
+  const sum = { x: 0, y: 0, z: 0 };
+  for (const item of sample) {
+    const sign = _dot(seed, item.n) >= 0 ? 1 : -1;
+    sum.x += item.n.x * sign * item.len;
+    sum.y += item.n.y * sign * item.len;
+    sum.z += item.n.z * sign * item.len;
+  }
+  return _normalize(sum);
+}
+
+function _filterRevBranchComponentsByVectorSense(components) {
+  const dominantAxis = _resolveDominantAxis(components);
+  const routeLengths = [];
+  for (const component of components) {
+    const attrs = component?.attributes || {};
+    const sourceType = _toText(attrs.SOURCE_TYPE).toUpperCase();
+    if (sourceType === 'PCOM') continue;
+    const len = _resolveComponentLength(component);
+    if (Number.isFinite(len) && len > 0) routeLengths.push(len);
+  }
+  routeLengths.sort((a, b) => a - b);
+  const q75 = _quantile(routeLengths, 0.75);
+  const q95 = _quantile(routeLengths, 0.95);
+  const adaptivePcomCap = Math.max(3000, q95 * 3.0);
+  const adaptiveBranCap = Math.max(1200, q75 * 2.0);
+
+  const filtered = [];
+  for (const component of components) {
+    const attrs = component?.attributes || {};
+    const sourceType = _toText(attrs.SOURCE_TYPE).toUpperCase();
+    const length = _resolveComponentLength(component);
+
+    if (sourceType === 'PCOM' && Number.isFinite(length) && length > adaptivePcomCap) {
+      continue;
+    }
+
+    if (sourceType === 'BRAN') {
+      const n = _normalize(_vector(attrs.APOS || null, attrs.LPOS || null));
+      const axisAlignment = (dominantAxis && n) ? Math.abs(_dot(dominantAxis, n)) : 0;
+      if (Number.isFinite(length) && length > adaptiveBranCap && axisAlignment > 0.55) {
+        continue;
+      }
+    }
+
+    filtered.push(component);
+  }
+  return filtered;
+}
+
+function _childElementsByLocalName(parent, localName) {
+  if (!parent || !parent.children) return [];
+  const out = [];
+  for (const child of parent.children) {
+    if (_toText(child.localName).toLowerCase() === localName.toLowerCase()) out.push(child);
+  }
+  return out;
+}
+
+function _firstChildText(parent, localName) {
+  const match = _childElementsByLocalName(parent, localName)[0];
+  return _toText(match?.textContent).trim();
+}
+
+function _allElementsByLocalName(parent, localName) {
+  if (!parent || typeof parent.getElementsByTagNameNS !== 'function') return [];
+  return Array.from(parent.getElementsByTagNameNS('*', localName));
+}
+
+function _toHierarchyFromRevXml(xmlText, sourceName) {
+  const parser = new DOMParser();
+  const xmlDoc = parser.parseFromString(_toText(xmlText), 'application/xml');
+  const parseError = xmlDoc.getElementsByTagName('parsererror')[0];
+  if (parseError) {
+    throw new Error(`REV XML parse failed: ${_toText(parseError.textContent).trim() || 'Malformed XML.'}`);
+  }
+
+  const pipeElements = _allElementsByLocalName(xmlDoc, 'Pipe');
+  const hierarchy = [];
+  let branchCounter = 1;
+
+  for (const pipeEl of pipeElements) {
+    const pipeName = _firstChildText(pipeEl, 'FullName') || `PIPE-${branchCounter}`;
+    const branchElements = _childElementsByLocalName(pipeEl, 'Branch');
+
+    for (const branchEl of branchElements) {
+      const branchName = _firstChildText(branchEl, 'Branchname') || `${pipeName}/B${branchCounter}`;
+      const nodeElements = _childElementsByLocalName(branchEl, 'Node');
+      const byRef = new Map();
+      let encounter = 0;
+
+      for (const nodeEl of nodeElements) {
+        const componentRef = _firstChildText(nodeEl, 'ComponentRefNo');
+        if (!componentRef) continue;
+        const componentType = _firstChildText(nodeEl, 'ComponentType');
+        const endpoint = _toFinite(_firstChildText(nodeEl, 'Endpoint'));
+        const nodeNumber = _toFinite(_firstChildText(nodeEl, 'NodeNumber'));
+        const outsideDiameter = _toFinite(_firstChildText(nodeEl, 'OutsideDiameter'));
+        const position = _parsePosition(_firstChildText(nodeEl, 'Position'));
+        if (!position) continue;
+
+        let bucket = byRef.get(componentRef);
+        if (!bucket) {
+          bucket = {
+            ref: componentRef,
+            rawType: componentType,
+            order: encounter,
+            points: [],
+          };
+          byRef.set(componentRef, bucket);
+        }
+        encounter += 1;
+        bucket.points.push({
+          endpoint,
+          nodeNumber,
+          outsideDiameter,
+          position,
+          order: encounter,
+        });
+      }
+
+      const components = Array.from(byRef.values())
+        .sort((a, b) => a.order - b.order)
+        .map((entry) => {
+          const sorted = [...entry.points].sort((a, b) => {
+            const ea = Number.isFinite(a.endpoint) ? a.endpoint : Number.POSITIVE_INFINITY;
+            const eb = Number.isFinite(b.endpoint) ? b.endpoint : Number.POSITIVE_INFINITY;
+            if (ea !== eb) return ea - eb;
+            const na = Number.isFinite(a.nodeNumber) ? a.nodeNumber : Number.POSITIVE_INFINITY;
+            const nb = Number.isFinite(b.nodeNumber) ? b.nodeNumber : Number.POSITIVE_INFINITY;
+            if (na !== nb) return na - nb;
+            return a.order - b.order;
+          });
+
+          let apos = null;
+          let lpos = null;
+          let third = null;
+          for (const point of sorted) {
+            if (point.endpoint === 1 && !apos) apos = point.position;
+            else if (point.endpoint === 2 && !lpos) lpos = point.position;
+            else if (point.endpoint === 3 && !third) third = point.position;
+          }
+          if (!apos && sorted[0]) apos = sorted[0].position;
+          if (!lpos && sorted[1]) lpos = sorted[1].position;
+          if (!third && sorted[2]) third = sorted[2].position;
+
+          const mappedType = _mapRevType(entry.rawType);
+          const sourceType = _toText(entry.rawType).trim().toUpperCase();
+          const attrs = {
+            TYPE: mappedType,
+            NAME: entry.ref,
+            REF: entry.ref,
+            OWNER: branchName,
+            SOURCE_TYPE: sourceType,
+            SOURCE_FORMAT: 'REV_XML',
+          };
+
+          if (apos) attrs.APOS = apos;
+          if (lpos) attrs.LPOS = lpos;
+
+          if (third && (mappedType === 'TEE' || mappedType === 'OLET')) attrs.BPOS = third;
+          if (third && mappedType === 'ELBOW') attrs.CPOS = third;
+          if (!attrs.CPOS && (mappedType === 'TEE' || mappedType === 'ELBOW' || mappedType === 'OLET')) {
+            const center = _midpoint(apos, lpos);
+            if (center) attrs.POS = center;
+          } else if (apos || lpos) {
+            attrs.POS = apos || lpos;
+          }
+
+          const odStart = sorted.find((p) => p.endpoint === 1)?.outsideDiameter ?? sorted[0]?.outsideDiameter;
+          const odEnd = sorted.find((p) => p.endpoint === 2)?.outsideDiameter ?? sorted[1]?.outsideDiameter;
+          if (Number.isFinite(odStart)) attrs.BORE = Math.max(odStart, 0);
+          if (Number.isFinite(odStart)) attrs.ABORE = `${Math.max(odStart, 0)}mm`;
+          if (Number.isFinite(odStart) && Number.isFinite(odEnd) && mappedType === 'REDUCER') {
+            attrs.HBOR = Math.max(odStart, 0);
+            attrs.TBOR = Math.max(odEnd, 0);
+          }
+
+          return {
+            name: `${mappedType} ${entry.ref}`,
+            type: mappedType,
+            attributes: attrs,
+          };
+        });
+
+      const filteredComponents = _filterRevBranchComponentsByVectorSense(components);
+
+      hierarchy.push({
+        name: branchName,
+        type: 'BRANCH',
+        attributes: {
+          TYPE: 'BRAN',
+          NAME: branchName,
+          OWNER: pipeName,
+          SOURCE_FILE: sourceName,
+          // Do not synthesize HPOS/TPOS from first/last encounter for REV imports.
+          // Encounter order in REV-exported node blocks is not guaranteed to represent
+          // physical head/tail, and downstream branch stub routing can create false links.
+        },
+        children: filteredComponents,
+      });
+      branchCounter += 1;
+    }
+  }
+
+  if (hierarchy.length === 0) {
+    throw new Error('REV local conversion produced no Branch records.');
+  }
+  return hierarchy;
+}
+
+async function _runRevToXml(file) {
+  const worker = new Worker(new URL('../converters/py-worker.js?v=20260508-preview-geometry', import.meta.url), { type: 'module' });
+  const inputBytes = await file.arrayBuffer();
+
+  return await new Promise((resolve, reject) => {
+    const jobId = 1;
+
+    const onMessage = (event) => {
+      const payload = event.data || {};
+      if (payload.jobId !== jobId) return;
+      worker.removeEventListener('message', onMessage);
+      worker.removeEventListener('error', onError);
+      worker.terminate();
+      const validation = validateConverterWorkerResponse(payload);
+      if (!validation.ok) {
+        reject(new Error(validation.error));
+        return;
+      }
+      if (!payload.ok) {
+        reject(new Error(_toText(payload.error || 'REV local conversion failed.')));
+        return;
+      }
+      const output = Array.isArray(payload.outputs) ? payload.outputs[0] : null;
+      if (!output || typeof output.text !== 'string') {
+        reject(new Error('REV local conversion returned no XML output.'));
+        return;
+      }
+      resolve(output.text);
+    };
+
+    const onError = (event) => {
+      worker.removeEventListener('message', onMessage);
+      worker.removeEventListener('error', onError);
+      worker.terminate();
+      reject(new Error(_toText(event?.message || 'REV local worker crashed.')));
+    };
+
+    worker.addEventListener('message', onMessage);
+    worker.addEventListener('error', onError);
+
+    const request = buildConverterWorkerRequest(
+      jobId,
+      'rev_to_xml',
+      [{ role: 'primary', name: file.name, bytes: inputBytes }],
+      {
+        coordFactor: 1000,
+        nodeStart: 10,
+        nodeStep: 10,
+        nodeMergeTolerance: 0.5,
+        source: 'AVEVA PSI',
+        purpose: 'Preliminary stress run',
+        titleLine: 'PSI stress Output',
+        enablePsiRigidLogic: false,
+      },
+    );
+    worker.postMessage(request, [inputBytes]);
+  });
+}
+
+export async function convertRevFileToAvevaHierarchy(file) {
+  if (!file) throw new Error('No REV file provided for local conversion.');
+  const lowerName = _toText(file.name).trim().toLowerCase();
+  if (!lowerName.endsWith('.rev') && !lowerName.endsWith('.txt')) {
+    throw new Error(`Unsupported REV input "${file.name}". Expected .rev or .txt.`);
+  }
+  const xmlText = await _runRevToXml(file);
+  return _toHierarchyFromRevXml(xmlText, _toText(file.name));
+}

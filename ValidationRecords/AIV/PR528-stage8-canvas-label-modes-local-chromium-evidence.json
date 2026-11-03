@@ -1,0 +1,33 @@
+{
+  "schema": "AivStage8CanvasLabelModesChromiumEvidence.v1",
+  "classification": "LOCAL_CHROMIUM_UI_EVIDENCE_NOT_HOSTED_FULL_APP",
+  "cacheIdentity": "20260816-aiv-526-editor-3",
+  "assertions": [
+    { "name": "exactly one SVG", "pass": true },
+    { "name": "NORMAL mode active", "pass": true },
+    { "name": "PROCESS mode active", "pass": true },
+    { "name": "GEOMETRY mode active", "pass": true },
+    { "name": "RESULTS mode active", "pass": true },
+    { "name": "COMPLETENESS mode active", "pass": true },
+    { "name": "Process shows mass flow", "pass": true },
+    { "name": "Process shows pressure pair", "pass": true },
+    { "name": "label switching revision-neutral", "pass": true },
+    { "name": "Geometry shows explicit 27 m", "pass": true },
+    { "name": "Geometry shows Assessment OD/WT", "pass": true },
+    { "name": "current Results show registered LOF", "pass": true },
+    { "name": "field edit updates Process label", "pass": true },
+    { "name": "segment edit updates Geometry label", "pass": true },
+    { "name": "explicit path updates to 68 m", "pass": true },
+    { "name": "stale Results suppress registered LOF", "pass": true },
+    { "name": "stale Results show rerun message", "pass": true },
+    { "name": "same SVG object survives interactions", "pass": true }
+  ],
+  "passed": 18,
+  "total": 18,
+  "authority": {
+    "results": "registered results only; stale values suppressed",
+    "distance": "explicit engineering length/path evidence only",
+    "svgGeometry": "presentation only",
+    "modeSwitch": "revision-neutral"
+  }
+}

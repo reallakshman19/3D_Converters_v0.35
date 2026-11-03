@@ -1,0 +1,38 @@
+schema: AgentClaim.v1
+repository: reallaksh19/3D_Converters
+claim_id: PR567
+issue: 566
+pull_request: 567
+branch: agent/aiv-drift-566-20260816
+workstream: AIV_DRIFT_HARDENING
+criticality: ENGINEERING_CRITICAL
+authority: WRITE_ALLOWED_AFTER_QUALIFICATION
+qualification: QUALIFIED_FOR_AIV_DRIFT_HARDENING
+qualification_comment: 5309030950
+claimed_paths:
+  - engineering/workpacks/VIB-AIV.json
+  - engineering/workpacks/probes/vib-aiv.mjs
+  - tests/vibration-aiv-workpack-drift.test.mjs
+  - tabs/engineering-calculation-console-view.js
+  - tabs/engineering-calculation-vibration-family.js
+  - docs/vibration/AIV-Artifact-Classification-v1.md
+  - agents/PR567_workreport.md
+  - agents/status/PR567.yaml
+  - agents/claims/PR567.yaml
+exclusions:
+  - scripts/verify-engineering-workpack.mjs
+  - engineering/workpacks/VIB-FIT.json
+  - converters/vibration/aiv/aiv-calculator.js
+  - converters/vibration/aiv/aiv-kernel-candidate.js
+  - converters/vibration/aiv/aiv-readiness.js
+  - AIV numerical equations/coefficient/default/oracle changes
+  - unified canvas runtime ownership
+  - Product Freeze state/evidence mutation
+coordination:
+  PR569: MERGED_FRAMEWORK_DEPENDENCY
+  PR517: COORDINATION_REQUIRED_NO_SCOPE_ABSORPTION
+  PR506: COORDINATION_REQUIRED_SALVAGE_EVIDENCE_ONLY
+  issue513: EXTERNAL_PRODUCT_FREEZE_OWNER
+review_fix: "Removed standalone AIV verifier/shared-verifier mechanism branch; replay uses merged generic framework plus declared vib-aiv probe."
+merge_authority: OWNER_EXPLICITLY_GRANTED_2026-08-17
+last_updated: 2026-08-17T05:56:00+04:00

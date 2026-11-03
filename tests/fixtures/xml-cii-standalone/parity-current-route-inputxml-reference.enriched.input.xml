@@ -1,0 +1,24 @@
+<CAESARII XML_TYPE="Input" VERSION="2019" SOURCE="XML-&gt;CII enriched InputXML debug export">
+  <PIPINGMODEL NUMELEMENTS="2" NUMREST="3">
+    <PIPINGELEMENT FROM_NODE="20" TO_NODE="30" LINE_ID="/ASIM-1836-6&quot;-S8810010-91261M7-HC/B1" FROM_NAME="" TO_NAME="">
+      <ComponentType>ATTA</ComponentType>
+      <Position>440065.00 -1495994.98 101214.15</Position>
+      <DTXR_POS>ATTA FOR FLOOR OPENING</DTXR_POS>
+      <PipingClass>91261</PipingClass>
+      <Rating>900</Rating>
+      <Point_properties_basis>TO</Point_properties_basis>
+    </PIPINGELEMENT>
+    <PIPINGELEMENT FROM_NODE="30" TO_NODE="40" LINE_ID="/ASIM-1836-6&quot;-S8810010-91261M7-HC/B1" FROM_NAME="" TO_NAME="PS-14292/DATUM">
+      <ComponentType>ATTA</ComponentType>
+      <Position>440065.00 -1494973.80 101214.15</Position>
+      <DTXR_POS>Pipe Rest XRT01</DTXR_POS>
+      <DTXR_PS>Pipe Rest XRT01</DTXR_PS>
+      <PipingClass>91261</PipingClass>
+      <Rating>900</Rating>
+      <Point_properties_basis>TO</Point_properties_basis>
+      <RESTRAINT NODE="40" TYPE="14" FRIC_COEF="0.3"/>
+      <RESTRAINT NODE="40" TYPE="9" FRIC_COEF="-1.0101"/>
+      <RESTRAINT NODE="40" TYPE="8" FRIC_COEF="-1.0101"/>
+    </PIPINGELEMENT>
+  </PIPINGMODEL>
+</CAESARII>

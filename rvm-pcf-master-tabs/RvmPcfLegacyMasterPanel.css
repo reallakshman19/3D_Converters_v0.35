@@ -1,0 +1,255 @@
+.rvm-legacy-master-root {
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: #141821;
+  color: #dce6f7;
+}
+
+.rvm-legacy-master-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 8px;
+  border-bottom: 1px solid #303642;
+  background: #181e2a;
+}
+
+.rvm-legacy-master-tab,
+.rvm-master-btn {
+  border: 1px solid #3d4a61;
+  background: #202738;
+  color: #dce6f7;
+  border-radius: 5px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.rvm-legacy-master-tab:hover,
+.rvm-master-btn:hover:not(:disabled) {
+  border-color: #4a9eff;
+  background: #27334a;
+}
+
+.rvm-legacy-master-tab.is-active {
+  border-color: #4a9eff;
+  color: #fff;
+  background: rgba(74, 158, 255, 0.18);
+}
+
+.rvm-master-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.rvm-master-btn.danger {
+  border-color: rgba(255, 113, 113, 0.5);
+  color: #ffb3b3;
+}
+
+.rvm-legacy-master-content {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 10px;
+}
+
+.rvm-master-card {
+  border: 1px solid #303642;
+  border-radius: 8px;
+  background: #1b2230;
+  padding: 12px;
+}
+
+.rvm-master-title-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.rvm-master-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.rvm-master-desc {
+  margin-top: 3px;
+  color: #9aa9bd;
+  font-size: 12px;
+}
+
+.rvm-master-count,
+.rvm-master-note {
+  color: #9aa9bd;
+  font-size: 12px;
+}
+
+.rvm-master-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 10px 0;
+}
+
+.rvm-master-upload-help,
+.rvm-master-empty {
+  border: 1px dashed #48566e;
+  border-radius: 7px;
+  color: #9aa9bd;
+  background: #141a24;
+  padding: 14px;
+  font-size: 12px;
+}
+
+.rvm-master-diagnostics {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 8px 0;
+}
+
+.rvm-master-diag {
+  border-left: 3px solid #6fa8ff;
+  background: #141a24;
+  border-radius: 5px;
+  padding: 7px;
+  font-size: 12px;
+}
+
+.rvm-master-diag.severity-error { border-left-color: #ff7171; }
+.rvm-master-diag.severity-warning { border-left-color: #f2c46d; }
+.rvm-master-diag.severity-info { border-left-color: #7ddc9a; }
+
+.rvm-master-field-map {
+  margin: 10px 0;
+  border: 1px solid #303642;
+  border-radius: 7px;
+  background: #161d29;
+  padding: 10px;
+}
+
+.rvm-master-section-title {
+  color: #91bfff;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+
+.rvm-master-field-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 8px;
+}
+
+.rvm-master-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+}
+
+.rvm-master-field span { color: #cfe3ff; }
+
+.rvm-master-field em {
+  color: #ff8a8a;
+  font-style: normal;
+  margin-left: 3px;
+}
+
+.rvm-master-field select {
+  border: 1px solid #43506a;
+  background: #101722;
+  color: #f2f7ff;
+  border-radius: 5px;
+  padding: 6px;
+}
+
+.rvm-master-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.rvm-master-table-wrap {
+  overflow: auto;
+  border: 1px solid #303642;
+  border-radius: 6px;
+  max-height: 420px;
+}
+
+.rvm-master-table {
+  border-collapse: collapse;
+  min-width: 780px;
+  width: 100%;
+  font-size: 12px;
+}
+
+.rvm-master-table th,
+.rvm-master-table td {
+  border-bottom: 1px solid #303642;
+  padding: 6px 7px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.rvm-master-table th {
+  background: #111722;
+  color: #9dc4ff;
+  font-weight: 700;
+}
+
+.rvm-master-table td { color: #dce6f7; }
+
+.rvm-master-json {
+  border: 1px solid #303642;
+  border-radius: 6px;
+  background: #10141b;
+  color: #c8d8f0;
+  padding: 10px;
+  overflow: auto;
+  font-size: 11px;
+  max-height: 360px;
+}
+
+.rvm-master-sheet-select {
+  border: 1px solid #303642;
+  border-radius: 7px;
+  background: #161d29;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.rvm-master-sheet-select label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  max-width: 360px;
+  font-size: 12px;
+}
+
+.rvm-master-sheet-select span {
+  color: #91bfff;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.rvm-master-sheet-select select {
+  border: 1px solid #43506a;
+  background: #101722;
+  color: #f2f7ff;
+  border-radius: 5px;
+  padding: 6px;
+}
+
+@media (max-width: 1100px) {
+  .rvm-master-split { grid-template-columns: 1fr; }
+}

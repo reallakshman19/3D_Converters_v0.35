@@ -1,0 +1,62 @@
+{
+  "schema": "AivUnifiedCanvasFullScaleEditorLocalChromiumEvidence.v1",
+  "repository": "reallaksh19/3D_Converters",
+  "pullRequest": 528,
+  "branch": "agent/aiv-unified-network-canvas-526",
+  "candidateHeadBeforeEvidenceCommit": "45dcb2b6734e7bed645b8037228bc0f587c9b562",
+  "mainHeadObserved": "f25f721dc35c30b2f7a911f31c26ccdf8a53c6ac",
+  "cacheIdentity": "20260816-aiv-526-editor-1",
+  "execution": {
+    "runner": "local Python Playwright + system Chromium",
+    "browser": "Chromium 144.0.7559.96",
+    "navigation": "page.set_content",
+    "classification": "LOCAL_CHROMIUM_EDITOR_HARNESS",
+    "managedNavigationLimitation": "URLBlocklist=[\"*\"] prevents normal full-application URL/file navigation in this environment"
+  },
+  "editorIntent": "Prove that one unified SVG can act as an AIV input editor rather than a read-only presentation surface.",
+  "assertions": [
+    "PASS exactly one unified SVG exists",
+    "PASS place-node adds a new graph node on the same SVG",
+    "PASS two-click pipe connection creates a segment with explicit 5.5 m engineering length",
+    "PASS engineering inspector changes Source mass flow from 7.4 to 8.25 kg/s",
+    "PASS engineering inspector changes explicit segment length from 5.5 m to 6.25 m",
+    "PASS node deletion fails closed while a connected physical segment exists",
+    "PASS deleting the segment and then the node succeeds",
+    "PASS the same SVG DOM object survives the complete add/edit/connect/delete sequence"
+  ],
+  "summary": "8/8 PASS",
+  "pureEditorExecution": {
+    "classification": "EXACT_LOCAL_RECONSTRUCTION",
+    "stateMachine": "3/3 PASS",
+    "graphAddConnectDelete": "3/3 PASS",
+    "authoritativeFieldEdits": "2/2 PASS",
+    "total": "8/8 PASS"
+  },
+  "blankWorkspace": {
+    "sourceInspection": "PASS",
+    "detail": "renderAivInputWorkspaceHtml now renders renderAivUnifiedCanvasWorkspaceHtml unconditionally, so the editor exists before any sample/import is loaded."
+  },
+  "authorityBoundary": {
+    "networkDrivenOwner": "AivFlareNetwork.v1",
+    "tableDrivenOwner": "WORKING_AIV_TABLES",
+    "svgPixelsAuthoritativeForDistance": false,
+    "graphEngineeringMutations": "existing mutation contracts -> datasetLoader.applyFlareNetwork -> transaction revision -> generated tables/pathEvidence -> readiness/result invalidation",
+    "presentationDrag": "revision-neutral",
+    "numericalAuthority": "REGISTERED_VIB.AIV.ACOUSTIC",
+    "screeningResultScope": "ASSESSMENT",
+    "designAuthority": false
+  },
+  "artifacts": {
+    "pngSha256": "91b8572ea0927079fb28ffc9440c7254a94a4c8b4e655b49f6749110b02cdb42",
+    "htmlSha256": "7db28ed21d93b1adece342daa372fef57930efd5505ae149531196989aad1bfe",
+    "reportSha256": "841b97ebc60aea5631bcdf187460d34b97c875c0b9f736da5e305b69b5044178",
+    "note": "Binary/HTML artifacts are returned through the ChatGPT sandbox; GitHub stores this text evidence manifest."
+  },
+  "promotionBoundary": {
+    "localChromiumEditorHarness": "PASS",
+    "hostedFullApplicationChromium": "NOT_RUN_INFRASTRUCTURE_BLOCKED",
+    "fullNativeReleaseSuite": "NOT_RUN_NO_PRIVATE_CHECKOUT",
+    "exactCurrentMainIntegratedRuntime": "NOT_RUN",
+    "completeB1B10": "NOT_RUN"
+  }
+}

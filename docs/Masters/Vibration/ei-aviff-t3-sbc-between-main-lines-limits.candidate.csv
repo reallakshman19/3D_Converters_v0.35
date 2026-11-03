@@ -1,0 +1,9 @@
+rowId,sbcSize_in,minimumSpanBetweenMainLines_m,sourceLocator,publicationState,engineeringAuthority,screeningAuthority,designAuthority,masterValuesPublished
+T3-BML-001,0.25,1.0,Table T3-3 printed page 82,CANDIDATE,NONE,NOT_AUTHORIZED,false,false
+T3-BML-002,0.375,1.1,Table T3-3 printed page 82,CANDIDATE,NONE,NOT_AUTHORIZED,false,false
+T3-BML-003,0.5,1.1,Table T3-3 printed page 82,CANDIDATE,NONE,NOT_AUTHORIZED,false,false
+T3-BML-004,0.75,1.3,Table T3-3 printed page 82,CANDIDATE,NONE,NOT_AUTHORIZED,false,false
+T3-BML-005,1,1.6,Table T3-3 printed page 82,CANDIDATE,NONE,NOT_AUTHORIZED,false,false
+T3-BML-006,1.25,1.7,Table T3-3 printed page 82,CANDIDATE,NONE,NOT_AUTHORIZED,false,false
+T3-BML-007,1.5,1.8,Table T3-3 printed page 82,CANDIDATE,NONE,NOT_AUTHORIZED,false,false
+T3-BML-008,2,2.0,Table T3-3 printed page 82,CANDIDATE,NONE,NOT_AUTHORIZED,false,false

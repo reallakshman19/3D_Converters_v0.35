@@ -1,0 +1,25 @@
+{
+  "schema": "categorized-inputxml-authority-pin/v1",
+  "mode": "exact-vendored-authority",
+  "sourceRepository": "reallaksh19/XML_Compare_Utilities",
+  "sourceCommit": "dd7e62c2dc879d0ac4916303f9c41ff863b50cbc",
+  "files": [
+    {
+      "path": "xml-compare/CategorizedInputXmlConverter.js",
+      "sourcePath": "xml-compare/CategorizedInputXmlConverter.js",
+      "sha256": "2ca4ee1c2c9b2150bc368986ed91deaabd3b7c975fe26617edda9c7ecec35911"
+    },
+    {
+      "path": "xml-compare/XmlCompareCoordinateSideload.js",
+      "sourcePath": "xml-compare/XmlCompareCoordinateSideload.js",
+      "sha256": "226575d5d86fedbbb6436fb498182c9eca7a78412e7668a0900eb906ab30b5d2"
+    },
+    {
+      "path": "xml-compare/XmlCompareCoordinateDiagnostics.js",
+      "sourcePath": "xml-compare/XmlCompareCoordinateDiagnostics.js",
+      "sha256": "edb18ca0bb546a3f03e34f47ec312448f93ffa7cf4c63e2d78767be179d032c7"
+    }
+  ],
+  "runtimeNetworkFallback": false,
+  "localModificationAuthorized": false
+}

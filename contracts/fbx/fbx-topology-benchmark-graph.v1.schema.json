@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "FbxBenchmarkTopologyGraph.v1",
+  "title": "FbxBenchmarkTopologyGraph.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "entities", "relationships"],
+  "properties": {
+    "schema": { "const": "FbxBenchmarkTopologyGraph.v1" },
+    "entities": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/entity" }
+    },
+    "relationships": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/relationship" }
+    }
+  },
+  "$defs": {
+    "nonEmptyText": { "type": "string", "minLength": 1 },
+    "nullableText": { "type": ["string", "null"] },
+    "position": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["x", "y", "z"],
+      "properties": {
+        "x": { "type": "number" },
+        "y": { "type": "number" },
+        "z": { "type": "number" }
+      }
+    },
+    "port": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "position"],
+      "properties": {
+        "role": { "$ref": "#/$defs/nonEmptyText" },
+        "position": {
+          "oneOf": [
+            { "$ref": "#/$defs/position" },
+            { "type": "null" }
+          ]
+        }
+      }
+    },
+    "entity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "entityId", "kind", "sourcePath", "zoneId", "flowParticipant",
+        "routeSequence", "junctionKind", "expectedFlowDegree", "ports"
+      ],
+      "properties": {
+        "entityId": { "$ref": "#/$defs/nonEmptyText" },
+        "kind": {
+          "enum": ["BRANCH", "COMPONENT", "SUPPORT", "EXTERNAL", "OTHER"]
+        },
+        "sourcePath": { "type": "string" },
+        "zoneId": { "$ref": "#/$defs/nullableText" },
+        "flowParticipant": { "type": "boolean" },
+        "routeSequence": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/nonEmptyText" }
+        },
+        "junctionKind": { "$ref": "#/$defs/nullableText" },
+        "expectedFlowDegree": {
+          "type": ["integer", "null"],
+          "minimum": 0
+        },
+        "ports": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/port" }
+        }
+      }
+    },
+    "relationship": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "relationshipId", "kind", "directed", "sourceEntityId",
+        "sourcePortRole", "targetEntityId", "targetPortRole", "authorityField",
+        "rawReference", "sourcePath", "endpointResidual"
+      ],
+      "properties": {
+        "relationshipId": { "$ref": "#/$defs/nonEmptyText" },
+        "kind": {
+          "enum": [
+            "BRANCH_OWNERSHIP", "FLOW_ADJACENCY", "REFERENCE_ADJACENCY",
+            "SUPPORT_HOST", "ZONE_BOUNDARY"
+          ]
+        },
+        "directed": { "type": "boolean" },
+        "sourceEntityId": { "$ref": "#/$defs/nonEmptyText" },
+        "sourcePortRole": { "$ref": "#/$defs/nullableText" },
+        "targetEntityId": { "$ref": "#/$defs/nullableText" },
+        "targetPortRole": { "$ref": "#/$defs/nullableText" },
+        "authorityField": { "$ref": "#/$defs/nonEmptyText" },
+        "rawReference": { "$ref": "#/$defs/nullableText" },
+        "sourcePath": { "type": "string" },
+        "endpointResidual": {
+          "type": ["number", "null"],
+          "minimum": 0
+        }
+      }
+    }
+  }
+}

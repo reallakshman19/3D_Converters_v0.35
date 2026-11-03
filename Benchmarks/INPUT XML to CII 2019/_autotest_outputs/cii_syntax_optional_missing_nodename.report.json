@@ -1,0 +1,65 @@
+{
+  "ok": true,
+  "profile": "cii2019",
+  "inputFile": "Benchmarks\\INPUT XML to CII 2019\\_autotest_outputs\\cii_syntax_optional_missing_nodename.cii",
+  "sectionsFound": [
+    "VERSION",
+    "CONTROL",
+    "ELEMENTS",
+    "AUX_DATA",
+    "BEND",
+    "RIGID",
+    "EXPJT",
+    "RESTRANT",
+    "DISPLMNT",
+    "FORCMNT",
+    "UNIFORM",
+    "WIND",
+    "OFFSETS",
+    "ALLOWBLS",
+    "SIF&TEES",
+    "REDUCERS",
+    "FLANGES",
+    "EQUIPMNT",
+    "MISCEL_1",
+    "UNITS",
+    "COORDS"
+  ],
+  "metrics": {
+    "elements": 40,
+    "nozzles": 0,
+    "hangers": 1,
+    "nodename_blocks": 2,
+    "reducers": 0,
+    "flanges": 0,
+    "bends": 7,
+    "rigids": 15,
+    "expjts": 0,
+    "restraints": 8,
+    "displmnt": 0,
+    "forcmnt": 0,
+    "uniform": 0,
+    "wind": 0,
+    "offsets": 0,
+    "allowbls": 1,
+    "sif_tees": 9,
+    "control_line3_field6": 0,
+    "equipmnt": 0,
+    "vertical_axis_flag": 0
+  },
+  "errors": [],
+  "warnings": [
+    {
+      "code": "optional_section_missing",
+      "section": "NODENAME",
+      "line": 0,
+      "message": "Optional section '#$ NODENAME' is missing."
+    },
+    {
+      "code": "nodename_missing_with_nonzero_control",
+      "section": "NODENAME",
+      "line": 0,
+      "message": "NODENAME section is missing while CONTROL NONAM > 0."
+    }
+  ]
+}

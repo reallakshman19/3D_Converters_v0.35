@@ -1,0 +1,1 @@
+{"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"urn:fbx:type-evidence:v2","$defs":{"elementTypePair":{"$ref":"urn:fbx:element-type-pair:v2"},"nodeAttributePair":{"$ref":"urn:fbx:node-attribute-pair:v2"}}}

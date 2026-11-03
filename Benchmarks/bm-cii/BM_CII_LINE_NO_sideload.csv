@@ -1,0 +1,2 @@
+NODE,LINE_NO,SCOPE,APPLIES_TO,REMARK
+10,LINE XYZ,TOPOLOGY_CARRY_FORWARD,COMPONENT_PROPERTIES_ONLY,"Mock BM_CII Line No sideload anchor; do not apply to restraints/support records"

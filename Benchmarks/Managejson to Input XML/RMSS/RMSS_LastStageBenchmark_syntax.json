@@ -1,0 +1,139 @@
+{
+  "ok": true,
+  "profile": "cii2019",
+  "inputFile": "C:\\Code3\\PCF_GLB_Viewer_Conv_Latest2\\Benchmarks\\Managejson to Input XML\\RMSS\\RMSS[LastStageBenchmark].cii",
+  "sectionsFound": [
+    "VERSION",
+    "CONTROL",
+    "ELEMENTS",
+    "AUX_DATA",
+    "NODENAME",
+    "BEND",
+    "RIGID",
+    "EXPJT",
+    "RESTRANT",
+    "DISPLMNT",
+    "FORCMNT",
+    "UNIFORM",
+    "WIND",
+    "OFFSETS",
+    "ALLOWBLS",
+    "SIF&TEES",
+    "REDUCERS",
+    "FLANGES",
+    "EQUIPMNT",
+    "MISCEL_1",
+    "UNITS",
+    "COORDS"
+  ],
+  "metrics": {
+    "elements": 284,
+    "nozzles": 0,
+    "hangers": 0,
+    "nodename_blocks": 205,
+    "reducers": 6,
+    "flanges": 0,
+    "bends": 29,
+    "rigids": 38,
+    "expjts": 0,
+    "restraints": 23,
+    "displmnt": 0,
+    "forcmnt": 0,
+    "uniform": 0,
+    "wind": 0,
+    "offsets": 0,
+    "allowbls": 0,
+    "sif_tees": 50,
+    "control_line3_field6": 0,
+    "equipmnt": 0,
+    "vertical_axis_flag": 0
+  },
+  "derivedBlockCounts": {
+    "BEND": {
+      "rows": 87,
+      "linesPerBlock": 3,
+      "derivedBlocks": 29,
+      "remainderRows": 0
+    },
+    "RIGID": {
+      "rows": 38,
+      "linesPerBlock": 1,
+      "derivedBlocks": 38,
+      "remainderRows": 0
+    },
+    "EXPJT": {
+      "rows": 0,
+      "linesPerBlock": 1,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    },
+    "RESTRANT": {
+      "rows": 552,
+      "linesPerBlock": 24,
+      "derivedBlocks": 23,
+      "remainderRows": 0
+    },
+    "DISPLMNT": {
+      "rows": 0,
+      "linesPerBlock": 20,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    },
+    "FORCMNT": {
+      "rows": 0,
+      "linesPerBlock": 13,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    },
+    "UNIFORM": {
+      "rows": 0,
+      "linesPerBlock": 6,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    },
+    "WIND": {
+      "rows": 0,
+      "linesPerBlock": 1,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    },
+    "OFFSETS": {
+      "rows": 0,
+      "linesPerBlock": 1,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    },
+    "ALLOWBLS": {
+      "rows": 0,
+      "linesPerBlock": 26,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    },
+    "SIF&TEES": {
+      "rows": 500,
+      "linesPerBlock": 10,
+      "derivedBlocks": 50,
+      "remainderRows": 0
+    },
+    "REDUCERS": {
+      "rows": 6,
+      "linesPerBlock": 1,
+      "derivedBlocks": 6,
+      "remainderRows": 0
+    },
+    "FLANGES": {
+      "rows": 0,
+      "linesPerBlock": 11,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    },
+    "EQUIPMNT": {
+      "rows": 0,
+      "linesPerBlock": 6,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    }
+  },
+  "errors": [],
+  "warnings": []
+}

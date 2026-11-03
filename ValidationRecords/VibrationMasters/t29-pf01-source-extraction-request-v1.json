@@ -1,0 +1,42 @@
+{
+  "schema": "VibrationMasterSourceExtractionRequest.v1",
+  "masterId": "EI_AVIFF.T2.9.VALVE_RECOVERY_FACTORS.v1",
+  "pdfPages": [77],
+  "locator": {
+    "identifier": "T2.9.2",
+    "section": "T2.9",
+    "printedPage": "69"
+  },
+  "requiredAnchors": [
+    {
+      "id": "T29-ANCHOR-SECTION",
+      "text": "T2.9.2",
+      "expectedOccurrences": 1,
+      "caseSensitive": false
+    },
+    {
+      "id": "T29-ANCHOR-BALL",
+      "text": "Ball",
+      "expectedOccurrences": 1,
+      "caseSensitive": false
+    },
+    {
+      "id": "T29-ANCHOR-BUTTERFLY",
+      "text": "Butterfly",
+      "expectedOccurrences": 1,
+      "caseSensitive": false
+    },
+    {
+      "id": "T29-ANCHOR-GLOBE",
+      "text": "Globe",
+      "expectedOccurrences": 1,
+      "caseSensitive": false
+    },
+    {
+      "id": "T29-ANCHOR-GATE",
+      "text": "Gate",
+      "expectedOccurrences": 1,
+      "caseSensitive": false
+    }
+  ]
+}

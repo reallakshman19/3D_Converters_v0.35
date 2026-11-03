@@ -1,0 +1,82 @@
+/* tables.css — All table styles, ratio bars, badges */
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  background: #fff;
+}
+
+.data-table th {
+  background: var(--color-primary-dark);
+  color: #fff;
+  padding: 6px 10px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.data-table td {
+  padding: 5px 10px;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+
+.data-table tbody tr:nth-child(even) { background: var(--color-row-alt); }
+.data-table tbody tr:hover { background: #e8f0f8; }
+
+/* Compact variant */
+.meta-table th, .meta-table td { padding: 3px 8px; }
+
+/* Basis table */
+.basis-table { margin-bottom: 16px; border: 1px solid var(--color-border); border-radius: var(--radius); overflow: hidden; }
+.basis-table th { font-size: 11px; }
+.basis-table td:first-child { font-weight: 600; }
+
+/* Pipe table */
+.pipe-table { min-width: 700px; }
+
+/* Pinned loads */
+.pinned-table { margin-top: 8px; }
+
+/* Preview table */
+.preview-table { background: #f8f0e0; border: 1px solid #d0b060; border-radius: var(--radius); }
+.preview-table th { background: #7c5820; }
+
+/* ── Ratio bar ─────────────────────────────────────────────── */
+.ratio-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 120px;
+}
+.ratio-bar {
+  height: 10px;
+  flex: 1;
+  background: #dde4ea;
+  border-radius: 5px;
+  overflow: hidden;
+  position: relative;
+}
+.ratio-bar::after {
+  content: '';
+  display: block;
+  height: 100%;
+  width: var(--ratio, 0%);
+  background: var(--color-primary);
+  border-radius: 5px;
+  transition: width 0.4s ease;
+}
+.ratio-text {
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  color: var(--color-primary-dark);
+  white-space: nowrap;
+  min-width: 38px;
+}

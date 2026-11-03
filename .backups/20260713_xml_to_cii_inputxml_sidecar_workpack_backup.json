@@ -1,0 +1,34 @@
+{
+  "schema": "workpack-backup-manifest/v1",
+  "workPack": "xml-to-cii-inputxml-sidecar",
+  "date": "2026-07-13",
+  "baselineCommit": "704705dec8a52832d58b95b87ca5171e9a5cb2b4",
+  "files": [
+    {
+      "path": "converters/py-worker.js",
+      "blobSha": "a3cc7cea5be2c17963816a31cc8291d43fc4a864",
+      "reason": "worker post-process and artifact handoff"
+    },
+    {
+      "path": "converters/scripts/xml_to_inputxml_debug.py",
+      "blobSha": "e2385934826a519831952d9bb0cf162c3f735ee9",
+      "reason": "diagnostic InputXML reconstruction engine"
+    },
+    {
+      "path": "tabs/model-converters/ModelConvertersTab.js",
+      "blobSha": "566f129c473118aba854c532b9e45c330244746d",
+      "reason": "diagnostics panel installer registration"
+    },
+    {
+      "path": "converters/scripts/test_xml_to_inputxml_debug.py",
+      "blobSha": "2346767a8cade8571297cbc9eb020a23728211cf",
+      "reason": "existing real-sample sidecar regression"
+    },
+    {
+      "path": "tests/xml-cii-standalone-source-mode-integration.test.js",
+      "blobSha": "90e1b2818a085e681a2438e5e6555aea96967615",
+      "reason": "protected-route hash guard updated only for audited xml_to_cii sidecar worker output"
+    }
+  ],
+  "restore": "Fetch each blob by SHA and restore only the corresponding path. Do not restore unrelated repository files."
+}

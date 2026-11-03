@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:reallaksh19:inputxml:cii-assurance-ledger:v2",
+  "title": "InputXmlCiiAssuranceLedger.v2",
+  "type": "object",
+  "required": ["schema", "status", "chain", "gates", "approvedSemanticSplit", "records", "diagnostics", "assuranceHashSha256"],
+  "properties": {
+    "schema": {"const": "InputXmlCiiAssuranceLedger.v2"},
+    "status": {"enum": ["PASS", "BLOCKED"]},
+    "chain": {"type": "object", "required": ["sourceHashSha256", "canonicalHashSha256", "normalizationPlanHashSha256", "canonicalTopologyHashSha256", "topoNodePlanHashSha256", "numberedTopologyProjectionHashSha256", "parsedInputXmlTopologyHashSha256", "topologyParityReportHashSha256", "diagnosticReportHashSha256", "resolverTraceHashSha256"], "additionalProperties": {"type": ["string", "null"]}},
+    "gates": {"type": "object", "required": ["compatibility", "canonicalization", "canonicalValidation", "topologyTrace", "topologyParity", "diagnostics", "resolverTrace", "ciiProjectionReadiness"], "properties": {"compatibility": {"enum": ["PASS", "BLOCKED"]}, "canonicalization": {"enum": ["PASS", "BLOCKED"]}, "canonicalValidation": {"enum": ["PASS", "BLOCKED"]}, "topologyTrace": {"enum": ["PASS", "BLOCKED"]}, "topologyParity": {"enum": ["PASS", "BLOCKED"]}, "diagnostics": {"enum": ["PASS", "BLOCKED"]}, "resolverTrace": {"enum": ["PASS", "BLOCKED"]}, "ciiProjectionReadiness": {"enum": ["PASS", "BLOCKED"]}}, "additionalProperties": false},
+    "approvedSemanticSplit": {"type": ["object", "null"], "properties": {"approvalId": {"type": "string"}, "artifactHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}, "required": ["approvalId", "artifactHashSha256"], "additionalProperties": false},
+    "records": {"type": "array", "items": {"type": "object"}},
+    "diagnostics": {"type": "array", "items": {"type": "object"}},
+    "assuranceHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "additionalProperties": false
+}

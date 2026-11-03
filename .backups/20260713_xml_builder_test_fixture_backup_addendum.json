@@ -1,0 +1,10 @@
+{
+  "schema": "source-backup-manifest/v1",
+  "workPack": "XML Builder shared-core test fixture dependency update",
+  "baselineCommit": "fc43c4df40793f7437aca7ab06dcf50b5edacb99",
+  "recovery": "Restore a path from the immutable Git blob SHA recorded below.",
+  "files": [
+    { "path": "tests/xml-cii-node-to-inputxml-benchmark.test.js", "blobSha": "2ab2ad25bea3b380879156a290b853a7f925b4d7" },
+    { "path": "tests/xml-cii-node-to-inputxml-fillers.test.js", "blobSha": "96c84b9ba3f5254dc888616eac73d234baf720f0" }
+  ]
+}

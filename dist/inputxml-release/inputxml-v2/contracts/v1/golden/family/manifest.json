@@ -1,0 +1,98 @@
+{
+  "schema": "InputXmlFamilyGoldenCorpus.v1",
+  "generatedAt": "2026-07-20",
+  "authority": {
+    "repository": "reallaksh19/3D_Converters",
+    "mission": "PR-5 — Canonical and CAESAR InputXML-Family Resolver Corrections",
+    "baseSha": "6fd7be82259a20e9e479e6cfc91238696c1a044d"
+  },
+  "categoryRule": [
+    "positive",
+    "negative",
+    "blocked-with-candidate",
+    "blocked-without-candidate",
+    "adversarial"
+  ],
+  "profiles": [
+    {
+      "profileId": "canonical-inputxml-v1",
+      "cases": [
+        {"id":"canonical-positive","category":"positive","sourceRef":"contracts/inputxml/v1/golden/positive/minimal.canonical.input.xml","expected":"PASS","difference":"NO_CHANGE"},
+        {"id":"canonical-negative-xsd","category":"negative","sourceRef":"contracts/inputxml/v1/golden/negative/alias-pressure1.xml","expected":"XSD_GATE/BLOCKED_NO_CANDIDATE","difference":"NO_CHANGE"},
+        {"id":"canonical-blocking-extension","category":"blocked-with-candidate","sourceRef":"contracts/inputxml/v1/golden/negative/unsupported-extension.xml","expected":"BLOCKED evidence; direct-canonical publication compatibility returns no canonical file after semantic failure","difference":"NO_CHANGE"},
+        {"id":"canonical-count-mismatch","category":"blocked-without-candidate","sourceRef":"contracts/inputxml/v1/golden/negative/count-mismatch.xml","expected":"SCHEMATRON_GATE/BLOCKED_NO_CANDIDATE","difference":"NO_CHANGE"},
+        {"id":"canonical-context-mutation-attempt","category":"adversarial","sourceRef":"tests/test_inputxml_canonical_compiler.py::test_direct_canonical_ignores_assured_node_evidence","expected":"PASS_WITHOUT_MUTATION","difference":"INTENDED_PROFILE_CORRECTION"}
+      ]
+    },
+    {
+      "profileId": "caesar-inputxml-pressure1",
+      "cases": [
+        {"id":"pressure1-positive","category":"positive","sourceRef":"tests/test_inputxml_family_profiles.py::test_pressure1_alias_only_normalizes","expected":"PASS","difference":"INTENDED_PROFILE_CORRECTION"},
+        {"id":"pressure1-wrong-case","category":"negative","sourceRef":"tests/test_inputxml_family_profiles.py::test_wrong_case_alias_is_not_accepted","expected":"LEDGER_GATE/BLOCKED_WITH_CANDIDATE","difference":"INTENDED_PROFILE_CORRECTION"},
+        {"id":"pressure1-unknown-evidence","category":"blocked-with-candidate","sourceRef":"tests/test_inputxml_canonical_compiler.py::test_unsupported_child_preserved_blocking","expected":"LEDGER_GATE/BLOCKED_WITH_CANDIDATE","difference":"NO_CHANGE"},
+        {"id":"pressure1-alias-conflict","category":"blocked-without-candidate","sourceRef":"tests/test_inputxml_family_profiles.py::test_conflicting_canonical_and_alias_values_block","expected":"PROFILE_RESOLVER_GATE/BLOCKED_NO_CANDIDATE","difference":"INTENDED_PROFILE_CORRECTION"},
+        {"id":"pressure1-scope-reentry","category":"adversarial","sourceRef":"tests/test_inputxml_family_profiles.py::test_return_to_same_line_does_not_revive_old_scope","expected":"PROFILE_RESOLVER_GATE/BLOCKED_NO_CANDIDATE","difference":"INTENDED_PROFILE_CORRECTION"}
+      ]
+    },
+    {
+      "profileId": "caesar-inputxml-pressure-c",
+      "cases": [
+        {"id":"pressure-c-positive","category":"positive","sourceRef":"scripts/inputxml_e2e_regression_matrix_legacy.py::pressure-c","expected":"FULL_CHAIN_PASS","difference":"NO_CHANGE"},
+        {"id":"pressure-c-incompatible-override","category":"negative","sourceRef":"tests/test_inputxml_family_profiles.py::test_incompatible_override_blocks_at_intake","expected":"PROFILE_INTAKE_GATE/BLOCKED_NO_CANDIDATE","difference":"INTENDED_PROFILE_CORRECTION"},
+        {"id":"pressure-c-unknown-evidence","category":"blocked-with-candidate","sourceRef":"tests/test_inputxml_canonical_compiler.py::test_unsupported_child_preserved_blocking","expected":"LEDGER_GATE/BLOCKED_WITH_CANDIDATE","difference":"NO_CHANGE"},
+        {"id":"pressure-c-geometry-sentinel","category":"blocked-without-candidate","sourceRef":"tests/test_inputxml_family_profiles.py::test_geometry_sentinel_blocks","expected":"PROFILE_RESOLVER_GATE/BLOCKED_NO_CANDIDATE","difference":"INTENDED_PROFILE_CORRECTION"},
+        {"id":"pressure-c-equivalent-alias","category":"adversarial","sourceRef":"tests/test_inputxml_family_profiles.py::test_equivalent_canonical_and_alias_values_are_accounted","expected":"PASS_WITH_DUPLICATE_EQUIVALENCE_LEDGER","difference":"INTENDED_PROFILE_CORRECTION"}
+      ]
+    },
+    {
+      "profileId": "enriched-inputxml-app",
+      "cases": [
+        {"id":"enriched-positive","category":"positive","sourceRef":"tests/test_inputxml_family_profiles.py::test_enrichment_evidence_is_preserved_without_override","expected":"PASS","difference":"INTENDED_PROFILE_CORRECTION"},
+        {"id":"enriched-marker-missing","category":"negative","sourceRef":"tests/test_inputxml_family_profiles.py::test_unknown_engineering_child_is_retained_and_blocks","expected":"PROFILE_INTAKE_GATE/BLOCKED_NO_CANDIDATE","difference":"INTENDED_PROFILE_CORRECTION"},
+        {"id":"enriched-unknown-child","category":"blocked-with-candidate","sourceRef":"tests/test_inputxml_canonical_compiler.py::test_unsupported_child_preserved_blocking","expected":"LEDGER_GATE/BLOCKED_WITH_CANDIDATE","difference":"NO_CHANGE"},
+        {"id":"enriched-coordinate-conflict","category":"blocked-without-candidate","sourceRef":"tests/test_inputxml_family_profiles.py::test_coordinate_delta_conflict_blocks","expected":"PROFILE_RESOLVER_GATE/BLOCKED_NO_CANDIDATE","difference":"INTENDED_PROFILE_CORRECTION"},
+        {"id":"enriched-dtxr-no-override","category":"adversarial","sourceRef":"tests/test_inputxml_family_profiles.py::test_enrichment_evidence_is_preserved_without_override","expected":"ENGINEERING_DELTA_UNCHANGED","difference":"INTENDED_PROFILE_CORRECTION"}
+      ]
+    },
+    {
+      "profileId": "inputxml-fragment",
+      "cases": [
+        {"id":"fragment-positive","category":"positive","sourceRef":"tests/test_inputxml_canonical_compiler.py::test_fragment_requires_and_uses_context","expected":"PASS","difference":"INTENDED_PROFILE_CORRECTION"},
+        {"id":"fragment-mixed-wrapper","category":"negative","sourceRef":"tests/test_inputxml_family_profiles.py::test_fragment_wrapper_requires_only_direct_elements","expected":"PROFILE_INTAKE_GATE/BLOCKED_NO_CANDIDATE","difference":"INTENDED_PROFILE_CORRECTION"},
+        {"id":"fragment-unknown-child","category":"blocked-with-candidate","sourceRef":"tests/test_inputxml_canonical_compiler.py::test_unsupported_child_preserved_blocking","expected":"LEDGER_GATE/BLOCKED_WITH_CANDIDATE","difference":"NO_CHANGE"},
+        {"id":"fragment-context-missing","category":"blocked-without-candidate","sourceRef":"tests/test_inputxml_family_profiles.py::test_fragment_context_line_is_explicit_and_ledgered","expected":"PROFILE_INTAKE_GATE when required wrapper authority is absent","difference":"INTENDED_PROFILE_CORRECTION"},
+        {"id":"fragment-identity-collision","category":"adversarial","sourceRef":"tests/test_inputxml_family_profiles.py::test_post_sanitization_identity_collision_blocks","expected":"PROFILE_RESOLVER_GATE/BLOCKED_NO_CANDIDATE","difference":"INTENDED_PROFILE_CORRECTION"}
+      ]
+    },
+    {
+      "profileId": "categorized-inputxml-v3",
+      "cases": [
+        {"id":"categorized-positive","category":"positive","sourceRef":"contracts/inputxml/v1/golden/positive/categorized-v3.xml","expected":"PASS","difference":"INTENDED_PROFILE_CORRECTION"},
+        {"id":"categorized-xsd-negative","category":"negative","sourceRef":"tests/test_inputxml_family_profiles.py::test_categorized_xsd_failure_blocks_at_intake","expected":"PROFILE_INTAKE_GATE/BLOCKED_NO_CANDIDATE","difference":"INTENDED_PROFILE_CORRECTION"},
+        {"id":"categorized-retained-review-evidence","category":"blocked-with-candidate","sourceRef":"tests/test_inputxml_family_profiles.py::categorized_document plus unknown review child","expected":"LEDGER_GATE/BLOCKED_WITH_CANDIDATE","difference":"INTENDED_PROFILE_CORRECTION"},
+        {"id":"categorized-original-missing","category":"blocked-without-candidate","sourceRef":"tests/test_inputxml_family_profiles.py::test_categorized_xsd_failure_blocks_at_intake","expected":"PROFILE_INTAKE_GATE_OR_PROFILE_RESOLVER_GATE/BLOCKED_NO_CANDIDATE","difference":"INTENDED_PROFILE_CORRECTION"},
+        {"id":"categorized-overlay-conflict","category":"adversarial","sourceRef":"tests/test_inputxml_family_profiles.py::test_categorized_overlay_conflict_blocks","expected":"PROFILE_RESOLVER_GATE/BLOCKED_NO_CANDIDATE","difference":"INTENDED_PROFILE_CORRECTION"}
+      ]
+    },
+    {
+      "profileId": "cii14-inputxml",
+      "cases": [
+        {"id":"cii14-positive","category":"positive","sourceRef":"tests/test_inputxml_family_profiles.py::test_cii14_preserves_complete_version_segments","expected":"PASS","difference":"INTENDED_PROFILE_CORRECTION"},
+        {"id":"cii14-version-negative","category":"negative","sourceRef":"tests/test_inputxml_family_profiles.py::test_incompatible_override_blocks_at_intake","expected":"PROFILE_INTAKE_GATE/BLOCKED_NO_CANDIDATE","difference":"INTENDED_PROFILE_CORRECTION"},
+        {"id":"cii14-unsupported-field","category":"blocked-with-candidate","sourceRef":"tests/test_inputxml_canonical_compiler.py::test_unsupported_child_preserved_blocking","expected":"LEDGER_GATE/BLOCKED_WITH_CANDIDATE","difference":"NO_CHANGE"},
+        {"id":"cii14-geometry-sentinel","category":"blocked-without-candidate","sourceRef":"tests/test_inputxml_family_profiles.py::test_geometry_sentinel_blocks","expected":"PROFILE_RESOLVER_GATE/BLOCKED_NO_CANDIDATE","difference":"INTENDED_PROFILE_CORRECTION"},
+        {"id":"cii14-version-segments","category":"adversarial","sourceRef":"tests/test_inputxml_family_profiles.py::test_cii14_preserves_complete_version_segments","expected":"VERSION_14.00.01_PRESERVED","difference":"INTENDED_PROFILE_CORRECTION"}
+      ]
+    },
+    {
+      "profileId": "xml-to-cii-diagnostic-sidecar",
+      "cases": [
+        {"id":"sidecar-valid-intake","category":"positive","sourceRef":"tests/test_inputxml_family_profiles.py::test_diagnostic_sidecar_retains_candidate_and_blocks","expected":"LEDGER_GATE/BLOCKED_WITH_CANDIDATE","difference":"NO_CHANGE"},
+        {"id":"sidecar-invalid-root","category":"negative","sourceRef":"tests/test_inputxml_canonical_compiler.py::test_wrong_xml_type_blocks_before_normalization","expected":"BLOCKED_NO_CANDIDATE","difference":"NO_CHANGE"},
+        {"id":"sidecar-blocked-candidate","category":"blocked-with-candidate","sourceRef":"tests/test_inputxml_resolver_contract.py::test_xml_to_cii_diagnostic_sidecar_is_blocked_with_candidate","expected":"BLOCKED_WITH_CANDIDATE","difference":"NO_CHANGE"},
+        {"id":"sidecar-malformed-source","category":"blocked-without-candidate","sourceRef":"tests/test_inputxml_compiler_state_machine.py::test_malformed_xml_blocks_at_dialect_gate","expected":"DIALECT_GATE/BLOCKED_NO_CANDIDATE","difference":"NO_CHANGE"},
+        {"id":"sidecar-writer-containment","category":"adversarial","sourceRef":"scripts/inputxml_e2e_regression_matrix_legacy.py::diagnostic-sidecar","expected":"CANONICAL_BLOCKED_AND_WRITER_NOT_RUN","difference":"NO_CHANGE"}
+      ]
+    }
+  ]
+}

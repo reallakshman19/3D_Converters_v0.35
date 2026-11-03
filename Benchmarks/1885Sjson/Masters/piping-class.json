@@ -1,0 +1,26 @@
+[
+  {
+    "Piping Class": "91261",
+    "convertedBore": 200,
+    "Size": "8",
+    "SCH": "80",
+    "Wall thickness": 12.7,
+    "Corrosion": 1,
+    "Rating": 900,
+    "Material_Name": "ASTM A106-B",
+    "pipeOdMm": 219.1,
+    "source": "1885 frozen benchmark authority"
+  },
+  {
+    "Piping Class": "91261",
+    "convertedBore": 250,
+    "Size": "10",
+    "SCH": "80",
+    "Wall thickness": 15.09,
+    "Corrosion": 1,
+    "Rating": 900,
+    "Material_Name": "ASTM A106-B",
+    "pipeOdMm": 273,
+    "source": "1885 frozen benchmark authority"
+  }
+]

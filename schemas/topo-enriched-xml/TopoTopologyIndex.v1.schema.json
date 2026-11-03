@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reallaksh19.github.io/3D_Converters/schemas/topo-enriched-xml/TopoTopologyIndex.v1.schema.json",
+  "title": "TopoTopologyIndex.v1",
+  "type": "object",
+  "required": ["schema", "projectId", "zoneId", "sourceInventoryHash", "logicalTopologyHash", "nodePlanHash", "sourceToLogical", "logicalToSource", "logicalToOccurrences", "occurrenceToLogical", "validation"],
+  "properties": {
+    "schema": {"const": "TopoTopologyIndex.v1"},
+    "projectId": {"type": "string", "minLength": 1},
+    "zoneId": {"type": "string", "minLength": 1},
+    "sourceInventoryHash": {"type": "string", "minLength": 1},
+    "logicalTopologyHash": {"type": "string", "minLength": 1},
+    "nodePlanHash": {"type": "string", "minLength": 1},
+    "sourceToLogical": {"type": "array", "items": {"type": "object"}},
+    "logicalToSource": {"type": "array", "items": {"type": "object"}},
+    "logicalToOccurrences": {"type": "array", "items": {"type": "object"}},
+    "occurrenceToLogical": {"type": "array", "items": {"type": "object", "required": ["occurrenceId", "logicalNodeId"], "properties": {"occurrenceId": {"type": "string", "minLength": 1}, "logicalNodeId": {"type": "string", "minLength": 1}}, "additionalProperties": true}},
+    "validation": {"$ref": "#/$defs/validation"}
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "validation": {
+      "type": "object",
+      "required": ["status", "blockers", "reviewItems", "warnings"],
+      "properties": {"status": {"enum": ["PASS", "REVIEW_REQUIRED", "BLOCKED"]}, "blockers": {"type": "array"}, "reviewItems": {"type": "array"}, "warnings": {"type": "array"}},
+      "additionalProperties": false,
+      "allOf": [
+        {"if": {"properties": {"status": {"const": "PASS"}}, "required": ["status"]}, "then": {"properties": {"blockers": {"maxItems": 0}, "reviewItems": {"maxItems": 0}}}},
+        {"if": {"properties": {"status": {"const": "REVIEW_REQUIRED"}}, "required": ["status"]}, "then": {"properties": {"blockers": {"maxItems": 0}, "reviewItems": {"minItems": 1}}}},
+        {"if": {"properties": {"status": {"const": "BLOCKED"}}, "required": ["status"]}, "then": {"properties": {"blockers": {"minItems": 1}}}}
+      ]
+    }
+  }
+}

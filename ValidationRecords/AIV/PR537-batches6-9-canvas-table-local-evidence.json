@@ -1,0 +1,98 @@
+{
+  "schema": "AivCanvasTableIntegrationLocalEvidence.v1",
+  "pullRequest": 537,
+  "testedHeadSha": "283216635e59fc5e0975d50671715b0dde45d454",
+  "stackBase": {
+    "pullRequest": 534,
+    "branch": "agent/aiv-canvas-label-offset-icons-20260816",
+    "sha": "862c83c3817d7e1d51fff52f1279f915a2166b4f"
+  },
+  "classification": "LOCAL_CHROMIUM_UI_EVIDENCE_NOT_HOSTED_FULL_APP",
+  "scope": "Canvas-table integration batches 6-9: docked selected-object inspector, active-owner badges, exact field-level canvas-to-inspector/table focus, table-field-to-canvas highlight, pending/commit feedback, explicit full/generated table navigation, and both TABLE_DRIVEN and NETWORK_DRIVEN ownership paths.",
+  "authorityBoundary": {
+    "networkDrivenOwner": "AivFlareNetwork.v1",
+    "networkGeneratedTablesReadOnly": true,
+    "tableDrivenOwner": "working tables",
+    "registeredResultsOnly": true,
+    "svgDistanceAuthority": false,
+    "acousticEquationsAdded": false,
+    "oneUnifiedSvgPreserved": true
+  },
+  "schemaVerification": {
+    "sourceHeader": "converters/vibration/aiv/source-csv.js::AIV_SOURCE_CSV_HEADER",
+    "assessmentHeader": "converters/vibration/aiv/assessment-csv.js::AIV_ASSESSMENT_CSV_HEADER",
+    "relationshipHeader": "converters/vibration/aiv/source-assessment-csv.js::AIV_SOURCE_ASSESSMENT_CSV_HEADER",
+    "status": "field-link column names verified against repository schemas"
+  },
+  "localOwnerMapping": {
+    "passed": 5,
+    "failed": 0,
+    "notes": "Reconstructed lower-level execution of the exact field-link logic with minimal enum/input-mode stubs; not native repository acceptance.",
+    "assertions": [
+      "TABLE_DRIVEN Source Process maps mass flow, pressure pair and phase/sonic rows to exact working-table fields",
+      "NETWORK_DRIVEN Source Process maps to graph-owned sourceInput fields and not generated table keys",
+      "Assessment Geometry maps grouped Main and Branch OD/WT fields",
+      "NETWORK_DRIVEN segment engineering length maps to graph-owned physicalLength value/unit",
+      "relationship physical distance links only when TABLE_DRIVEN owns explicit distance"
+    ]
+  },
+  "localChromium": {
+    "passed": 20,
+    "failed": 0,
+    "tableDriven": {
+      "passed": 11,
+      "checks": [
+        "canvas field label activates the inspector Engineering edit panel",
+        "canvas field label focuses the exact inspector field",
+        "focused field highlights the exact canvas value",
+        "typing marks the exact field pending without treating it as committed",
+        "canvas card records the pending field identity",
+        "commit callback receives the exact authoritative field identity",
+        "commit clears pending state",
+        "canvas projected value updates after commit",
+        "currentness becomes stale after engineering input commit",
+        "Open full table explicitly expands Working data tables",
+        "focused bulk-table field highlights the same canvas value"
+      ]
+    },
+    "networkDriven": {
+      "passed": 9,
+      "checks": [
+        "keyboard activation of a canvas label focuses the graph-owned inspector field",
+        "graph-owned canvas value highlights",
+        "generated table field is not selected as engineering owner",
+        "generated table input remains readonly",
+        "network commit uses graph field identity",
+        "network projected value updates after commit",
+        "network currentness becomes stale after engineering input commit",
+        "generated table opens only on explicit action",
+        "generated table remains readonly after opening"
+      ]
+    },
+    "screenshots": [
+      { "name": "01-label-to-field.png", "sha256": "1b03c6b2ccc9fb3f138a49ac5960b4944cc0adf972faf508cc6d301d9a56e01b" },
+      { "name": "02-committed-edit-stale.png", "sha256": "dc7c8aaff1b2daaab32e8779eca1a308d9c9042965d51e34dc3e24da71df0ef3" },
+      { "name": "03-table-roundtrip.png", "sha256": "67442e85698639e977dd8ba60f43b05794aee5a0c49bb89cd7d59e9b1a8de6a7" },
+      { "name": "04-network-owner-field.png", "sha256": "e3be8f81cc9d3fbf25a8a8dcda5eb8ed33e6df43ad95d166ef2276ebb428ad9d" },
+      { "name": "05-network-generated-readonly.png", "sha256": "1a792ae8e31fe5eefcb1c56a2154247010b6cd2cce936b18091a41ac305c3a4e" }
+    ],
+    "reports": [
+      { "name": "report.json", "sha256": "4497f17402407827416188e64248d379acecd984f73635ad0fa8b47d85c8a916" },
+      { "name": "network_report.json", "sha256": "2e90c54277c75fef2b2427045f1ee64d64b6a73f424efd5fba7e381c554ea4c9" }
+    ]
+  },
+  "committedButNotExecuted": {
+    "tests": [
+      "tests/vibration-aiv-canvas-field-link.test.mjs",
+      "tests/vibration-aiv-canvas-table-integration.test.mjs"
+    ],
+    "status": "NOT_RUN_IN_NATIVE_REPOSITORY"
+  },
+  "remainingGates": [
+    "This is a stacked draft; PR #534 must land first or PR #537 must be retargeted/rebased before promotion.",
+    "The upstream browser cache chain is not fully refreshed through index.html; source correctness is not served-browser proof.",
+    "Hosted/full-app tests and production Chromium replay are NOT_RUN.",
+    "GitHub Pages production deployment remains blocked until the repository GitHub Actions budget condition is resolved.",
+    "Merge authority is NOT GRANTED."
+  ]
+}

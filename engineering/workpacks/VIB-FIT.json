@@ -1,0 +1,315 @@
+{
+  "schema": "EngineeringWorkPack.v1",
+  "workpackId": "VIB-FIT",
+  "capabilityId": "VIB.FIV.FLOW_TURBULENCE",
+  "ownerIssue": 443,
+  "familyIssue": 429,
+  "capabilityLifecycle": {
+    "state": "UNMAPPED_LEGACY",
+    "inferred": false,
+    "mappingStatus": "EXPLICITLY_UNMAPPED",
+    "note": "Merged capability lifecycle conventions are not retrofitted to FIT without a separately governed crosswalk."
+  },
+  "adapter": {
+    "path": "converters/engineering-calculations/adapters/vibration-fit.js",
+    "exportName": "VIBRATION_FIT_ENGINEERING_CALCULATION_DEFINITION"
+  },
+  "registry": {
+    "path": "converters/engineering-calculations/default-registry.js",
+    "exportName": "ACTIVE_ENGINEERING_CALCULATION_DEFINITIONS",
+    "state": "ACTIVE"
+  },
+  "authorityProjectionModules": [
+    {
+      "path": "converters/vibration/fit/source-basis-evidence.js",
+      "exportName": "FIT_SOURCE_BASIS_EVIDENCE",
+      "authorityProperty": "authority",
+      "fields": [
+        "qualificationState",
+        "engineeringAuthority",
+        "screeningAuthority",
+        "designAuthority"
+      ]
+    }
+  ],
+  "methodRevision": "ei-aviff2-fit-screening-v1",
+  "authority": {
+    "calculationState": "IMPLEMENTED",
+    "qualificationState": "SCREENING",
+    "engineeringAuthority": "SCREENING",
+    "screeningAuthority": "AUTHORIZED_BOUNDED",
+    "designAuthority": false,
+    "codeCompliance": false,
+    "fullVibrationAssessmentComplete": false
+  },
+  "productFreeze": {
+    "state": "BLOCKED",
+    "frozen": false,
+    "qualificationIndependent": true,
+    "protocolPath": "scripts/validate-vibration-production-freeze-browser.mjs",
+    "receiptPath": "artifacts/vibration-production-freeze/production-freeze-receipt.json",
+    "requiredReceiptSchema": "VibrationProductionFreezeReceipt.v1",
+    "requiredReceiptStatus": "PASS",
+    "promotionRule": "ONLY_PROTOCOL_RECEIPT_MAY_ESTABLISH_FROZEN"
+  },
+  "applicability": {
+    "mechanism": "MAIN_LINE_FLOW_INDUCED_TURBULENCE_ONLY",
+    "diameterMm": [
+      { "minInclusive": 60, "maxInclusive": 219.1, "disposition": "SCREENING" },
+      { "minExclusive": 219.1, "maxExclusive": 273, "disposition": "EXCLUDED_FAIL_CLOSED" },
+      { "minInclusive": 273, "maxInclusive": 762, "disposition": "SCREENING" }
+    ],
+    "advancedPath": {
+      "support": ["FLEXIBLE_SMALL", "FLEXIBLE_LARGE"],
+      "standardLofMinInclusive": 1,
+      "naturalFrequencyHzMinExclusive": 1,
+      "naturalFrequencyHzMaxInclusive": 3
+    }
+  },
+  "knownExclusions": [
+    "QST-003 diameter gap 219.1 mm < Dext < 273 mm",
+    "design acceptance",
+    "code-compliance acceptance",
+    "complete multi-mechanism vibration integrity",
+    "advanced FIT at fn <= 1 Hz or fn > 3 Hz"
+  ],
+  "probes": {
+    "screening": {
+      "input": {
+        "phase": "LIQUID",
+        "outsideDiameter": 0.273,
+        "wallThickness": 0.009271,
+        "maximumUnsupportedSpan": 18,
+        "density": 988,
+        "fluidVelocity": 2.9
+      }
+    },
+    "qst003": {
+      "input": {
+        "phase": "LIQUID",
+        "outsideDiameter": 0.25,
+        "wallThickness": 0.01,
+        "maximumUnsupportedSpan": 12,
+        "density": 1000,
+        "fluidVelocity": 1
+      },
+      "expectedPublicErrorCode": "INPUT_OUTSIDE_APPLICABILITY"
+    }
+  },
+  "probeModules": {
+    "fit": {
+      "path": "engineering/workpacks/probes/vib-fit.mjs",
+      "exports": [
+        "verifyScreeningAuthority",
+        "verifyDesignAuthority",
+        "verifyCodeCompliance",
+        "verifyQst003",
+        "verifyProductFreeze"
+      ]
+    }
+  },
+  "benchmarkSets": [
+    {
+      "path": "Benchmarks/VibrationFIT/fit-ei-worked-examples-v1.json",
+      "benchmarkSetId": "FIT-EI-WORKED-EXAMPLES-V1",
+      "requiredCaseIds": [
+        "EI-D2-FIT-RECYCLE-SUCTION-6IN",
+        "EI-D2-FIT-STREAM-4-SUPPLY-COOLER-14IN",
+        "EI-D2-FIT-STREAM-5-SUCTION-SCRUBBER-14IN",
+        "EI-D2-FIT-STREAM-6-COMPRESSOR-SUCTION-14IN",
+        "EI-D2-FIT-STREAM-7-COMPRESSOR-DISCHARGE-8IN",
+        "EI-D2-FIT-RECYCLE-DISCHARGE-8IN",
+        "EI-D2-FIT-RELIEF-UPSTREAM-4IN",
+        "EI-D2-FIT-RELIEF-DOWNSTREAM-6IN",
+        "EI-D4-FIT-SEPARATOR-INLET-20IN",
+        "EI-D4-FIT-PRODUCED-WATER-10IN"
+      ]
+    },
+    {
+      "path": "Benchmarks/VibrationFIT/fit-independent-hand-benchmarks-v1.json",
+      "benchmarkSetId": "FIT-INDEPENDENT-HAND-BENCHMARKS-V1",
+      "requiredCaseIds": [
+        "FIT-HAND-LIQ-STIFF-001",
+        "FIT-HAND-GAS-MEDIUM-STIFF-002",
+        "FIT-HAND-MULTIPHASE-MEDIUM-003",
+        "FIT-HAND-LIQ-MEDIUM-SMALL-008",
+        "FIT-HAND-FLEX-SMALL-LOF-105-FN2",
+        "FIT-HAND-FLEX-LARGE-LOF-120-FN2-009",
+        "FIT-HAND-SUPPORT-BOUNDARY-004",
+        "FIT-HAND-GAS-UNIT-INVARIANCE-005",
+        "FIT-HAND-GAP-FAIL-006",
+        "FIT-HAND-FN4-NO-ADVANCED-007"
+      ]
+    }
+  ],
+  "releaseManifest": {
+    "path": "scripts/verify-vibration-fit-release.mjs",
+    "exportName": "listVibrationFitReleaseTests",
+    "requiredCriticalTests": [
+      "tests/vibration-fit-central-api-qualification.test.mjs",
+      "tests/vibration-fit-independent-benchmarks.test.mjs",
+      "tests/vibration-fit-d4-product-path-validation.test.mjs",
+      "tests/engineering-calculation-console-fit-preflight.test.mjs",
+      "tests/vibration-fit-workpack-drift.test.mjs",
+      "tests/vibration-production-freeze-browser-contract.test.mjs"
+    ]
+  },
+  "uiProjectionRules": [
+    {
+      "path": "tabs/engineering-calculation-console-view.js",
+      "forbiddenStrings": ["${pill('BENCHMARK ONLY', 'warn')}"]
+    },
+    {
+      "path": "tabs/engineering-calculation-vibration-family.js",
+      "forbiddenStrings": ["No mechanism on this page has screening or design authority."]
+    }
+  ],
+  "documentRules": [
+    {
+      "path": "docs/vibration/FIT-Source-Basis-Evidence-v1.md",
+      "classification": "CURRENT_AUTHORITY",
+      "requiredStrings": [
+        "qualificationState    = SCREENING",
+        "engineeringAuthority  = SCREENING",
+        "screeningAuthority    = AUTHORIZED_BOUNDED"
+      ],
+      "forbiddenStrings": ["current BENCHMARK_ONLY authority state"]
+    },
+    {
+      "path": "docs/vibration/FIT-source-register.md",
+      "classification": "HISTORICAL_BASELINE",
+      "requiredStrings": [
+        "Historical qualification baseline",
+        "Current authority"
+      ],
+      "forbiddenStrings": []
+    }
+  ],
+  "staleArtifacts": [
+    { "artifact": "Issue #443 baseline authority block", "classification": "HISTORICAL_BASELINE" },
+    { "artifact": "docs/vibration/FIT-source-register.md", "classification": "HISTORICAL_BASELINE" },
+    { "artifact": "51-file release-suite statements in qualification-era records", "classification": "HISTORICAL_QUALIFICATION_OBSERVATION_NOT_COUNT_ORACLE" },
+    { "artifact": "PR #539", "classification": "DESIGN_PATCH_PROPOSAL_NOT_BASELINE" },
+    { "artifact": "PR #540", "classification": "DESIGN_PATCH_PROPOSAL_NOT_BASELINE" },
+    { "artifact": "PR #564 lifecycle implementation", "classification": "MERGED_LIFECYCLE_CONVENTION_NOT_MAPPED_TO_FIT" }
+  ],
+  "checks": [
+    {
+      "id": "FIT-WP-001",
+      "type": "MODULE_EXPORT_EQUALS",
+      "severity": "ERROR",
+      "config": { "moduleRef": "adapter", "property": "id", "expectedRef": "capabilityId" }
+    },
+    {
+      "id": "FIT-WP-002",
+      "type": "MODULE_EXPORT_EQUALS",
+      "severity": "ERROR",
+      "config": { "moduleRef": "adapter", "property": "methodRevision", "expectedRef": "methodRevision" }
+    },
+    {
+      "id": "FIT-WP-003",
+      "type": "REGISTRY_CONTAINS",
+      "severity": "ERROR",
+      "config": {
+        "moduleRef": "registry",
+        "idRef": "capabilityId",
+        "stateRef": "registry.state",
+        "requiredState": "ACTIVE"
+      }
+    },
+    {
+      "id": "FIT-WP-004",
+      "type": "CUSTOM_DECLARED_PROBE",
+      "severity": "ERROR",
+      "config": { "probeModule": "fit", "exportName": "verifyScreeningAuthority" }
+    },
+    {
+      "id": "FIT-WP-005",
+      "type": "CUSTOM_DECLARED_PROBE",
+      "severity": "ERROR",
+      "config": { "probeModule": "fit", "exportName": "verifyDesignAuthority" }
+    },
+    {
+      "id": "FIT-WP-006",
+      "type": "CUSTOM_DECLARED_PROBE",
+      "severity": "ERROR",
+      "config": { "probeModule": "fit", "exportName": "verifyCodeCompliance" }
+    },
+    {
+      "id": "FIT-WP-007",
+      "type": "CUSTOM_DECLARED_PROBE",
+      "severity": "ERROR",
+      "config": { "probeModule": "fit", "exportName": "verifyQst003" }
+    },
+    {
+      "id": "FIT-WP-008",
+      "type": "JSON_IDENTITY_SET",
+      "severity": "ERROR",
+      "config": { "setsRef": "benchmarkSets" }
+    },
+    {
+      "id": "FIT-WP-009",
+      "type": "MODULE_LIST_CONTAINS",
+      "severity": "ERROR",
+      "config": {
+        "moduleRef": "releaseManifest",
+        "requiredItemsRef": "releaseManifest.requiredCriticalTests",
+        "captureListCount": true
+      }
+    },
+    {
+      "id": "FIT-WP-010",
+      "type": "SOURCE_RULES",
+      "severity": "ERROR",
+      "config": { "rulesRef": "uiProjectionRules" }
+    },
+    {
+      "id": "FIT-WP-011",
+      "type": "DOCUMENT_CLASSIFICATION",
+      "severity": "ERROR",
+      "config": { "rulesRef": "documentRules" }
+    },
+    {
+      "id": "FIT-WP-012",
+      "type": "CUSTOM_DECLARED_PROBE",
+      "severity": "ERROR",
+      "config": { "probeModule": "fit", "exportName": "verifyProductFreeze" }
+    }
+  ],
+  "requiredQualificationCommands": [
+    "npm run workpack:verify -- VIB-FIT",
+    "npm run verify:vibration-fit-release"
+  ],
+  "protectedInvariants": [
+    "screeningAuthority=AUTHORIZED_BOUNDED",
+    "designAuthority=false",
+    "codeCompliance=false",
+    "QST-003 fails closed",
+    "1 Hz excluded and 3 Hz included on advanced path",
+    "benchmark expected values and tolerances remain independent of production output",
+    "Product Freeze cannot be inferred from method qualification"
+  ],
+  "allowedPaths": [
+    "engineering/workpacks/**",
+    "scripts/*workpack*",
+    "tests/*workpack*",
+    "FIT authority UI projections",
+    "FIT historical/current status documentation"
+  ],
+  "forbiddenPaths": [
+    "converters/vibration/fit numerical equations",
+    "FIT correlation coefficients or empirical constants",
+    "FIT benchmark expected values or tolerances",
+    "FIT applicability boundary changes",
+    "QST-003 disposition changes",
+    ".github/workflows/*"
+  ],
+  "openBlockers": [
+    {
+      "id": "FIT-PF-001",
+      "state": "BLOCKED",
+      "description": "Official Product Freeze remains blocked until the protocol-defined served Chromium journey emits a PASS receipt."
+    }
+  ],
+  "exactNextPermittedWork": "Run the work-pack and FIT release gates on the current PR head; if green, obtain review without changing numerical method or authority."
+}

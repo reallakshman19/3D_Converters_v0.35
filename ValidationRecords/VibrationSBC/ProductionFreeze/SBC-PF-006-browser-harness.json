@@ -1,0 +1,89 @@
+{
+  "schema": "VibrationSbcType3BrowserAcceptanceHarness.v1",
+  "sliceId": "SBC-PF-006-BROWSER-ACCEPTANCE-HARNESS",
+  "issue": 514,
+  "repository": "reallaksh19/3D_Converters",
+  "branch": "agent/sbc-pf-006-browser-acceptance",
+  "stackBase": {
+    "pr": 527,
+    "head": "a68cba98d81df5e182c17bfa4233a42a9e553157"
+  },
+  "groundedCurrentMain": "36f53018d5c1cf8bec609e39d6995a6067bb5d01",
+  "scope": "SBC_SPECIFIC_SERVED_CHROMIUM_ACCEPTANCE_HARNESS_ONLY",
+  "sharedRunnerOwner": 511,
+  "sharedRunnerEdited": false,
+  "fixtureCases": [
+    "EI-D2-FIT-RELIEF-UPSTREAM-4IN",
+    "EI-D2-FIT-RECYCLE-SUCTION-6IN"
+  ],
+  "oracle": {
+    "id": "EI-D7-SBC-TYPE3",
+    "c": 0.68,
+    "d": 0.20,
+    "e": 0.70,
+    "f": 0.60,
+    "g": 0.20,
+    "firstLocationLof": 1.0,
+    "mainlineMultiplier": 1.42,
+    "finalLof": 0.70,
+    "coordinateTolerance": 1e-12
+  },
+  "curveCustody": {
+    "figures": ["T3-1", "T3-3", "T3-4"],
+    "evidenceOrigin": "USER_PROJECT_EXACT_CURVE_READ",
+    "publicationState": "BLOCKED_SOURCE_DATA_CONFLICT",
+    "runtimeCurveActivation": false,
+    "masterPublicationAuthorized": false
+  },
+  "acceptance": {
+    "PF-007": "served runtime rejects wrong-scope precomputed candidate",
+    "PF-008": "physical edit invalidates facility A while facility B remains current",
+    "PF-009": "D/F/G evidence edit invalidates facility A while facility B remains current",
+    "PF-010": "same-task evaluate/edit race rejects stale async completion",
+    "authority": "FIT remains screening governing; SBC 0.70 remains candidate tier only",
+    "browserErrors": "must be empty"
+  },
+  "payload": {
+    "scripts/vibration-sbc-type3-browser-fixture.mjs": "386be6398b27400a217db55ad05a888874078322",
+    "scripts/validate-vibration-sbc-type3-production-freeze-browser.mjs": "5644e329146c10956ba56bdc7cf34896e48eddaa",
+    "tests/vibration-sbc-type3-production-freeze-browser-contract.test.mjs": "0bab89b9e9a8e7721575f89dc16049f1f5ae8eaa"
+  },
+  "validation": [
+    {
+      "check": "new script syntax",
+      "status": "PASS",
+      "observation": "LOCAL_EXACT_GIT_BLOB_PAYLOAD"
+    },
+    {
+      "check": "browser acceptance contract",
+      "status": "PASS_5_OF_5",
+      "observation": "LOCAL_EXACT_GIT_BLOB_PAYLOAD"
+    },
+    {
+      "check": "new-file structure",
+      "status": "PASS",
+      "detail": "helper 175 lines; harness 231 lines; longest harness functions 30 and 29 lines"
+    },
+    {
+      "check": "full repository Node suite",
+      "status": "NOT_RUN",
+      "observation": "NO_LOCAL_CHECKOUT"
+    },
+    {
+      "check": "SBC served-app Chromium acceptance",
+      "status": "NOT_RUN",
+      "observation": "NO_EXECUTABLE_PLAYWRIGHT_SERVED_ENVIRONMENT"
+    },
+    {
+      "check": "production freeze",
+      "status": "NOT_FROZEN"
+    }
+  ],
+  "authority": {
+    "engineeringAuthority": "NONE",
+    "screeningAuthority": "NOT_AUTHORIZED",
+    "designAuthority": false,
+    "masterDataAuthority": false
+  },
+  "mergeAuthority": "OWNER_ONLY_NOT_GRANTED"
+}

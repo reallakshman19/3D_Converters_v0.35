@@ -1,0 +1,11 @@
+# XML→CII side-load restraint benchmark
+# Format: Node|PSNo.|POS|Restraint|Expected
+Node|PSNo.|POS|Restraint|Expected
+70|||Guide|ADD: Node 70 gets GUIDE
+|PS-12248.5||Line Stop|ADD: PS-12248.5 resolves to Node 60 and gets LINESTOP
+||424045.970 -1141725.000 2178.000|Guide|ADD: POS resolves to Node 110/120 area; ambiguous/exact duplicate check expected
+20|||Rest|SKIP_DUPLICATE: Node 20 already has REST in XML
+|PS-12246.2||Guide|SKIP_DUPLICATE: JSON already has GUIDE at Node 40
+|PS-Z-999||Guide|ERROR_NODE_NOT_FOUND
+||9999.00 9999.00 9999.00|Guide|ERROR_NO_NODE_WITHIN_TOLERANCE
+50|||FooBar|ERROR_UNKNOWN_RESTRAINT

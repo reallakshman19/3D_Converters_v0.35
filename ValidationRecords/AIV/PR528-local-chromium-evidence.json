@@ -1,0 +1,66 @@
+{
+  "schema": "AivUnifiedCanvasLocalChromiumEvidence.v1",
+  "repository": "reallaksh19/3D_Converters",
+  "pullRequest": 528,
+  "branch": "agent/aiv-unified-network-canvas-526",
+  "candidateHeadBeforeEvidenceCommit": "b55e231ceeda6d30a839c48965725ff424ba7011",
+  "chromium": "144.0.7559.96",
+  "execution": {
+    "runner": "local Playwright + system Chromium",
+    "navigation": "page.set_content",
+    "reason": "Managed Chromium URLBlocklist=[\"*\"] blocks URL/file navigation in this environment.",
+    "hostedActions": {
+      "aivQualificationRun": 31916357838,
+      "productionFreezeRun": 31916357854,
+      "classification": "INFRASTRUCTURE_BLOCKED",
+      "executedSteps": 0
+    }
+  },
+  "scope": "Local Chromium evidence harness using PR528 authority/currentness logic and controlled repository oracle/sample values; not a hosted full-application bundle acceptance.",
+  "scenarios": [
+    {
+      "name": "EI D2.3 TABLE_DRIVEN logical relationship",
+      "logicalRelationships": 1,
+      "inventedPhysicalSegments": 0,
+      "explicitDistanceM": 0.8,
+      "reliefRawSourcePwlDb": 164.6851759525391,
+      "attenuationDb": 0.3116883116883117,
+      "assessmentPointPwlDb": 164.3734876408508,
+      "assessmentLof": 0.29
+    },
+    {
+      "name": "Controlled two-RV NETWORK_DRIVEN flare sample",
+      "physicalSegments": [
+        {"id":"RV101-BRANCH","lengthM":6},
+        {"id":"RV102-BRANCH","lengthM":9},
+        {"id":"SUBHEADER-4IN","lengthM":12},
+        {"id":"HEADER-8IN","lengthM":20}
+      ],
+      "resolvedPathDistancesM": [38, 41],
+      "assessmentCombinedPointPwlDb": 149.56302572849327,
+      "assessmentLof": 0.29
+    }
+  ],
+  "assertions": [
+    "PASS D2.3 renders one logical relationship and no invented physical substrate",
+    "PASS D2.3 explicit distance remains 0.8 m and frozen registered result values are visible",
+    "PASS flare sample renders four explicit physical segments 6/9/12/20 m",
+    "PASS flare relationship overlays carry 38 m and 41 m pathEvidence distances",
+    "PASS presentation coordinate movement does not change 38/41 m engineering path distances",
+    "PASS NETWORK_DRIVEN generated-table mutation guard throws AIV_GENERATED_TABLES_READ_ONLY",
+    "PASS explicit detach switches NETWORK_DRIVEN to TABLE_DRIVEN and advances inputRevision once",
+    "PASS stale screening token/revision is rejected after an engineering input edit"
+  ],
+  "summary": "8/8 PASS",
+  "artifacts": {
+    "screenshotSha256": "8eb75fb17567b4e9fcbf135112674e23df79f211a5789902695bfba15e0de017",
+    "harnessHtmlSha256": "ddd93bf2f529d54f59ac94ddea618f9624bd134af79150e20936f5a16647ae23",
+    "note": "PNG/HTML artifacts are returned in the ChatGPT sandbox; GitHub text connector cannot upload the binary screenshot."
+  },
+  "promotionBoundary": {
+    "localChromiumHarness": "PASS",
+    "hostedFullApplicationChromium": "NOT_RUN_INFRASTRUCTURE_BLOCKED",
+    "fullNativeReleaseSuite": "NOT_RUN_NO_PRIVATE_CHECKOUT",
+    "completeB1B10": "NOT_RUN"
+  }
+}

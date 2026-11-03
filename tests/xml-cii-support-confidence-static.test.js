@@ -1,0 +1,16 @@
+const assert = require('assert');
+const fs = require('fs');
+const path = require('path');
+const root = path.resolve(__dirname, '..');
+const source = fs.readFileSync(path.join(root, 'tabs/xml-cii-2019-standalone/xml-cii-support-type-mapper.js'), 'utf8');
+assert(source.includes("aliases: ['Shoe', 'Pipe Rest', 'Wear Pad', 'Rest', 'RES']"));
+assert(source.includes("const LOW_CODE_ALIASES = new Set(['GT', 'ST', 'PG', 'LS'])"));
+assert(source.includes("'SHOE', 'PIPEREST', 'WEARPAD', 'REST', 'RES'"));
+assert(source.includes("'LINESTOP', 'DIRECTIONALANCHOR', 'AXIALSTOP'"));
+for (const priority of [900, 910, 920, 930]) assert(source.includes(`priority: ${priority}`));
+for (const id of ['standalone-mds-gt-guide', 'standalone-mds-st-linestop', 'standalone-mds-pg-guide', 'standalone-mds-ls-linestop']) assert(source.includes(id));
+assert(source.includes('strongerEvidenceSuppressesLowerConfidenceCompetingKinds: true'));
+assert(source.includes('equalStrengthConflictsRequireReview: true'));
+assert(source.includes("text(row.text).split('|')"));
+assert(source.includes('suppressedCandidates'));
+console.log('XML/CII support confidence static checks passed.');

@@ -1,0 +1,75 @@
+{
+  "ok": false,
+  "profile": "cii2019",
+  "inputFile": "Benchmarks\\INPUT XML to CII 2019\\_autotest_outputs\\cii_syntax_bad_control_type.cii",
+  "sectionsFound": [
+    "VERSION",
+    "CONTROL",
+    "ELEMENTS",
+    "AUX_DATA",
+    "NODENAME",
+    "BEND",
+    "RIGID",
+    "EXPJT",
+    "RESTRANT",
+    "DISPLMNT",
+    "FORCMNT",
+    "UNIFORM",
+    "WIND",
+    "OFFSETS",
+    "ALLOWBLS",
+    "SIF&TEES",
+    "REDUCERS",
+    "FLANGES",
+    "EQUIPMNT",
+    "MISCEL_1",
+    "UNITS",
+    "COORDS"
+  ],
+  "metrics": {},
+  "errors": [
+    {
+      "code": "control_token_type",
+      "section": "CONTROL",
+      "line": 64,
+      "message": "CONTROL row 1 must contain integer tokens only."
+    },
+    {
+      "code": "section_block_rows",
+      "section": "BEND",
+      "line": 673,
+      "message": "BEND has 21 rows, expected 0 (0 blocks x 3 rows)."
+    },
+    {
+      "code": "section_block_rows",
+      "section": "RIGID",
+      "line": 695,
+      "message": "RIGID has 15 rows, expected 0 (0 blocks x 1 rows)."
+    },
+    {
+      "code": "section_block_rows",
+      "section": "RESTRANT",
+      "line": 712,
+      "message": "RESTRANT has 192 rows, expected 0 (0 blocks x 24 rows)."
+    },
+    {
+      "code": "section_block_rows",
+      "section": "ALLOWBLS",
+      "line": 910,
+      "message": "ALLOWBLS has 26 rows, expected 0 (0 blocks x 26 rows)."
+    },
+    {
+      "code": "section_block_rows",
+      "section": "SIF&TEES",
+      "line": 937,
+      "message": "SIF&TEES has 90 rows, expected 0 (0 blocks x 10 rows)."
+    },
+    {
+      "code": "nodename_rows",
+      "section": "NODENAME",
+      "line": 670,
+      "message": "NODENAME has 2 rows, expected 0 (NONAM count)."
+    }
+  ],
+  "warnings": []
+}

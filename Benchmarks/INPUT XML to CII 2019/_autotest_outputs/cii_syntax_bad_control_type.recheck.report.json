@@ -1,0 +1,161 @@
+{
+  "ok": false,
+  "profile": "cii2019",
+  "inputFile": "Benchmarks\\INPUT XML to CII 2019\\_autotest_outputs\\cii_syntax_bad_control_type.cii",
+  "sectionsFound": [
+    "VERSION",
+    "CONTROL",
+    "ELEMENTS",
+    "AUX_DATA",
+    "NODENAME",
+    "BEND",
+    "RIGID",
+    "EXPJT",
+    "RESTRANT",
+    "DISPLMNT",
+    "FORCMNT",
+    "UNIFORM",
+    "WIND",
+    "OFFSETS",
+    "ALLOWBLS",
+    "SIF&TEES",
+    "REDUCERS",
+    "FLANGES",
+    "EQUIPMNT",
+    "MISCEL_1",
+    "UNITS",
+    "COORDS"
+  ],
+  "metrics": {},
+  "derivedBlockCounts": {
+    "BEND": {
+      "rows": 21,
+      "linesPerBlock": 3,
+      "derivedBlocks": 7,
+      "remainderRows": 0
+    },
+    "RIGID": {
+      "rows": 15,
+      "linesPerBlock": 1,
+      "derivedBlocks": 15,
+      "remainderRows": 0
+    },
+    "EXPJT": {
+      "rows": 0,
+      "linesPerBlock": 1,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    },
+    "RESTRANT": {
+      "rows": 192,
+      "linesPerBlock": 24,
+      "derivedBlocks": 8,
+      "remainderRows": 0
+    },
+    "DISPLMNT": {
+      "rows": 0,
+      "linesPerBlock": 20,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    },
+    "FORCMNT": {
+      "rows": 0,
+      "linesPerBlock": 13,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    },
+    "UNIFORM": {
+      "rows": 0,
+      "linesPerBlock": 6,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    },
+    "WIND": {
+      "rows": 0,
+      "linesPerBlock": 1,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    },
+    "OFFSETS": {
+      "rows": 0,
+      "linesPerBlock": 1,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    },
+    "ALLOWBLS": {
+      "rows": 26,
+      "linesPerBlock": 26,
+      "derivedBlocks": 1,
+      "remainderRows": 0
+    },
+    "SIF&TEES": {
+      "rows": 90,
+      "linesPerBlock": 10,
+      "derivedBlocks": 9,
+      "remainderRows": 0
+    },
+    "REDUCERS": {
+      "rows": 0,
+      "linesPerBlock": 1,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    },
+    "FLANGES": {
+      "rows": 0,
+      "linesPerBlock": 11,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    },
+    "EQUIPMNT": {
+      "rows": 0,
+      "linesPerBlock": 6,
+      "derivedBlocks": 0,
+      "remainderRows": 0
+    }
+  },
+  "errors": [
+    {
+      "code": "control_token_type",
+      "section": "CONTROL",
+      "line": 64,
+      "message": "CONTROL row 1 must contain integer tokens only."
+    },
+    {
+      "code": "section_block_rows",
+      "section": "BEND",
+      "line": 673,
+      "message": "BEND has 21 rows, expected 0 (0 blocks x 3 rows)."
+    },
+    {
+      "code": "section_block_rows",
+      "section": "RIGID",
+      "line": 695,
+      "message": "RIGID has 15 rows, expected 0 (0 blocks x 1 rows)."
+    },
+    {
+      "code": "section_block_rows",
+      "section": "RESTRANT",
+      "line": 712,
+      "message": "RESTRANT has 192 rows, expected 0 (0 blocks x 24 rows)."
+    },
+    {
+      "code": "section_block_rows",
+      "section": "ALLOWBLS",
+      "line": 910,
+      "message": "ALLOWBLS has 26 rows, expected 0 (0 blocks x 26 rows)."
+    },
+    {
+      "code": "section_block_rows",
+      "section": "SIF&TEES",
+      "line": 937,
+      "message": "SIF&TEES has 90 rows, expected 0 (0 blocks x 10 rows)."
+    },
+    {
+      "code": "nodename_rows",
+      "section": "NODENAME",
+      "line": 670,
+      "message": "NODENAME has 2 rows, expected at most 0 (NONAM count)."
+    }
+  ],
+  "warnings": []
+}

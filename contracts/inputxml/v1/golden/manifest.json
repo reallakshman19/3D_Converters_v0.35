@@ -1,0 +1,16 @@
+{
+  "schema": "InputXmlGoldenCorpus.v1",
+  "generatedAt": "2026-07-15",
+  "cases": [
+    {"id":"G-POS-001","path":"positive/minimal.canonical.input.xml","profile":"canonical","expected":"PASS"},
+    {"id":"G-POS-002","path":"positive/auxiliaries.canonical.input.xml","profile":"canonical","expected":"PASS"},
+    {"id":"G-POS-003","path":"positive/categorized-v3.xml","profile":"categorized","expected":"PASS"},
+    {"id":"G-NEG-001","path":"negative/alias-pressure1.xml","profile":"canonical","expected":"XSD_FAIL"},
+    {"id":"G-NEG-002","path":"negative/missing-pipingmodel.xml","profile":"canonical","expected":"XSD_FAIL"},
+    {"id":"G-NEG-003","path":"negative/sentinel-geometry.xml","profile":"canonical","expected":"SEMANTIC_FAIL"},
+    {"id":"G-NEG-004","path":"negative/count-mismatch.xml","profile":"canonical","expected":"SEMANTIC_FAIL"},
+    {"id":"G-NEG-005","path":"negative/unsupported-extension.xml","profile":"canonical","expected":"SEMANTIC_FAIL"},
+    {"id":"G-NEG-006","path":"negative/restraint-overflow.xml","profile":"canonical","expected":"XSD_FAIL"},
+    {"id":"G-NEG-007","path":"negative/categorized-unknown-block.xml","profile":"categorized","expected":"XSD_FAIL"}
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "schema": "source-blob-backup/v1",
+  "created": "2026-07-13",
+  "scope": "StagedJSON InputXML browser failed-run diagnostics handoff",
+  "files": {
+    "converters/py-worker.js": "25f8d3985aa4860417d644a6b24b9b02310156d6",
+    "tabs/model-converters/stagedjson-inputxml-diagnostics-panel.js": "c18655aa6f298660d7abf07fd9e90dd08eba6093",
+    "tests/stagedjson-inputxml-workpack.test.js": "e0da734abace65126bc486e3bb361933c7689df9",
+    "tests/xml-cii-standalone-source-mode-integration.test.js": "f06a528a79d5fe5b8b193a199c98f524acd6264b",
+    "converters/scripts/stagedjson_to_inputxml.py": "ebed8c3e20e0efa8c0b0ee10ef4cad2ce21de361"
+  },
+  "reason": "Recover staged-only failed-run diagnostics while preserving the generic worker failure contract.",
+  "restore": "Fetch each immutable blob SHA and replace the corresponding path."
+}

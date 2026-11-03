@@ -1,0 +1,25 @@
+targetNode,targetNodeNumber,component,expectedDecision,expectedSourceNode,expectedLineFamily,note
+TGT-PIPE-01,1010,PIPE,TRANSFERRED,SRC-PIPE-01,S8810101,coordinate within 1mm; dia and line family match
+TGT-PIPE-02,1020,PIPE,TRANSFERRED,SRC-PIPE-02,S8810101,coordinate within 1mm; dia and line family match
+TGT-PIPE-03,1030,PIPE,TRANSFERRED,SRC-PIPE-03,S8810101,coordinate within 1mm; dia and line family match
+TGT-PIPE-04,1040,PIPE,NO_COORDINATE_MATCH,,S8810101,target coordinate outside 1mm tolerance; retain target values
+TGT-PIPE-05,1050,PIPE,TRANSFERRED,SRC-PIPE-05,S8810101,coordinate within 1mm; dia and line family match
+TGT-PIPE-06,1060,PIPE,TRANSFERRED,SRC-PIPE-06,S8810101,coordinate within 1mm; dia and line family match
+TGT-PIPE-07,1070,PIPE,TRANSFERRED,SRC-PIPE-07,S8810101,coordinate within 1mm; dia and line family match
+TGT-PIPE-08,1080,PIPE,TRANSFERRED,SRC-PIPE-08,S8810101,coordinate within 1mm; dia and line family match
+TGT-FLANGE-09,1090,FLANGE,TRANSFERRED,SRC-FLANGE-01,P8810306,coordinate within 1mm; dia and line family match
+TGT-FLANGE-10,1100,FLANGE,DIAMETER_MISMATCH_BLOCKED,,P8810306,coordinate matches but dia strict tolerance blocks transfer
+TGT-FLANGE-11,1110,FLANGE,TRANSFERRED,SRC-FLANGE-03,P8810306,coordinate within 1mm; dia and line family match
+TGT-FLANGE-12,1120,FLANGE,TRANSFERRED,SRC-FLANGE-04,P8810306,coordinate within 1mm; dia and line family match
+TGT-FLANGE-13,1130,FLANGE,TRANSFERRED,SRC-FLANGE-05,P8810306,coordinate within 1mm; dia and line family match
+TGT-FLANGE-14,1140,FLANGE,TRANSFERRED,SRC-FLANGE-06,P8810306,coordinate within 1mm; dia and line family match
+TGT-FLANGE-15,1150,FLANGE,TRANSFERRED,SRC-FLANGE-07,P8810306,coordinate within 1mm; dia and line family match
+TGT-FLANGE-16,1160,FLANGE,TRANSFERRED,SRC-FLANGE-08,P8810306,coordinate within 1mm; dia and line family match
+TGT-VALVE-17,1170,VALVE,LINE_FAMILY_MISMATCH_BLOCKED,,V8810444,coordinate and dia match but line family strict blocks transfer
+TGT-VALVE-18,1180,VALVE,TRANSFERRED,SRC-VALVE-02,V8810444,coordinate within 1mm; dia and line family match
+TGT-VALVE-19,1190,VALVE,TRANSFERRED,SRC-VALVE-03,V8810444,coordinate within 1mm; dia and line family match
+TGT-VALVE-20,1200,VALVE,TRANSFERRED,SRC-VALVE-04,V8810444,coordinate within 1mm; dia and line family match
+TGT-VALVE-21,1210,VALVE,TRANSFERRED,SRC-VALVE-05,V8810444,coordinate within 1mm; dia and line family match
+TGT-VALVE-22,1220,VALVE,TRANSFERRED,SRC-VALVE-06,V8810444,coordinate within 1mm; dia and line family match
+TGT-VALVE-23,1230,VALVE,TRANSFERRED,SRC-VALVE-07,V8810444,coordinate within 1mm; dia and line family match
+TGT-VALVE-24,1240,VALVE,AMBIGUOUS_COORDINATE_MATCH,,V8810444,two source valve candidates within coordinate tolerance; retain target values

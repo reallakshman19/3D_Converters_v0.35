@@ -1,0 +1,181 @@
+name: FBX Governed WASM Evidence
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/fbx-governed-wasm.yml'
+      - 'scripts/fbx/**'
+      - 'tabs/model-converters/converters/fbx/**'
+      - 'tabs/model-converters/converters/fbx-to-stagedjson.js'
+      - 'third_party/ufbx/**'
+      - 'tests/fbx/**'
+      - 'tests/fixtures/fbx/**'
+
+permissions:
+  contents: write
+
+jobs:
+  qualify:
+    runs-on: windows-2022
+    defaults:
+      run:
+        shell: bash
+    env:
+      FBX_BASH_PATH: C:/Program Files/Git/bin/bash.exe
+      TARGET_BRANCH: ${{ github.head_ref }}
+    steps:
+      - name: Configure governed temporary paths
+        shell: pwsh
+        run: |
+          $runnerTemp = $env:RUNNER_TEMP.Replace('\', '/')
+          @(
+            "WASI_SDK_ROOT=$runnerTemp/wasi-sdk-22.0+m"
+            "WASI_SDK_ARCHIVE=$runnerTemp/wasi-sdk-22.0.m-mingw64.tar.gz"
+            "FBX_QUALIFICATION_TEMP_ROOT=$runnerTemp/fbx-wasm-clean-builds"
+          ) | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref || github.ref_name }}
+
+      - name: Install locked and browser-module test dependencies
+        run: |
+          npm ci --ignore-scripts
+          npm install --no-save --package-lock=false --ignore-scripts \
+            three@0.160.1 mdb-reader@2 buffer@6 playwright-core@1.55.0
+          python3 -m pip install --disable-pip-version-check \
+            jsonschema==4.23.0 gdown==5.2.0
+
+      - name: Install pinned governed WASI SDK
+        shell: pwsh
+        run: |
+          curl.exe -L --fail --retry 3 `
+            -o "$env:WASI_SDK_ARCHIVE" `
+            "https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-22/wasi-sdk-22.0.m-mingw64.tar.gz"
+          $actual = (Get-FileHash -Algorithm SHA256 "$env:WASI_SDK_ARCHIVE").Hash.ToLower()
+          $expected = "723f2c4d00b37cb3d1039c080184c58e8bad71aa6dd1a700ead88a07e0f1f446"
+          if ($actual -ne $expected) {
+            throw "Governed WASI SDK archive hash differs: $actual"
+          }
+          tar.exe -xf "$env:WASI_SDK_ARCHIVE" -C "$env:RUNNER_TEMP"
+
+      - name: Verify source syntax and governed fixtures
+        run: |
+          bash -n scripts/fbx/build-ufbx-wasm.sh
+          python3 -m py_compile scripts/fbx/generate-runtime-004-fixtures.py
+          python3 scripts/fbx/generate-runtime-004-fixtures.py
+          git diff --exit-code -- \
+            tests/fixtures/fbx/runtime-004-attributes.fbx \
+            tests/fixtures/fbx/runtime-004-attribute-limit.fbx
+          node --check scripts/fbx/inspect-ufbx-wasm.mjs
+          node --check scripts/fbx/qualify-ufbx-wasm.mjs
+          node --check scripts/fbx/qualify-taya-browser.mjs
+          node --check tabs/model-converters/converters/fbx/wasm-abi.js
+          node --check tabs/model-converters/converters/fbx/ufbx-provenance.js
+          node --check tabs/model-converters/converters/fbx/ufbx-reproducibility.js
+          node --check tabs/model-converters/converters/fbx/parser-provenance.js
+          node --check tabs/model-converters/converters/fbx/parser-wasm.js
+          node --check tabs/model-converters/converters/fbx/parser-node.js
+          node --check tabs/model-converters/converters/fbx/vertex-attribute-worker-protocol.js
+          node --check tabs/model-converters/converters/fbx/vertex-attribute-worker.js
+          node --check tabs/model-converters/converters/fbx/vertex-attribute-transport.js
+          node --check tests/fbx/test-parser-wasm-activation.mjs
+          node --check tests/fbx/test-ufbx-provenance-contract.mjs
+          node --check tests/fbx/test-ufbx-reproducibility.mjs
+          node --check tests/fbx/test-real-worker-parser-parity.mjs
+          node --check tests/fbx/test-taya-parser-runtime-guard.mjs
+
+      - name: Generate two-build qualification evidence
+        run: |
+          export PATH="/c/Windows/System32:$PATH"
+          node scripts/fbx/qualify-ufbx-wasm.mjs .qualification/ufbx-wasm
+
+      - name: Prepare post-commit reproducibility evidence
+        run: |
+          node --input-type=module <<'NODE'
+          import { readFile, writeFile } from 'node:fs/promises';
+          const path = '.qualification/ufbx-wasm/reproducibility.json';
+          const evidence = JSON.parse(await readFile(path, 'utf8'));
+          const build = evidence.builds[0];
+          evidence.committed = {
+            sha256: build.sha256,
+            byteLength: build.byteLength,
+            matchesBuilds: true,
+          };
+          await writeFile(path, `${JSON.stringify(evidence, null, 2)}\n`);
+          NODE
+
+      - name: Upload candidate qualification artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fbx-governed-wasm-candidate
+          path: .qualification/ufbx-wasm
+          if-no-files-found: warn
+          retention-days: 7
+
+      - name: Activate candidate artifacts for qualification tests
+        run: |
+          cp .qualification/ufbx-wasm/fbx_parser.wasm third_party/ufbx/fbx_parser.wasm
+          cp .qualification/ufbx-wasm/provenance.json third_party/ufbx/provenance.json
+          cp .qualification/ufbx-wasm/reproducibility.json third_party/ufbx/reproducibility.json
+          node scripts/fbx/inspect-ufbx-wasm.mjs third_party/ufbx/fbx_parser.wasm
+
+      - name: Qualify exact governed TAYA in Chrome worker
+        run: |
+          mkdir -p .qualification/taya
+          python3 -m gdown --id 1febjASkHnzLA667P81YuLF3pZqjI2ySM \
+            --output .qualification/taya/fbxtaya.fbx
+          test "$(stat -c '%s' .qualification/taya/fbxtaya.fbx)" = "71486048"
+          printf '%s  %s\n' \
+            '0c2c0600a1232541a497aea05832b728569fefcf62ea86e71dea520247fe9ca8' \
+            '.qualification/taya/fbxtaya.fbx' | sha256sum -c -
+          node scripts/fbx/qualify-taya-browser.mjs .qualification/taya/fbxtaya.fbx
+
+      - name: Run focused governed evidence tests
+        run: |
+          node tests/fbx/test-taya-parser-runtime-guard.mjs
+          node tests/fbx/test-parser-wasm-activation.mjs
+          node tests/fbx/test-ufbx-provenance-contract.mjs
+          node tests/fbx/test-provenance.mjs
+          node tests/fbx/test-ufbx-reproducibility.mjs
+          node tests/fbx/test-vertex-attribute-bundle.mjs
+          node tests/fbx/test-vertex-attribute-bundle-failures.mjs
+          node tests/fbx/test-vertex-attribute-integration.mjs
+          node tests/fbx/test-real-worker-parser-parity.mjs
+          node tests/fbx/test-predecessor-certification.mjs
+
+      - name: Run exact FBX regression and static gates
+        run: |
+          node tests/fbx/test-worker-byte-parity.mjs
+          node tests/fbx/test-worker-geometry-byte-parity.mjs
+          node tests/fbx/test-runtime-capability-isolation.mjs
+          node tests/fbx/run-all.mjs
+          node tests/fbx/test-static-guards.mjs
+          node tests/fbx/test-runtime-003-static-guards.mjs
+
+      - name: Commit qualified parser artifacts
+        if: github.event_name == 'pull_request'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add third_party/ufbx/fbx_parser.wasm \
+            third_party/ufbx/provenance.json \
+            third_party/ufbx/reproducibility.json
+          if ! git diff --cached --quiet; then
+            git commit -m "build(fbx): activate qualified TAYA parser WASM"
+            git push origin "HEAD:$TARGET_BRANCH"
+          fi
+
+      - name: Verify committed artifacts equal qualified candidates
+        run: |
+          git show HEAD:third_party/ufbx/fbx_parser.wasm > /tmp/committed-fbx-parser.wasm
+          git show HEAD:third_party/ufbx/provenance.json > /tmp/committed-provenance.json
+          git show HEAD:third_party/ufbx/reproducibility.json > /tmp/committed-reproducibility.json
+          cmp .qualification/ufbx-wasm/fbx_parser.wasm /tmp/committed-fbx-parser.wasm
+          cmp .qualification/ufbx-wasm/provenance.json /tmp/committed-provenance.json
+          cmp .qualification/ufbx-wasm/reproducibility.json /tmp/committed-reproducibility.json

@@ -1,0 +1,45 @@
+schema: AgentPrStatus.v1
+repository: reallaksh19/3D_Converters
+pr_or_wip: PR567
+mission: "Issue #566 AIV machine truth / drift hardening"
+workstream: AIV_DRIFT_HARDENING
+branch: agent/aiv-drift-566-20260816
+base_main: 7e217bc2f2ab07208e504d76487a3902aacbe4f6
+merge_base: 7e217bc2f2ab07208e504d76487a3902aacbe4f6
+work_intent: IMPLEMENT
+criticality: ENGINEERING_CRITICAL
+execution_mode: AUTO
+auto_state: REVIEWED_FIXED_READY_FOR_MERGE
+agent_state: REPLAYED_ON_GENERIC_WORKPACK_FRAMEWORK
+pr_recovery_state: READY_FOR_MERGE
+handover_readiness: READY
+report_path: agents/PR567_workreport.md
+appendix_a_status: QUALIFIED_FOR_AIV_DRIFT_HARDENING
+qualification_comment: 5309030950
+framework_dependency: "PR569 merged as 7e217bc2f2ab07208e504d76487a3902aacbe4f6"
+protected_authority:
+  - AIV_NUMERICAL_METHOD_UNCHANGED
+  - AIV_ASSESSMENT_SCREENING_SCOPE
+  - AIV_LINE_CASE_NON_AUTHORITATIVE
+  - AIV_DESIGN_AUTHORITY_FALSE
+  - AIV_CODE_COMPLIANCE_FALSE
+  - SVG_PIXELS_NEVER_DISTANCE
+  - AIV_ASSUMPTION_PROVENANCE
+  - BENCHMARK_ORACLE_INDEPENDENCE
+  - PRODUCT_FREEZE_OWNER_513
+validation:
+  replay_generic_framework_integration: PASS_20_OF_20_LOCAL_RECONSTRUCTION
+  probe_syntax: PASS
+  new_probe_line_limit: PASS_UNDER_300
+  prior_ui_drift_regression: PASS_4_OF_4_PRE_REPLAY_EXACT_SOURCE_HARNESS
+  full_fit_workpack: NOT_RUN_ENVIRONMENT_BLOCKED_NO_PRIVATE_CHECKOUT
+  full_framework_test: NOT_RUN_ENVIRONMENT_BLOCKED_NO_PRIVATE_CHECKOUT
+  full_aiv_screening_release: NOT_RUN_ENVIRONMENT_BLOCKED_NO_PRIVATE_CHECKOUT
+  full_aiv_canvas_release: NOT_RUN_ENVIRONMENT_BLOCKED_NO_PRIVATE_CHECKOUT
+  workflow_aiv_controlled_source_run_31986272597: NOT_RUN_INFRASTRUCTURE_ZERO_STEP
+  workflow_production_freeze_run_31986272598: NOT_RUN_INFRASTRUCTURE_ZERO_STEP
+coordination_state: PR569_DEPENDENCY_MERGED_PR517_AND_PR506_NOT_ABSORBED
+highest_risk: "Full private-checkout FIT/framework/AIV release suites remain NOT_RUN; workflow failure labels on the replay head executed zero steps and are NOT_RUN, not product FAIL."
+exact_next_action: "Inspect final replay diff/review threads and mergeability; mark PR567 ready and merge at exact final head under Owner authorization."
+merge_authority: OWNER_EXPLICITLY_GRANTED_2026-08-17
+last_updated: 2026-08-17T06:00:00+04:00

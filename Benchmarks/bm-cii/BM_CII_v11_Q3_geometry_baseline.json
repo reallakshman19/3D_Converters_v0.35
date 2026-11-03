@@ -1,0 +1,116 @@
+{
+  "schema": "bm-cii-geometry-baseline/v11-q3-trace",
+  "status": "frozen-geometry-baseline",
+  "frozenAtUtc": "2026-06-14T14:54:49.609572+00:00",
+  "purpose": "Freeze BM_CII geometry counts after geometry tally QC v2 and trace identity QC v3 passed. This baseline is geometry-first; optimization is intentionally out of scope.",
+  "sourcePackage": "BM_CII_GLB_Benchmark_v11_Q3_TraceStamped",
+  "requiredQc": {
+    "boundsCoherenceQc": "pass",
+    "geometryTallyQcV2": "pass",
+    "traceIdentityQcV3": "pass",
+    "traceCoveragePct": 100.0,
+    "failedGates": []
+  },
+  "nonGatingFields": [
+    "fileBytes",
+    "sha256",
+    "createdAtUtc",
+    "generator"
+  ],
+  "variants": {
+    "engineering_inputxml": {
+      "supportSource": "inputxml",
+      "geometryNodes": 205,
+      "tracedGeometryNodes": 205,
+      "traceCoveragePct": 100.0,
+      "byEntity": {
+        "component": 148,
+        "support": 49,
+        "axis": 6,
+        "annotation": 2
+      },
+      "bySemanticCategory": {
+        "flange": 18,
+        "pipe": 16,
+        "valve": 36,
+        "bend": 63,
+        "teeOlet": 14,
+        "other": 1,
+        "support": 49,
+        "axis": 6,
+        "annotation": 2
+      }
+    },
+    "engineering_isonote": {
+      "supportSource": "isonote",
+      "geometryNodes": 203,
+      "tracedGeometryNodes": 203,
+      "traceCoveragePct": 100.0,
+      "byEntity": {
+        "component": 148,
+        "support": 47,
+        "axis": 6,
+        "annotation": 2
+      },
+      "bySemanticCategory": {
+        "flange": 18,
+        "pipe": 16,
+        "valve": 36,
+        "bend": 63,
+        "teeOlet": 14,
+        "other": 1,
+        "support": 47,
+        "axis": 6,
+        "annotation": 2
+      }
+    },
+    "temp1_inputxml": {
+      "supportSource": "inputxml",
+      "geometryNodes": 205,
+      "tracedGeometryNodes": 205,
+      "traceCoveragePct": 100.0,
+      "byEntity": {
+        "component": 148,
+        "support": 49,
+        "axis": 6,
+        "annotation": 2
+      },
+      "bySemanticCategory": {
+        "flange": 18,
+        "pipe": 16,
+        "valve": 36,
+        "bend": 63,
+        "teeOlet": 14,
+        "other": 1,
+        "support": 49,
+        "axis": 6,
+        "annotation": 2
+      }
+    },
+    "temp1_isonote": {
+      "supportSource": "isonote",
+      "geometryNodes": 203,
+      "tracedGeometryNodes": 203,
+      "traceCoveragePct": 100.0,
+      "byEntity": {
+        "component": 148,
+        "support": 47,
+        "axis": 6,
+        "annotation": 2
+      },
+      "bySemanticCategory": {
+        "flange": 18,
+        "pipe": 16,
+        "valve": 36,
+        "bend": 63,
+        "teeOlet": 14,
+        "other": 1,
+        "support": 47,
+        "axis": 6,
+        "annotation": 2
+      }
+    }
+  },
+  "visualAcceptanceRequiredBeforeOptimization": true,
+  "optimizationFrozenUntilVisualAcceptance": true
+}

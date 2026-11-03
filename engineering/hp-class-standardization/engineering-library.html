@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>HP Piping Class — Legacy Master Authoring Workspace</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body{margin:0;background:var(--bg)} .lib-shell{max-width:1650px;margin:0 auto;padding:20px 24px 0}
+    .lib-grid{display:grid;grid-template-columns:1fr;gap:18px}.lib-table input{min-width:88px}
+    .lib-table .wide{min-width:150px}.lib-actions{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+    .lib-actions input[type=file]{display:none}.apply-grid{display:grid;grid-template-columns:2fr 1fr auto;gap:10px;align-items:end}
+    #packageFrame{display:block;width:100%;height:1150px;border:0;background:white;margin-top:18px}
+    .source-note{font-size:.9rem;color:var(--muted);margin:8px 0 0}.library-section{margin-bottom:18px}
+    .docs-path{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86rem}
+    @media(max-width:1100px){.apply-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<div class="lib-shell">
+  <section class="control-group evidence-input library-section">
+    <div class="group-heading">
+      <div><p class="step-kicker">Legacy ingestion / authoring evidence</p><h1 style="margin:0">Material & Pipe-Product Authoring Tables</h1><p>CSV/TSV working-copy tools only. These rows do not own runtime HP Piping Class calculations and are never injected into the calculator.</p></div>
+      <span class="group-type">Ingestion only</span>
+    </div>
+    <div class="form-grid">
+      <label>Library ID<input id="libraryId" placeholder="e.g. HP-LIB-001"></label>
+      <label>Revision<input id="libraryRevision" placeholder="e.g. A"></label>
+      <label>Prepared by<input id="libraryPreparedBy" placeholder="name / role"></label>
+      <label>Material source reference<input id="materialSourceRef" placeholder="docs source path"></label>
+      <label>Material source version<input id="materialVersion" placeholder="revision / version"></label>
+      <label>Product geometry source<input id="productSourceRef" placeholder="governed pipe master path"></label>
+      <label>Product geometry version<input id="productVersion" placeholder="blob / revision"></label>
+    </div>
+    <div class="lib-actions page-actions">
+      <button id="reloadDocsButton" class="primary" type="button">Reload docs ingestion files</button>
+      <button id="exportMaterialCsvButton" type="button">Download material CSV</button>
+      <button id="exportProductCsvButton" type="button">Download product overlay CSV</button>
+      <button id="exportLibraryButton" type="button">Export authoring JSON</button>
+      <button id="importLibraryButton" type="button">Import authoring JSON</button>
+      <input id="libraryFile" type="file" accept="application/json,.json">
+      <button id="addMaterialButton" type="button">+ Material row</button>
+      <button id="addProductButton" type="button">+ Product row</button>
+    </div>
+    <div id="libraryStatusBox" class="notice info">Loading repository docs ingestion catalog. Runtime master authority is <span class="docs-path">b313-ch9-master-store/v1</span>.</div>
+    <p class="source-note">Catalog: <span class="docs-path">docs/Masters/HP_Piping_Class/library-catalog.csv</span>. CSV/TSV files are authoring and ingestion evidence only. Publication into the canonical master store requires controlled source identity, exact SHA-256 custody, and independent checking.</p>
+  </section>
+
+  <div class="lib-grid">
+    <section class="control-group user-input library-section">
+      <div class="group-heading"><div><h2>Material / Property Authoring Table</h2><p>Working-copy ingestion rows. No direct runtime calculator application.</p></div><span class="group-type">S / Syt draft</span></div>
+      <div class="table-wrap"><table class="lib-table"><thead><tr><th>Material spec</th><th>Grade</th><th>Condition</th><th>T °C</th><th>S MPa</th><th>Syt MPa</th><th>Row source</th><th></th></tr></thead><tbody id="materialBody"></tbody></table></div>
+      <div class="apply-grid">
+        <label>Material / grade / condition<select id="materialSelection"><option value="">Select working-copy material</option></select></label>
+        <label>Preview temperature (°C)<input id="materialDesignTemperature" type="number" step="any"></label>
+        <button id="applyMaterialButton" class="primary" type="button">Preview interpolation only</button>
+      </div>
+      <p class="source-note">Preview is for authoring QA only. Values are not injected into the calculator and are not runtime authority.</p>
+    </section>
+
+    <section class="control-group user-input library-section">
+      <div class="group-heading"><div><h2>Pipe-Product / Dimension Authoring Table</h2><p>Geometry may be loaded from the docs pipe master; purchase product and tolerance fields remain ingestion candidates until separately controlled.</p></div><span class="group-type">D / wall / tolerance draft</span></div>
+      <div class="table-wrap"><table class="lib-table"><thead><tr><th>Use</th><th>NPS</th><th>Schedule</th><th>Dimension std</th><th>Purchase product spec</th><th>Reference OD mm</th><th>Design D / max permitted OD mm</th><th>Nominal wall mm</th><th>Minus tol. %</th><th>Geometry source</th><th>Purchase/tolerance source</th><th></th></tr></thead><tbody id="productBody"></tbody></table></div>
+      <div class="page-actions"><button id="applyProductButton" class="primary" type="button">Preview selected row only</button></div>
+      <p class="source-note">Runtime HP Piping Class selection comes only from <span class="docs-path">engineering/hp-class-standardization/masters/b313-ch9-master-store.json</span>. This legacy table cannot write calculator fields.</p>
+    </section>
+  </div>
+</div>
+
+<iframe id="packageFrame" src="authority-package.html" title="HP piping class legacy compatibility authority package"></iframe>
+<script src="engineering-library-core.js"></script>
+<script src="engineering-library-csv.js"></script>
+<script src="engineering-library-ui.js"></script>
+</body>
+</html>

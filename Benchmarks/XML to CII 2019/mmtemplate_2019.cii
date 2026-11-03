@@ -1,0 +1,119 @@
+#$ VERSION
+       5.000000     11.000000     1252
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#$ CONTROL
+              0            0            0            0            0            0
+              0            0            0            0            0            0
+              0            0            0            0            0            1
+              0
+#$ ELEMENTS
+#$ AUX_DATA
+#$ BEND
+#$ RIGID
+#$ EXPJT
+#$ RESTRANT
+#$ DISPLMNT
+#$ FORCMNT
+#$ UNIFORM
+#$ WIND
+#$ OFFSETS
+#$ ALLOWBLS
+#$ SIF&TEES
+#$ REDUCERS
+#$ FLANGES
+#$ EQUIPMNT
+#$ MISCEL_1
+              0            0            0            0     0.000000            0
+              0            0    21.111111     0.000000            0            0
+              0            0            0            0            0            0
+              3
+#$ UNITS
+      25.400000     4.448220     0.453592     0.112985     0.112985     6.894760
+       0.555556   -17.777800     6.894760     6.894760     0.027680     0.027680
+       0.027680     1.751270     0.112985     1.751270     1.000000     6.894760
+       0.025400    25.400000    25.400000    25.400000
+  SI (mm)
+  ON
+  mm.
+  N.
+  Kg.
+  N.m.
+  N.m..
+  KPa
+  C
+  C
+  KPa
+  KPa
+  kg.cu.cm.
+  kg.cu.cm.
+  kg.cu.cm.
+  N./cm.
+  N.m./deg
+  N./cm.
+  g's
+  Kpa
+  m.
+  mm.
+  mm.
+  mm.
+#$ COORDS
+

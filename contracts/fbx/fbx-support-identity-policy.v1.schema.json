@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reallaksh19.github.io/3D_Converters/contracts/fbx/fbx-support-identity-policy.v1.schema.json",
+  "title": "FbxSupportIdentityPolicy.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "policyId", "identityStages", "classAuthority"],
+  "properties": {
+    "schema": { "const": "FbxSupportIdentityPolicy.v1" },
+    "policyId": { "type": "string", "minLength": 1 },
+    "identityStages": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["stageId", "rank", "authority", "keyPaths"],
+        "properties": {
+          "stageId": { "type": "string", "minLength": 1 },
+          "rank": { "type": "integer", "minimum": 1 },
+          "authority": {
+            "enum": ["EXACT", "APPROVED_EQUIVALENT", "DIAGNOSTIC_ONLY"]
+          },
+          "keyPaths": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "requireNonEmpty": { "type": "boolean" },
+          "approvedEquivalentRuleId": { "type": "string", "minLength": 1 }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": { "authority": { "const": "APPROVED_EQUIVALENT" } },
+              "required": ["authority"]
+            },
+            "then": { "required": ["approvedEquivalentRuleId"] },
+            "else": { "not": { "required": ["approvedEquivalentRuleId"] } }
+          }
+        ]
+      }
+    },
+    "classAuthority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["emptyExplicitClassDisposition", "explicitConflictDisposition"],
+      "properties": {
+        "emptyExplicitClassDisposition": {
+          "enum": ["BLOCKED_CLASSIFICATION", "ALLOW_UNCLASSIFIED"]
+        },
+        "explicitConflictDisposition": { "const": "BLOCKED_CLASSIFICATION" }
+      }
+    }
+  }
+}

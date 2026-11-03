@@ -1,0 +1,6 @@
+export const XML_COMPARE_FIT_CONTROLLER_SCHEMA='xml-compare-fit-controller/v1';
+const num=(v,f=0)=>{const n=Number(v);return Number.isFinite(n)?n:f;};
+function point(v){if(!v)return null;const x=num(v.x??v[0],NaN),y=num(v.y??v[1],NaN),z=num(v.z??v[2],NaN);return [x,y,z].every(Number.isFinite)?{x,y,z}:null;}
+export function xmlCompareBoundsForRecords(records=[]){const pts=[];for(const r of records||[]){const p=point(r.position||r.fromPosition||r.points?.[0]);if(p)pts.push(p);}if(!pts.length)return null;const min={x:Infinity,y:Infinity,z:Infinity},max={x:-Infinity,y:-Infinity,z:-Infinity};for(const p of pts){min.x=Math.min(min.x,p.x);min.y=Math.min(min.y,p.y);min.z=Math.min(min.z,p.z);max.x=Math.max(max.x,p.x);max.y=Math.max(max.y,p.y);max.z=Math.max(max.z,p.z);}return Object.freeze({min:Object.freeze(min),max:Object.freeze(max),center:Object.freeze({x:(min.x+max.x)/2,y:(min.y+max.y)/2,z:(min.z+max.z)/2}),count:pts.length});}
+export function createXmlCompareFitCommand({side='source',records=[]}={}){const bounds=xmlCompareBoundsForRecords(records);return Object.freeze({schema:XML_COMPARE_FIT_CONTROLLER_SCHEMA,action:'fit-all',side,bounds,ok:!!bounds});}
+export const _test=Object.freeze({num,point});

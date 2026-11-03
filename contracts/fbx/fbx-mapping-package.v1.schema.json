@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "FbxMappingPackage.v1",
+  "title": "FbxMappingPackage.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "packageId", "source", "parser", "sourceGraph", "mapping"],
+  "properties": {
+    "schema": { "const": "FbxMappingPackage.v1" },
+    "packageId": { "$ref": "#/$defs/sha256" },
+    "source": { "$ref": "#/$defs/source" },
+    "parser": { "$ref": "#/$defs/parser" },
+    "sourceGraph": { "$ref": "#/$defs/sourceGraph" },
+    "mapping": { "$ref": "#/$defs/mapping" }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "gitRevision": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sha256", "byteLength", "fbxVersion"],
+      "properties": {
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "byteLength": { "type": "integer", "minimum": 1 },
+        "fbxVersion": { "type": "integer", "minimum": 3000, "maximum": 7700 }
+      }
+    },
+    "parser": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["wasmSha256", "upstreamRevision", "sourceSha256", "provenanceSchema"],
+      "properties": {
+        "wasmSha256": { "$ref": "#/$defs/sha256" },
+        "upstreamRevision": { "$ref": "#/$defs/gitRevision" },
+        "sourceSha256": { "$ref": "#/$defs/sha256" },
+        "provenanceSchema": { "type": "string", "minLength": 1 }
+      }
+    },
+    "sourceGraph": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "canonicalSha256"],
+      "properties": {
+        "schema": { "const": "FbxSourceGraph.v2" },
+        "canonicalSha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "mappingManifest": {
+      "type": "object",
+      "required": ["schema"],
+      "properties": {
+        "schema": {
+          "enum": ["FbxStagedMapping.v1", "FbxStagedMapping.v2"]
+        }
+      }
+    },
+    "mapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "canonicalSha256", "manifest"],
+      "properties": {
+        "schema": {
+          "enum": ["FbxStagedMapping.v1", "FbxStagedMapping.v2"]
+        },
+        "canonicalSha256": { "$ref": "#/$defs/sha256" },
+        "manifest": { "$ref": "#/$defs/mappingManifest" }
+      }
+    }
+  }
+}

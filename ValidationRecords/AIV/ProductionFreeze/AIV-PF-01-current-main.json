@@ -1,0 +1,73 @@
+{
+  "schema": "AivProductionFreezeValidation.v2",
+  "sliceId": "PF-01-CURRENT-MAIN",
+  "issue": 513,
+  "pr": 519,
+  "repository": "reallaksh19/3D_Converters",
+  "productionBaseSha": "5ad2288d41e031ef23df0cb3e600763081b4ac62",
+  "reportBasisHead": "5cd3625131ddcfe553a926d47a23333516485913",
+  "supersedesPr": 515,
+  "liveBefore": {
+    "status": "PASS_REPRODUCED",
+    "observation": "USER_SUPPLIED_LIVE_CHROMIUM",
+    "error": "Cannot read properties of null (reading 'caseId')",
+    "firstWrongBoundary": "tabs/vibration-aiv-canvas-filter.js createAivCanvasFilterState",
+    "observedModuleToken": "aiv-qualification-1"
+  },
+  "sourceCustody": {
+    "filterBeforeBlob": "a5da4fb99e69310659659725696c61c3d9347085",
+    "filterAfterBlob": "ed6be3648409fb3582576cd069dfa6132efdcc8b",
+    "qualificationTabBeforeBlob": "9cd1d8f9745fd429ba82c5c4f78cc5a9cf145962",
+    "qualificationTabAfterBlob": "41e2432af389994fa259f7c7de4103710c34118d",
+    "engineeringTabBeforeBlob": "5d638f86197e5175faf14f7cace8cf92bf97537d",
+    "engineeringTabAfterBlob": "04b5f1340b0300dd582a4d659af3079c2c847251"
+  },
+  "changes": [
+    "explicit null filter state normalizes to empty state",
+    "filter change before first sync is null-safe",
+    "canvas sync exception is contained inside degraded canvas warning",
+    "engineering tables and screening controls remain stated as authoritative/usable during canvas degradation",
+    "AIV dynamic import token advanced to aiv-qualification-2",
+    "focused regressions registered in verify:aiv-canvas"
+  ],
+  "primaryGoldenBenchmark": {
+    "id": "EI-D2.3-AIV",
+    "repositoryTest": "tests/vibration-aiv-canvas-integration.test.mjs",
+    "corroboratingSource": {
+      "repository": "reallaksh19/Advanced_Analysis",
+      "commit": "04328852dced9f5c4827da8afe8a82aeb8b1a1d3",
+      "path": "docs/EI data/EI_AVIFF_Guidelines_2nd_Edition_Examples.md",
+      "blob": "c050cd90802c27241c510c6f0ac43bfaf7a89e9d",
+      "locator": "D.2.3 High Frequency Acoustic Excitation"
+    },
+    "oracles": [
+      {"name":"reliefRawSourcePwlDb","expected":164.6851759525391,"actualIndependent":164.6851759525391,"unit":"dB","status":"PASS"},
+      {"name":"attenuationDb","expected":0.3116883116883117,"actualIndependent":0.3116883116883117,"unit":"dB","status":"PASS"},
+      {"name":"reliefPointPwlDb","expected":164.3734876408508,"actualIndependent":164.3734876408508,"unit":"dB","status":"PASS"},
+      {"name":"assessmentLof","expected":0.29,"unit":"dimensionless","repositoryOracleStatus":"FROZEN_NOT_EXECUTED_ON_THIS_HEAD"}
+    ],
+    "oracleRule": "Expected values and tolerances are frozen; no oracle was changed to fit the implementation."
+  },
+  "validation": [
+    {"check":"focused null-state runtime reconstruction","status":"PASS","observation":"LOCAL_EXECUTION","tests":3,"failures":0,"oracle":"IMPLEMENTATION_COUPLED"},
+    {"check":"current-main pre-fix root-cause trace","status":"PASS","observation":"SOURCE_INSPECTION","oracle":"NONE"},
+    {"check":"D.2.3 independent source/attenuation/point calculation","status":"PASS","observation":"INDEPENDENT_REPRODUCTION","oracle":"AUTHORITATIVE_REFERENCE"},
+    {"check":"cache token aiv-qualification-2","status":"PASS","observation":"SOURCE_INSPECTION","oracle":"NONE"},
+    {"check":"canvas error containment","status":"PASS","observation":"SOURCE_INSPECTION","oracle":"NONE"},
+    {"check":"npm run verify:aiv-canvas","status":"NOT_RUN","observation":"NOT_OBSERVED","reason":"native private checkout unavailable"},
+    {"check":"npm run verify:aiv-canvas-release","status":"NOT_RUN","observation":"NOT_OBSERVED","reason":"native private checkout unavailable"},
+    {"check":"full exact-PR application Chromium replay","status":"NOT_RUN","observation":"NOT_OBSERVED","reason":"exact served PR build not available in this connector environment"}
+  ],
+  "authority": {
+    "tablesEngineeringTruth": true,
+    "svgPixelsAuthoritativeForDistance": false,
+    "screeningResultScope": "ASSESSMENT",
+    "lineCaseSummaryAuthoritativeForScreening": false,
+    "designAuthority": false
+  },
+  "backupCli": {
+    "status": "NOT_RUN",
+    "reason": "connector-only environment has no native private checkout; exact pre-edit Git blobs retained as rollback custody"
+  },
+  "disposition": "IMPLEMENTED_FOCUSED_VALIDATION_PASS_NATIVE_AND_FULL_BROWSER_PENDING"
+}

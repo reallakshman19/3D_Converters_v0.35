@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "FbxSelectedZoneQualificationRoot.v1",
+  "title": "FbxSelectedZoneQualificationRoot.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "status",
+    "selectedZone",
+    "artifactDigests",
+    "checks",
+    "summary",
+    "authority",
+    "rootDigest",
+    "artifactId"
+  ],
+  "properties": {
+    "schema": {
+      "const": "FbxSelectedZoneQualificationRoot.v1"
+    },
+    "status": {
+      "enum": [
+        "PASS",
+        "BLOCKED"
+      ]
+    },
+    "selectedZone": {
+      "type": "object"
+    },
+    "artifactDigests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "role",
+          "schema",
+          "sha256"
+        ],
+        "properties": {
+          "role": {
+            "type": "string"
+          },
+          "schema": {
+            "type": "string"
+          },
+          "sha256": {
+            "$ref": "#/$defs/hash"
+          }
+        }
+      },
+      "uniqueItems": true
+    },
+    "checks": {
+      "type": "array",
+      "minItems": 13,
+      "maxItems": 13,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "status",
+          "detail",
+          "evidence"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "PASS",
+              "BLOCKED"
+            ]
+          },
+          "detail": {
+            "type": "string",
+            "minLength": 1
+          },
+          "evidence": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "summary": {
+      "type": "object"
+    },
+    "authority": {
+      "type": "object"
+    },
+    "rootDigest": {
+      "$ref": "#/$defs/hash"
+    },
+    "artifactId": {
+      "type": "string",
+      "pattern": "^FBXZQUAL-[0-9a-f]{32}$"
+    }
+  },
+  "$defs": {
+    "hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

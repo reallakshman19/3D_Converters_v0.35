@@ -1,0 +1,179 @@
+{
+  "schema": "AivProductionFreezeBenchmarkLedger.v1",
+  "sliceId": "PF-03",
+  "issueId": 513,
+  "initialBaseSha": "d659e670a2f8fe0a35fc8072382512f6493898cf",
+  "reconciledMainSha": "5ad2288d41e031ef23df0cb3e600763081b4ac62",
+  "testedCandidateCodeHead": "8cd30a464435658e833ddf297c5727e68e979d4d",
+  "results": [
+    {
+      "benchmarkId": "B1",
+      "status": "PASS",
+      "classification": "LOCAL_REGISTERED_ENGINE",
+      "expected": {
+        "reliefRawSourcePwlDb": 164.6851759525391,
+        "reliefPointPwlDb": 164.3734876408508,
+        "assessmentLof": 0.29
+      },
+      "observed": {
+        "reliefRawSourcePwlDb": 164.6851759525391,
+        "reliefPointPwlDb": 164.37348764085078,
+        "assessmentLof": 0.29
+      },
+      "absoluteToleranceDb": 1e-10,
+      "pointDeltaDb": 2e-14
+    },
+    {
+      "benchmarkId": "B2",
+      "status": "PASS",
+      "classification": "LOCAL_REGISTERED_ENGINE",
+      "expected": 163.0102999566398,
+      "observed": 163.0102999566398,
+      "unit": "dB",
+      "absoluteTolerance": 1e-09,
+      "sourceCanonicalIds": [
+        "SIM-SRC-1",
+        "SIM-SRC-2"
+      ],
+      "simultaneousSourceGroup": "SIM-GROUP-1"
+    },
+    {
+      "benchmarkId": "B3",
+      "status": "PASS",
+      "classification": "LOCAL_REGISTERED_ENGINE",
+      "expected": 160.41392685158226,
+      "observed": 160.41392685158226,
+      "unit": "dB",
+      "absoluteTolerance": 1e-09,
+      "sourceCanonicalIds": [
+        "SIM-SRC-1",
+        "SIM-SRC-2"
+      ],
+      "simultaneousSourceGroup": "SIM-GROUP-1"
+    },
+    {
+      "benchmarkId": "B4",
+      "status": "PASS",
+      "classification": "LOCAL_EXACT_SOURCE_CANVAS_PROJECTION",
+      "observed": {
+        "singleBatchOutputsIdentical": true,
+        "canvasPointPwlDb": 164.37348764085078,
+        "registeredPointPwlDb": 164.37348764085078,
+        "contributingSourceCanonicalIds": [
+          "AIV-D23-RELIEF-SOURCE"
+        ]
+      }
+    },
+    {
+      "benchmarkId": "B5",
+      "status": "PASS",
+      "classification": "LOCAL_EXACT_SOURCE_FLARE_NETWORK",
+      "observed": {
+        "paths": [
+          {
+            "sourceCanonicalId": "RV-101",
+            "physicalDistanceM": 38,
+            "segmentIds": [
+              "RV101-BRANCH",
+              "SUBHEADER-4IN",
+              "HEADER-8IN"
+            ]
+          },
+          {
+            "sourceCanonicalId": "RV-102",
+            "physicalDistanceM": 41,
+            "segmentIds": [
+              "RV102-BRANCH",
+              "SUBHEADER-4IN",
+              "HEADER-8IN"
+            ]
+          }
+        ],
+        "combinedPointPwlDb": 149.56302572849327,
+        "sourceCanonicalIds": [
+          "RV-101",
+          "RV-102"
+        ],
+        "assessmentLof": 0.29
+      }
+    },
+    {
+      "benchmarkId": "B6",
+      "status": "PASS",
+      "classification": "LOCAL_EXACT_SOURCE_PRESENTATION_INVARIANCE",
+      "observed": {
+        "canvasLayoutMoveChangedEngineeringInputs": false,
+        "flarePresentationMoveChangedPathEvidence": false,
+        "flarePresentationMoveChangedRegisteredResult": false,
+        "svgPixelsAuthoritativeForDistance": false
+      }
+    },
+    {
+      "benchmarkId": "B7",
+      "status": "NOT_RUN",
+      "reason": "PF-02 readiness/calculator parity is a separately owned earlier slice and remains progression-waived by Owner comment 5302118299; PF-03 does not convert it to PASS."
+    },
+    {
+      "benchmarkId": "B8",
+      "status": "PASS",
+      "classification": "LOCAL_REGISTERED_ENGINE",
+      "observed": {
+        "sameGroupAllowed": true,
+        "distinctGroupsAccepted": false,
+        "errorCode": "AIV_MULTIPLE_SIMULTANEOUS_GROUPS_UNSUPPORTED",
+        "governingGroupAlgorithmInvented": false
+      }
+    },
+    {
+      "benchmarkId": "B9",
+      "status": "NOT_RUN",
+      "reason": "Master custody is not active in PF-03 controlled inputs and belongs to the separately qualified master-custody slice."
+    },
+    {
+      "benchmarkId": "B10",
+      "status": "NOT_RUN",
+      "reason": "Assumption-acceptance custody is not mutated by the PF-03 kernel grouping change and is outside this slice."
+    },
+    {
+      "benchmarkId": "B11",
+      "status": "NOT_RUN",
+      "reason": "JSON/.eit round-trip is the separately qualified export/import slice; PF-03 changes no export/import path."
+    },
+    {
+      "benchmarkId": "B12",
+      "status": "NOT_RUN",
+      "reason": "Stale async/dataset transaction safety is PF-04 and is not mutated by PF-03."
+    },
+    {
+      "benchmarkId": "B13",
+      "status": "NOT_RUN",
+      "reason": "Canvas degraded-mode UI behavior is not mutated by PF-03 kernel grouping and belongs to the UI acceptance slice."
+    },
+    {
+      "benchmarkId": "B14",
+      "status": "NOT_RUN",
+      "reason": "Browser-only 100/300/500 relationship evidence is explicitly waived for PF-03 by Owner comment 5302589137; no PASS threshold or FULL_BROWSER_PASS is invented."
+    }
+  ],
+  "applicableToPf03": [
+    "B1",
+    "B2",
+    "B3",
+    "B4",
+    "B5",
+    "B6",
+    "B8"
+  ],
+  "applicableResult": "ALL_PASS",
+  "pf03CategoricalOracle": {
+    "sameGroup": "LOGARITHMIC_COMBINATION_ALLOWED_WITH_ALL_SOURCE_IDENTITIES_RETAINED",
+    "distinctGroupsSameAssessmentCase": "FAIL_CLOSED_UNTIL_SEPARATELY_QUALIFIED_GROUP_OR_SCENARIO_RESULT_CONTRACT_EXISTS",
+    "observedErrorCode": "AIV_MULTIPLE_SIMULTANEOUS_GROUPS_UNSUPPORTED",
+    "forbidden": "invent or select a governing group inside PF-03"
+  },
+  "oracleRule": "Expected values, tolerances, source identities and fail-closed grouping semantics remained frozen; none were changed to match implementation output.",
+  "browserClassification": "NOT_RUN_OWNER_WAIVED",
+  "fullBrowserPassClaimed": false,
+  "disposition": "PF03_APPLICABLE_BENCHMARKS_PASS_UNDER_OWNER_CHROMIUM_WAIVER",
+  "recordedAt": "2026-08-15T18:08:38+04:00"
+}

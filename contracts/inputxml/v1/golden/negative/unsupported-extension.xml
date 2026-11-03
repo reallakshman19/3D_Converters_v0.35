@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CAESARII xmlns="COADE" xmlns:ext="urn:reallaksh19:inputxml:extension:v1" VERSION="11.00" XML_TYPE="Input">
+  <PIPINGMODEL xmlns="" JOBNAME="NEG_EXTENSION" NUMELT="1" NUMNOZ="0" NOHGRS="0" NUMBEND="0" NUMRIGID="0" NUMEXPJNT="0" NUMREST="0" NUMFORCMNT="0" NUMUNFLOAD="0" NUMWIND="0" NUMELEOFF="0" NUMALLOW="0" NUMISECT="0" NORTH_X="0" NORTH_Y="1" NORTH_Z="0">
+    <PIPINGELEMENT ID="E1" FROM_NODE="10" TO_NODE="20" DELTA_X="1000" DELTA_Y="0" DELTA_Z="0" DIAMETER="114.3" WALL_THICK="6.02" LINE="L-001">
+      <ext:Extension schema="inputxml-extension/v1" producer="golden-corpus" dialect="vendor-intake">
+        <ext:Record name="ALLOWABLESTRESS" sourcePath="negative/unsupported-extension" disposition="UNSUPPORTED_BLOCKING" criticality="BLOCKING" confidence="1.00">meaningful override</ext:Record>
+      </ext:Extension>
+    </PIPINGELEMENT>
+  </PIPINGMODEL>
+</CAESARII>

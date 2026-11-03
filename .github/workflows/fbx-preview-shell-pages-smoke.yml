@@ -1,0 +1,201 @@
+name: FBX Preview Shell Pages Smoke
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/fbx-preview-shell-pages-smoke.yml'
+      - 'index.html'
+      - 'main-rhbg-fitguard.js'
+      - 'core/app.js'
+      - 'core/app-standalone-runtime.js'
+      - 'tabs/model-converters-tab.js'
+      - 'tabs/model-converters/index.js'
+      - 'tabs/model-converters/ModelConvertersTab.js'
+      - 'tabs/model-converters/fbx-review-ui-addon.js'
+      - 'tabs/model-converters/fbx-preview-zone-selector.js'
+      - 'tabs/model-converters/fbx-preview-zone-recommendation.js'
+      - 'tabs/model-converters/converters/fbx-to-stagedjson.js'
+      - 'tabs/model-converters/converters/fbx/auto-pipe/**'
+      - 'tabs/model-converters/converters/fbx/solid-fitting-ports/**'
+      - 'tabs/model-converters/converters/fbx/zone-geometry/**'
+      - 'tabs/model-converters/converters/fbx/transform-policy.js'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fbx-preview-shell-pages-smoke
+  cancel-in-progress: true
+
+jobs:
+  verify-preview-shell:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PAGES_ROOT: https://reallaksh19.github.io/3D_Converters
+      CACHE_KEY: 20260729-fbx2-direct-pipe-1
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Poll deployed FBX2 runtime chain
+        run: |
+          set -euo pipefail
+          files=(
+            index.html
+            main-rhbg-fitguard.js
+            core/app.js
+            core/app-standalone-runtime.js
+            tabs/model-converters-tab.js
+            tabs/model-converters/index.js
+            tabs/model-converters/ModelConvertersTab.js
+            tabs/model-converters/fbx-review-ui-addon.js
+            tabs/model-converters/fbx-preview-zone-selector.js
+            tabs/model-converters/fbx-preview-zone-recommendation.js
+            tabs/model-converters/converters/fbx-to-stagedjson.js
+            tabs/model-converters/converters/fbx/zone-geometry/selected-zone-auto-pipe.js
+            tabs/model-converters/converters/fbx/zone-geometry/zone-toolbar.js
+            tabs/model-converters/converters/fbx/zone-geometry/analyse-zone.js
+            tabs/model-converters/converters/fbx/zone-geometry/occurrence-transform.js
+            tabs/model-converters/converters/fbx/auto-pipe/pipeline.js
+            tabs/model-converters/converters/fbx/auto-pipe/classify.js
+            tabs/model-converters/converters/fbx/solid-fitting-ports/evidence.js
+            tabs/model-converters/converters/fbx/solid-fitting-ports/analysis-topology.js
+            tabs/model-converters/converters/fbx/solid-fitting-ports/candidate-evaluation.js
+            tabs/model-converters/converters/fbx/solid-fitting-ports/classifier.js
+            tabs/model-converters/converters/fbx/solid-fitting-ports/constants.js
+            tabs/model-converters/converters/fbx/solid-fitting-ports/profile.js
+            tabs/model-converters/converters/fbx/solid-fitting-ports/sidewall-residual.js
+            tabs/model-converters/converters/fbx/solid-fitting-ports/terminal-cap-bridge.js
+            tabs/model-converters/converters/fbx/transform-policy.js
+          )
+          rm -rf .pages-fbx2-runtime
+          mkdir -p .pages-fbx2-runtime evidence
+          matched=false
+          matched_attempt=0
+          for attempt in $(seq 1 60); do
+            cache_bust="commit=${GITHUB_SHA}&attempt=${attempt}"
+            download_ok=true
+            for file in "${files[@]}"; do
+              output=".pages-fbx2-runtime/${file//\//__}"
+              if ! curl --fail --location --silent --show-error \
+                  --header 'Cache-Control: no-cache' \
+                  "$PAGES_ROOT/$file?$cache_bust" --output "$output"; then
+                download_ok=false
+                break
+              fi
+            done
+            if [[ "$download_ok" == true ]]; then
+              matched=true
+              for file in "${files[@]}"; do
+                output=".pages-fbx2-runtime/${file//\//__}"
+                expected="$(sha256sum "$file" | cut -d' ' -f1)"
+                deployed="$(sha256sum "$output" | cut -d' ' -f1)"
+                if [[ "$expected" != "$deployed" ]]; then
+                  matched=false
+                  printf 'attempt=%s file=%s expected=%s deployed=%s\n' \
+                    "$attempt" "$file" "$expected" "$deployed"
+                fi
+              done
+            fi
+            if [[ "$matched" == true ]]; then
+              matched_attempt="$attempt"
+              break
+            fi
+            sleep 10
+          done
+          if [[ "$matched" != true ]]; then
+            echo 'GitHub Pages did not converge to the qualified FBX2 runtime chain.' >&2
+            exit 1
+          fi
+
+          key="$CACHE_KEY"
+          grep -F "main-rhbg-fitguard.js?v=$key" .pages-fbx2-runtime/index.html
+          grep -F "core/app.js?v=$key" .pages-fbx2-runtime/main-rhbg-fitguard.js
+          grep -F "app-standalone-runtime.js?v=$key" .pages-fbx2-runtime/core__app.js
+          grep -F "model-converters-tab.js?v=$key" .pages-fbx2-runtime/core__app-standalone-runtime.js
+          grep -F "model-converters/index.js?v=$key" .pages-fbx2-runtime/tabs__model-converters-tab.js
+          grep -F "ModelConvertersTab.js?v=$key" .pages-fbx2-runtime/tabs__model-converters__index.js
+          grep -F "fbx-review-ui-addon.js?v=$key" .pages-fbx2-runtime/tabs__model-converters__ModelConvertersTab.js
+          grep -F "zone-toolbar.js?v=$key" .pages-fbx2-runtime/tabs__model-converters__ModelConvertersTab.js
+          grep -F "fbx-to-stagedjson.js?v=$key" .pages-fbx2-runtime/tabs__model-converters__fbx-review-ui-addon.js
+          grep -F "selected-zone-auto-pipe.js?v=$key" .pages-fbx2-runtime/tabs__model-converters__converters__fbx-to-stagedjson.js
+          grep -F "analyse-zone.js?v=$key" .pages-fbx2-runtime/tabs__model-converters__converters__fbx__zone-geometry__selected-zone-auto-pipe.js
+          grep -F "analyse-zone.js?v=$key" .pages-fbx2-runtime/tabs__model-converters__converters__fbx__zone-geometry__zone-toolbar.js
+          grep -F "pipeline.js?v=$key" .pages-fbx2-runtime/tabs__model-converters__converters__fbx__zone-geometry__analyse-zone.js
+          grep -F "evidence.js?v=$key" .pages-fbx2-runtime/tabs__model-converters__converters__fbx__zone-geometry__analyse-zone.js
+          grep -F "classify.js?v=$key" .pages-fbx2-runtime/tabs__model-converters__converters__fbx__auto-pipe__pipeline.js
+          grep -F "classifier.js?v=$key" .pages-fbx2-runtime/tabs__model-converters__converters__fbx__auto-pipe__classify.js
+          grep -F "candidate-evaluation.js?v=$key" .pages-fbx2-runtime/tabs__model-converters__converters__fbx__solid-fitting-ports__evidence.js
+          grep -F "terminal-cap-bridge.js?v=$key" .pages-fbx2-runtime/tabs__model-converters__converters__fbx__solid-fitting-ports__evidence.js
+          grep -F "occurrence-transform.js?v=$key" .pages-fbx2-runtime/tabs__model-converters__converters__fbx__solid-fitting-ports__candidate-evaluation.js
+          grep -F "sidewall-residual.js?v=$key" .pages-fbx2-runtime/tabs__model-converters__converters__fbx__solid-fitting-ports__classifier.js
+          grep -F "transform-policy.js?v=$key" .pages-fbx2-runtime/tabs__model-converters__converters__fbx__solid-fitting-ports__sidewall-residual.js
+          grep -F 'FbxSolidFittingPortEvidence.v3' .pages-fbx2-runtime/tabs__model-converters__converters__fbx__solid-fitting-ports__constants.js
+          grep -F 'DETACHED_CAP_RING_BRIDGE_V1' .pages-fbx2-runtime/tabs__model-converters__converters__fbx__solid-fitting-ports__terminal-cap-bridge.js
+
+          hashes_file='.pages-fbx2-runtime/runtime-hashes.txt'
+          : > "$hashes_file"
+          for file in "${files[@]}"; do
+            printf '%s  %s\n' "$(sha256sum "$file" | cut -d' ' -f1)" "$file" >> "$hashes_file"
+          done
+          runtime_chain_sha="$(sha256sum "$hashes_file" | cut -d' ' -f1)"
+          verified_at="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+          jq -n \
+            --arg schema 'FbxPagesDirectPipeRuntimeDeploymentEvidence.v1' \
+            --arg repositoryCommit "$GITHUB_SHA" \
+            --arg pagesRoot "$PAGES_ROOT" \
+            --arg cacheKey "$CACHE_KEY" \
+            --arg runtimeChainSha256 "$runtime_chain_sha" \
+            --arg releaseDisposition 'DIRECT_PIPE_STAGEDJSON_RUNTIME_DEPLOYED' \
+            --argjson runtimeModuleCount "${#files[@]}" \
+            --argjson benchmarkAdmittedPipeCount 112 \
+            --argjson benchmarkStagedBranchCount 112 \
+            --arg benchmarkAdmittedFamily 'CYLINDER' \
+            --argjson convergenceAttempt "$matched_attempt" \
+            --arg verifiedAt "$verified_at" \
+            '{schema:$schema,repositoryCommit:$repositoryCommit,pagesRoot:$pagesRoot,
+              cacheKey:$cacheKey,runtimeChainSha256:$runtimeChainSha256,
+              runtimeModuleCount:$runtimeModuleCount,releaseDisposition:$releaseDisposition,
+              benchmarkAdmittedPipeCount:$benchmarkAdmittedPipeCount,
+              benchmarkStagedBranchCount:$benchmarkStagedBranchCount,
+              benchmarkAdmittedFamily:$benchmarkAdmittedFamily,
+              convergenceAttempt:$convergenceAttempt,verifiedAt:$verifiedAt}' \
+            > evidence/fbx-pages-direct-pipe-runtime-deployment.json
+
+          {
+            echo '### FBX2 direct PIPE runtime deployment'
+            echo
+            echo "- repository commit: \`${GITHUB_SHA}\`"
+            echo "- cache key: \`${CACHE_KEY}\`"
+            echo "- runtime modules: \`${#files[@]}\`"
+            echo "- runtime-chain SHA-256: \`${runtime_chain_sha}\`"
+            echo "- convergence attempt: \`${matched_attempt}\`"
+            echo '- benchmark release: `112 CYLINDER PIPE / 112 StagedJSON branches`'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Commit deployment evidence
+        if: github.event_name == 'push'
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add evidence/fbx-pages-direct-pipe-runtime-deployment.json
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m 'evidence(fbx): record deployed direct PIPE runtime'
+          for attempt in 1 2 3 4 5; do
+            git fetch origin main
+            git rebase origin/main
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            sleep $((attempt * 2))
+          done
+          echo 'Unable to publish direct-PIPE deployment evidence after five synchronized attempts.' >&2
+          exit 1

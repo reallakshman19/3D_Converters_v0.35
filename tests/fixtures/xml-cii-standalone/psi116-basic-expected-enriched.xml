@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PipeStressExport>
+  <Pipeline Name="PSI116-BASIC">
+    <Proof>standalone enriched psi116 fixture</Proof>
+  </Pipeline>
+</PipeStressExport>

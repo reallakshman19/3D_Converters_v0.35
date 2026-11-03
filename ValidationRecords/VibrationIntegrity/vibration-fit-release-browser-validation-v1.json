@@ -1,0 +1,251 @@
+{
+  "schema": "VibrationFitReleaseBrowserValidationRecord.v1",
+  "repository": "reallaksh19/3D_Converters",
+  "pullRequest": 448,
+  "testedCommit": "15ae220f1e3211f4449bfbc80f3caa624e23a0ec",
+  "testedBranch": "agent/vibration-mechanism-qualification-framework",
+  "baseCommit": "e37a9e3a3991c5cbc839dd37a5bd7c6f84c8392f",
+  "executedAt": "2026-08-13T02:15:23Z",
+  "authority": {
+    "engineeringAuthority": "NONE",
+    "screeningAuthority": "NOT_AUTHORIZED",
+    "designAuthority": false,
+    "authorityTransitionApplied": false
+  },
+  "runner": {
+    "node": "v22.16.0",
+    "npm": "10.9.2",
+    "chromium": "144.0.7559.96",
+    "checkoutMode": "BASE_ARTIFACT_PLUS_EXACT_GITHUB_BLOB_OVERLAY",
+    "directGitCloneAvailable": false,
+    "directExternalNetworkAvailable": false,
+    "notes": [
+      "Direct git/npm/CDN DNS access is blocked in this runner.",
+      "The exact main/base static application was reconstructed from GitHub Pages artifact 9150582655 and PR-head code/test files used by validation were overlaid from the connected GitHub app.",
+      "Exact-head failure ownership checks compared failing production/test files to GitHub blob SHAs before classifying failures as code/test failures."
+    ]
+  },
+  "releaseGate": {
+    "command": "npm run verify:vibration-fit-release",
+    "manifestTestFiles": 43,
+    "status": "FAIL",
+    "directCommandBehavior": "The real command started the 43-file manifest and aborted after engineering-core-console failed, as designed by the fail-fast release script.",
+    "diagnosticGroupExecution": {
+      "totalTestExecutions": 258,
+      "passed": 233,
+      "failed": 16,
+      "environmentBlocked": 9
+    },
+    "groups": [
+      {
+        "id": "engineering-core-console",
+        "status": "FAIL",
+        "tests": 27,
+        "passed": 19,
+        "failed": 8,
+        "environmentBlocked": 0,
+        "failures": [
+          "existing VIB family landing renders all six registered mechanisms with registered authority states",
+          "other blocked vibration calculators remain non-resolvable and non-executable",
+          "registry accepts the canonical calculator grammar without obsolete definition fields",
+          "B31.3 benchmark direct-factor path survives centralized API dispatch",
+          "empirical documented sample remains available through the centralized API",
+          "non-implemented states fail closed before numerical output",
+          "validation and resolution remain independently callable and fail closed",
+          "batch execution preserves result isolation and immutability"
+        ],
+        "ownership": "EXACT_HEAD_FAILURES_CONFIRMED",
+        "notes": [
+          "The failing engineering-core tests, console view, registry files, and all three engineering-calculation adapters were compared with GitHub exact-head blob SHAs and matched.",
+          "These paths are outside PR #448's changed-file list, so the failures appear to pre-exist this PR, but they still fail the requested exact-head release gate."
+        ]
+      },
+      {
+        "id": "fit-engineering-evidence",
+        "status": "PARTIAL_ENVIRONMENT_BLOCKED",
+        "tests": 62,
+        "passed": 61,
+        "failed": 0,
+        "environmentBlocked": 1,
+        "environmentBlockers": [
+          {
+            "test": "tests/fit-workbook-source-extractor.test.mjs",
+            "code": "XLSX_DEPENDENCY_UNAVAILABLE",
+            "detail": "ERR_MODULE_NOT_FOUND: package xlsx is not installed and external package/CDN access is blocked in this runner."
+          }
+        ]
+      },
+      {
+        "id": "vibration-facility-tabular",
+        "status": "FAIL_WITH_ENVIRONMENT_BLOCKERS",
+        "tests": 77,
+        "passed": 67,
+        "failed": 2,
+        "environmentBlocked": 8,
+        "failures": [
+          {
+            "test": "parsed exchange + CSV tables matches direct parsed-data facility workflow",
+            "detail": "Deep equality differs in execution metadata: executionId/timestamp change between equivalent executions."
+          },
+          {
+            "test": "one-call workflow equals the direct lower-level composition",
+            "detail": "Deep equality differs in execution metadata: executionId/timestamp change between equivalent executions."
+          }
+        ],
+        "environmentBlockers": [
+          "Eight five-sheet XLSX parser/exchange tests could not execute because xlsx@0.18.5 is unavailable in the network-restricted runner."
+        ]
+      },
+      {
+        "id": "vibration-workspace-ui",
+        "status": "FAIL",
+        "tests": 77,
+        "passed": 71,
+        "failed": 6,
+        "environmentBlocked": 0,
+        "failures": [
+          {
+            "test": "UI makes Engineering basis primary while Source Data stays the backing editor contract",
+            "severity": "HIGH",
+            "prOwnership": "PR_448_REGRESSION",
+            "detail": "Exact-head tabs/vibration-integrity-input-view.js no longer imports or renders renderVibrationEngineeringBasis(inputState); the PR patch also removes source-cell IDs/source-anchor rendering and the Source Data area."
+          },
+          {
+            "test": "Vibration Integrity renders benchmark-only table workspace with explicit provenance state",
+            "detail": "Expected EI_PUBLISHED_EXAMPLE provenance token is not rendered."
+          },
+          {
+            "test": "non-calculated table cells remain blank-state markers rather than synthetic zeroes",
+            "detail": "Current UI can render FIT zero as a calculated value (for example <strong>0</strong> / FIT · 0)."
+          },
+          {
+            "test": "tab exposes XLSX preferred and limited CSV handling without qualification-mode controls",
+            "detail": "Expected five-sheet XLSX wording/contract is absent from current visible tab source."
+          },
+          {
+            "test": "new vibration production modules stay below the normal 300-line module target",
+            "detail": "converters/vibration/exchange/parse-workbook.js is exactly 300 physical lines and violates the permanent boundary test."
+          },
+          {
+            "test": "AIV UI contains no engineering equations even when evidence text includes published values",
+            "detail": "Static authority boundary detects forbidden math syntax in AIV UI source."
+          }
+        ]
+      },
+      {
+        "id": "vibration-multimechanism-validation",
+        "status": "PASS",
+        "tests": 15,
+        "passed": 15,
+        "failed": 0,
+        "environmentBlocked": 0,
+        "coverage": [
+          "EI T2.3 mechanical excitation",
+          "EI T2.6 standard deadleg pulsation",
+          "EI T2.8 dry-gas rapid opening",
+          "multi-mechanism validation-record semantics"
+        ]
+      }
+    ]
+  },
+  "browserGate": {
+    "status": "FAIL_WITH_RUNTIME_ENVIRONMENT_BLOCKER",
+    "requestedCoverage": [
+      "joined Engineering-basis editing",
+      "source navigation",
+      "complete XLSX load/edit/revert",
+      "CSV load/edit/revert",
+      "CURRENT_RESULT to STALE_RESULT after engineering edit",
+      "rerun to current result"
+    ],
+    "runtime": {
+      "chromiumLaunch": "PASS",
+      "cdpControl": "PASS",
+      "cdpSmokeResult": "Runtime.evaluate(1+1) returned 2",
+      "applicationNavigation": "ENVIRONMENT_BLOCKED_BY_ADMINISTRATOR",
+      "attempts": [
+        {
+          "url": "http://127.0.0.1:8765/index.html",
+          "result": "net::ERR_BLOCKED_BY_ADMINISTRATOR"
+        },
+        {
+          "url": "http://app.test:8765/index.html",
+          "setup": "Chromium host-resolver mapping app.test -> 127.0.0.1",
+          "result": "net::ERR_BLOCKED_BY_ADMINISTRATOR"
+        },
+        {
+          "url": "file:///tmp/site/index.html",
+          "setup": "Chromium --allow-file-access-from-files",
+          "result": "net::ERR_BLOCKED_BY_ADMINISTRATOR"
+        }
+      ]
+    },
+    "interactiveChecks": [
+      {
+        "id": "joined-engineering-basis-edit",
+        "status": "NOT_RUN_ENVIRONMENT_BLOCKED",
+        "staticPrerequisite": "FAIL",
+        "detail": "The exact-head input view does not render the joined Engineering-basis projection, so this flow cannot satisfy the gate even in an unrestricted browser."
+      },
+      {
+        "id": "source-navigation",
+        "status": "NOT_RUN_ENVIRONMENT_BLOCKED",
+        "staticPrerequisite": "FAIL",
+        "detail": "The PR removes source-cell anchor IDs from the backing editable-table inputs and removes the joined Source Data navigation surface."
+      },
+      {
+        "id": "xlsx-load-edit-revert",
+        "status": "NOT_RUN_ENVIRONMENT_BLOCKED",
+        "additionalBlocker": "xlsx dependency/CDN unavailable in this runner"
+      },
+      {
+        "id": "csv-load-edit-revert",
+        "status": "NOT_RUN_ENVIRONMENT_BLOCKED"
+      },
+      {
+        "id": "current-to-stale-and-rerun",
+        "status": "NOT_RUN_ENVIRONMENT_BLOCKED",
+        "staticCoverage": "Unit tests for stale-result state and generic mechanism result currency pass, but this is not a substitute for browser acceptance."
+      }
+    ]
+  },
+  "exactHeadEvidence": {
+    "inputView": {
+      "path": "tabs/vibration-integrity-input-view.js",
+      "gitBlob": "0a1103534b27048b36c08153c502c725ce1d7a36"
+    },
+    "mechanismView": {
+      "path": "tabs/vibration-integrity-mechanisms.js",
+      "gitBlob": "fd2143883a3c769896374d2c357b482ad62751c5"
+    },
+    "workspaceView": {
+      "path": "tabs/vibration-integrity-view.js",
+      "gitBlob": "2dcde61a6f1b9382c4b5ecfe09db29577c8555a8"
+    },
+    "detailView": {
+      "path": "tabs/vibration-integrity-detail-view.js",
+      "gitBlob": "4d7ec99f5d95e70199ba0eb0b69a59325c1c95d6"
+    },
+    "releaseScript": {
+      "path": "scripts/verify-vibration-fit-release.mjs",
+      "gitBlob": "efa3f032379bffc7269b53fd90d11065a89571eb"
+    },
+    "releaseGateTest": {
+      "path": "tests/vibration-fit-release-gate.test.mjs",
+      "gitBlob": "129a0ce7ca4c2032ac5f7a5702a2b999f85184c2"
+    }
+  },
+  "gateDecision": {
+    "releaseGateSatisfied": false,
+    "browserGateSatisfied": false,
+    "readyForAuthorityPromotion": false,
+    "readyForMergeBasedOnTheseGates": false,
+    "requiredNextActions": [
+      "Restore the joined Engineering-basis primary UI and source-anchor/source-navigation contract removed by PR #448.",
+      "Resolve the 16 genuine exact-head release-test failures or explicitly separate/repair pre-existing base failures before claiming the release gate.",
+      "Run the nine XLSX-dependent checks in an environment with exact project dependencies available.",
+      "Repeat real-browser XLSX/CSV/edit/revert/source-navigation/stale-result acceptance in a browser environment that permits application navigation.",
+      "Do not promote screening/design authority from this record."
+    ]
+  }
+}

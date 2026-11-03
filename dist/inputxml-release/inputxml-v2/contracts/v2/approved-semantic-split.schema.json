@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:reallaksh19:inputxml:approved-semantic-split:v1",
+  "title": "ApprovedSemanticSplit.v1",
+  "type": "object",
+  "required": ["schema", "approvalId", "mode", "sourceHashSha256", "approvedCanonicalFile", "approvedCanonicalHashSha256", "expectedCanonicalTopologyFile", "expectedCanonicalTopologyHashSha256", "approvers", "approvedAt", "overflowElements", "artifactHashSha256"],
+  "properties": {
+    "schema": {"const": "ApprovedSemanticSplit.v1"},
+    "approvalId": {"type": "string", "pattern": "^IAS-[A-Za-z0-9._-]+$"},
+    "mode": {"const": "ADAPTED_CANONICAL"},
+    "sourceHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "approvedCanonicalFile": {"type": "string", "pattern": "^[^/\\\\]+\\.xml$"},
+    "approvedCanonicalHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "expectedCanonicalTopologyFile": {"type": "string", "pattern": "^[^/\\\\]+\\.json$"},
+    "expectedCanonicalTopologyHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "approvers": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true},
+    "approvedAt": {"type": "string", "format": "date-time"},
+    "rationale": {"type": "string", "minLength": 1},
+    "overflowElements": {"type": "array", "minItems": 1, "items": {"type": "object", "required": ["elementId", "fromNode", "toNode", "observedCount", "allowedCount"], "properties": {"elementId": {"type": "string"}, "fromNode": {"type": "string"}, "toNode": {"type": "string"}, "observedCount": {"type": "integer", "minimum": 7}, "allowedCount": {"const": 6}}, "additionalProperties": false}},
+    "artifactHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "additionalProperties": false
+}

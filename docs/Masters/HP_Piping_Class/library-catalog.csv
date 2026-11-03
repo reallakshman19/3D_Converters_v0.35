@@ -1,0 +1,3 @@
+dataset,relative_path,format,status,source_version,dependency_path,dependency_version
+material,material-properties.csv,csv,HEADER_ONLY,TEMPLATE-V1,,
+product_overlay,pipe-product-overrides.csv,csv,HEADER_ONLY,TEMPLATE-V1,../NPS_OD_BORE_SCHEDULE_MASTER.tsv,7e83f7283b4ca9f35a86a45c008ca0b52a053fcc

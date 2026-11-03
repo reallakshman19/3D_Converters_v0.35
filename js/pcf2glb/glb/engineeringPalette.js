@@ -1,0 +1,28 @@
+export const ENGINEERING_GLB_COLORS = Object.freeze({
+  PIPE: 0xb8c7d6,
+  PIPE_DARK: 0x7c8b99,
+  BEND: 0xb8c7d6,
+  ELBOW: 0xb8c7d6,
+
+  VALVE: 0x22c55e,
+  FLANGE: 0x16a34a,
+  TEE: 0x22c55e,
+  REDUCER: 0x94a3b8,
+  OLET: 0x22c55e,
+
+  SUPPORT: 0x22c55e,
+  RESTRAINT: 0x22c55e,
+  GUIDE: 0x22c55e,
+  REST: 0x22c55e,
+  LIMIT: 0x84cc16,
+  LINESTOP: 0x84cc16,
+  ANCHOR: 0xef4444,
+  HANGER: 0xa855f7,
+  SPRING: 0xa855f7,
+  SHOE: 0x22c55e,
+
+  NOZZLE: 0xf97316,
+  TERMINAL: 0xfacc15,
+  NODE_LABEL: 0x2563eb,
+  LABEL: 0x2563eb,
+});

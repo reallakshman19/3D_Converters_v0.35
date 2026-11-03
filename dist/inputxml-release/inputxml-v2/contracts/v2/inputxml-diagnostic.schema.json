@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:reallaksh19:inputxml:diagnostic-report:v1",
+  "title": "InputXmlDiagnosticReport.v1",
+  "type": "object",
+  "$defs": {
+    "code": {
+      "enum": [
+        "INPUTXML_RESTRAINT_OVERFLOW",
+        "INPUTXML_DIALECT_AMBIGUOUS",
+        "INPUTXML_DIALECT_UNSUPPORTED",
+        "INPUTXML_ALIAS_CONFLICT",
+        "INPUTXML_NAMESPACE_INVALID",
+        "INPUTXML_LINE_ID_UNRESOLVED",
+        "INPUTXML_NODE_PLAN_MISSING",
+        "INPUTXML_DUPLICATE_ACTIVE_NODE",
+        "INPUTXML_UNSUPPORTED_BLOCKING_EVIDENCE",
+        "INPUTXML_XSD_FAILED",
+        "INPUTXML_SCHEMATRON_FAILED",
+        "INPUTXML_TOPOLOGY_PARITY_FAILED",
+        "INPUTXML_DOWNSTREAM_PROOF_FAILED",
+        "INPUTXML_SCHEMA_COPY_DRIFT"
+      ]
+    }
+  },
+  "required": ["schema", "status", "sourceHashSha256", "diagnostics", "diagnosticReportHashSha256"],
+  "properties": {
+    "schema": {"const": "InputXmlDiagnosticReport.v1"},
+    "status": {"enum": ["PASS", "BLOCKED", "DIAGNOSTIC"]},
+    "sourceHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["severity", "code", "message", "originalCode", "context"],
+        "properties": {
+          "severity": {"enum": ["INFO", "WARNING", "REVIEW", "BLOCKING"]},
+          "code": {"$ref": "#/$defs/code"},
+          "message": {"type": "string", "minLength": 1},
+          "originalCode": {"type": ["string", "null"]},
+          "context": {"type": "object"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "diagnosticReportHashSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "additionalProperties": false
+}

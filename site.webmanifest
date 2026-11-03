@@ -1,0 +1,16 @@
+{
+  "name": "FormatConverters",
+  "short_name": "FormatConverters",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "icons": [
+    {
+      "src": "./assets/app-icon.svg?v=standalone-1",
+      "sizes": "128x128",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

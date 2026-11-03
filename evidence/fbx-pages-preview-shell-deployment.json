@@ -1,0 +1,13 @@
+{
+  "schema": "FbxPagesPreviewShellDeploymentEvidence.v1",
+  "repositoryCommit": "e085f8e3dd2f5500e8b73b6ca44a4db9a200cbfe",
+  "pagesRoot": "https://reallaksh19.github.io/3D_Converters",
+  "cacheKey": "20260729-fbx-preview-auto-zone-1",
+  "indexSha256": "53f13a56e7bba26f4aff997c10de48075fcafb3064f42fafe0d8927d6d57e59f",
+  "appShellSha256": "fa68d56df5c417a14267eb8a33fd8da20c4e8b4667b4f262648cb1748bb173c8",
+  "previewSelectorSha256": "b88911e7cc0309db03d40ac77334db0e1d9fa1d4598030e6b218143a38315b91",
+  "previewRecommendationSha256": "61ea04c81814ef18acd4c13e7d2aac5eb5478b3131907643d13ab1d73d9269bb",
+  "previewAutoSelection": "governed-selected-zone-once",
+  "convergenceAttempt": 3,
+  "verifiedAt": "2026-07-29T06:04:10Z"
+}

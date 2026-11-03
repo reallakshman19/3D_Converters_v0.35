@@ -1,0 +1,74 @@
+{
+  "schema": "stagedjson-1885-fixture-manifest/v1",
+  "source": "Benchmarks/1885Sjson/Sjson.json",
+  "generatedBy": "tools/generate-1885-stagedjson-fixtures.mjs",
+  "evaluatedAt": "2026-07-15T08:30:00.000Z",
+  "xmlDateTime": "15/07/2026, 12:30:00",
+  "masters": {
+    "lineList": "Benchmarks/1885Sjson/Masters/line-list.json",
+    "pipingClass": "Benchmarks/1885Sjson/Masters/piping-class.json",
+    "materialMap": "converters/xml-cii2019-core/default-material-map-rows.js",
+    "weight": "converters/xml-cii2019-core/default-weight-master-rows.js"
+  },
+  "scope": {
+    "explicitlyMasteredLineKeys": [
+      "S8810103",
+      "S8810101"
+    ],
+    "targetRefs": [
+      "=1006649732/51428",
+      "=1006649732/51494",
+      "=1006649732/51499"
+    ],
+    "unresolvedOutsideTargetScope": true
+  },
+  "summary": {
+    "sourceNodes": 279,
+    "enrichedNodes": 279,
+    "audit": {
+      "totalNodesComponentsScanned": 279,
+      "totalEnriched": 196,
+      "totalPartial": 0,
+      "totalMissing": 83,
+      "totalConflicts": 0,
+      "geometryChanged": false,
+      "coordinateChanged": false
+    },
+    "stage2Records": 163,
+    "stage2Branches": 5,
+    "branchNames": [
+      "/ASIM-1885-6&quot;-S8811951-91261M7-HC-01",
+      "/ASIM-1885-6&quot;-S8810112-91261M7-HC-01",
+      "/ASIM-1885-6&quot;-S8810111-91261M7-HC-01",
+      "/ASIM-1885-8&quot;-S8810103-91261M7-HC-01",
+      "/ASIM-1885-10&quot;-S8810101-91261M7-HC-01"
+    ]
+  },
+  "artifacts": {
+    "enrichedStagedJson": {
+      "path": "Benchmarks/1885Sjson/EnrichedSjson",
+      "bytes": 1785455,
+      "sha256": "e9a51723444e9490f5dff9c1ff4a5c56191873033d11a289946746ff1072c5da"
+    },
+    "audit": {
+      "path": "Benchmarks/1885Sjson/EnrichedSjson.audit.json",
+      "bytes": 380423,
+      "sha256": "e8a6ccda307272bce8882e6226a25d32572e79b2aa5c480afb13a62c8b914b9a"
+    },
+    "unresolvedCsv": {
+      "path": "Benchmarks/1885Sjson/EnrichedSjson.unresolved.csv",
+      "bytes": 35888,
+      "sha256": "767b73ea09db56fb83e56916b2346d893aaa1da83ba261fbbb46d14317f7ea76"
+    },
+    "enrichedXml": {
+      "path": "Benchmarks/1885Sjson/ExpectedCondensedEnrichedXML",
+      "bytes": 144029,
+      "sha256": "81b433de3ec1c6d58a3583e8b65cad9d42f1136869aa3191a478ea1bcb01c2d9"
+    },
+    "contractSnapshot": {
+      "path": "Benchmarks/1885Sjson/fixture-contract-snapshot.json",
+      "bytes": 3546,
+      "sha256": "7caaf15f99add9bc3d632b51d3880aa7cecb17170fc7948cf5bc38187aa6b3d1"
+    }
+  }
+}

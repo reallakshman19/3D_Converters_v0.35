@@ -1,0 +1,6 @@
+export const XML_COMPARE_DEBUG_PANEL_SCHEMA='xml-compare-debug-panel/v1';
+const esc=(v)=>String(v??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#039;');
+function line(label,value){return `<div><b>${esc(label)}</b><span>${esc(value)}</span></div>`;}
+export function createXmlCompareDebugSnapshot({source=null,target=null,logs=[],diagnostics=[]}={}){return Object.freeze({schema:XML_COMPARE_DEBUG_PANEL_SCHEMA,sourceProfile:source?.profile||source?.type||'',targetProfile:target?.profile||target?.type||'',sourceCount:Number(source?.summary?.nodeCount||source?.componentCount||0),targetCount:Number(target?.summary?.nodeCount||target?.componentCount||0),logCount:(logs||[]).length,diagnosticCount:(diagnostics||[]).length});}
+export function renderXmlCompareDebugPanelHtml(input={}){const s=createXmlCompareDebugSnapshot(input);return `<section class="xml-compare-bottom-panel" data-xml-compare-debug><header>Debug</header><div class="xml-compare-debug-grid">${line('Source profile',s.sourceProfile||'—')}${line('Target profile',s.targetProfile||'—')}${line('Source records',s.sourceCount)}${line('Target records',s.targetCount)}${line('Log rows',s.logCount)}${line('Diagnostics',s.diagnosticCount)}</div></section>`;}
+export const _test=Object.freeze({esc});

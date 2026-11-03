@@ -1,0 +1,61 @@
+{
+  "schema": "VibrationMasterSecondarySourceCandidate.v1",
+  "masterId": "EI_AVIFF.T4.WALL_MODIFIER.v1",
+  "candidateFile": "docs/Masters/Vibration/ei-aviff-t4-wall-modifier.candidate.csv",
+  "controlledSource": {
+    "repository": "reallaksh19/Common",
+    "commit": "fb549185b9b27edc2379734240320a85c5bef9f6",
+    "path": "EI - AVIFF Guidelines 2nd Edition.pdf",
+    "gitBlobSha1": "sha1:9d3eccc56429411e17c07a579bdebbd13cb0bdc5",
+    "sizeBytes": 10348594,
+    "section": "T4.2.2",
+    "printedPage": 87,
+    "locator": "Table T4-1",
+    "executionStatus": "BLOCKED_ENVIRONMENT"
+  },
+  "independentEiCorroboration": {
+    "status": "PASS",
+    "role": "SECONDARY_PUBLICATION_NAVIGATION_AND_RECONCILIATION_ONLY",
+    "copiesChecked": 5,
+    "tableTitle": "Wall thickness modifier to account for the effect on thermowell structural natural frequency",
+    "gussetSemantics": "4-way welded gusset plates at 90 degree intervals around the connection",
+    "rows": [
+      {"scheduleBand": "SCHEDULE_160_OR_GREATER", "FM": 0.96, "FMWith4WayWeldedGussets": 0.98},
+      {"scheduleBand": "SCHEDULE_80_TO_LT_160", "FM": 0.93, "FMWith4WayWeldedGussets": 0.96},
+      {"scheduleBand": "SCHEDULE_40_TO_LT_80", "FM": 0.85, "FMWith4WayWeldedGussets": 0.93},
+      {"scheduleBand": "LESS_THAN_SCHEDULE_40", "FM": 0.42, "FMWith4WayWeldedGussets": 0.85}
+    ],
+    "workedExample": {
+      "parentPipe": "14 inch schedule STD",
+      "actualWallThickness_mm": 9.5,
+      "schedule40WallThickness_mm": 11.1,
+      "scheduleBand": "LESS_THAN_SCHEDULE_40",
+      "has4WayWeldedGussets": false,
+      "expectedFM": 0.42
+    }
+  },
+  "projectWorkbookSearch": {
+    "repository": "reallaksh19/CRF-4-1",
+    "commit": "68dc8e1fa2ef67073c59b3afc56f1bf40953d535",
+    "status": "NO_THERMOWELL_NAMED_WORKBOOK_LOCATED",
+    "workbookCellSourceClaimed": false
+  },
+  "lookupBehavior": {
+    "inputDomain": "EXPLICIT_CATEGORICAL_SCHEDULE_BAND",
+    "unknownBand": "NOT_READY",
+    "interpolationForbidden": true,
+    "nearestBandFallbackForbidden": true
+  },
+  "reconciliation": {
+    "status": "CONTROLLED_SOURCE_RECONCILIATION_REQUIRED",
+    "reason": "Exact controlled EI PDF has not been executed through canonical DocumentEvidence."
+  },
+  "publicationState": "CANDIDATE",
+  "qualificationStatus": "NOT_QUALIFIED",
+  "masterValuesPublished": false,
+  "authority": {
+    "engineeringAuthority": "NONE",
+    "screeningAuthority": "NOT_AUTHORIZED",
+    "designAuthority": false
+  }
+}

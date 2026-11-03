@@ -1,0 +1,20 @@
+{
+  "records": [
+    {
+      "node": 35,
+      "ISONOTE": ":/PS-123 :ISONOTE 'REST(28kN), GUIDE(6kN),LINE STOP(15kN)'"
+    },
+    {
+      "node": 130,
+      "ISONOTE": ":ISONOTE 'REST NOT DEFINED, SINGLE AXIS Z'"
+    },
+    {
+      "node": 255,
+      "ISONOTE": ":ISONOTE 'REST(3kN), GUIDE(1kN)'"
+    },
+    {
+      "node": 205,
+      "ISONOTE": ":/PS-456 :ISONOTE 'REST(10kN), HOLDDOWN,LINE STOP(6kN), Holddown without Guide Can Spring'"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "schema": "AivCanvasSpatialLocalEvidence.v1",
+  "pullRequest": 534,
+  "testedHeadSha": "cb1a019f4ad5bcadc9c17788d4f71d781dfcf0df",
+  "classification": "LOCAL_CHROMIUM_UI_EVIDENCE_NOT_HOSTED_FULL_APP",
+  "scope": "Canvas Spatial Intelligence batches 0-5: dense regression baseline, recoverable workspace, fit network, collision-aware labels, semantic zoom, deterministic auto tidy and safe placement/dragging.",
+  "authorityBoundary": {
+    "presentationOnly": true,
+    "engineeringRevisionNeutral": true,
+    "svgDistanceAuthority": false,
+    "acousticEquationsInUi": false,
+    "oneUnifiedSvg": true
+  },
+  "localNodeValidation": {
+    "command": "node --test tests/vibration-aiv-canvas-spatial.test.mjs tests/vibration-aiv-canvas-spatial-integration.test.mjs",
+    "passed": 11,
+    "failed": 0,
+    "notes": "Lower-level reconstructed/source validation; not native hosted/full-application acceptance."
+  },
+  "localChromium": {
+    "assertionsPassed": 12,
+    "assertionsFailed": 0,
+    "assertions": [
+      "initial dense labels overlap in the stress fixture",
+      "collision solver moves at least one overlapping label bundle",
+      "workspace is at least 1200 x 760 presentation units",
+      "workspace remains recoverable from a nonpositive origin",
+      "1.0x uses DETAILED semantic level",
+      "0.7x uses COMPACT semantic level",
+      "COMPACT hides unselected secondary label rows",
+      "0.4x uses OVERVIEW semantic level",
+      "selected title and active label remain visible in OVERVIEW",
+      "unselected title and active label collapse in OVERVIEW",
+      "selected title remains screen-readable in OVERVIEW",
+      "selected engineering detail remains screen-readable in OVERVIEW"
+    ],
+    "screenshots": [
+      {
+        "name": "01-detailed-collision-resolved.png",
+        "sha256": "2cb29cb4d93a7d1562f427d91a208b25a06d255cbf8c8b5066edc1e06b0b656d"
+      },
+      {
+        "name": "02-compact-semantic-zoom.png",
+        "sha256": "0d0adcdc0ace1a4256fb3c24019e5239337b323bc6bf9df2c1c21dbd6901d6d2"
+      },
+      {
+        "name": "03-overview-selected-priority.png",
+        "sha256": "d06eb8b433dd0282eaf094006d187f2f21e34873ca6044c3c6198f64468bd0a8"
+      }
+    ],
+    "reportSha256": "9addf6ea0660080b04a536bb9703e43420c1cb275ffb3d80ff1861bf086b1f0f"
+  },
+  "remainingGates": [
+    "The upstream Stage-8 module cache chain still needs a fresh parent identity before production browser promotion.",
+    "Hosted workflow execution is unavailable on the current head; no commit statuses or PR-triggered workflow runs were present at evidence capture.",
+    "Production GitHub Pages replay remains blocked until GitHub Actions budget/deployment is restored."
+  ]
+}

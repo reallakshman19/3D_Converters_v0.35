@@ -1,0 +1,27 @@
+{
+  "schema": "kd3-qualification-requirements/v1",
+  "releasePolicy": {
+    "nativeCoreKd3Qualified": false,
+    "automaticPromotionAllowed": false,
+    "ownerReleaseRequired": true
+  },
+  "requirements": [
+    {"id":"QREQ-001","gate":"G0","evidence":"E01,E02","title":"Controlled B31.3 and VIII.3 source identity, edition, secure hash and exact locator custody"},
+    {"id":"QREQ-002","gate":"G1","evidence":"E03","title":"Exact KD-3/KD320 equation and symbol semantics extracted from controlled licensed source"},
+    {"id":"QREQ-003","gate":"G1","evidence":"E04","title":"Stress pair, critical plane/component selection and permutation rules established"},
+    {"id":"QREQ-004","gate":"G1","evidence":"E04","title":"Associated mean-stress quantity, sign convention and compression treatment established"},
+    {"id":"QREQ-005","gate":"G1","evidence":"E05","title":"Every mean-stress correction parameter and selection rule established"},
+    {"id":"QREQ-006","gate":"G1","evidence":"E06","title":"Fatigue-curve identity, material/environment scope and controlled evaluator custody established"},
+    {"id":"QREQ-007","gate":"G1","evidence":"E07","title":"Material and temperature property selection/interpolation rules established"},
+    {"id":"QREQ-008","gate":"G1","evidence":"E06","title":"Fatigue-curve interpolation and extrapolation policy established; no hidden extrapolation"},
+    {"id":"QREQ-009","gate":"G1","evidence":"E08","title":"Applicability envelope and just-outside fail-closed boundary established"},
+    {"id":"QREQ-010","gate":"G3","evidence":"E09","title":"Zero-range/zero-damage behavior independently benchmarked"},
+    {"id":"QREQ-011","gate":"G3","evidence":"E09","title":"Miner per-cycle usage and cumulative damage independently benchmarked"},
+    {"id":"QREQ-012","gate":"G4","evidence":"E10","title":"Edition mismatch, missing parameter, ambiguous input and out-of-range conditions fail closed"},
+    {"id":"QREQ-013","gate":"G5","evidence":"E11","title":"Independent calculator/checker custody with distinct normalized identities"},
+    {"id":"QREQ-014","gate":"G6","evidence":"E12","title":"No Code/design authority until explicit release authorization"},
+    {"id":"QREQ-015","gate":"G2","evidence":"E03-E08","title":"Qualification harness remains isolated from production converters, UI and central registry"},
+    {"id":"QREQ-016","gate":"G3","evidence":"E09","title":"Independent published numerical example admitted from a primary source before native promotion"},
+    {"id":"QREQ-017","gate":"G3,G5","evidence":"E09,E11","title":"At least one independently checked project-style KD-3 calculation admitted as frozen oracle evidence"}
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "TopoEnrichedXmlCiiProjectionLedger.v1",
+  "title": "TopoEnrichedXmlCiiProjectionLedger.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "status", "chain", "authority", "summary", "lossAccounting", "records", "diagnostics", "projectionLedgerHashSha256"],
+  "properties": {
+    "schema": {"const": "TopoEnrichedXmlCiiProjectionLedger.v1"},
+    "status": {"enum": ["PASS", "BLOCKED"]},
+    "chain": {"type": "object", "minProperties": 15, "additionalProperties": {"type": ["string", "null"]}},
+    "authority": {"type": "object", "minProperties": 5, "additionalProperties": {"type": "string"}},
+    "summary": {"$ref": "#/$defs/summary"},
+    "lossAccounting": {"$ref": "#/$defs/lossAccounting"},
+    "records": {"type": "array", "items": {"$ref": "#/$defs/record"}},
+    "diagnostics": {"type": "array", "items": {"type": "object"}},
+    "projectionLedgerHashSha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  },
+  "$defs": {
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["emittedOccurrenceCount", "reservedOccurrenceCount", "projectedOccurrenceCount", "intentionallyOmittedOccurrenceCount", "blockedOccurrenceCount", "nodeNumberMismatchCount", "unaccountedOccurrenceCount"],
+      "properties": {
+        "emittedOccurrenceCount": {"type": "integer", "minimum": 0},
+        "reservedOccurrenceCount": {"type": "integer", "minimum": 0},
+        "projectedOccurrenceCount": {"type": "integer", "minimum": 0},
+        "intentionallyOmittedOccurrenceCount": {"type": "integer", "minimum": 0},
+        "blockedOccurrenceCount": {"type": "integer", "minimum": 0},
+        "nodeNumberMismatchCount": {"type": "integer", "minimum": 0},
+        "unaccountedOccurrenceCount": {"type": "integer", "minimum": 0}
+      }
+    },
+    "lossAccounting": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["projected", "intentionallyOmitted", "defaulted", "blocked", "reserved", "unexplained"],
+      "properties": {
+        "projected": {"$ref": "#/$defs/stringArray"},
+        "intentionallyOmitted": {"$ref": "#/$defs/stringArray"},
+        "defaulted": {"$ref": "#/$defs/stringArray"},
+        "blocked": {"$ref": "#/$defs/stringArray"},
+        "reserved": {"$ref": "#/$defs/stringArray"},
+        "unexplained": {"$ref": "#/$defs/stringArray"}
+      }
+    },
+    "stringArray": {"type": "array", "items": {"type": "string"}},
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["recordId", "occurrenceId", "sourceDisposition", "disposition", "logicalNodeId", "historyNodeId", "engineeringNodeNumber", "sourceEntityId", "sourcePortIds", "componentProjectionId", "componentType", "endpoint", "branchName", "psiBranchIndex", "psiNodeIndex", "canonicalElementId", "canonicalElementIndex", "ciiElementIndex", "projectionRole", "projectionSections", "projectionRule", "governingPolicyHashSha256", "evidence"],
+      "properties": {
+        "recordId": {"type": "string", "minLength": 1},
+        "occurrenceId": {"type": "string", "minLength": 1},
+        "sourceDisposition": {"enum": ["EMITTED", "RESERVED"]},
+        "disposition": {"enum": ["PROJECTED", "INTENTIONALLY_OMITTED_PAYLOAD_FREE_ENDPOINT", "RESERVED", "BLOCKED"]},
+        "logicalNodeId": {"type": "string", "minLength": 1},
+        "historyNodeId": {"type": ["string", "null"]},
+        "engineeringNodeNumber": {"type": "integer", "minimum": 1},
+        "sourceEntityId": {"type": ["string", "null"]},
+        "sourcePortIds": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "componentProjectionId": {"type": "string", "minLength": 1},
+        "componentType": {"type": ["string", "null"]},
+        "endpoint": {"type": ["integer", "string", "null"]},
+        "branchName": {"type": ["string", "null"]},
+        "psiBranchIndex": {"type": ["integer", "null"], "minimum": 0},
+        "psiNodeIndex": {"type": ["integer", "null"], "minimum": 0},
+        "canonicalElementId": {"type": ["string", "null"]},
+        "canonicalElementIndex": {"type": ["integer", "null"], "minimum": 1},
+        "ciiElementIndex": {"type": ["integer", "null"], "minimum": 1},
+        "projectionRole": {"enum": ["OUTGOING_ENDPOINT_OWNER", "INCOMING_ELEMENT_OWNER", "TOPOLOGY_ONLY_ENDPOINT", "RESERVED"]},
+        "projectionSections": {"type": "array", "items": {"enum": ["ELEMENTS_FROM", "ELEMENTS_TO", "BEND", "RIGID", "RESTRANT"]}, "uniqueItems": true},
+        "projectionRule": {"type": "string", "minLength": 1},
+        "governingPolicyHashSha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "evidence": {"type": "object"}
+      },
+      "allOf": [{
+        "if": {"properties": {"disposition": {"const": "PROJECTED"}}},
+        "then": {"properties": {
+          "canonicalElementId": {"type": "string", "minLength": 1},
+          "canonicalElementIndex": {"type": "integer", "minimum": 1},
+          "ciiElementIndex": {"type": "integer", "minimum": 1},
+          "projectionSections": {"minItems": 1}
+        }}
+      }]
+    }
+  }
+}
