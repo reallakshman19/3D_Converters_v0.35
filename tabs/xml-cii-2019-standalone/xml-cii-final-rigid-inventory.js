@@ -38,7 +38,7 @@ function firstTwoCiiNumbers(line, label) {
   const raw = String(line ?? '');
   const first = raw.slice(0, 15).trim();
   const second = raw.slice(15, 28).trim();
-  const real = /^[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[EeDd][+-]?\\d+)?$/;
+  const real = /^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[EeDd][+-]?\d+)?$/;
   if (raw.length >= 28 && real.test(first) && real.test(second)) {
     return [first, second];
   }
