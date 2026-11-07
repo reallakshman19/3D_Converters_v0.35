@@ -25,7 +25,7 @@ function rowMarkup(row, plan) {
   const auto = plan?.autoIndex >= 0 ? suggestions[plan.autoIndex] : null;
   const suggestionOptions = [
     '<option value="">Choose a catalog reference…</option>',
-    ...suggestions.map((entry, index) => `<option value="${index}" ${index === plan.autoIndex ? 'selected' : ''}>${esc(entry.referenceWeight)} exported · ${esc(entry.title)} · ${esc(entry.method)}</option>`),
+    ...suggestions.map((entry, index) => `<option value="${index}" ${index === plan.autoIndex ? 'selected' : ''}>${entry.approximate ? '⚠ Approx · ' : ''}${esc(entry.referenceWeight)} exported · ${esc(entry.title)} · ${esc(entry.method)}</option>`),
   ].join('');
   const basisReason = plan?.reason || 'No run-pinned source-to-CII evidence.';
   const mapping = plan?.mapping;
@@ -207,7 +207,9 @@ export function openFinalRigidWeightReview(result, options = {}) {
       if (basisSummary) basisSummary.textContent =
         comparison.errorPct === null ? (plan?.reason || 'No independent catalog reference')
         : isSelection ? (refInput?.dataset.referenceKind === 'auto'
-          ? 'AUTO · exact catalog comparison' : 'SELECTED · catalog comparison (review)')
+          ? 'AUTO · exact catalog comparison' : candidate.approximate
+            ? 'SELECTED · approximate catalog comparison (review only)'
+            : 'SELECTED · catalog comparison (review)')
           : 'MANUAL · reference comparison (not catalog verified)';
       if (basisDetail && isSelection) basisDetail.textContent = [
         plan?.reason || '', plan?.mapping ? `Source ${plan.mapping.branchName} ${plan.mapping.fromNode} → ${plan.mapping.toNode}; ComponentRefNo ${plan.mapping.componentRefNo || 'none'}; CII ${Number(plan.mapping.ciiLengthMm).toFixed(3)} mm` : '',
