@@ -49,6 +49,7 @@ export function collectAllSourceRigidWeightRows(xmlText, config = {}) {
   const branches = allElements.length
     ? allElements.filter((node) => localName(node) === 'Branch')
     : [...document.getElementsByTagName('Branch')];
+  if (!branches.length) throw new Error('No Branch/Node XML structure was found; the all-rigid inventory cannot be established.');
   const rows = [];
   for (const branch of branches) {
     const branchName = childText(branch, 'Branchname');
