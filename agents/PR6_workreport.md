@@ -23,7 +23,7 @@ Owner accepted the proposed next engineering improvement: populate final RIGID r
 - Source text and master rows are in-memory only, not exported, and are tied to exact successful run; no converter output data changed.
 
 ## Test record
-- New `tests/xml-cii-final-rigid-master-reference.test.mjs`: 22 assertions PASS in isolated V8 with exact GitHub modules, XML DOM test helper and explicitly stubbed Weight Match candidate authority: full CII branch label, positive unique 40 kg ×10→400, source Ref trace, multiple candidate refusal, geometry failure, no run evidence/scale, physically shared Ref auto-refusal and UI wiring.
+- New `tests/xml-cii-final-rigid-master-reference.test.mjs`: 26 assertions PASS in isolated V8 with exact GitHub modules, XML DOM test helper and explicitly stubbed Weight Match candidate authority: full CII branch label, positive unique 40 kg ×10→400, source Ref trace, multiple candidate refusal, geometry failure, no run evidence/scale, physically shared Ref auto-refusal and UI wiring.
 - Actual popup code with stubbed DOM: 11 interaction checks PASS: auto catalog 400 vs CII 430 = **+7.5%**, basis details visible; manually changed 350 = **+22.9%**, suggestion clears; selecting catalog again restores 400 and +7.5%. No output mutation.
 - Existing Final RIGID pointer suite: 256 isolated V8 assertions PASS.
 - Existing Final RIGID length/error suite: 35 isolated V8 assertions PASS.
