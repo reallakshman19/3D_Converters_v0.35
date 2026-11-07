@@ -225,8 +225,19 @@ function openPolicy(dialog) {
   document.body.appendChild(panel);
 }
 
+/**
+ * Smart Fill acts only on the unresolved-weight *application* dialog.
+ * Final CII and source-inventory read-only dialogs share a visual CSS class
+ * but have no fill/apply controls and must never gain a BLOCKED receipt.
+ */
+export function isRigidSmartFillReviewDialog(dialog) {
+  return Boolean(dialog?.querySelector?.('[data-rigid-review-apply]')
+    && dialog?.querySelector?.('.mc-rigid-review-input')
+    && dialog?.querySelector?.('.mc-rigid-review-rating-input'));
+}
+
 function renderDialog(dialog) {
-  if (!dialog?.isConnected) return;
+  if (!dialog?.isConnected || !isRigidSmartFillReviewDialog(dialog)) return;
   prepareInputs(dialog);
   const rows = readRows(dialog); const policy = readPolicy();
   const receipt = buildRigidSmartFillPreflight({ rows, policy });
