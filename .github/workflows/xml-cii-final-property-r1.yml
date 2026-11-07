@@ -58,3 +58,19 @@ jobs:
           node-version: '22'
       - name: Scale bench and full parity
         run: node --max-old-space-size=4096 --test tests/xml-cii-final-property-scale.test.mjs
+
+  browser:
+    name: Chromium final CII edit to download E2E
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install isolated Playwright browser dependency
+        run: |
+          npm install --no-save --package-lock=false playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Exercise actual Final Weight Review browser interactions
+        run: node --test tests/xml-cii-final-property-browser.test.mjs
