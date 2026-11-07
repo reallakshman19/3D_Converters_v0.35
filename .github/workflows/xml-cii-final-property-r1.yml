@@ -74,3 +74,27 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Exercise actual Final Weight Review browser interactions
         run: node --test tests/xml-cii-final-property-browser.test.mjs
+
+  repository-glrd:
+    name: Repo GLRD XML native writer / property patch smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Generate from genuine repository GLRD XML (not Owner's configured run)
+        run: |
+          mkdir -p "$RUNNER_TEMP/glrd-property-r1"
+          sha256sum 'Benchmarks/XML to CII 2019/GLRD-1000-PI-01.xml'
+          python3 converters/scripts/xml_to_cii2019.py --input 'Benchmarks/XML to CII 2019/GLRD-1000-PI-01.xml' --output "$RUNNER_TEMP/glrd-property-r1/native.cii" --coords-mode first --weight-scale 10 --split-condensed-valve-flange
+      - name: Apply exact-pointer atomic edits and verify full byte parity
+        run: node tests/xml-cii-final-property-repo-glrd-replay.mjs "$RUNNER_TEMP/glrd-property-r1/native.cii" "$RUNNER_TEMP/glrd-property-r1/evidence"
+      - name: Retain original/revised CII, audit and count evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: xml-cii-final-r1-repository-glrd-smoke
+          path: ${{ runner.temp }}/glrd-property-r1/
+          if-no-files-found: warn
