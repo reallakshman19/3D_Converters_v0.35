@@ -262,7 +262,7 @@ function renderRunControls(parent, stateRef, state, report, render) {
   if (finalizeBtn.style) Object.assign(finalizeBtn.style, { width: '100%', padding: '12px', background: (state.running || report.summary.blockingCount > 0) ? '#334155' : '#1e4ed8', color: '#fff', border: 'none', fontWeight: '700' });
   finalizeBtn.disabled = !!(state.running || report.summary.blockingCount > 0);
   finalizeBtn.dataset.action = 'run';
-  actionDiv.append(runReviewBtn, noteDiv, refreshBtn, finalizeBtn, createFinalRigidWeightReviewButton(state));
+  actionDiv.append(runReviewBtn, noteDiv, refreshBtn, finalizeBtn, createFinalRigidWeightReviewButton(state, () => stateRef.current?.result));
   ctrlCard.appendChild(actionDiv);
 }
 
