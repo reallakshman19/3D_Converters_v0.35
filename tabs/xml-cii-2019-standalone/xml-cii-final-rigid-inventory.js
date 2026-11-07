@@ -45,6 +45,24 @@ function firstTwoCiiNumbers(line, label) {
   return fields(raw, 2, label).slice(0, 2);
 }
 
+/**
+ * Six numeric fields in the first ELEMENTS row: FROM, TO, DX, DY, DZ, OD.
+ * Full converter output uses width 15 then width 13; a negative field may be
+ * adjacent to the previous value. Short synthetic records use spaced tokens.
+ */
+function elementGeometryFields(line, label) {
+  const raw = String(line ?? '');
+  const numeric = /^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[EeDd][+-]?\d+)?$/;
+  if (raw.length >= 80) {
+    const tokens = [raw.slice(0, 15).trim()];
+    for (let index = 1; index < 6; index += 1) {
+      tokens.push(raw.slice(15 + (index - 1) * 13, 15 + index * 13).trim());
+    }
+    if (!tokens.every((token) => numeric.test(token))) fail(`${label} has invalid fixed-width numeric fields.`);
+    return tokens;
+  }
+  return fields(raw, 6, label).slice(0, 6);
+}
 export function splitFinalCiiSections(ciiText) {
   if (!String(ciiText ?? '').trim()) fail('there is no generated CII file.');
   const sections = new Map();
@@ -82,7 +100,7 @@ function parseElements(lines, pointerCount) {
   const elements = [];
   for (let offset = 0; offset < lines.length; offset += 15) {
     const index = offset / 15 + 1;
-    const first = firstTwoCiiNumbers(lines[offset], `ELEMENTS ${index} nodes`);
+    const first = elementGeometryFields(lines[offset], `ELEMENTS ${index} numeric geometry`);
     const integers = fields(lines[offset + 12], 6, `ELEMENTS ${index} pointer row`);
     const pointer = nonNegativeInteger(integers[1], `ELEMENTS ${index} RIGID pointer`);
     if (pointer > pointerCount) fail(`ELEMENTS ${index} points to RIGID ${pointer}; only ${pointerCount} records exist.`);
@@ -91,7 +109,13 @@ function parseElements(lines, pointerCount) {
     if (!Number.isSafeInteger(fromNode) || !Number.isSafeInteger(toNode)) {
       fail(`ELEMENTS ${index} node identifiers are not integers.`);
     }
-    elements.push({ index, fromNode: String(fromNode), toNode: String(toNode), rigidPointer: pointer });
+    const dx = numberToken(first[2], `ELEMENTS ${index} DX`);
+    const dy = numberToken(first[3], `ELEMENTS ${index} DY`);
+    const dz = numberToken(first[4], `ELEMENTS ${index} DZ`);
+    const lengthMm = Math.hypot(dx, dy, dz);
+    if (!Number.isFinite(lengthMm)) fail(`ELEMENTS ${index} length is not finite.`);
+    elements.push({ index, fromNode: String(fromNode), toNode: String(toNode),
+      rigidPointer: pointer, lengthMm });
   }
   return elements;
 }
