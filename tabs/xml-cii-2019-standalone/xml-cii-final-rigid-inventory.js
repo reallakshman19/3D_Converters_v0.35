@@ -28,6 +28,23 @@ function fields(line, min, label) {
   return items;
 }
 
+/**
+ * The CII writer produces 15-character first + 13-character subsequent
+ * FORTRAN fields. Negative neighbors can touch without whitespace:
+ * "...      730.000-1.000000E-02" is two fields, not one.
+ * Accept legacy whitespace-only test fixtures when no valid fixed pair exists.
+ */
+function firstTwoCiiNumbers(line, label) {
+  const raw = String(line ?? '');
+  const first = raw.slice(0, 15).trim();
+  const second = raw.slice(15, 28).trim();
+  const real = /^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[EeDd][+-]?\d+)?$/;
+  if (raw.length >= 28 && real.test(first) && real.test(second)) {
+    return [first, second];
+  }
+  return fields(raw, 2, label).slice(0, 2);
+}
+
 export function splitFinalCiiSections(ciiText) {
   if (!String(ciiText ?? '').trim()) fail('there is no generated CII file.');
   const sections = new Map();
@@ -65,7 +82,7 @@ function parseElements(lines, pointerCount) {
   const elements = [];
   for (let offset = 0; offset < lines.length; offset += 15) {
     const index = offset / 15 + 1;
-    const first = fields(lines[offset], 2, `ELEMENTS ${index} nodes`);
+    const first = firstTwoCiiNumbers(lines[offset], `ELEMENTS ${index} nodes`);
     const integers = fields(lines[offset + 12], 6, `ELEMENTS ${index} pointer row`);
     const pointer = nonNegativeInteger(integers[1], `ELEMENTS ${index} RIGID pointer`);
     if (pointer > pointerCount) fail(`ELEMENTS ${index} points to RIGID ${pointer}; only ${pointerCount} records exist.`);
@@ -100,7 +117,7 @@ export function parseFinalCiiRigidInventory(ciiText) {
   }
   const rows = rigidLines.map((line, index) => {
     const rigidPointer = index + 1;
-    const tokens = fields(line, 2, `RIGID record ${rigidPointer}`);
+    const tokens = firstTwoCiiNumbers(line, `RIGID record ${rigidPointer}`);
     const weight = numberToken(tokens[0], `RIGID ${rigidPointer} weight`);
     numberToken(tokens[1], `RIGID ${rigidPointer} second field`);
     const linkedElements = byPointer.get(rigidPointer) || [];
