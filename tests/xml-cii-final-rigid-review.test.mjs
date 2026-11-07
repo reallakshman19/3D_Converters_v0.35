@@ -76,4 +76,64 @@ assert.match(popup, /data-final-rigid-search/);
 assert.match(popup, /data-final-rigid-filter/);
 assert.doesNotMatch(popup, /saveMasterContext|rigidWeightOverrides|applyXmlCiiRigidWeightOverrides/,
   'final CII review must not change source weights or export');
+
+function ciiWriterRow(values) {
+  return values.map((value, index) => String(value).padStart(index === 0 ? 15 : 13, ' ')).join('');
+}
+function fixedWidthElement(from, to, pointer) {
+  const rows = [
+    ciiWriterRow([from + '.000', to + '.000', '-1.000000E-02', '0', '0', '100']),
+    ...Array.from({ length: 11 }, () => ciiWriterRow([0, 0, 0, 0, 0, 0])),
+    ciiWriterRow([0, pointer, 0, 0, 0, 0]),
+    ciiWriterRow([0, 0, 0, 0, 0, 0]),
+    ciiWriterRow([0, 0, 0]),
+  ];
+  assert.equal(rows.length, 15);
+  return rows.join('\n');
+}
+
+// Reproduce the exact standalone writer's 15 + 13 * N FORTRAN field layout.
+// The third field can start with '-' immediately after the second:
+// "730.000-1.000000E-02" is valid adjacent numeric fields, not invalid CII.
+const count = 180;
+const fixedCii = [
+  '#$ VERSION', '2019', '#$ CONTROL',
+  ciiWriterRow([count, 0, 0, 0, 0, 0]),
+  ciiWriterRow([0, count, 0, 0, 0, 0]),
+  ciiWriterRow([0, 0, 0, 0, 0, 0]), ciiWriterRow([0]),
+  '#$ ELEMENTS',
+  ...Array.from({ length: count }, (_, index) => fixedWidthElement(
+    index === 77 ? 700 : 1000 + index,
+    index === 77 ? 730 : 1001 + index,
+    index + 1,
+  )),
+  '#$ RIGID',
+  ...Array.from({ length: count }, (_, index) =>
+    ciiWriterRow([(index + 1) * 1.25, '0.000000'])),
+].join('\r\n') + '\r\n';
+assert.match(fixedCii, /730\.000-1\.000000E-02/, 'fixture must reproduce the reported fused CII fields');
+const fixedParsed = parseFinalCiiRigidInventory(fixedCii);
+assert.equal(fixedParsed.declared.rigids, 180);
+assert.equal(fixedParsed.declared.elements, 180);
+assert.equal(fixedParsed.rows.length, 180, 'no final rigid record lost after the element-78 negative field');
+assert.equal(fixedParsed.rows[77].rigidPointer, 78);
+assert.deepEqual(fixedParsed.rows[77].linkedElements.map((row) => [row.index, row.fromNode, row.toNode]),
+  [[78, '700', '730']]);
+assert.equal(fixedParsed.rows[179].rigidPointer, 180);
+assert.equal(fixedParsed.rows[179].weight, 225);
+assert.equal(fixedParsed.unreferencedCount, 0, 'all 180 emitted CII pointers remain linked');
+assert.equal(fixedParsed.sharedCount, 0);
+assert.equal(fixedParsed.nonpositiveCount, 0);
+assert.equal(fixedCii, fixedCii.slice(0), 'reading all 180 records must not alter final CII bytes');
+
+// Test the independent RIGID section's own adjacent fixed-width numbers.
+const packedRigid = fixedCii.replace(
+  ciiWriterRow([1.25, '0.000000']),
+  ciiWriterRow(['1.000000000E+00', '-1.000000E-02']),
+);
+const packedParsed = parseFinalCiiRigidInventory(packedRigid);
+assert.equal(packedParsed.rows[0].weight, 1);
+assert.equal(packedParsed.rows[0].rawWeight, '1.000000000E+00');
+assert.equal(packedParsed.rows.length, count);
+
 console.log('Final CII rigid pointer review tests: PASS');
