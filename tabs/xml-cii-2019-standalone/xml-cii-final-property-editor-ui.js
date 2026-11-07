@@ -68,7 +68,7 @@ export function installFinalCiiPropertyEditor({ overlay, result, inventory, refr
     const selected = element('input', null, { type: 'checkbox', 'data-final-rigid-select': String(pointer),
       'aria-label': 'Select RIGID pointer ' + pointer });
     status.append(element('span', ' '), selected);
-    cells[9].insertAdjacentElement('afterend', diff);
+    cells[8].insertAdjacentElement('afterend', diff);
     diff.insertAdjacentElement('afterend', status);
     byPointer.set(pointer, { tr, original, editInput, zeroInput, feedback, origError, diff, status, selected });
   }
@@ -125,6 +125,12 @@ export function installFinalCiiPropertyEditor({ overlay, result, inventory, refr
   const syncOne = (pointer) => {
     const row = byPointer.get(pointer);
     if (!session || !row) return;
+    if (row.editInput.value.trim() === row.original.rawWeight) {
+      resetCiiPropertyEdit(session, 'RIGID.weight', pointer);
+      invalid.delete(pointer);
+      row.feedback.textContent = '';
+      return;
+    }
     try {
       stageCiiPropertyEdit(session, {
         propertyId: 'RIGID.weight', recordPointer: pointer,
