@@ -1,3 +1,4 @@
+import { detectXmlCiiWorkflowSourceKind } from '../xml-cii-workflow-source-detect.js';
 import { openStandaloneAllRigidWeightInventory } from './xml-cii-adapted-all-rigid-weight-inventory.js';
 import { xmlCiiEnrichedConfigFromState } from './xml-cii-adapted-state.js';
 import { buildStandaloneOutputRunReadiness } from '../xml-cii-output-run-readiness.js';
@@ -20,6 +21,12 @@ function replaceRunHandler(container, stateRef, render) {
       return;
     }
     const state = stateRef.current;
+    const kind = state.sourceKind === 'auto'
+      ? detectXmlCiiWorkflowSourceKind(state.sourceText, 'xml') : state.sourceKind;
+    if (kind === 'inputxml') {
+      await runWorkflowFromUi(stateRef, render);
+      return;
+    }
     const config = xmlCiiEnrichedConfigFromState(state);
     if (await openStandaloneAllRigidWeightInventory(state, config)) {
       await runWorkflowFromUi(stateRef, render);
