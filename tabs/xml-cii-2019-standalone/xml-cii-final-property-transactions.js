@@ -8,7 +8,7 @@ import { parseFinalCiiRigidInventory } from './xml-cii-final-rigid-inventory.js'
 const numeric = /^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eEdD][+-]?\d+)?$/;
 const layouts = Object.freeze({ RIGID: 1, ELEMENTS: 15, CONTROL: 4 });
 const encoder = new TextEncoder();
-const decoder = new TextDecoder('utf-8', { fatal: true });
+const decoder = new TextDecoder('utf-8', { fatal: true, ignoreBOM: true });
 function refuse(message) { throw new Error('CII property transaction REFUSED: ' + message); }
 function assert(condition, message) { if (!condition) refuse(message); }
 const decimal = (v) => String(v).replace(/[dD]/g, 'E');
