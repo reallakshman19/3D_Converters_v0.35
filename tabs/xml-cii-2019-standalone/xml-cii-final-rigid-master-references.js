@@ -17,7 +17,7 @@ const numericId = (value) => {
 const pairKey = (branch, from, to) => JSON.stringify([branch, from, to]);
 const ownerKey = (branch, to) => JSON.stringify([branch, to]);
 
-function sourceEdges(xml) {
+function sourceEdges(xml, forwardLengths = xmlCiiForwardElementLengths) {
   if (typeof DOMParser === 'undefined') return [];
   const doc = new DOMParser().parseFromString(xml, 'application/xml');
   if (doc.getElementsByTagName('parsererror').length) return [];
@@ -29,7 +29,7 @@ function sourceEdges(xml) {
     const branchName = value(branch, 'Branchname');
     if (!branchName) continue;
     const nodes = children(branch, 'Node');
-    const lengths = xmlCiiForwardElementLengths(nodes);
+    const lengths = forwardLengths(nodes);
     for (let i = 1; i < nodes.length; i += 1) {
       const from = numericId(value(nodes[i - 1], 'NodeNumber'));
       const to = numericId(value(nodes[i], 'NodeNumber'));
@@ -84,7 +84,7 @@ function failed(pointer, reason) {
   return { rigidPointer: pointer, mapping: null, candidates: [], autoIndex: -1, reason };
 }
 
-export function buildFinalRigidReferencePlans(inventory, evidence = {}) {
+export function buildFinalRigidReferencePlans(inventory, evidence = {}, authorities = {}) {
   const finalRows = Array.isArray(inventory?.rows) ? inventory.rows : [];
   const missing = (reason) => finalRows.map((row) => failed(row.rigidPointer, reason));
   if (evidence.sourceKind !== 'xml' || !clean(evidence.engineInputText))
@@ -97,12 +97,12 @@ export function buildFinalRigidReferencePlans(inventory, evidence = {}) {
   catch { return missing('Run-pinned weight configuration cannot be parsed.'); }
   if (!Array.isArray(config?.weight?.masterRows) || !config.weight.masterRows.length)
     return missing('No weight master rows were loaded at conversion time.');
-  const edges = sourceEdges(evidence.engineInputText);
+  const edges = sourceEdges(evidence.engineInputText, authorities.forwardLengths || xmlCiiForwardElementLengths);
   if (!edges.length) return missing('No qualified source rigid edges in exact converter XML.');
 
   let issues;
   try {
-    issues = collectXmlCiiWeightMatchRows(
+    issues = (authorities.collectWeightRows || collectXmlCiiWeightMatchRows)(
       evidence.engineInputText, evidence.stagedJsonText || '', config);
   } catch {
     return missing('Weight Match candidate authority could not evaluate source XML.');
