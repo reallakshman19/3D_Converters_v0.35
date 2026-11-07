@@ -32,9 +32,9 @@ function rowMarkup(row) {
     ${cell(row.rigidPointer)}${cell(elementIds)}${cell(fromNodes)}${cell(toNodes)}
     ${cell(lengths)}${cell(row.rawWeight)}
     <td style="padding:7px;border-bottom:1px solid #26364b;">
-      <input type="number" min="0" step="any" data-final-rigid-reference="${row.rigidPointer}"
+      <input type="number" min="0.000001" step="any" data-final-rigid-reference="${row.rigidPointer}"
         aria-label="Reference weight for RIGID pointer ${row.rigidPointer}"
-        placeholder="same units" style="width:105px;background:#0b1220;color:#e2e8f0;border:1px solid #475569;border-radius:4px;padding:5px;">
+        placeholder="ref required" style="width:105px;background:#0b1220;color:#e2e8f0;border:1px solid #475569;border-radius:4px;padding:5px;">
     </td>
     <td data-final-rigid-error="${row.rigidPointer}" style="padding:9px;border-bottom:1px solid #26364b;">—</td>
     ${cell(status)}</tr>`;
@@ -89,6 +89,10 @@ function modalMarkup(inventory, filename, thresholdPct = 20) {
       </label>
       <span data-final-rigid-visible style="color:#94a3b8;font-size:12px;"></span>
     </div>
+    <div data-final-rigid-assessment role="status"
+      style="margin:0 0 10px;color:#cbd5e1;font-size:12px;">
+      Reference-based weight error not assessed until independent weights are supplied.
+    </div>
     <div style="max-height:52vh;overflow:auto;border:1px solid #334155;border-radius:6px;">
       <table style="width:100%;border-collapse:collapse;text-align:left;font-size:12px;">
         <thead><tr style="position:sticky;top:0;background:#1e293b;">
@@ -138,11 +142,14 @@ export function openFinalRigidWeightReview(result, options = {}) {
   const search = overlay.querySelector('[data-final-rigid-search]');
   const filter = overlay.querySelector('[data-final-rigid-filter]');
   const visible = overlay.querySelector('[data-final-rigid-visible]');
+  const assessment = overlay.querySelector('[data-final-rigid-assessment]');
   const limitInput = overlay.querySelector('[data-final-rigid-limit]');
   const refresh = () => {
     const q = String(search?.value || '').trim().toLowerCase();
     const choice = filter?.value || 'all';
     let count = 0;
+    let assessed = 0;
+    let overLimit = 0;
     overlay.querySelectorAll('[data-final-rigid-row]').forEach((tr) => {
       const pointer = Number(tr.dataset.pointer);
       const reference = tr.querySelector('[data-final-rigid-reference]')?.value || '';
@@ -155,6 +162,8 @@ export function openFinalRigidWeightReview(result, options = {}) {
         errorCell.title = comparison.errorPct === null ? 'Reference required, in final CII output units'
           : (comparison.outside ? 'Outside selected error limit' : 'Within selected error limit');
       }
+      if (comparison.errorPct !== null) assessed += 1;
+      if (comparison.outside === true) overLimit += 1;
       tr.dataset.outsideError = String(comparison.outside === true);
       const matchesStatus = choice === 'all'
         || (choice === 'OVER_LIMIT' ? tr.dataset.outsideError === 'true'
@@ -165,6 +174,10 @@ export function openFinalRigidWeightReview(result, options = {}) {
       if (display) count += 1;
     });
     if (visible) visible.textContent = `${count} of ${inventory.rows.length} final rigids`;
+    if (assessment) {
+      const missing = inventory.rows.length - assessed;
+      assessment.textContent = `${assessed} reference-based comparisons · ${missing} not assessed · ${overLimit} outside selected ±${limitInput?.value || '20'}% limit. No output weights changed.`;
+    }
   };
   const close = () => overlay.remove();
   overlay.querySelectorAll('[data-final-rigid-close]').forEach((button) =>
