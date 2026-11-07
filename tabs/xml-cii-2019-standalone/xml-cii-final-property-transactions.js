@@ -67,7 +67,20 @@ export class CiiPropertyRegistry {
     assert(['editable', 'read-only', 'unsupported'].includes(d.access), 'invalid property access');
     assert(typeof d.validate === 'function', 'missing property-specific validator');
     assert(typeof d.reviewAuthority === 'string' && d.reviewAuthority, 'missing review authority');
-    const descriptor = Object.freeze({ ...d, widths: Object.freeze(d.widths) });
+    assert(d.parser === undefined || typeof d.parser === 'function', 'invalid property parser');
+    assert(d.serializer === undefined || typeof d.serializer === 'function', 'invalid property serializer');
+    assert(d.readBack === undefined || typeof d.readBack === 'function', 'invalid property read-back verifier');
+    assert(d.dependencies === undefined || Array.isArray(d.dependencies), 'invalid engineering dependencies');
+    assert(d.zeroPolicy === undefined || ['confirm', 'allow', 'reject'].includes(d.zeroPolicy), 'invalid zero policy');
+    const descriptor = Object.freeze({
+      nullPolicy: 'reject',
+      zeroPolicy: 'confirm',
+      unitConversion: 'none: require exact pinned CII output unit',
+      precisionPolicy: 'exact decimal equivalence within fixed field width',
+      parser: numericalValue, serializer: encodeField,
+      dependencies: Object.freeze([...(d.dependencies || [])]),
+      ...d, widths: Object.freeze(d.widths),
+    });
     this.entries.set(d.id, descriptor);
     return this;
   }
@@ -80,6 +93,11 @@ export const productionCiiProperties = new CiiPropertyRegistry().register({
   access: 'editable', min: 0, allowNegative: false,
   reviewAuthority: 'explicit-user-confirmation',
   displayPrecision: 'original-or-exact-decimal',
+  nullPolicy: 'reject', zeroPolicy: 'confirm',
+  unitConversion: 'identity only; no implicit kg/N conversion',
+  precisionPolicy: 'exact-decimal-equivalence',
+  dependencies: [],
+  readBack: (inventory, pointer, value) => inventory.rows[pointer - 1]?.weight === value,
   validate: (value) => Number.isFinite(value) && value >= 0,
 });
 
@@ -128,7 +146,7 @@ function resolveField(index, descriptor, pointer) {
   assert(slice.every((byte) => byte < 128), 'non-ASCII authoritative field line');
   const fieldStart = line.start + offset, fieldEnd = fieldStart + width;
   const originalField = decoder.decode(index.bytes.subarray(fieldStart, fieldEnd));
-  const parsed = numericalValue(originalField);
+  const parsed = descriptor.parser(originalField);
   return { start: fieldStart, end: fieldEnd, originalField, originalToken: originalField.trim(),
     originalValue: parsed.number, canonical: parsed.canonical };
 }
@@ -158,8 +176,9 @@ export function stageCiiPropertyEdit(session, edit, options = {}) {
   const pointer = Number(edit.recordPointer);
   const location = resolveField(session.index, descriptor, pointer);
   assert(location.originalToken === edit.originalToken, 'stale original field token');
-  const encoded = encodeField(descriptor, edit.newValue);
-  if (encoded.number === 0) assert(edit.zeroConfirmed === true, 'explicit zero confirmation required');
+  const encoded = descriptor.serializer(descriptor, edit.newValue);
+  if (encoded.number === 0 && descriptor.zeroPolicy === 'reject') refuse('zero value disallowed');
+  if (encoded.number === 0 && descriptor.zeroPolicy === 'confirm') assert(edit.zeroConfirmed === true, 'explicit zero confirmation required');
   const key = descriptor.id + ':' + pointer;
   assert(options.replace === true || !session.edits.has(key), 'duplicate edit conflict');
   if (encoded.raw === location.originalToken || decimalSignature(encoded.raw) === location.canonical) {
@@ -219,9 +238,10 @@ export async function verifyCiiPropertyTransaction(session, options = {}) {
     assert(field.start === entry.start && field.end === entry.end, 'target record identity mismatch');
     assert(field.originalToken === entry.originalToken, 'stale original token');
     assert(entry.unit === descriptor.unit, 'unit mismatch');
-    const encoded = encodeField(descriptor, entry.requestedValue);
+    const encoded = descriptor.serializer(descriptor, entry.requestedValue);
     assert(encoded.encoded === entry.encoded, 'staged representation changed');
-    if (encoded.number === 0) assert(entry.zeroConfirmed, 'zero confirmation revoked');
+    if (encoded.number === 0 && descriptor.zeroPolicy === 'reject') refuse('zero value disallowed');
+    if (encoded.number === 0 && descriptor.zeroPolicy === 'confirm') assert(entry.zeroConfirmed, 'zero confirmation revoked');
     assert(entry.start >= previousEnd, 'overlapping authorized field spans');
     previousEnd = entry.end;
     revised.set(encoder.encode(entry.encoded), entry.start);
@@ -234,9 +254,9 @@ export async function verifyCiiPropertyTransaction(session, options = {}) {
     const descriptor = session.registry.get(entry.propertyId);
     const field = resolveField({ ...session.index, bytes: revised }, descriptor, entry.recordPointer);
     assert(field.canonical === decimalSignature(entry.encoded), 'patched field value differs');
-    if (entry.propertyId === 'RIGID.weight') {
-      assert(reparsed.rows[entry.recordPointer - 1].weight === entry.newValue,
-        'reparsed RIGID weight does not match requested value');
+    if (typeof descriptor.readBack === 'function') {
+      assert(descriptor.readBack(reparsed, entry.recordPointer, entry.newValue, entry),
+        'descriptor reparse verification failed');
     }
   }
   const revisedSha256 = await ciiSha256(revised);
