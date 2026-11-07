@@ -56,11 +56,15 @@ for (const [name, target, replacement] of mutants) {
       writeFileSync(join(dir, 'xml-cii-final-property-transactions.js'),
         moduleSource.replace(target, replacement));
       writeFileSync(join(dir, 'xml-cii-final-property-transactions.test.mjs'), testSource);
+      const env = Object.fromEntries(Object.entries(process.env)
+        .filter(([key]) => !key.startsWith('NODE_TEST_')));
       const run = spawnSync(process.execPath,
         ['--test', join(dir, 'xml-cii-final-property-transactions.test.mjs')],
-        { cwd: dir, encoding: 'utf8', timeout: 115000, maxBuffer: 4 * 1024 * 1024 });
-      assert.notEqual(run.status, 0, 'MUTANT SURVIVED: ' + name);
+        { cwd: dir, env, encoding: 'utf8', timeout: 115000, maxBuffer: 4 * 1024 * 1024 });
       const output = (run.stdout || '') + '\n' + (run.stderr || '');
+      console.log('MUTANT PROBE ' + name + ' exit=' + run.status + ' result=' +
+        output.slice(-950).replace(/\n/g, ' '));
+      assert.notEqual(run.status, 0, 'MUTANT SURVIVED: ' + name);
       assert.match(output, /not ok|ERR_ASSERTION|test failed|SyntaxError|TypeError/,
         'Mutant must fail an executable test, not just a runner startup error');
       console.log('KILLED MUTANT ' + name + ' / child exit ' + run.status);
