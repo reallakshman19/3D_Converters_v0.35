@@ -214,7 +214,10 @@ test('malformed/truncated CII is refused; no partial output released', async () 
   await assert.rejects(() => session(fixture().replace('#$ RIGID', '#$ RIGID\ninvalid invalid')), /REFUSED|declares|invalid|not finite|fixed|numeric/);
   const s = await session();
   edit(s, 1, '150');
-  assert.throws(() => edit(s, 99, '10'), /pointer out of range/);
+  assert.throws(() => stageCiiPropertyEdit(s, {
+    propertyId: 'RIGID.weight', recordPointer: 99, originalToken: '0',
+    newValue: '10', unit: 'CII_OUTPUT_WEIGHT', confirmed: true,
+  }), /pointer out of range/);
   assert.equal(s.edits.size, 1);
   assert.equal(s.originalCiiText, fixture());
 });
