@@ -52,9 +52,14 @@ function sourceEdges(xml, forwardLengths = xmlCiiForwardElementLengths) {
 
 function normalizeCandidate(candidate, issue, scale, rank) {
   const weightKg = positive(candidate?.selectedWeight ?? candidate?.suggestedWeight ?? candidate?.weight);
-  if (!weightKg || !candidate?.lengthQualified || !candidate?.ratingExact
-      || !(Number(candidate.boreDelta) < 1)) return null;
-  if (candidate.zeroFallback || candidate.fallbackSuggestion || candidate.flangeWeightFallback) return null;
+  if (!weightKg || !candidate?.ratingExact || !(Number(candidate.boreDelta) < 1)) return null;
+  if (candidate.zeroFallback) return null;
+  const approximate = Boolean(candidate.inferredWeight || candidate.fallbackSuggestion
+    || candidate.flangeWeightFallback || candidate.lengthQualified !== true);
+  // Existing same-bore/rating interpolation/factor fallback may be offered to a
+  // human, never auto-selected. Unqualified arbitrary catalog rows are refused.
+  if (candidate.lengthQualified !== true && !candidate.fallbackSuggestion
+      && !candidate.flangeWeightFallback) return null;
   const method = clean(candidate.weightMethod || candidate.method || 'master');
   const label = clean(candidate.typeDesc || candidate.valveType || candidate.type || 'Catalog row');
   const source = clean(candidate.rowData?.id || candidate.rowData?.ID || candidate.rowData?.RowId
@@ -68,15 +73,16 @@ function normalizeCandidate(candidate, issue, scale, rank) {
     `Bore ${issue.boreMm} mm`, `rating ${issue.rating}`,
     Number.isFinite(masterLength) ? `master length ${masterLength} mm` : '',
     `physical span ${Number(issue.lengthMm).toFixed(3)} mm`,
-    `method ${method}`, semantic, source ? `row ${source}` : '',
+    `method ${method}`, approximate ? 'APPROXIMATE / REVIEW REQUIRED' : 'DIRECT QUALIFIED MASTER',
+    clean(candidate.weightWarning), semantic, source ? `row ${source}` : '',
     `${weightKg} kg × ${scale} = ${weight} exported units`,
   ].filter(Boolean).join(' · ');
   return {
     rank, referenceWeight: weight, masterWeightKg: weightKg,
     title: label, method, source, masterLengthMm: masterLength,
-    basis, preferred: candidate.preferred === true,
+    basis, preferred: candidate.preferred === true, approximate,
     semanticTier: Number(candidate.semanticTier) || 0,
-    direct: ['master', 'exact'].includes(method.toLowerCase()) && candidate.inferredWeight !== true,
+    direct: !approximate && ['master', 'exact'].includes(method.toLowerCase()),
   };
 }
 
