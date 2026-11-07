@@ -77,7 +77,7 @@ export function installFinalCiiPropertyEditor({ overlay, result, inventory, refr
   tools.style.cssText = 'display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:12px 0;';
   const buttons = {};
   const addButton = (key, title) => {
-    const btn = element('button', title, { type: 'button', 'data-final-rigid-' + key: '' });
+    const btn = element('button', title, { type: 'button', ['data-final-rigid-' + key]: '' });
     btn.style.cssText = 'padding:7px 11px;background:#1e293b;color:#e2e8f0;border:1px solid #475569;border-radius:5px;cursor:pointer;';
     buttons[key] = btn;
     tools.appendChild(btn);
