@@ -67,6 +67,19 @@ const multiple = buildFinalRigidReferencePlans(inventory, evidence, {
 });
 assert.equal(multiple[0].autoIndex, -1, 'multiple catalog weights require explicit choice');
 assert.equal(multiple[0].candidates.length, 2);
+const approximate = buildFinalRigidReferencePlans(inventory, evidence, {
+  ...authority,
+  collectWeightRows: () => [{ ...mockIssue, candidates: [{
+    ...exactCandidate, selectedWeight: 44, lengthQualified: false,
+    fallbackSuggestion: true, inferredWeight: true, preferred: false,
+    weightMethod: 'length-interpolated', weightWarning: 'Interpolated from same bore/rating',
+  }] }],
+});
+assert.equal(approximate[0].candidates.length, 1,
+  'show source-qualified approximate master choices for deliberate review');
+assert.equal(approximate[0].candidates[0].approximate, true);
+assert.equal(approximate[0].autoIndex, -1, 'approximate references must never auto-fill');
+assert.match(approximate[0].candidates[0].basis, /APPROXIMATE \/ REVIEW REQUIRED/);
 assert.equal(buildFinalRigidReferencePlans(inventory, {
   ...evidence, weightScale: null }, authority)[0].autoIndex, -1);
 assert.equal(buildFinalRigidReferencePlans(inventory, {
