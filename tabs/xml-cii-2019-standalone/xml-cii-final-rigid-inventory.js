@@ -99,7 +99,7 @@ function finalElementBranchName(line) {
   // Converter's A100 metadata line 11: seven-space prefix, five-digit length,
   // one separator and the exact branch name (see _element_line_number_field).
   const raw = String(line ?? '');
-  if (raw.length < 13 || raw.slice(0, 7).trim() || !/^\\s*\\d+\\s*$/.test(raw.slice(7, 12))) return '';
+  if (raw.length < 13 || raw.slice(0, 7).trim() || !/^\s*\d+\s*$/.test(raw.slice(7, 12))) return '';
   const size = Number(raw.slice(7, 12).trim());
   if (!Number.isSafeInteger(size) || size <= 0 || size > 100) return '';
   if (raw[12] !== ' ') return '';
