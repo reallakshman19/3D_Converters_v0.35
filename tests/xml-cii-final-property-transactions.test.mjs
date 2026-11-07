@@ -180,6 +180,23 @@ test('extensibility: second test-only field and mixed atomic transaction', async
   assert.equal(s.edits.size, 2, 'invalid third edit not staged, mixed transaction intact');
 });
 
+test('tampered staged target pointer cannot edit another equal-weight record', async () => {
+  const s = await session(fixture(4, 2, [100, 100]));
+  edit(s, 1, '700');
+  s.edits.get('RIGID.weight:1').recordPointer = 2;
+  await assert.rejects(() => verify(s), /target record identity mismatch/);
+  assert.equal(s.originalCiiText, fixture(4, 2, [100, 100]));
+});
+
+test('tampered second edit refuses entire mixed batch without released output', async () => {
+  const s = await session();
+  edit(s, 1, '750');
+  edit(s, 2, '850');
+  s.edits.get('RIGID.weight:2').unit = 'OTHER_UNIT';
+  await assert.rejects(() => verify(s), /unit mismatch/);
+  assert.equal(s.originalCiiText, fixture());
+});
+
 test('signed fields, CRLF, LF, BOM and record line endings preserve byte parity', async () => {
   for (const eol of ['\r\n', '\n']) for (const bom of ['', '\ufeff']) {
     const original = fixture(8, 5, null, eol, bom);
