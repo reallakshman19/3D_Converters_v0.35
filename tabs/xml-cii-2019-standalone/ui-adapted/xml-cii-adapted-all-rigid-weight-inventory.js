@@ -42,11 +42,13 @@ export function collectAllSourceRigidWeightRows(xmlText, config = {}) {
   if (typeof DOMParser === 'undefined') throw new Error('XML parser is unavailable.');
   if (!clean(xmlText)) throw new Error('Source XML is empty.');
   const document = new DOMParser().parseFromString(xmlText, 'application/xml');
-  if ([...document.getElementsByTagName('*')].some((node) => localName(node) === 'parsererror')) {
+  const allElements = [...document.getElementsByTagName('*')];
+  if (document.getElementsByTagName('parsererror').length || allElements.some((node) => localName(node) === 'parsererror')) {
     throw new Error('Source XML cannot be parsed for rigid-weight review.');
   }
-  const branches = [...document.getElementsByTagName('*')]
-    .filter((node) => localName(node) === 'Branch');
+  const branches = allElements.length
+    ? allElements.filter((node) => localName(node) === 'Branch')
+    : [...document.getElementsByTagName('Branch')];
   const rows = [];
   for (const branch of branches) {
     const branchName = childText(branch, 'Branchname');
