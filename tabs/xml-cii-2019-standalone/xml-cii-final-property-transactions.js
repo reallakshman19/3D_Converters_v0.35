@@ -78,8 +78,8 @@ export class CiiPropertyRegistry {
       unitConversion: 'none: require exact pinned CII output unit',
       precisionPolicy: 'exact decimal equivalence within fixed field width',
       parser: numericalValue, serializer: encodeField,
-      dependencies: Object.freeze([...(d.dependencies || [])]),
-      ...d, widths: Object.freeze(d.widths),
+      ...d, dependencies: Object.freeze([...(d.dependencies || [])]),
+      widths: Object.freeze(d.widths),
     });
     this.entries.set(d.id, descriptor);
     return this;
