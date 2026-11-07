@@ -69,7 +69,8 @@ assert.equal(finalRigidReviewAvailable({ result: { ok: true, enrichedText: '<xml
 
 const panel = readFileSync(new URL('../tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-output-run.js', import.meta.url), 'utf8');
 const popup = readFileSync(new URL('../tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-final-rigid-review.js', import.meta.url), 'utf8');
-assert.match(panel, /createFinalRigidWeightReviewButton\(state\)/, 'button must appear in Output / Run panel');
+assert.match(panel, /createFinalRigidWeightReviewButton\(state, \(\) => stateRef\.current\?\.result\)/,
+  'button must appear in Output / Run panel and bind the live result to refuse stale conversions');
 assert.match(popup, /Review Final weight/);
 assert.match(popup, /Rigid pointer/);
 assert.match(popup, /data-final-rigid-search/);
