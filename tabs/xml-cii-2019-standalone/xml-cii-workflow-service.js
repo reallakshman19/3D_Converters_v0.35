@@ -122,6 +122,19 @@ export async function runXmlCii2019WorkflowService(job, runtime = {}) {
   const result = await runXmlCii2019StandaloneEngineJob(engineJob, runtime);
   if (Array.isArray(result?.logs) && parity.logs.length) result.logs = [...parity.logs, ...result.logs];
   const normalized = normalizeXmlEngineResult(result);
+  // Non-published, run-pinned review evidence: exact XML handed to the engine,
+  // effective weight master, staged context and weight unit scale. The final CII
+  // pointer/branch/geometry must still reconcile before any reference is offered.
+  if (normalized.ok && normalized.ciiText && normalized.ciiInputSource !== 'topofix') {
+    normalized.finalRigidReviewEvidence = {
+      sourceKind: 'xml',
+      engineInputText: parity.xmlText,
+      stagedJsonText: factedJob.stagedJsonText || '',
+      supportConfigJson: factedJob.supportConfigJson,
+      weightScale: factedJob.options?.kgToNewton === false ? 1 : 10,
+      engineInputDigest: parity.evidence.engineInputDigest,
+    };
+  }
   if (normalized.diagnostics) {
     normalized.diagnostics.runParityStats = parity.stats;
     normalized.diagnostics.runParityEvidence = parity.evidence;

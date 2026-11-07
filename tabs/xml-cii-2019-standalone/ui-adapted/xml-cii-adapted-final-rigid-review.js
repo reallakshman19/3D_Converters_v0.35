@@ -1,3 +1,4 @@
+import { buildFinalRigidReferencePlans } from '../xml-cii-final-rigid-master-references.js';
 import { classifyFinalRigidWeightError, configuredFinalRigidErrorThreshold, formatFinalRigidErrorPercent } from '../xml-cii-final-rigid-weight-error.js';
 import { parseFinalCiiRigidInventory } from '../xml-cii-final-rigid-inventory.js';
 
@@ -14,12 +15,21 @@ export function finalRigidReviewAvailable(state) {
   return !state?.running && Boolean(ciiEvidence(state?.result));
 }
 
-function rowMarkup(row) {
+function rowMarkup(row, plan) {
   const linked = row.linkedElements;
   const elementIds = linked.map((element) => element.index).join(', ') || '—';
   const fromNodes = linked.map((element) => element.fromNode).join(', ') || '—';
   const toNodes = linked.map((element) => element.toNode).join(', ') || '—';
   const lengths = linked.map((element) => Number(element.lengthMm.toFixed(3))).join(', ') || '—';
+  const suggestions = plan?.candidates || [];
+  const auto = plan?.autoIndex >= 0 ? suggestions[plan.autoIndex] : null;
+  const suggestionOptions = [
+    '<option value="">Choose a catalog reference…</option>',
+    ...suggestions.map((entry, index) => `<option value="${index}" ${index === plan.autoIndex ? 'selected' : ''}>${entry.approximate ? '⚠ Approx · ' : ''}${esc(entry.referenceWeight)} exported · ${esc(entry.title)} · ${esc(entry.method)}</option>`),
+  ].join('');
+  const basisReason = plan?.reason || 'No run-pinned source-to-CII evidence.';
+  const mapping = plan?.mapping;
+  const trace = [mapping ? `CII branch ${mapping.branchName} · edge ${mapping.fromNode} → ${mapping.toNode} · ComponentRefNo ${mapping.componentRefNo || '(absent)'} · source span ${Number(mapping.sourceLengthMm).toFixed(3)} mm · CII span ${Number(mapping.ciiLengthMm).toFixed(3)} mm · engine input ${mapping.engineInputDigest || '(digest unavailable)'}` : '', basisReason].filter(Boolean).join('\n');
   const search = [row.rigidPointer, row.weight, row.rawWeight, row.status,
     elementIds, fromNodes, toNodes, lengths].join(' ').toLowerCase();
   const cell = (value) => `<td style="padding:9px;border-bottom:1px solid #26364b;white-space:nowrap;">${esc(value)}</td>`;
@@ -32,15 +42,28 @@ function rowMarkup(row) {
     ${cell(row.rigidPointer)}${cell(elementIds)}${cell(fromNodes)}${cell(toNodes)}
     ${cell(lengths)}${cell(row.rawWeight)}
     <td style="padding:7px;border-bottom:1px solid #26364b;">
+      <select data-final-rigid-suggestion="${row.rigidPointer}" aria-label="Catalog suggestions for RIGID pointer ${row.rigidPointer}"
+        style="width:230px;background:#0b1220;color:#e2e8f0;border:1px solid #475569;border-radius:4px;padding:5px;margin-bottom:3px;">
+        ${suggestionOptions}
+      </select>
       <input type="number" min="0.000001" step="any" data-final-rigid-reference="${row.rigidPointer}"
+        data-reference-kind="${auto ? 'auto' : ''}" value="${auto ? esc(auto.referenceWeight) : ''}"
         aria-label="Reference weight for RIGID pointer ${row.rigidPointer}"
         placeholder="ref required" style="width:105px;background:#0b1220;color:#e2e8f0;border:1px solid #475569;border-radius:4px;padding:5px;">
     </td>
     <td data-final-rigid-error="${row.rigidPointer}" style="padding:9px;border-bottom:1px solid #26364b;">—</td>
+    <td style="padding:8px;border-bottom:1px solid #26364b;min-width:240px;">
+      <div data-final-rigid-basis-summary="${row.rigidPointer}" style="color:#93c5fd;">
+        ${esc(auto ? 'AUTO · unique exact master reference' : suggestions.length ? suggestions.length + ' master suggestions · choose' : 'Not assessed')}
+      </div>
+      <details><summary style="cursor:pointer;color:#cbd5e1;">Evidence / calculation basis</summary>
+        <pre data-final-rigid-basis-detail="${row.rigidPointer}" style="white-space:pre-wrap;font-size:11px;max-width:310px;">${esc([trace, auto?.basis || ''].filter(Boolean).join('\n'))}</pre>
+      </details>
+    </td>
     ${cell(status)}</tr>`;
 }
 
-function modalMarkup(inventory, filename, thresholdPct = 20) {
+function modalMarkup(inventory, filename, thresholdPct = 20, plans = []) {
   const { rows, declared, unreferencedCount, sharedCount, nonpositiveCount } = inventory;
   return `<div class="mc-rigid-review-dialog" role="dialog" aria-modal="true"
       aria-label="Review final CII rigid weights" tabindex="-1"
@@ -67,6 +90,10 @@ function modalMarkup(inventory, filename, thresholdPct = 20) {
       from final CII DX/DY/DZ in mm. Error % uses (exported - reference) / reference × 100,
       following the existing Weight Validator's deviation formula. Enter a trusted
       per-pointer reference in the SAME output units; without one Error % stays —.
+      Master suggestions below require exact branch, edge, geometry, component and
+      catalog-basis evidence. Only a unique semantic and exact match is preselected.
+      A shared physical ComponentRefNo cannot auto-assign one physical mass to
+      multiple CII rigids. Open the basis for source/catalog details.
       The weight validation threshold is separate from the 0.65–1.60 length-extrapolation gate.
       No values or comparison references are saved or applied here.
     </div>
@@ -97,10 +124,10 @@ function modalMarkup(inventory, filename, thresholdPct = 20) {
       <table style="width:100%;border-collapse:collapse;text-align:left;font-size:12px;">
         <thead><tr style="position:sticky;top:0;background:#1e293b;">
           ${['Rigid pointer', 'Element #', 'FROM node', 'TO node', 'Element length (mm)',
-            'Final CII weight (as exported)', 'Reference (same units)', 'Error %', 'Status'].map((item) =>
+            'Final CII weight (as exported)', 'Reference suggestions (same units)', 'Error %', 'Basis / evidence', 'Status'].map((item) =>
               `<th style="padding:9px;white-space:nowrap;">${item}</th>`).join('')}
         </tr></thead>
-        <tbody>${rows.map(rowMarkup).join('')}</tbody>
+        <tbody>${rows.map((row, index) => rowMarkup(row, plans[index])).join('')}</tbody>
       </table>
       ${rows.length ? '' : '<div style="padding:14px;">Final CII contains zero RIGID records.</div>'}
     </div>
@@ -137,7 +164,15 @@ export function openFinalRigidWeightReview(result, options = {}) {
   catch (error) { errorMarkup(error); return false; }
   const overlay = document.createElement('div');
   overlay.className = 'model-converters-workflow-popup-overlay mc-rigid-review-overlay';
-  overlay.innerHTML = modalMarkup(inventory, result.ciiName || 'Generated CII', options.errorThresholdPct ?? 20);
+  let plans;
+  try { plans = buildFinalRigidReferencePlans(inventory, result.finalRigidReviewEvidence); }
+  catch (error) {
+    plans = inventory.rows.map((row) => ({
+      rigidPointer: row.rigidPointer, candidates: [], autoIndex: -1,
+      reason: 'Catalog reference lookup failed: ' + (error?.message || String(error)),
+    }));
+  }
+  overlay.innerHTML = modalMarkup(inventory, result.ciiName || 'Generated CII', options.errorThresholdPct ?? 20, plans);
   document.body.appendChild(overlay);
   const search = overlay.querySelector('[data-final-rigid-search]');
   const filter = overlay.querySelector('[data-final-rigid-filter]');
@@ -152,7 +187,8 @@ export function openFinalRigidWeightReview(result, options = {}) {
     let overLimit = 0;
     overlay.querySelectorAll('[data-final-rigid-row]').forEach((tr) => {
       const pointer = Number(tr.dataset.pointer);
-      const reference = tr.querySelector('[data-final-rigid-reference]')?.value || '';
+      const refInput = tr.querySelector('[data-final-rigid-reference]');
+      const reference = refInput?.value || '';
       const actual = inventory.rows[pointer - 1]?.weight;
       const comparison = classifyFinalRigidWeightError(actual, reference, limitInput?.value);
       const errorCell = tr.querySelector('[data-final-rigid-error]');
@@ -162,6 +198,23 @@ export function openFinalRigidWeightReview(result, options = {}) {
         errorCell.title = comparison.errorPct === null ? 'Reference required, in final CII output units'
           : (comparison.outside ? 'Outside selected error limit' : 'Within selected error limit');
       }
+      const plan = plans[pointer - 1];
+      const candidate = plan?.candidates?.[Number(tr.querySelector('[data-final-rigid-suggestion]')?.value)];
+      const basisSummary = tr.querySelector('[data-final-rigid-basis-summary]');
+      const basisDetail = tr.querySelector('[data-final-rigid-basis-detail]');
+      const isSelection = Boolean(tr.querySelector('[data-final-rigid-suggestion]')?.value !== ''
+        && refInput?.dataset.referenceKind !== 'manual' && candidate);
+      if (basisSummary) basisSummary.textContent =
+        comparison.errorPct === null ? (plan?.reason || 'No independent catalog reference')
+        : isSelection ? (refInput?.dataset.referenceKind === 'auto'
+          ? 'AUTO · exact catalog comparison' : candidate.approximate
+            ? 'SELECTED · approximate catalog comparison (review only)'
+            : 'SELECTED · catalog comparison (review)')
+          : 'MANUAL · reference comparison (not catalog verified)';
+      if (basisDetail && isSelection) basisDetail.textContent = [
+        plan?.reason || '', plan?.mapping ? `Source ${plan.mapping.branchName} ${plan.mapping.fromNode} → ${plan.mapping.toNode}; ComponentRefNo ${plan.mapping.componentRefNo || 'none'}; CII ${Number(plan.mapping.ciiLengthMm).toFixed(3)} mm` : '',
+        candidate.basis, 'Error % = 100 × (final CII weight − reference weight) / reference weight',
+      ].filter(Boolean).join('\n');
       if (comparison.errorPct !== null) assessed += 1;
       if (comparison.outside === true) overLimit += 1;
       tr.dataset.outsideError = String(comparison.outside === true);
@@ -185,8 +238,30 @@ export function openFinalRigidWeightReview(result, options = {}) {
   overlay.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') { event.preventDefault(); close(); }
   });
+  overlay.querySelectorAll('[data-final-rigid-suggestion]').forEach((select) =>
+    select.addEventListener('change', () => {
+      const pointer = Number(select.getAttribute('data-final-rigid-suggestion'));
+      const plan = plans[pointer - 1];
+      const candidate = select.value === '' ? null : plan?.candidates?.[Number(select.value)];
+      const tr = select.closest('[data-final-rigid-row]');
+      const input = tr?.querySelector('[data-final-rigid-reference]');
+      if (!input) return;
+      input.value = candidate ? String(candidate.referenceWeight) : '';
+      input.dataset.referenceKind = candidate ? 'selected' : '';
+      const detail = tr?.querySelector('[data-final-rigid-basis-detail]');
+      if (detail && !candidate) detail.textContent = plan?.reason || 'No qualified reference.';
+      refresh();
+    }));
   overlay.querySelectorAll('[data-final-rigid-reference]').forEach((input) =>
-    input.addEventListener('input', refresh));
+    input.addEventListener('input', () => {
+      input.dataset.referenceKind = 'manual';
+      const tr = input.closest('[data-final-rigid-row]');
+      const select = tr?.querySelector('[data-final-rigid-suggestion]');
+      if (select) select.value = '';
+      const detail = tr?.querySelector('[data-final-rigid-basis-detail]');
+      if (detail) detail.textContent = 'User-entered comparison reference. Verify independent source and exported units.';
+      refresh();
+    }));
   limitInput?.addEventListener('input', refresh);
   search?.addEventListener('input', refresh);
   filter?.addEventListener('change', refresh);
