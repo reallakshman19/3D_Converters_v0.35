@@ -1,3 +1,4 @@
+import { installFinalCiiPropertyEditor } from '../xml-cii-final-property-editor-ui.js';
 import { buildFinalRigidReferencePlans } from '../xml-cii-final-rigid-master-references.js';
 import { classifyFinalRigidWeightError, configuredFinalRigidErrorThreshold, formatFinalRigidErrorPercent } from '../xml-cii-final-rigid-weight-error.js';
 import { parseFinalCiiRigidInventory } from '../xml-cii-final-rigid-inventory.js';
@@ -95,7 +96,7 @@ function modalMarkup(inventory, filename, thresholdPct = 20, plans = []) {
       A shared physical ComponentRefNo cannot auto-assign one physical mass to
       multiple CII rigids. Open the basis for source/catalog details.
       The weight validation threshold is separate from the 0.65–1.60 length-extrapolation gate.
-      No values or comparison references are saved or applied here.
+      Catalog references never overwrite CII weights. Explicit edits can be previewed and applied to a separate, verified revised CII. The original is unchanged.
     </div>
     <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px;">
       <input type="search" data-final-rigid-search placeholder="Search pointer / element / FROM / TO / weight"
@@ -189,7 +190,8 @@ export function openFinalRigidWeightReview(result, options = {}) {
       const pointer = Number(tr.dataset.pointer);
       const refInput = tr.querySelector('[data-final-rigid-reference]');
       const reference = refInput?.value || '';
-      const actual = inventory.rows[pointer - 1]?.weight;
+      const editedInput = tr.querySelector('[data-final-rigid-edited]');
+      const actual = editedInput ? (editedInput.value.trim() ? Number(editedInput.value) : NaN) : inventory.rows[pointer - 1]?.weight;
       const comparison = classifyFinalRigidWeightError(actual, reference, limitInput?.value);
       const errorCell = tr.querySelector('[data-final-rigid-error]');
       if (errorCell) {
@@ -213,7 +215,7 @@ export function openFinalRigidWeightReview(result, options = {}) {
           : 'MANUAL · reference comparison (not catalog verified)';
       if (basisDetail && isSelection) basisDetail.textContent = [
         plan?.reason || '', plan?.mapping ? `Source ${plan.mapping.branchName} ${plan.mapping.fromNode} → ${plan.mapping.toNode}; ComponentRefNo ${plan.mapping.componentRefNo || 'none'}; CII ${Number(plan.mapping.ciiLengthMm).toFixed(3)} mm` : '',
-        candidate.basis, 'Error % = 100 × (final CII weight − reference weight) / reference weight',
+        candidate.basis, 'Error % = 100 × (edited CII weight − reference weight) / reference weight',
       ].filter(Boolean).join('\n');
       if (comparison.errorPct !== null) assessed += 1;
       if (comparison.outside === true) overLimit += 1;
@@ -222,7 +224,8 @@ export function openFinalRigidWeightReview(result, options = {}) {
         || (choice === 'OVER_LIMIT' ? tr.dataset.outsideError === 'true'
           : choice === 'ZERO_OR_NEGATIVE' ? tr.dataset.nonpositive === 'true'
           : tr.dataset.status === choice);
-      const display = (!q || (tr.dataset.search || '').includes(q)) && matchesStatus;
+      const modifiedOnly = overlay.querySelector('[data-final-rigid-modified-only]')?.checked === true;
+      const display = (!modifiedOnly || tr.dataset.editedChanged === 'true') && (!q || (tr.dataset.search || '').includes(q)) && matchesStatus;
       tr.hidden = !display;
       if (display) count += 1;
     });
@@ -265,12 +268,13 @@ export function openFinalRigidWeightReview(result, options = {}) {
   limitInput?.addEventListener('input', refresh);
   search?.addEventListener('input', refresh);
   filter?.addEventListener('change', refresh);
+  installFinalCiiPropertyEditor({ overlay, result, inventory, refresh, getCurrentResult: options.getCurrentResult });
   refresh();
   search?.focus();
   return true;
 }
 
-export function createFinalRigidWeightReviewButton(state) {
+export function createFinalRigidWeightReviewButton(state, getCurrentResult = () => state.result) {
   const available = finalRigidReviewAvailable(state);
   const button = document.createElement('button');
   button.type = 'button';
@@ -283,6 +287,7 @@ export function createFinalRigidWeightReviewButton(state) {
   button.style.cssText = 'width:100%;padding:12px;background:#1e293b;color:#e2e8f0;border:1px solid #475569;border-radius:6px;font-weight:700;cursor:pointer;';
   button.addEventListener('click', () => openFinalRigidWeightReview(state.result, {
     errorThresholdPct: configuredFinalRigidErrorThreshold(state.supportConfigJson),
+    getCurrentResult,
   }));
   return button;
 }
