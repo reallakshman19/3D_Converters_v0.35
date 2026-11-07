@@ -209,6 +209,16 @@ test('signed fields, CRLF, LF, BOM and record line endings preserve byte parity'
   }
 });
 
+test('EOF without final newline preserves exact untouched bytes', async () => {
+  const original = fixture(5, 4).replace(/\r\n$/, '');
+  const s = await session(original);
+  edit(s, 4, '432.125');
+  const output = await verify(s);
+  assert.equal(output.revisedCiiText.endsWith('\r\n'), false);
+  parity(original, output.revisedCiiText, output.audit.changes);
+  assert.equal(parseFinalCiiRigidInventory(output.revisedCiiText).rows[3].weight, 432.125);
+});
+
 test('malformed/truncated CII is refused; no partial output released', async () => {
   await assert.rejects(() => session(fixture().replace('#$ RIGID', '#$ MISSING')), /missing RIGID/);
   await assert.rejects(() => session(fixture().replace('#$ RIGID', '#$ RIGID\ninvalid invalid')), /REFUSED|declares|invalid|not finite|fixed|numeric/);

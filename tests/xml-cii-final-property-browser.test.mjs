@@ -123,6 +123,42 @@ try {
     await page.keyboard.press('Escape');
     assert.equal(await page.locator('.mc-rigid-review-overlay').count(), 0);
   });
+  await test('Chromium multi-RIGID edits stage atomically and Reset All retains original', async () => {
+    await page.goto(address + '/tests/fixtures/final-cii-property-ui-host.html');
+    await page.evaluate(async (ciiText) => {
+      const { openFinalRigidWeightReview } = await import('/tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-final-rigid-review.js');
+      window.currentResult = { ok: true, ciiText, ciiName: 'GLRD.cii' };
+      openFinalRigidWeightReview(window.currentResult,
+        { getCurrentResult: () => window.currentResult });
+    }, original);
+    const first = page.locator('[data-final-rigid-row][data-pointer="1"] [data-final-rigid-edited]');
+    const last = page.locator('[data-final-rigid-row][data-pointer="3"] [data-final-rigid-edited]');
+    await first.fill('555');
+    await last.fill('666');
+    await page.locator('[data-final-rigid-reset-all]').click();
+    assert.equal(await first.inputValue(), '430');
+    assert.equal(await last.inputValue(), '590');
+    assert.equal(await page.locator('[data-final-rigid-apply]').isDisabled(), true);
+    await first.fill('555');
+    await last.fill('666');
+    await page.locator('[data-final-rigid-preview]').click();
+    await page.waitForFunction(() => document.querySelector('[data-final-rigid-preview-report]')?.textContent.includes('VERIFIED PREVIEW'));
+    await page.locator('[data-final-rigid-apply]').click();
+    await page.waitForFunction(() => document.querySelector('[data-final-rigid-preview-report]')?.textContent.includes('VERIFIED REVISED CII READY'));
+    const [download] = await Promise.all([
+      page.waitForEvent('download'), page.locator('[data-final-rigid-download]').click(),
+    ]);
+    const revised = await readFile(await download.path(), 'utf8');
+    const { parseFinalCiiRigidInventory } = await import('../tabs/xml-cii-2019-standalone/xml-cii-final-rigid-inventory.js');
+    assert.deepEqual(parseFinalCiiRigidInventory(revised).rows.map((row) => row.weight), [555, 590, 666]);
+    assert.equal(await page.evaluate(() => window.currentResult.ciiText), original);
+    const [auditDownload] = await Promise.all([
+      page.waitForEvent('download'), page.locator('[data-final-rigid-audit]').click(),
+    ]);
+    const audit = JSON.parse(await readFile(await auditDownload.path(), 'utf8'));
+    assert.deepEqual(audit.changes.map((change) => change.recordPointer), [1, 3]);
+    assert.equal(audit.untouchedBytesEqual, true);
+  });
 } finally {
   await browser.close();
   await new Promise((resolve) => server.close(resolve));
