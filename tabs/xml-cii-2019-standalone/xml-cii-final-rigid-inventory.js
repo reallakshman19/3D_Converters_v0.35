@@ -95,6 +95,18 @@ function declaredCounts(control) {
   };
 }
 
+function finalElementBranchName(line) {
+  // Converter's A100 metadata line 11: seven-space prefix, five-digit length,
+  // one separator and the exact branch name (see _element_line_number_field).
+  const raw = String(line ?? '');
+  if (raw.length < 13 || raw.slice(0, 7).trim() || !/^\\s*\\d+\\s*$/.test(raw.slice(7, 12))) return '';
+  const size = Number(raw.slice(7, 12).trim());
+  if (!Number.isSafeInteger(size) || size <= 0 || size > 100) return '';
+  if (raw[12] !== ' ') return '';
+  const value = raw.slice(13, 13 + size);
+  return value.length === size ? value : '';
+}
+
 function parseElements(lines, pointerCount) {
   if (lines.length % 15 !== 0) fail(`ELEMENTS has ${lines.length} rows, not a multiple of 15.`);
   const elements = [];
@@ -115,7 +127,7 @@ function parseElements(lines, pointerCount) {
     const lengthMm = Math.hypot(dx, dy, dz);
     if (!Number.isFinite(lengthMm)) fail(`ELEMENTS ${index} length is not finite.`);
     elements.push({ index, fromNode: String(fromNode), toNode: String(toNode),
-      rigidPointer: pointer, lengthMm });
+      rigidPointer: pointer, lengthMm, branchName: finalElementBranchName(lines[offset + 10]) });
   }
   return elements;
 }
