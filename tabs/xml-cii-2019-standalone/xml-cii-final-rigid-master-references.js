@@ -22,7 +22,10 @@ function sourceEdges(xml) {
   const doc = new DOMParser().parseFromString(xml, 'application/xml');
   if (doc.getElementsByTagName('parsererror').length) return [];
   const result = [];
-  for (const branch of [...doc.getElementsByTagName('*')].filter((n) => localName(n) === 'Branch')) {
+  const all = [...doc.getElementsByTagName('*')];
+  const branches = all.length ? all.filter((n) => localName(n) === 'Branch')
+    : [...doc.getElementsByTagName('Branch')];
+  for (const branch of branches) {
     const branchName = value(branch, 'Branchname');
     if (!branchName) continue;
     const nodes = children(branch, 'Node');
