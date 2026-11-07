@@ -99,7 +99,8 @@ function tableRow(row) {
     '<td ' + common + ' title="' + escapeHtml(row.branchName) + '">' + escapeHtml(row.branchName) + '</td>' +
     '<td ' + common + '>' + escapeHtml(row.componentType) + '</td>' +
     '<td ' + common + '>' + escapeHtml(row.componentRefNo || '—') + '</td>' +
-    '<td ' + common + ' title="Source node index ' + row.nodeIndex + '">' + escapeHtml(row.nodeNumber || '—') + '</td>' +
+    '<td ' + common + '>' + escapeHtml(row.nodeIndex) + '</td>' +
+    '<td ' + common + '>' + escapeHtml(row.nodeNumber || '—') + '</td>' +
     '<td ' + common + '>' + escapeHtml(row.endpoint || '—') + '</td>' +
     '<td ' + common + '>' + (row.sharedRefCount > 1 ? row.sharedRefCount + ' source nodes' : '—') + '</td>' +
     '<td ' + common + ' title="' + escapeHtml(row.lengthSource) + '">' + escapeHtml(weightText(row.lengthMm)) + '</td>' +
@@ -112,7 +113,7 @@ function tableRow(row) {
 
 function dialogMarkup(rows, error) {
   const counts = allRigidReviewCounts(rows);
-  const header = ['Branch', 'Type', 'Component Ref', 'Node', 'Endpoint', 'Split / shared ref',
+  const header = ['Branch', 'Type', 'Component Ref', 'XML #', 'Node', 'Endpoint', 'Split / shared ref',
     'Span (mm)', 'Source (kg)', 'Override (kg)', 'Effective (kg)', 'Authority', 'Status'];
   return '<div class="mc-rigid-review-dialog" role="dialog" aria-modal="true" ' +
     'aria-label="All rigid weights and split source nodes" tabindex="-1" ' +
