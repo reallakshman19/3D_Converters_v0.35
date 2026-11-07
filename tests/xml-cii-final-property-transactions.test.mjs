@@ -194,7 +194,7 @@ test('signed fields, CRLF, LF, BOM and record line endings preserve byte parity'
 
 test('malformed/truncated CII is refused; no partial output released', async () => {
   await assert.rejects(() => session(fixture().replace('#$ RIGID', '#$ MISSING')), /missing RIGID/);
-  await assert.rejects(() => session(fixture().replace('      100', '      10')), /REFUSED|invalid|not finite|fixed|numeric/);
+  await assert.rejects(() => session(fixture().replace('#$ RIGID', '#$ RIGID\ninvalid invalid')), /REFUSED|invalid|not finite|fixed|numeric/);
   const s = await session();
   edit(s, 1, '150');
   assert.throws(() => edit(s, 99, '10'), /pointer out of range/);
