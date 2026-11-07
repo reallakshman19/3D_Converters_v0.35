@@ -1,3 +1,4 @@
+import { classifyFinalRigidWeightError, configuredFinalRigidErrorThreshold, formatFinalRigidErrorPercent } from '../xml-cii-final-rigid-weight-error.js';
 import { parseFinalCiiRigidInventory } from '../xml-cii-final-rigid-inventory.js';
 
 const esc = (value) => String(value ?? '').replace(/&/g, '&amp;')
@@ -18,20 +19,28 @@ function rowMarkup(row) {
   const elementIds = linked.map((element) => element.index).join(', ') || '—';
   const fromNodes = linked.map((element) => element.fromNode).join(', ') || '—';
   const toNodes = linked.map((element) => element.toNode).join(', ') || '—';
+  const lengths = linked.map((element) => Number(element.lengthMm.toFixed(3))).join(', ') || '—';
   const search = [row.rigidPointer, row.weight, row.rawWeight, row.status,
-    elementIds, fromNodes, toNodes].join(' ').toLowerCase();
+    elementIds, fromNodes, toNodes, lengths].join(' ').toLowerCase();
   const cell = (value) => `<td style="padding:9px;border-bottom:1px solid #26364b;white-space:nowrap;">${esc(value)}</td>`;
   const status = [
     !linked.length ? 'Unreferenced pointer' : (linked.length > 1 ? 'Shared by multiple elements' : 'Linked'),
     row.weight <= 0 ? 'Zero / negative weight' : '',
   ].filter(Boolean).join(' · ');
-  return `<tr data-final-rigid-row data-search="${esc(search)}" data-status="${esc(row.status)}"
+  return `<tr data-final-rigid-row data-pointer="${row.rigidPointer}" data-search="${esc(search)}" data-status="${esc(row.status)}"
     data-nonpositive="${row.weight <= 0}">
     ${cell(row.rigidPointer)}${cell(elementIds)}${cell(fromNodes)}${cell(toNodes)}
-    ${cell(row.rawWeight)}${cell(status)}</tr>`;
+    ${cell(lengths)}${cell(row.rawWeight)}
+    <td style="padding:7px;border-bottom:1px solid #26364b;">
+      <input type="number" min="0" step="any" data-final-rigid-reference="${row.rigidPointer}"
+        aria-label="Reference weight for RIGID pointer ${row.rigidPointer}"
+        placeholder="same units" style="width:105px;background:#0b1220;color:#e2e8f0;border:1px solid #475569;border-radius:4px;padding:5px;">
+    </td>
+    <td data-final-rigid-error="${row.rigidPointer}" style="padding:9px;border-bottom:1px solid #26364b;">—</td>
+    ${cell(status)}</tr>`;
 }
 
-function modalMarkup(inventory, filename) {
+function modalMarkup(inventory, filename, thresholdPct = 20) {
   const { rows, declared, unreferencedCount, sharedCount, nonpositiveCount } = inventory;
   return `<div class="mc-rigid-review-dialog" role="dialog" aria-modal="true"
       aria-label="Review final CII rigid weights" tabindex="-1"
@@ -54,7 +63,12 @@ function modalMarkup(inventory, filename) {
       Read-only final CII output, not source XML or proposed weights. RIGID Pointer is the
       1-based index into the final RIGID section, read from each ELEMENTS record's 13th line,
       second field. Weight is the exact exported first-field value in the CII file
-      (output mass/force units depend on the conversion setting). No values are applied here.
+      (output mass/force units depend on the conversion setting). Length is computed
+      from final CII DX/DY/DZ in mm. Error % uses (exported - reference) / reference × 100,
+      following the existing Weight Validator's deviation formula. Enter a trusted
+      per-pointer reference in the SAME output units; without one Error % stays —.
+      The weight validation threshold is separate from the 0.65–1.60 length-extrapolation gate.
+      No values or comparison references are saved or applied here.
     </div>
     <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px;">
       <input type="search" data-final-rigid-search placeholder="Search pointer / element / FROM / TO / weight"
@@ -67,14 +81,19 @@ function modalMarkup(inventory, filename) {
         <option value="ZERO_OR_NEGATIVE">Zero / negative weight</option>
         <option value="SHARED_POINTER">Shared pointer</option>
         <option value="UNREFERENCED">Unreferenced</option>
+        <option value="OVER_LIMIT">Beyond error limit (references only)</option>
       </select>
+      <label style="display:flex;align-items:center;gap:5px;color:#cbd5e1;font-size:12px;">
+        Error limit ±<input type="number" data-final-rigid-limit min="0" step="1" value="${esc(thresholdPct)}"
+          aria-label="Weight error limit percent" style="width:65px;padding:6px;background:#0b1220;color:#e2e8f0;border:1px solid #475569;border-radius:5px;">%
+      </label>
       <span data-final-rigid-visible style="color:#94a3b8;font-size:12px;"></span>
     </div>
     <div style="max-height:52vh;overflow:auto;border:1px solid #334155;border-radius:6px;">
       <table style="width:100%;border-collapse:collapse;text-align:left;font-size:12px;">
         <thead><tr style="position:sticky;top:0;background:#1e293b;">
-          ${['Rigid pointer', 'Element #', 'FROM node', 'TO node',
-            'Final CII weight (as exported)', 'Status'].map((item) =>
+          ${['Rigid pointer', 'Element #', 'FROM node', 'TO node', 'Element length (mm)',
+            'Final CII weight (as exported)', 'Reference (same units)', 'Error %', 'Status'].map((item) =>
               `<th style="padding:9px;white-space:nowrap;">${item}</th>`).join('')}
         </tr></thead>
         <tbody>${rows.map(rowMarkup).join('')}</tbody>
@@ -107,25 +126,39 @@ function errorMarkup(error) {
   document.body.appendChild(container);
 }
 
-export function openFinalRigidWeightReview(result) {
+export function openFinalRigidWeightReview(result, options = {}) {
   if (!ciiEvidence(result)) return false;
   let inventory;
   try { inventory = parseFinalCiiRigidInventory(result.ciiText); }
   catch (error) { errorMarkup(error); return false; }
   const overlay = document.createElement('div');
   overlay.className = 'model-converters-workflow-popup-overlay mc-rigid-review-overlay';
-  overlay.innerHTML = modalMarkup(inventory, result.ciiName || 'Generated CII');
+  overlay.innerHTML = modalMarkup(inventory, result.ciiName || 'Generated CII', options.errorThresholdPct ?? 20);
   document.body.appendChild(overlay);
   const search = overlay.querySelector('[data-final-rigid-search]');
   const filter = overlay.querySelector('[data-final-rigid-filter]');
   const visible = overlay.querySelector('[data-final-rigid-visible]');
+  const limitInput = overlay.querySelector('[data-final-rigid-limit]');
   const refresh = () => {
     const q = String(search?.value || '').trim().toLowerCase();
     const choice = filter?.value || 'all';
     let count = 0;
     overlay.querySelectorAll('[data-final-rigid-row]').forEach((tr) => {
+      const pointer = Number(tr.dataset.pointer);
+      const reference = tr.querySelector('[data-final-rigid-reference]')?.value || '';
+      const actual = inventory.rows[pointer - 1]?.weight;
+      const comparison = classifyFinalRigidWeightError(actual, reference, limitInput?.value);
+      const errorCell = tr.querySelector('[data-final-rigid-error]');
+      if (errorCell) {
+        errorCell.textContent = formatFinalRigidErrorPercent(comparison.errorPct);
+        errorCell.style.color = comparison.outside ? '#fca5a5' : '#cbd5e1';
+        errorCell.title = comparison.errorPct === null ? 'Reference required, in final CII output units'
+          : (comparison.outside ? 'Outside selected error limit' : 'Within selected error limit');
+      }
+      tr.dataset.outsideError = String(comparison.outside === true);
       const matchesStatus = choice === 'all'
-        || (choice === 'ZERO_OR_NEGATIVE' ? tr.dataset.nonpositive === 'true'
+        || (choice === 'OVER_LIMIT' ? tr.dataset.outsideError === 'true'
+          : choice === 'ZERO_OR_NEGATIVE' ? tr.dataset.nonpositive === 'true'
           : tr.dataset.status === choice);
       const display = (!q || (tr.dataset.search || '').includes(q)) && matchesStatus;
       tr.hidden = !display;
@@ -139,6 +172,9 @@ export function openFinalRigidWeightReview(result) {
   overlay.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') { event.preventDefault(); close(); }
   });
+  overlay.querySelectorAll('[data-final-rigid-reference]').forEach((input) =>
+    input.addEventListener('input', refresh));
+  limitInput?.addEventListener('input', refresh);
   search?.addEventListener('input', refresh);
   filter?.addEventListener('change', refresh);
   refresh();
@@ -157,6 +193,8 @@ export function createFinalRigidWeightReviewButton(state) {
   button.title = available ? 'Review every RIGID pointer and its exported CII weight'
     : 'Run a successful CII conversion first to enable final rigid review.';
   button.style.cssText = 'width:100%;padding:12px;background:#1e293b;color:#e2e8f0;border:1px solid #475569;border-radius:6px;font-weight:700;cursor:pointer;';
-  button.addEventListener('click', () => openFinalRigidWeightReview(state.result));
+  button.addEventListener('click', () => openFinalRigidWeightReview(state.result, {
+    errorThresholdPct: configuredFinalRigidErrorThreshold(state.supportConfigJson),
+  }));
   return button;
 }
