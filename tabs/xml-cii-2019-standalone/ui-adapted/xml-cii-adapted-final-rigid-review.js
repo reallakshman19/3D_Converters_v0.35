@@ -95,7 +95,7 @@ function errorMarkup(error) {
   dialog.className = 'mc-rigid-review-dialog';
   dialog.style.cssText = 'background:#0f172a;color:#fecaca;border:1px solid #b91c1c;border-radius:8px;padding:20px;max-width:760px;width:90%;';
   const title = document.createElement('strong');
-  title.textContent = 'Review Final weight — invalid CII output';
+  title.textContent = 'Review Final weight — could not parse final CII';
   const explanation = document.createElement('p');
   explanation.textContent = error?.message || String(error);
   const close = document.createElement('button');
