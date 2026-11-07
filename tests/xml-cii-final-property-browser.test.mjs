@@ -39,7 +39,7 @@ const address = 'http://127.0.0.1:' + server.address().port;
 const browser = await chromium.launch({ headless: true, args: ['--no-sandbox'] });
 const page = await browser.newPage({ acceptDownloads: true, viewport: { width: 1440, height: 900 } });
 try {
-  test('Chromium full Final RIGID weight edit/filter/preview/apply/export/re-import', async () => {
+  await test('Chromium full Final RIGID weight edit/filter/preview/apply/export/re-import', async () => {
     await page.goto(address + '/tests/fixtures/final-cii-property-ui-host.html');
     await page.evaluate(async (ciiText) => {
       const { openFinalRigidWeightReview } = await import('/tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-final-rigid-review.js');
@@ -64,10 +64,10 @@ try {
     await page.locator('[data-final-rigid-search]').fill('');
     assert.equal(await firstEdit.inputValue(), '350', 'search and filters cannot erase an edit');
     await page.locator('[data-final-rigid-preview]').click();
-    await page.locator('[data-final-rigid-preview-report]').getByText(/VERIFIED PREVIEW/).waitFor();
+    await page.waitForFunction(() => document.querySelector('[data-final-rigid-preview-report]')?.textContent.includes('VERIFIED PREVIEW'));
     assert.equal(await page.locator('[data-final-rigid-apply]').isDisabled(), false);
     await page.locator('[data-final-rigid-apply]').click();
-    await page.locator('[data-final-rigid-preview-report]').getByText(/VERIFIED REVISED CII READY/).waitFor();
+    await page.waitForFunction(() => document.querySelector('[data-final-rigid-preview-report]')?.textContent.includes('VERIFIED REVISED CII READY'));
     const [download] = await Promise.all([
       page.waitForEvent('download'), page.locator('[data-final-rigid-download]').click(),
     ]);
@@ -99,14 +99,14 @@ try {
     assert.equal(await page.locator('[data-final-rigid-row][data-pointer="1"] [data-final-rigid-edited]').inputValue(), '350');
   });
 
-  test('Chromium zero confirmation, reset, cancel, stale-result protection and mobile table', async () => {
+  await test('Chromium zero confirmation, reset, cancel, stale-result protection and mobile table', async () => {
     const edit = page.locator('[data-final-rigid-row][data-pointer="2"] [data-final-rigid-edited]');
     await edit.fill('0');
     await page.waitForTimeout(60);
     assert.match(await page.locator('[data-final-rigid-row][data-pointer="2"] [data-final-rigid-edit-feedback]').innerText(), /zero confirmation/i);
     await page.locator('[data-final-rigid-row][data-pointer="2"] [data-final-rigid-zero]').check();
     await page.locator('[data-final-rigid-preview]').click();
-    await page.locator('[data-final-rigid-preview-report]').getByText(/VERIFIED PREVIEW/).waitFor();
+    await page.waitForFunction(() => document.querySelector('[data-final-rigid-preview-report]')?.textContent.includes('VERIFIED PREVIEW'));
     await page.locator('[data-final-rigid-row][data-pointer="2"] [data-final-rigid-select]').check();
     await page.locator('[data-final-rigid-reset-selected]').click();
     assert.equal(await edit.inputValue(), '590');
@@ -115,10 +115,10 @@ try {
     assert.equal(await page.locator('.mc-rigid-review-dialog').isVisible(), true);
     await page.locator('[data-final-rigid-row][data-pointer="3"] [data-final-rigid-edited]').fill('650');
     await page.locator('[data-final-rigid-preview]').click();
-    await page.locator('[data-final-rigid-preview-report]').getByText(/VERIFIED PREVIEW/).waitFor();
+    await page.waitForFunction(() => document.querySelector('[data-final-rigid-preview-report]')?.textContent.includes('VERIFIED PREVIEW'));
     await page.evaluate(() => { window.currentResult = { ...window.currentResult }; });
     await page.locator('[data-final-rigid-apply]').click();
-    await page.locator('[data-final-rigid-preview-report]').getByText(/Stale run/).waitFor();
+    await page.waitForFunction(() => document.querySelector('[data-final-rigid-preview-report]')?.textContent.includes('Stale run'));
     assert.equal(await page.locator('[data-final-rigid-download]').isDisabled(), true);
     await page.keyboard.press('Escape');
     assert.equal(await page.locator('.mc-rigid-review-overlay').count(), 0);
