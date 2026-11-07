@@ -21,13 +21,12 @@ function rowMarkup(row) {
   const search = [row.rigidPointer, row.weight, row.rawWeight, row.status,
     elementIds, fromNodes, toNodes].join(' ').toLowerCase();
   const cell = (value) => `<td style="padding:9px;border-bottom:1px solid #26364b;white-space:nowrap;">${esc(value)}</td>`;
-  const status = {
-    LINKED: 'Linked',
-    UNREFERENCED: 'Unreferenced pointer',
-    SHARED_POINTER: 'Shared by multiple elements',
-    ZERO_OR_NEGATIVE: 'Zero / negative weight',
-  }[row.status];
-  return `<tr data-final-rigid-row data-search="${esc(search)}" data-status="${esc(row.status)}">
+  const status = [
+    !linked.length ? 'Unreferenced pointer' : (linked.length > 1 ? 'Shared by multiple elements' : 'Linked'),
+    row.weight <= 0 ? 'Zero / negative weight' : '',
+  ].filter(Boolean).join(' · ');
+  return `<tr data-final-rigid-row data-search="${esc(search)}" data-status="${esc(row.status)}"
+    data-nonpositive="${row.weight <= 0}">
     ${cell(row.rigidPointer)}${cell(elementIds)}${cell(fromNodes)}${cell(toNodes)}
     ${cell(row.rawWeight)}${cell(status)}</tr>`;
 }
@@ -125,8 +124,10 @@ export function openFinalRigidWeightReview(result) {
     const choice = filter?.value || 'all';
     let count = 0;
     overlay.querySelectorAll('[data-final-rigid-row]').forEach((tr) => {
-      const display = (!q || (tr.dataset.search || '').includes(q))
-        && (choice === 'all' || tr.dataset.status === choice);
+      const matchesStatus = choice === 'all'
+        || (choice === 'ZERO_OR_NEGATIVE' ? tr.dataset.nonpositive === 'true'
+          : tr.dataset.status === choice);
+      const display = (!q || (tr.dataset.search || '').includes(q)) && matchesStatus;
       tr.hidden = !display;
       if (display) count += 1;
     });
