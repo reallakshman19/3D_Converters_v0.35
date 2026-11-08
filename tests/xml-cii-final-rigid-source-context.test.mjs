@@ -49,7 +49,7 @@ const from = contexts(xml(branch('/B', [
   rigid(1, '/A', { Endpoint: 1 }),
   pipe(2, { ComponentRefNo: '/A', BoreMm: '', Rating: '' }),
 ])), one, authority([issue('/A', { nodeNumber: '1' })]))[0];
-assert.equal(from.status, 'VERIFIED');
+assert.equal(from.status, 'VERIFIED', 'FROM_TO_FALLBACK_WITNESS');
 assert.equal(from.mapping.sourceNodeSide, 'FROM', 'FROM_TO_FALLBACK_WITNESS');
 assert.equal(from.mapping.sourceNode, '1');
 assert.equal(from.bore.value, 100);
@@ -105,7 +105,7 @@ assert.equal(override.rating.basis, 'override');
 const ratingConflict = contexts(source, one,
   authority([issue('/A', { dtxr: '600# GATE VALVE', dtxrSource: 'staged-component',
     dtxrMatchedBy: 'component-refno', dtxrMatchedKey: '/A', dtxrSourcePath: '$.BRANCH[0]' })]))[0];
-assert.equal(ratingConflict.status, 'CONFLICT_REVIEW');
+assert.equal(ratingConflict.status, 'CONFLICT_REVIEW', 'RATING_CONFLICT');
 assert.ok(ratingConflict.conflicts.includes('RATING_CONFLICT'));
 assert.equal(ratingConflict.dtxr.matchedKey, '/A');
 assert.equal(ratingConflict.dtxr.sourcePath, '$.BRANCH[0]');
@@ -126,7 +126,7 @@ assert.equal(suppressed.eligibleForAutomaticReference, false, 'DTXR_SUPPRESSED_A
 const mappedOd = contexts(xml(branch('/B', [
   pipe(1), rigid(2, '/A', { BoreMm: '', OutsideDiameter: '114.3' }),
 ])), one, authority())[0];
-assert.equal(mappedOd.bore.value, 100);
+assert.equal(mappedOd.bore.value, 100, 'OD_DN_QUALIFICATION_WITNESS');
 assert.equal(mappedOd.bore.basis, 'qualified Weight Match OD-to-DN');
 assert.equal(mappedOd.bore.original, '114.3');
 const refusedOd = contexts(xml(branch('/B', [
@@ -143,7 +143,7 @@ const dtxrConflict = contexts(xml(branch('/B', [
   pipe(1, { ComponentRefNo: '/A', DTXR_POS: 'VALVE-A' }),
   rigid(2, '/A', { DTXR_POS: 'VALVE-B' }),
 ])))[0];
-assert.equal(dtxrConflict.status, 'CONFLICT_REVIEW');
+assert.equal(dtxrConflict.status, 'CONFLICT_REVIEW', 'DTXR_CONFLICT_WITNESS');
 assert.ok(dtxrConflict.conflicts.includes('DTXR_SOURCE_CONFLICT'), 'DTXR_CONFLICT_WITNESS');
 
 const noMaster = buildFinalRigidReferencePlans(one, evidence(source, {}), authority())[0];
