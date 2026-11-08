@@ -51,7 +51,9 @@ function sourceIndex(xmlText, forwardLengths) {
   const doc = new DOMParser().parseFromString(xmlText, 'application/xml');
   if (doc.getElementsByTagName('parsererror').length) throw new Error('Malformed run-pinned XML.');
   const edges = new Map();
-  for (const branch of [...doc.getElementsByTagName('*')].filter((n) => tag(n) === 'Branch')) {
+  const all = [...doc.getElementsByTagName('*')];
+  const branches = all.length ? all.filter((n) => tag(n) === 'Branch') : [...doc.getElementsByTagName('Branch')];
+  for (const branch of branches) {
     const branchName = value(branch, 'Branchname');
     if (!branchName) continue;
     const nodes = [...(branch.childNodes || [])].filter((n) => n.nodeType === 1 && tag(n) === 'Node');
