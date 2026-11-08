@@ -103,3 +103,20 @@ test('lineage records unresolved owner rather than guessing source identity', as
   assert.equal(ledger.auxiliaryRecords[0].sourceCandidate, null);
   assert.equal(ledger.auxiliaryRecords[0].editable, false);
 });
+
+test('four-level graph includes non-RIGID ELEMENTS rather than only rigid-linked subset', async () => {
+  const snapshot = await createRoundtripSnapshot(input());
+  const nonRigid = ['2 3 7 0 0 60', ...Array(11).fill(six), six, six, six].join('\n');
+  const twoElements = baseline
+    .replace('1 0 0 0 0 0', '2 0 0 0 0 0')
+    .replace('#$ RIGID', nonRigid + '\n#$ RIGID');
+  const inventory = parseFinalCiiRigidInventory(twoElements);
+  assert.equal(inventory.elements.length, 2);
+  assert.equal(inventory.rows[0].linkedElements.length, 1);
+  const ledger = buildRoundtripReadOnlyLineage(snapshot, inventory,
+    [{ rigidPointer: 1, status: 'NOT_RESOLVED', reason: 'No complete physical owner.' }]);
+  assert.equal(ledger.coverage.totalElements, 2);
+  assert.equal(ledger.elements.length, 2);
+  assert.equal(ledger.nodes.length, 3);
+  assert.equal(ledger.auxiliaryRecords.length, 1);
+});
