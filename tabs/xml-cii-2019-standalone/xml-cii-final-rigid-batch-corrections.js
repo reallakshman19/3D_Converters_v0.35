@@ -75,8 +75,15 @@ export function planFinalRigidBatchCorrections(inventory, plans, options = {}) {
       return { ...base, reason: 'Cannot calculate valid error in final CII output units.' };
     const full = {
       ...base, candidateIndex: index, candidate, proposedWeight: expected,
-      errorPct: error, reviewRequired: Boolean(candidate.approximate ||
-        candidate.comparisonOnly || !plan.mapping || !candidate.sourceVerified),
+      // A trusted exact candidate from the existing component-verified
+      // reference planner can be staged by explicit row selection. Mode A
+      // comparison-only candidates, approximate weights and unverified owner
+      // matches MUST require separate review opt-in + acknowledgement.
+      errorPct: error, reviewRequired: !(
+        Boolean(plan.mapping) && context?.status === 'VERIFIED' &&
+        candidate.direct === true && candidate.approximate !== true &&
+        candidate.comparisonOnly !== true
+      ),
     };
     if (Math.abs(error) <= threshold)
       return { ...full, status: 'BELOW_THRESHOLD', reason: 'Absolute error does not exceed ±' + threshold + '%.' };
