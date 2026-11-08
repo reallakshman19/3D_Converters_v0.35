@@ -2,6 +2,8 @@ import {
   collectXmlCiiWeightMatchRows,
   xmlCiiForwardElementLengths,
 } from '../../converters/xml-cii2019-core/weight-match-model.js';
+import { buildFinalRigidSourceContexts } from './xml-cii-final-rigid-source-context.js';
+import { rankXmlCiiWeightCandidates } from '../../converters/xml-cii2019-core/weight-valve-hints.js';
 
 const clean = (v) => String(v ?? '').trim();
 const localName = (node) => clean(node?.localName || node?.nodeName).replace(/^.*:/, '');
@@ -92,7 +94,27 @@ function failed(pointer, reason) {
 
 export function buildFinalRigidReferencePlans(inventory, evidence = {}, authorities = {}) {
   const finalRows = Array.isArray(inventory?.rows) ? inventory.rows : [];
-  const missing = (reason) => finalRows.map((row) => failed(row.rigidPointer, reason));
+  // Resolve engineering context separately: a missing master must not erase a
+  // verified source component's Bore, Rating, DTXR or provenance.
+  const contexts = buildFinalRigidSourceContexts(inventory, evidence, authorities);
+  const finish = (rows) => rows.map((plan, index) => {
+    const context = contexts[index];
+    if (!context) return plan;
+    const verified = Boolean(context.mapping);
+    const consistent = !plan.mapping || !context.mapping ||
+      (plan.mapping.branchName === context.mapping.branchName &&
+       plan.mapping.componentRefNo === context.mapping.componentRefNo);
+    const candidates = verified && consistent ? plan.candidates : [];
+    const autoIndex = context.eligibleForAutomaticReference && consistent ? plan.autoIndex : -1;
+    const restriction = context.status === 'CONFLICT_REVIEW'
+      ? 'Source metadata conflict: automatic reference selection disabled.'
+      : !verified ? context.reason : !consistent
+        ? 'Source-component identities disagree: catalog evidence refused.' : '';
+    return { ...plan, sourceContext: context,
+      mapping: context.mapping || null, candidates, autoIndex,
+      reason: [restriction, plan.reason].filter(Boolean).join(' · ') };
+  });
+  const missing = (reason) => finish(finalRows.map((row) => failed(row.rigidPointer, reason)));
   if (evidence.sourceKind !== 'xml' || !clean(evidence.engineInputText))
     return missing('No exact run-pinned XML engine input; re-run XML conversion for master evidence.');
   if (![1, 10].includes(Number(evidence.weightScale)))
@@ -147,8 +169,19 @@ export function buildFinalRigidReferencePlans(inventory, evidence = {}, authorit
       return failed(row.rigidPointer, 'Component/owner has zero or ambiguous master review rows.');
 
     const issue = matching[0];
-    const candidates = (issue.candidates || []).map((item, index) =>
-      normalizeCandidate(item, issue, Number(evidence.weightScale), index))
+    const context = contexts[row.rigidPointer - 1];
+    // Real Weight Match authority re-ranks against the resolved, run-pinned
+    // source component. Injected suites can supply their own ranked issues.
+    const reRanked = authorities.collectWeightRows ? issue.candidates :
+      rankXmlCiiWeightCandidates({
+        boreMm: context?.bore?.value, rating: context?.rating?.value,
+        dtxr: context?.dtxr?.value || '',
+        lengthMm: issue.lengthMm, nodeName: issue.nodeName,
+        componentType: issue.componentType, componentRefNo: issue.componentRefNo,
+      }, config, { includeRejected: true }).candidates;
+    const candidates = (reRanked || []).map((item, index) =>
+      normalizeCandidate(item, { ...issue, boreMm: context?.bore?.value,
+        rating: context?.rating?.value }, Number(evidence.weightScale), index))
       .filter(Boolean).slice(0, 5);
     const mapping = {
       branchName: edge.branchName, fromNode: edge.from, toNode: edge.to,
@@ -189,5 +222,5 @@ export function buildFinalRigidReferencePlans(inventory, evidence = {}, authorit
       plan.reason = 'Multiple or non-authoritative catalog candidates; select a reference explicitly.';
     }
   }
-  return plans;
+  return finish(plans);
 }
