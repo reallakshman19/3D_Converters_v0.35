@@ -1,0 +1,92 @@
+{
+  "schema": "xml-cii-roundtrip-conversion-stage-map/v1",
+  "baselineCommit": "3394c022f9400f05a736948033d26eb46274446c",
+  "canonicalReplayBoundary": "ENGINE_INPUT_XML_BEFORE_PYTHON_RUNTIME_CUSTODY",
+  "stages": [
+    {
+      "id": "effective-facts",
+      "implementation": "tabs/xml-cii-2019-standalone/xml-cii-workflow-service.js",
+      "input": "workflow job",
+      "output": "job with effective supportConfigJson",
+      "mayChange": [
+        "weight overrides",
+        "preview facts",
+        "manual facts",
+        "support mapping rules"
+      ]
+    },
+    {
+      "id": "js-run-parity",
+      "implementation": "tabs/xml-cii-2019-standalone/xml-cii-standalone-run-parity.js",
+      "input": "source XML, masters, staged/configured facts",
+      "output": "parity.xmlText",
+      "mayChange": [
+        "source XML",
+        "weights",
+        "DTXR",
+        "split generated nodes",
+        "process values"
+      ],
+      "replayAgain": false
+    },
+    {
+      "id": "engine-run",
+      "implementation": "tabs/xml-cii-2019-standalone/xml-cii-workflow-engine-client.js",
+      "input": "parity.xmlText with effective config/options",
+      "output": "engine result",
+      "engine": "converters/xml-cii-2019-standalone/engine.js"
+    },
+    {
+      "id": "optional-topofix",
+      "implementation": "converters/xml-cii-2019-standalone/topology-integration.js",
+      "input": "engine-input XML",
+      "output": "optional replacement CII input",
+      "replayGate": "HOLD_IF_useTopoFixForCii"
+    },
+    {
+      "id": "python-runtime",
+      "implementation": "converters/scripts/xml_to_cii2019_runtime_custody.py",
+      "input": "engine-input XML, effective config, staged data, options",
+      "output": "CII writer model",
+      "mayChange": [
+        "Python-side source enrichment",
+        "process mapping",
+        "negative-node renumbering",
+        "restraints",
+        "split components",
+        "short-node cleanup"
+      ]
+    },
+    {
+      "id": "python-patched",
+      "implementation": "converters/scripts/xml_to_cii2019_patched.py",
+      "input": "runtime converter state",
+      "output": "preprocessed model and case payload",
+      "mayChange": [
+        "process cases",
+        "mapped master fields",
+        "DTXR restraint derivation",
+        "pressure",
+        "density"
+      ]
+    },
+    {
+      "id": "cii-base-writer",
+      "implementation": "converters/scripts/xml_to_cii2019.py",
+      "input": "conversion model",
+      "output": "fixed-width final CII"
+    },
+    {
+      "id": "cii-validator",
+      "implementation": "converters/scripts/cii2019_section_rules.py",
+      "input": "final CII",
+      "output": "structural section validation"
+    }
+  ],
+  "baselineArtifacts": {
+    "actualOwnerSourceXml": "NOT_RECEIVED",
+    "hydratedOwnerConfigAndMasters": "NOT_RECEIVED",
+    "originalOwnerCii": "NOT_RECEIVED",
+    "authenticatedOwnerReplay": "NOT_RUN"
+  }
+}

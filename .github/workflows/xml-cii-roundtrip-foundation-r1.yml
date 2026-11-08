@@ -1,0 +1,77 @@
+name: EnrichedXML CII round-trip R1 — foundation
+
+on:
+  push:
+    branches:
+      - 'feat/enrichedxml-cii-roundtrip-foundation-r1-*'
+  pull_request:
+    paths:
+      - 'tabs/xml-cii-2019-standalone/roundtrip/**'
+      - 'tests/xml-cii-roundtrip-*.test.mjs'
+      - '.github/workflows/xml-cii-roundtrip-foundation-r1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  foundation:
+    name: Snapshot, replay and read-only lineage
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax-check foundation modules
+        run: |
+          node --check tabs/xml-cii-2019-standalone/roundtrip/xml-cii-roundtrip-snapshot.js
+          node --check tabs/xml-cii-2019-standalone/roundtrip/xml-cii-roundtrip-reextract.js
+          node --check tabs/xml-cii-2019-standalone/roundtrip/xml-cii-roundtrip-lineage.js
+      - name: Execute foundation tests
+        run: node --test tests/xml-cii-roundtrip-foundation.test.mjs
+      - name: Existing source context and direct-CII transaction regression
+        run: |
+          node --test tests/xml-cii-final-rigid-source-context.test.mjs
+          node --test tests/xml-cii-final-property-transactions.test.mjs
+
+  repository-noedit-smoke:
+    name: Real Python converter no-edit repeatability (repository fixture only)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Execute existing converter twice with identical repository inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/xml-cii-roundtrip-noedit"
+          input='Benchmarks/XML to CII 2019/GLRD-1000-PI-01.xml'
+          python3 converters/scripts/xml_to_cii2019_runtime_custody.py --input "$input" --output "$RUNNER_TEMP/xml-cii-roundtrip-noedit/A.cii" --coords-mode first --weight-scale 10 --split-condensed-valve-flange
+          python3 converters/scripts/xml_to_cii2019_runtime_custody.py --input "$input" --output "$RUNNER_TEMP/xml-cii-roundtrip-noedit/B.cii" --coords-mode first --weight-scale 10 --split-condensed-valve-flange
+          cmp "$RUNNER_TEMP/xml-cii-roundtrip-noedit/A.cii" "$RUNNER_TEMP/xml-cii-roundtrip-noedit/B.cii"
+          sha256sum "$RUNNER_TEMP/xml-cii-roundtrip-noedit/"*.cii
+          python3 - "$RUNNER_TEMP/xml-cii-roundtrip-noedit" <<'PY'
+          import hashlib, json, pathlib, sys
+          root = pathlib.Path(sys.argv[1])
+          files = [root / 'A.cii', root / 'B.cii']
+          hashes = [hashlib.sha256(p.read_bytes()).hexdigest() for p in files]
+          sizes = [p.stat().st_size for p in files]
+          data = {
+              'schema':'xml-cii-roundtrip-repo-smoke/v1',
+              'dataset':'repository GLRD smoke only; NOT authentic Owner 433/144 configured run',
+              'sha256': hashes, 'byteLength': sizes,
+              'byteIdentical': files[0].read_bytes() == files[1].read_bytes(),
+              'authenticGlrdQualification':'NOT_RUN'
+          }
+          (root / 'no-edit-replay-report.json').write_text(json.dumps(data, indent=2) + '\n')
+          assert data['byteIdentical']
+          PY
+      - name: Upload bounded smoke evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: xml-cii-roundtrip-r1-repository-noedit-smoke
+          path: ${{ runner.temp }}/xml-cii-roundtrip-noedit/
+          if-no-files-found: warn
