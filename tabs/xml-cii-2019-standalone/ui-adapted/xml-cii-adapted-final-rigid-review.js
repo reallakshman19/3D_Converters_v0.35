@@ -23,11 +23,27 @@ function rowMarkup(row, plan) {
   const toNodes = linked.map((element) => element.toNode).join(', ') || '—';
   const lengths = linked.map((element) => Number(element.lengthMm.toFixed(3))).join(', ') || '—';
   const suggestions = plan?.candidates || [];
+  // The same engine as Mode A produces ranked nearest candidates. If source
+  // component ownership is not verified, these are comparison-only; never
+  // auto-select a reference or edit the exported CII weight.
+  const nearest = plan?.nearestSuggestions || suggestions;
   const auto = plan?.autoIndex >= 0 ? suggestions[plan.autoIndex] : null;
   const suggestionOptions = [
-    '<option value="">Choose a catalog reference…</option>',
-    ...suggestions.map((entry, index) => `<option value="${index}" ${index === plan.autoIndex ? 'selected' : ''}>${entry.approximate ? '⚠ Approx · ' : ''}${esc(entry.referenceWeight)} exported · ${esc(entry.title)} · ${esc(entry.method)}</option>`),
+    '<option value="">Select a nearest suggestion…</option>',
+    ...nearest.map((entry, index) => `<option value="${index}" ${auto === entry ? 'selected' : ''}>${entry.approximate ? '⚠ Approx · ' : ''}${esc(entry.masterWeightKg)} kg · ${entry.matchPct == null ? 'Unscored' : esc(entry.matchPct) + '%'} · ${esc(entry.title)}</option>`),
   ].join('');
+  const nearestButtons = nearest.map((entry, index) => {
+    const active = auto === entry;
+    const detail = [entry.title, entry.method, entry.basis].filter(Boolean).join(' · ');
+    return `<button type="button" data-final-rigid-nearest-candidate="${row.rigidPointer}"
+      data-final-rigid-nearest-index="${index}" aria-pressed="${active}"
+      title="${esc(detail)}" style="cursor:pointer;font-size:11px;padding:5px 7px;margin:2px;
+        border-radius:5px;border:1px solid ${active ? '#60a5fa' : '#334155'};
+        background:${active ? '#1d4ed8' : '#1e293b'};color:#dbeafe;">
+      ${entry.preferred ? '★ ' : ''}${esc(entry.masterWeightKg)} kg ·
+      ${entry.matchPct === null ? 'Unscored' : esc(entry.matchPct) + '%'}
+      ${entry.approximate ? ' · ⚠' : ''}</button>`;
+  }).join('');
   const basisReason = plan?.reason || 'No run-pinned source-to-CII evidence.';
   const mapping = plan?.mapping;
   const context = plan?.sourceContext;
@@ -91,20 +107,26 @@ function rowMarkup(row, plan) {
     ${metadataCell(context?.rating, 'rating')}
     ${cell(valueOrStatus(context?.dtxr))}
     ${cell(row.rawWeight)}
-    <td style="padding:7px;border-bottom:1px solid #26364b;">
-      <select data-final-rigid-suggestion="${row.rigidPointer}" aria-label="Catalog suggestions for RIGID pointer ${row.rigidPointer}"
-        style="width:230px;background:#0b1220;color:#e2e8f0;border:1px solid #475569;border-radius:4px;padding:5px;margin-bottom:3px;">
-        ${suggestionOptions}
-      </select>
-      <input type="number" min="0.000001" step="any" data-final-rigid-reference="${row.rigidPointer}"
-        data-reference-kind="${auto ? 'auto' : ''}" value="${auto ? esc(auto.referenceWeight) : ''}"
-        aria-label="Reference weight for RIGID pointer ${row.rigidPointer}"
-        placeholder="ref required" style="width:105px;background:#0b1220;color:#e2e8f0;border:1px solid #475569;border-radius:4px;padding:5px;">
+    <td style="padding:7px;border-bottom:1px solid #26364b;min-width:325px;max-width:370px;">
+      <div data-final-rigid-nearest="${row.rigidPointer}" role="group"
+        aria-label="Nearest Suggestions for RIGID pointer ${row.rigidPointer}" style="display:flex;flex-wrap:wrap;gap:2px;">
+        ${nearestButtons || '<span style="font-size:11px;color:#94a3b8;">No qualified nearest suggestion</span>'}
+      </div>
+      <select data-final-rigid-suggestion="${row.rigidPointer}" tabindex="-1"
+        aria-hidden="true" style="display:none;">${suggestionOptions}</select>
+      <label style="display:block;margin-top:5px;color:#94a3b8;font-size:10px;">
+        Reference for Error % (CII output units)
+        <input type="number" min="0.000001" step="any" data-final-rigid-reference="${row.rigidPointer}"
+          data-reference-kind="${auto ? 'auto' : ''}" value="${auto ? esc(auto.referenceWeight) : ''}"
+          aria-label="Reference for Error % in output units for RIGID pointer ${row.rigidPointer}"
+          placeholder="Not assessed" style="display:block;width:130px;background:#0b1220;color:#e2e8f0;border:1px solid #475569;border-radius:4px;padding:5px;margin-top:2px;">
+      </label>
+      <div style="font-size:10px;color:#fbbf24;">Clicking a suggestion compares weights only; it never edits CII.</div>
     </td>
     <td data-final-rigid-error="${row.rigidPointer}" style="padding:9px;border-bottom:1px solid #26364b;">—</td>
     <td style="padding:8px;border-bottom:1px solid #26364b;min-width:240px;">
       <div data-final-rigid-basis-summary="${row.rigidPointer}" style="color:#93c5fd;">
-        ${esc(auto ? 'AUTO · unique exact master reference' : suggestions.length ? suggestions.length + ' master suggestions · choose' : 'Not assessed')}
+        ${esc(auto ? 'AUTO · unique exact master reference' : nearest.length ? nearest.length + ' nearest suggestion(s) · choose for comparison' : 'Not assessed')}
       </div>
       <details><summary style="cursor:pointer;color:#cbd5e1;">Evidence / calculation basis</summary>
         <pre data-final-rigid-basis-detail="${row.rigidPointer}" style="white-space:pre-wrap;font-size:11px;max-width:310px;">${esc([trace, auto?.basis || ''].filter(Boolean).join('\n'))}</pre>
@@ -132,8 +154,13 @@ function modalMarkup(inventory, filename, thresholdPct = 20, plans = []) {
       <button type="button" data-final-rigid-close style="padding:7px 12px;background:#1e293b;
         border:1px solid #475569;color:#e2e8f0;border-radius:6px;cursor:pointer;">Close</button>
     </div>
-    <div style="background:#2a210b;border:1px solid #7c5a18;border-radius:6px;padding:9px;
-      font-size:12px;color:#ffe7a3;margin-bottom:12px;">
+    <details data-final-rigid-guidance style="background:#2a210b;border:1px solid #7c5a18;
+      border-radius:6px;padding:9px;font-size:12px;color:#ffe7a3;margin-bottom:12px;">
+      <summary style="cursor:pointer;display:flex;align-items:center;gap:7px;font-weight:600;list-style:none;">
+        <span aria-hidden="true" data-final-rigid-guidance-icon>▶</span>
+        Engineering context, nearest-suggestion limits &amp; weight-review guidance
+      </summary>
+      <div style="padding:8px 2px 2px;line-height:1.5;">
       Bore and Rating are read-only engineering context. When source-component ownership is unresolved, nominal Bore can be derived from the final CII ELEMENTS outside diameter using the qualified OD-to-DN map, and Rating from the exact branch in the run-pinned enriched XML. This does not establish physical-component identity or authorize any reference or weight. Conflicts remain marked for review. DTXR remains source-component-only. RIGID Pointer is the
       1-based index into the final RIGID section, read from each ELEMENTS record's 13th line,
       second field. Weight is the exact exported first-field value in the CII file
@@ -141,13 +168,19 @@ function modalMarkup(inventory, filename, thresholdPct = 20, plans = []) {
       from final CII DX/DY/DZ in mm. Error % uses (exported - reference) / reference × 100,
       following the existing Weight Validator's deviation formula. Enter a trusted
       per-pointer reference in the SAME output units; without one Error % stays —.
-      Master suggestions below require exact branch, edge, geometry, component and
-      catalog-basis evidence. Only a unique semantic and exact match is preselected.
+      Nearest Suggestions reuse the Consolidated popup's catalog ranking by
+      Bore, Rating, length and available component/DTXR evidence. The percentage
+      is a catalog match score, NOT physical mass confidence. The source XML
+      master values are shown in kg; comparison references use the captured
+      CII output-unit scale. An unresolved component may display review-only
+      alternatives but must never automatically assign a physical mass.
+      Only an independently verified unique semantic match may be preselected.
       A shared physical ComponentRefNo cannot auto-assign one physical mass to
       multiple CII rigids. Open the basis for source/catalog details.
       The weight validation threshold is separate from the 0.65–1.60 length-extrapolation gate.
       Catalog references never overwrite CII weights. Explicit edits can be previewed and applied to a separate, verified revised CII. The original is unchanged.
-    </div>
+      </div>
+    </details>
     <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px;">
       <input type="search" data-final-rigid-search placeholder="Search pointer / element / FROM / TO / weight"
         style="background:#0b1220;color:#e2e8f0;border:1px solid #475569;border-radius:5px;
@@ -175,7 +208,7 @@ function modalMarkup(inventory, filename, thresholdPct = 20, plans = []) {
       <table style="width:100%;border-collapse:collapse;text-align:left;font-size:12px;">
         <thead><tr style="position:sticky;top:0;background:#1e293b;">
           ${['Rigid pointer', 'Element #', 'FROM node', 'TO node', 'Element length (mm)',
-            'Bore (mm)', 'Rating', 'DTXR', 'Final CII weight (as exported)', 'Reference suggestions (same units)', 'Error %', 'Basis / evidence', 'Status'].map((item) =>
+            'Bore (mm)', 'Rating', 'DTXR', 'Final CII weight (as exported)', 'Nearest Suggestions', 'Error %', 'Basis / evidence', 'Status'].map((item) =>
               `<th style="padding:9px;white-space:nowrap;">${item}</th>`).join('')}
         </tr></thead>
         <tbody>${rows.map((row, index) => rowMarkup(row, plans[index])).join('')}</tbody>
