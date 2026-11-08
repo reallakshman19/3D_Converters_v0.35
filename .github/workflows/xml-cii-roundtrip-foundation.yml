@@ -26,3 +26,24 @@ jobs:
         run: |
           echo 'Synthetic/injected-runner tests do NOT prove authentic no-edit replay parity.'
           echo 'Authentic GLRD and real-browser Pyodide replay remain NOT_RUN until captured.'
+
+  native-python-replay:
+    name: Real Python converter no-edit replay (repository smoke only)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Exercise real runtime-custody writer twice with identical effective settings
+        run: |
+          mkdir -p "$RUNNER_TEMP/xml-roundtrip-smoke"
+          INPUT='Benchmarks/XML to CII 2019/GLRD-1000-PI-01.xml'
+          python3 converters/scripts/xml_to_cii2019_runtime_custody.py --input "$INPUT" --output "$RUNNER_TEMP/xml-roundtrip-smoke/baseline.cii" --coords-mode first --weight-scale 10 --split-condensed-valve-flange
+          python3 converters/scripts/xml_to_cii2019_runtime_custody.py --input "$INPUT" --output "$RUNNER_TEMP/xml-roundtrip-smoke/replayed.cii" --coords-mode first --weight-scale 10 --split-condensed-valve-flange
+          cmp "$RUNNER_TEMP/xml-roundtrip-smoke/baseline.cii" "$RUNNER_TEMP/xml-roundtrip-smoke/replayed.cii"
+          sha256sum "$RUNNER_TEMP/xml-roundtrip-smoke/baseline.cii" "$RUNNER_TEMP/xml-roundtrip-smoke/replayed.cii"
+          echo 'CI result is the repository fixture Python-only path. Authentic GLRD with hydrated Preview/config and browser engine remains NOT_RUN.'
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: xml-cii-roundtrip-repo-smoke-only
+          path: ${{ runner.temp }}/xml-roundtrip-smoke/
+          if-no-files-found: warn
