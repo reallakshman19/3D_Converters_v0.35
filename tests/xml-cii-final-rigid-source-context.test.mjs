@@ -50,7 +50,7 @@ const from = contexts(xml(branch('/B', [
   pipe(2, { ComponentRefNo: '/A', BoreMm: '', Rating: '' }),
 ])), one, authority([issue('/A', { nodeNumber: '1' })]))[0];
 assert.equal(from.status, 'VERIFIED');
-assert.equal(from.mapping.sourceNodeSide, 'FROM');
+assert.equal(from.mapping.sourceNodeSide, 'FROM', 'FROM_TO_FALLBACK_WITNESS');
 assert.equal(from.mapping.sourceNode, '1');
 assert.equal(from.bore.value, 100);
 
@@ -73,13 +73,13 @@ assert.equal(conflict.eligibleForAutomaticReference, false);
 const crossing = contexts(xml(branch('/B', [
   rigid(1, '/OTHER'), rigid(2, '/A'),
 ])))[0];
-assert.equal(crossing.status, 'NOT_RESOLVED');
+assert.equal(crossing.status, 'NOT_RESOLVED', 'FROM_TO_OWNER_WITNESS');
 assert.match(crossing.reason, /different weight-bearing/);
 
 const branches = contexts(xml(branch('/C', [pipe(1), rigid(2, '/C')]),
   branch('/B', [pipe(1), rigid(2, '/A')])), one)[0];
 assert.equal(branches.status, 'VERIFIED');
-assert.equal(branches.mapping.componentRefNo, '/A');
+assert.equal(branches.mapping.componentRefNo, '/A', 'BRANCH_SCOPE_WITNESS');
 
 const duplicatedEdge = contexts(xml(branch('/B', [pipe(1), rigid(2)]),
   branch('/B', [pipe(1), rigid(2, '/OTHER')])), one)[0];
@@ -89,18 +89,18 @@ assert.match(duplicatedEdge.reason, /count is 2/);
 assert.equal(contexts(source, inventory(linked('/B', '10001', '10002')))[0].status, 'NOT_RESOLVED',
   'renumbered synthetic nodes cannot be matched by length');
 assert.equal(contexts(source, inventory(linked('/B', '1', '2', 110)))[0].status, 'NOT_RESOLVED',
-  'geometry mismatch must refuse source metadata');
+  'GEOMETRY_WITNESS: geometry mismatch must refuse source metadata');
 assert.equal(contexts(source, inventory([]))[0].status, 'NOT_RESOLVED',
   'unreferenced final pointer must not borrow a nearby component');
 assert.equal(contexts(source, inventory([linked(), linked()]))[0].status, 'NOT_RESOLVED',
   'shared pointer requires an explicit mass allocation');
 assert.equal(contexts(xml(branch('/B', [pipe(1), rigid(2, '')])))[0].status, 'NOT_RESOLVED',
-  'missing ComponentRefNo is not a verified owner');
+  'COMPONENT_REFERENCE_WITNESS: missing ComponentRefNo is not a verified owner');
 assert.equal(contexts(source, one, authority([issue(), issue()]))[0].status, 'NOT_RESOLVED',
-  'ambiguous source issue cannot produce an authoritative mapping');
+  'COMPONENT_AMBIGUITY_WITNESS: ambiguous source issue cannot produce an authoritative mapping');
 
 const override = contexts(source, one, authority(), { overrides: { rating: { '/B': 600 } } })[0];
-assert.equal(override.rating.value, '600');
+assert.equal(override.rating.value, '600', 'RATING_OVERRIDE_WITNESS');
 assert.equal(override.rating.basis, 'override');
 const ratingConflict = contexts(source, one,
   authority([issue('/A', { dtxr: '600# GATE VALVE', dtxrSource: 'staged-component',
@@ -112,11 +112,11 @@ assert.equal(ratingConflict.dtxr.sourcePath, '$.BRANCH[0]');
 assert.equal(ratingConflict.eligibleForAutomaticReference, false);
 
 const suppressed = contexts(source, one, authority([issue('/A', {
-  dtxr: '', dtxrSuppressed: true, dtxrSource: 'staged-component',
+  dtxr: 'UNSAFE SUPPORT SHOE', dtxrSuppressed: true, dtxrSource: 'staged-component',
   dtxrSuppressionReason: 'unsafe staged support', dtxrMatchedBy: 'position',
   dtxrMatchedKey: 'X:123', dtxrSourcePath: '$.items[1]',
 })]))[0];
-assert.equal(suppressed.dtxr.value, null);
+assert.equal(suppressed.dtxr.value, null, 'DTXR_SUPPRESSION_WITNESS');
 assert.equal(suppressed.dtxr.suppressed, true);
 assert.equal(suppressed.dtxr.suppressionReason, 'unsafe staged support');
 assert.equal(suppressed.dtxr.matchedBy, 'position');
@@ -131,7 +131,7 @@ assert.equal(mappedOd.bore.original, '114.3');
 const refusedOd = contexts(xml(branch('/B', [
   pipe(1), rigid(2, '/A', { BoreMm: '', OutsideDiameter: '123.45' }),
 ])), one, authority([issue('/A', { boreMm: 123.45 })]))[0];
-assert.equal(refusedOd.bore.value, null, 'unrecognized OD is not a nominal Bore');
+assert.equal(refusedOd.bore.value, null, 'OD_DN_QUALIFICATION_WITNESS: unrecognized OD is not nominal Bore');
 assert.equal(refusedOd.eligibleForAutomaticReference, false);
 const verifiedBranch = contexts(xml(branch('/B', [
   pipe(1, { BoreMm: 100 }), rigid(2, '/A', { BoreMm: '' }),
@@ -143,7 +143,7 @@ const dtxrConflict = contexts(xml(branch('/B', [
   rigid(2, '/A', { DTXR_POS: 'VALVE-B' }),
 ])))[0];
 assert.equal(dtxrConflict.status, 'CONFLICT_REVIEW');
-assert.ok(dtxrConflict.conflicts.includes('DTXR_SOURCE_CONFLICT'));
+assert.ok(dtxrConflict.conflicts.includes('DTXR_SOURCE_CONFLICT'), 'DTXR_CONFLICT_WITNESS');
 
 const noMaster = buildFinalRigidReferencePlans(one, evidence(source, {}), authority())[0];
 assert.equal(noMaster.sourceContext.status, 'VERIFIED',
