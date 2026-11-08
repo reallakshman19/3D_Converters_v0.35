@@ -57,14 +57,14 @@ assert.equal(from.bore.value, 100);
 const matching = contexts(xml(branch('/B', [
   pipe(1, { ComponentRefNo: '/A', BoreMm: 100, Rating: 300 }),
   rigid(2),
-]))[0];
+])))[0];
 assert.equal(matching.status, 'VERIFIED');
 assert.deepEqual(matching.conflicts, []);
 
 const conflict = contexts(xml(branch('/B', [
   pipe(1, { ComponentRefNo: '/A', BoreMm: 80, Rating: 150 }),
   rigid(2, '/A', { BoreMm: 100, Rating: 300 }),
-]))[0];
+])))[0];
 assert.equal(conflict.status, 'CONFLICT_REVIEW');
 assert.ok(conflict.conflicts.includes('BORE_SOURCE_CONFLICT'));
 assert.ok(conflict.conflicts.includes('RATING_SOURCE_CONFLICT'));
@@ -72,7 +72,7 @@ assert.equal(conflict.eligibleForAutomaticReference, false);
 
 const crossing = contexts(xml(branch('/B', [
   rigid(1, '/OTHER'), rigid(2, '/A'),
-]))[0];
+])))[0];
 assert.equal(crossing.status, 'NOT_RESOLVED');
 assert.match(crossing.reason, /different weight-bearing/);
 
@@ -94,7 +94,7 @@ assert.equal(contexts(source, inventory([]))[0].status, 'NOT_RESOLVED',
   'unreferenced final pointer must not borrow a nearby component');
 assert.equal(contexts(source, inventory([linked(), linked()]))[0].status, 'NOT_RESOLVED',
   'shared pointer requires an explicit mass allocation');
-assert.equal(contexts(xml(branch('/B', [pipe(1), rigid(2, '')]))[0].status, 'NOT_RESOLVED',
+assert.equal(contexts(xml(branch('/B', [pipe(1), rigid(2, '')])))[0].status, 'NOT_RESOLVED',
   'missing ComponentRefNo is not a verified owner');
 assert.equal(contexts(source, one, authority([issue(), issue()]))[0].status, 'NOT_RESOLVED',
   'ambiguous source issue cannot produce an authoritative mapping');
