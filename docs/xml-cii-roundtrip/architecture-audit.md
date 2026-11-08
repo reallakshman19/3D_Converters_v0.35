@@ -50,7 +50,10 @@ The primary Hexagon neutral-file documentation and the companion Basic Element D
 - No-edit parity against the authentic CII with exact effective engine identity: **NOT_RUN**.
 - Complete source→intermediate→original lineage across all generated and deleted nodes: **NOT_IMPLEMENTED**.
 - Python stage trace hooks, inverse RIGID mass ownership and allocation proof: **NOT_IMPLEMENTED**.
-- Source-preserving XML patcher, verified edited round-trip, UI and browser downloads: **NOT_IMPLEMENTED**.
+- Targeted source-preserving XML `Node/Weight` patch primitive: **IMPLEMENTED, 6/6 CI safety tests**. This utility is not wired to the UI and does not authorize engineering edits.
+- Real native-Python synthetic vertical slice: **PASS (CI, 1/1)**. A one-element synthetic RIGID case was converted by `xml_to_cii2019_runtime_custody.py` with scale 10; no-edit CII replay was byte-identical; XML `Weight 15 → 2.984` regenerated CII `RIGID.weight 150 → 29.84`; non-RIGID sections remained identical. This is **not** an authentic GLRD or browser/Pyodide qualified run.
+- Repository GLRD Python-only smoke: **PASS** for repeated no-edit deterministic replay with the same invocation; 308 ELEMENTS, 65 RIGIDs, 49 restraints; SHA-256 `e1cd0edf8e8f6864ad1160b3a172f348518b770c6455cb1936fd9086ae54bde7` both runs. Strict source ownership candidate probe: **0**, so do not enable its editable weights.
+- Authenticated source-edit controller, verified mass allocation/dependency closure, UI and browser download workflow: **NOT IMPLEMENTED / NOT_RUN**.
 - Production acceptance: **HOLD**; no source-based editing entry point is enabled.
 
 This audit records inspected source, not a claim that the complete R1 task is qualified.
