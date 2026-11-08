@@ -24,7 +24,7 @@
       "--no-split-condensed-valve-flange",
       "--use-restraint-type-based-on-json"
     ],
-    "converterStdout": "Wrote /tmp/cii-qualification-wx42lk7f/regenerated.cii with 1 elements and 0 restraints. runtime_custody=1; bend_radius_1_5d=False; use_restraint_type_based_on_json=True; split_condensed_valve_flange=False",
+    "converterStdout": "Wrote /tmp/cii-qualification-j3h3bvub/regenerated.cii with 1 elements and 0 restraints. runtime_custody=1; bend_radius_1_5d=False; use_restraint_type_based_on_json=True; split_condensed_valve_flange=False",
     "nativePython": true,
     "realConverter": "converters/scripts/xml_to_cii2019_runtime_custody.py"
   },
@@ -41,6 +41,18 @@
   "directCiiPatch": false,
   "engine": "xml_to_cii2019_runtime_custody.py",
   "fixtureType": "SYNTHETIC_NOT_GLRD_433_144",
+  "generatedNodeWitness": {
+    "effectiveSplitSetting": true,
+    "emittedElements": 2,
+    "engine": "xml_to_cii2019_runtime_custody.py",
+    "generatedCiiNodeNumber": "119",
+    "originalEnrichedXmlNodeNumbers": [
+      "-1",
+      "100",
+      "120"
+    ],
+    "sourceLineageQualifiedForEditing": false
+  },
   "negativeScenarios": [
     {
       "code": "HOLD_SOURCE_OWNER",

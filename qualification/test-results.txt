@@ -6,7 +6,7 @@ REPRODUCE FROM REPOSITORY ROOT:
   python3 converters/scripts/xml_to_cii2019_runtime_custody.py --input qualification/original.xml --output /tmp/qualification-noedit.cii --coords-mode first --weight-scale 10 --support-config-json '{}' --no-split-condensed-valve-flange --use-restraint-type-based-on-json
   sha256sum qualification/original.cii /tmp/qualification-noedit.cii
   cmp qualification/original.cii /tmp/qualification-noedit.cii
-REAL CONVERTER: Wrote /tmp/cii-qualification-wx42lk7f/regenerated.cii with 1 elements and 0 restraints. runtime_custody=1; bend_radius_1_5d=False; use_restraint_type_based_on_json=True; split_condensed_valve_flange=False
+REAL CONVERTER: Wrote /tmp/cii-qualification-j3h3bvub/regenerated.cii with 1 elements and 0 restraints. runtime_custody=1; bend_radius_1_5d=False; use_restraint_type_based_on_json=True; split_condensed_valve_flange=False
 ORIGINAL_CII_SHA256: 3c54fb2daa908e29ec3e5fd88445aefe77089671352e995b5902cab7ee6e0c20
 NO_EDIT_REGENERATED_CII_SHA256: 3c54fb2daa908e29ec3e5fd88445aefe77089671352e995b5902cab7ee6e0c20
 ORIGINAL_CII_BYTES: 3770
@@ -22,6 +22,7 @@ AMBIGUOUS_SOURCE: PASS_REFUSED HOLD_SOURCE_OWNER output_published=False
 STALE_SOURCE: PASS_REFUSED HOLD_STALE_SOURCE output_published=False
 SYNTHETIC_GENERATED_NODE: PASS_REFUSED HOLD_SOURCE_OWNER output_published=False
 UNAPPROVED_SUGGESTION: PASS_REFUSED HOLD_UNAPPROVED output_published=False
+GENERATED_NODE_WITNESS: 119 emitted from real split-mode converter; absent from selected original source
 NEGATIVE_PASS: 4
 NEGATIVE_FAIL: 0
 NOT_RUN: authentic Owner GLRD 433/144, GUI/Pyodide, full split mass allocation
@@ -40,6 +41,6 @@ test_tampered_original_cii_refused (qualification.test_verified_weight_edit.Veri
 test_wrong_converter_config_or_runtime_hash_blocked (qualification.test_verified_weight_edit.VerifiedWeightSample.test_wrong_converter_config_or_runtime_hash_blocked) ... ok
 
 ----------------------------------------------------------------------
-Ran 10 tests in 0.457s
+Ran 10 tests in 0.498s
 
 OK
