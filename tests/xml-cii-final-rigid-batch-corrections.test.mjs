@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { planFinalRigidBatchCorrections } from '../tabs/xml-cii-2019-standalone/xml-cii-final-rigid-batch-corrections.js';
+import { parseFinalCiiRigidInventory } from '../tabs/xml-cii-2019-standalone/xml-cii-final-rigid-inventory.js';
 import {
   createCiiPropertySession, stageCiiPropertyEdit, verifyCiiPropertyTransaction,
 } from '../tabs/xml-cii-2019-standalone/xml-cii-final-property-transactions.js';
@@ -141,11 +142,12 @@ test('EXACT pointer 20: verified batch re-extraction writes 29.84 instead of 150
   const output = await verifyCiiPropertyTransaction(session, {
     currentCiiText: original, runIdentity: 'BATCH-R1',
   });
-  assert.equal(output.reparsed.rows.length, 144);
-  assert.equal(output.reparsed.rows[19].weight, 29.84);
-  assert.equal(output.reparsed.rows[20].weight, 100);
-  assert.equal(output.reparsed.rows[18].weight, 100);
-  assert.equal(output.reparsed.rows[21].weight, 100);
+  const reextracted = parseFinalCiiRigidInventory(output.revisedCiiText);
+  assert.equal(reextracted.rows.length, 144);
+  assert.equal(reextracted.rows[19].weight, 29.84);
+  assert.equal(reextracted.rows[20].weight, 100);
+  assert.equal(reextracted.rows[18].weight, 100);
+  assert.equal(reextracted.rows[21].weight, 100);
   assert.equal(output.audit.changes.length, 2);
   assert.deepEqual(output.audit.changes.map((r)=>r.recordPointer),[20,21]);
   assert.equal(output.audit.untouchedBytesEqual, true);
