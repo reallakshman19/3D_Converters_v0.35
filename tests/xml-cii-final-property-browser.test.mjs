@@ -213,6 +213,63 @@ try {
     assert.equal(audit.untouchedBytesEqual, true);
     assert.equal(await page.evaluate(() => window.currentResult.ciiText), original);
   });
+  await test('Chromium unresolved synthetic node uses CII OD→DN and exact branch XML Rating without mass authority', async () => {
+    await page.goto(address + '/tests/fixtures/final-cii-property-ui-host.html');
+    const synthetic = original.replace(
+      row([1000, 1001, 19.1, 0, 0, 80]),
+      row([639, 10000, 19.1, 0, 0, 60.3]),
+    );
+    assert.notEqual(synthetic, original, 'test must actually mutate only the source CII fixture');
+    const enrichedXml = '<Root><Branch><Branchname>/B</Branchname><Rating>300</Rating>' +
+      '<Node><NodeNumber>1</NodeNumber><ComponentType>PIPE</ComponentType>' +
+      '<Position>0 0 0</Position></Node></Branch></Root>';
+    await page.evaluate(async ({ ciiText, enrichedXml }) => {
+      const { openFinalRigidWeightReview } = await import('/tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-final-rigid-review.js');
+      window.currentResult = {
+        ok: true, ciiText, ciiName: 'SYNTHETIC-NODE.cii',
+        finalRigidReviewEvidence: {
+          sourceKind: 'xml', engineInputText: enrichedXml,
+          engineInputDigest: 'sha256:cii-branch-fallback-test',
+          stagedJsonText: '', supportConfigJson: '{}', weightScale: 10,
+        },
+      };
+      openFinalRigidWeightReview(window.currentResult, {
+        getCurrentResult: () => window.currentResult,
+      });
+    }, { ciiText: synthetic, enrichedXml });
+    const first = page.locator('[data-final-rigid-row][data-pointer="1"]');
+    assert.match(await first.locator('[data-final-rigid-bore-source]').innerText(), /DN 50/);
+    assert.match(await first.locator('[data-final-rigid-bore-source]').innerText(), /CII OD 60\.3 mm/);
+    assert.equal(await first.locator('[data-final-rigid-bore-source]').getAttribute('data-final-rigid-bore-source'), 'cii-od-dn');
+    assert.match(await first.locator('[data-final-rigid-rating-source]').innerText(), /300/);
+    assert.match(await first.locator('[data-final-rigid-rating-source]').innerText(), /Enriched XML branch/);
+    assert.equal(await first.locator('[data-final-rigid-rating-source]').getAttribute('data-final-rigid-rating-source'), 'enriched-xml-branch-rating');
+    assert.match(await first.locator('td').last().innerText(), /Source unresolved/);
+    assert.match(await first.locator('td').nth(7).innerText(), /Not resolved/, 'DTXR is never inferred from branch');
+    assert.equal(await first.locator('[data-final-rigid-suggestion] option').count(), 1,
+      'context does not create a catalog mass suggestion');
+    await first.locator('[data-final-rigid-edited]').fill('420');
+    await page.locator('[data-final-rigid-preview]').click();
+    await page.waitForFunction(() => document.querySelector('[data-final-rigid-preview-report]')?.textContent.includes('VERIFIED PREVIEW'));
+    await page.locator('[data-final-rigid-apply]').click();
+    await page.waitForFunction(() => document.querySelector('[data-final-rigid-preview-report]')?.textContent.includes('VERIFIED REVISED CII READY'));
+    const [auditDownload] = await Promise.all([
+      page.waitForEvent('download'), page.locator('[data-final-rigid-audit]').click(),
+    ]);
+    const audit = JSON.parse(await readFile(await auditDownload.path(), 'utf8'));
+    assert.equal(audit.changes.length, 1);
+    const source = audit.changes[0].reference.sourceContext;
+    assert.equal(source.mapping, null, 'no source-component identity is fabricated');
+    assert.equal(source.eligibleForAutomaticReference, false);
+    assert.equal(source.bore.value, 50);
+    assert.equal(source.bore.original, '60.3');
+    assert.equal(source.rating.value, '300');
+    assert.equal(source.rating.branchName, '/B');
+    assert.equal(source.rating.engineInputDigest, 'sha256:cii-branch-fallback-test');
+    assert.equal(audit.untouchedBytesEqual, true);
+    assert.equal(await page.evaluate(() => window.currentResult.ciiText), synthetic,
+      'run result CII remains byte-identical after edited CII is exported separately');
+  });
 } finally {
   await browser.close();
   await new Promise((resolve) => server.close(resolve));
