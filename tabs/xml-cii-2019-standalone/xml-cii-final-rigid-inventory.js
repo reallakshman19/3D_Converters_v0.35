@@ -124,10 +124,15 @@ function parseElements(lines, pointerCount) {
     const dx = numberToken(first[2], `ELEMENTS ${index} DX`);
     const dy = numberToken(first[3], `ELEMENTS ${index} DY`);
     const dz = numberToken(first[4], `ELEMENTS ${index} DZ`);
+    // The sixth original CII ELEMENTS field is pipe OUTSIDE diameter in mm.
+    // It is not inner diameter or nominal DN. Keep the raw observed OD
+    // independent of geometry / physical-component ownership.
+    const outsideDiameterMm = numberToken(first[5], `ELEMENTS ${index} outside diameter`);
     const lengthMm = Math.hypot(dx, dy, dz);
     if (!Number.isFinite(lengthMm)) fail(`ELEMENTS ${index} length is not finite.`);
     elements.push({ index, fromNode: String(fromNode), toNode: String(toNode),
-      rigidPointer: pointer, lengthMm, branchName: finalElementBranchName(lines[offset + 10]) });
+      rigidPointer: pointer, lengthMm, outsideDiameterMm,
+      branchName: finalElementBranchName(lines[offset + 10]) });
   }
   return elements;
 }
