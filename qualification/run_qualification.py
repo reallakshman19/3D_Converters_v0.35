@@ -4,6 +4,7 @@ from __future__ import annotations
 import json
 import sys
 from itertools import zip_longest
+from decimal import Decimal
 from pathlib import Path
 
 from verified_weight_edit import (
@@ -56,7 +57,7 @@ def run():
     revised, regenerated = positive["revisedXml"], positive["regeneratedCii"]
     edit_proof = inspect_source(revised, IDENTITY)
     corrected = read_rigid_on_edge(regenerated, edit_proof)
-    required(corrected["weight"] == 29.84, "New RIGID weight does not read back as 29.84.")
+    required(corrected["weight"] == Decimal("29.84"), "New RIGID weight does not read back as 29.84.")
     required(baseline != regenerated, "Updated CII is byte-identical despite approved edit.")
     required(mask_only_rigid_line(baseline, orig_readback["pointer"]) ==
              mask_only_rigid_line(regenerated, corrected["pointer"]),
