@@ -29,11 +29,13 @@ jobs:
           node --check tabs/xml-cii-2019-standalone/xml-cii-final-property-transactions.js
           node --check tabs/xml-cii-2019-standalone/xml-cii-final-property-editor-ui.js
           node --check tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-final-rigid-review.js
+          node --check tabs/xml-cii-2019-standalone/xml-cii-final-rigid-source-context.js
       - name: Run property, formatting, parity and transaction tests
         run: node --test tests/xml-cii-final-property-transactions.test.mjs tests/xml-cii-final-property-reference-error.test.mjs
       - name: Run existing final RIGID, reference and UI compatibility suites
         run: |
           node --test tests/xml-cii-final-rigid-review.test.mjs tests/xml-cii-final-rigid-length-error.test.mjs tests/xml-cii-final-rigid-master-reference.test.mjs tests/xml-cii-final-review-smartfill-scope.test.mjs
+          node --test tests/xml-cii-final-rigid-source-context.test.mjs
       - name: Run existing standalone output integration regression
         run: node --test tests/xml-cii-standalone-output-run.test.js
   mutations:
