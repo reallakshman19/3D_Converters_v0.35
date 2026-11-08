@@ -410,7 +410,8 @@ try {
     await page.locator('[data-final-rigid-batch-preview]').click();
     let modal = page.locator('[data-final-rigid-batch-dialog]');
     assert.match(await modal.locator('[data-final-rigid-batch-summary]').innerText(), /0 eligible/);
-    assert.match(await modal.locator('[data-final-rigid-batch-summary]').innerText(), /1 held/);
+    assert.match(await modal.locator('[data-final-rigid-batch-summary]').innerText(), /held\/review-only/);
+    // All unmatched RIGIDs are also held; only pointer 1 has a >40% proposal.
     assert.equal(await modal.locator('[data-final-rigid-batch-stage]').isDisabled(), true);
     await modal.locator('[data-final-rigid-batch-cancel]').click();
     assert.equal(await first.locator('[data-final-rigid-edited]').inputValue(), '150');
