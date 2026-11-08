@@ -51,6 +51,9 @@ export function installFinalRigidBatchControls({
     selectedPointers: [...overlay.querySelectorAll('[data-final-rigid-row]')].filter((r) =>
       r.querySelector('[data-final-rigid-select]')?.checked).map((r) => Number(r.dataset.pointer)),
     currentEditedValues: getEditedValues(),
+    selectedIndices: new Map([...overlay.querySelectorAll('[data-final-rigid-suggestion]')].filter((select) =>
+      select.value !== '').map((select) =>
+      [Number(select.getAttribute('data-final-rigid-suggestion')), Number(select.value)])),
   });
   const close = () => { dialogLayer?.remove(); dialogLayer = null; };
   overlay.addEventListener('keydown', (ev) => {
