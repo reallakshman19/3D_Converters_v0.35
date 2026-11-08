@@ -132,11 +132,11 @@ assert.equal(split.rating.value, null);
 assert.equal(split.rating.conflict, true);
 assert.ok(split.conflicts.includes('BRANCH_RATING_CONFLICT'));
 
-const override = run(root(branchXml('/B', [], '300'), { overrides: { rating: { '/B': '300' } } });
+const override = run(root(branchXml('/B', [], '300')), { overrides: { rating: { '/B': '300' } } });
 const overriden = buildFinalRigidSourceContexts(inventory, override)[0];
 assert.equal(overriden.rating.value, '300');
 assert.equal(overriden.rating.source, 'branch-rating-override');
-const contradictoryOverride = run(root(branchXml('/B', [], '300'), { overrides: { rating: { '/B': '600' } } });
+const contradictoryOverride = run(root(branchXml('/B', [], '300')), { overrides: { rating: { '/B': '600' } } });
 const contradicted = buildFinalRigidSourceContexts(inventory, contradictoryOverride)[0];
 assert.equal(contradicted.rating.value, null);
 assert.equal(contradicted.rating.conflict, true);
