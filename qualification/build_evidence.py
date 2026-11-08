@@ -10,6 +10,8 @@ import argparse
 import json
 from pathlib import Path
 from decimal import Decimal
+import subprocess
+import tempfile
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -46,6 +48,44 @@ def refuse(name, *, xml, cii, snapshot, identity, weight, approved, expected):
     return {"name": name, "status": "PASS_REFUSED", "code": result["code"],
             "reason": result["reason"], "publishedModifiedFiles": False}
 
+
+def generated_node_witness():
+    """Prove an actual generated CII node from Python negative FLAN renumbering."""
+    xml = b"""<PipeStressExport><RestrainOpenEnds>No</RestrainOpenEnds><Pipe><Branch>
+<Branchname>/GENERATED-NODE/B1</Branchname>
+<Node><NodeNumber>100</NodeNumber><ComponentType>PIPE</ComponentType>
+<ComponentRefNo>/ORIGINAL-100</ComponentRefNo><Position>0 0 0</Position>
+<OutsideDiameter>60.3</OutsideDiameter><Weight>0</Weight></Node>
+<Node><NodeNumber>-1</NodeNumber><ComponentType>FLAN</ComponentType>
+<ComponentRefNo>/ORIGINAL-FLAN-NEG1</ComponentRefNo><Position>50 0 0</Position>
+<ElementLengthMm>50</ElementLengthMm><OutsideDiameter>60.3</OutsideDiameter>
+<Rigid>2</Rigid><Endpoint>2</Endpoint><Weight>15</Weight></Node>
+<Node><NodeNumber>120</NodeNumber><ComponentType>PIPE</ComponentType>
+<ComponentRefNo>/ORIGINAL-120</ComponentRefNo><Position>100 0 0</Position>
+<OutsideDiameter>60.3</OutsideDiameter><Weight>0</Weight></Node>
+</Branch></Pipe></PipeStressExport>"""
+    with tempfile.TemporaryDirectory(prefix="qualified-generated-") as folder:
+        inp, out = Path(folder) / "input.xml", Path(folder) / "generated.cii"
+        inp.write_bytes(xml)
+        script = Path(__file__).resolve().parents[1] / "converters/scripts/xml_to_cii2019_runtime_custody.py"
+        argv = [sys.executable, str(script), "--input", str(inp), "--output", str(out),
+                "--coords-mode", "first", "--weight-scale", "10",
+                "--support-config-json", "{}", "--split-condensed-valve-flange",
+                "--use-restraint-type-based-on-json"]
+        subprocess.run(argv, check=True, capture_output=True, text=True)
+        parsed = cii_inventory(out.read_bytes())
+    original_numbers = {"100", "-1", "120"}
+    emitted_numbers = {value for e in parsed["elements"]
+                       for value in (e["fromNode"], e["toNode"])}
+    generated = sorted(emitted_numbers - original_numbers)
+    assert len(generated) == 1, f"Expected real generated node, found {generated}"
+    return {"generatedCiiNodeNumber": generated[0],
+            "originalEnrichedXmlNodeNumbers": sorted(original_numbers),
+            "engine": "xml_to_cii2019_runtime_custody.py",
+            "effectiveSplitSetting": True,
+            "sourceLineageQualifiedForEditing": False,
+            "emittedElements": len(parsed["elements"])}
+
 def build(out: Path):
     out.mkdir(parents=True, exist_ok=True)
     original_xml = FIXTURE.read_bytes()
@@ -80,6 +120,8 @@ def build(out: Path):
     ambiguity_snapshot = create_snapshot(ambiguous_xml, ambiguity_cii)
     amb_nodes, _ = source_nodes(ambiguous_xml)
     assert len([n for n in amb_nodes if n["nodeNumber"] == "110"]) == 2
+    generated_witness = generated_node_witness()
+    assert generated_witness['generatedCiiNodeNumber'] not in {n['nodeNumber'] for n in source}
     scenarios = [
         refuse("AMBIGUOUS_SOURCE", xml=ambiguous_xml, cii=ambiguity_cii,
                snapshot=ambiguity_snapshot,
@@ -89,7 +131,7 @@ def build(out: Path):
                cii=original_cii, snapshot=snapshot, identity=identity,
                weight="2.984", approved=True, expected="HOLD_STALE_SOURCE"),
         refuse("SYNTHETIC_GENERATED_NODE", xml=original_xml, cii=original_cii,
-               snapshot=snapshot, identity={**identity, "nodeNumber": "10020"},
+               snapshot=snapshot, identity={**identity, "nodeNumber": generated_witness["generatedCiiNodeNumber"]},
                weight="2.984", approved=True, expected="HOLD_SOURCE_OWNER"),
         refuse("UNAPPROVED_SUGGESTION", xml=original_xml, cii=original_cii,
                snapshot=snapshot, identity=identity, weight="2.984",
@@ -117,6 +159,7 @@ def build(out: Path):
                        "nativePython": True,
                        "converterStdout": original_run["stdout"]},
         "negativeScenarios": scenarios,
+        "generatedNodeWitness": generated_witness,
         "positiveVerified": True,
         "directCiiPatch": False,
     }
@@ -145,6 +188,7 @@ def build(out: Path):
         "POSITIVE: PASS",
         *[f"{s['name']}: {s['status']} {s['code']} output_published={s['publishedModifiedFiles']}"
           for s in scenarios],
+        "GENERATED_NODE_WITNESS: " + str(generated_witness["generatedCiiNodeNumber"]) + " emitted from real split-mode converter; absent from selected original source",
         "NEGATIVE_PASS: 4",
         "NEGATIVE_FAIL: 0",
         "NOT_RUN: authentic Owner GLRD 433/144, GUI/Pyodide, full split mass allocation",
