@@ -6,6 +6,7 @@ REGENERATED CII: PASS (real converter, structural validator, pointer read-back, 
 AMBIGUOUS SOURCE: PASS (HOLD_SOURCE_OWNER; zero published outputs)
 STALE SOURCE: PASS (HOLD_STALE_SOURCE; zero published outputs)
 SYNTHETIC GENERATED NODE: PASS (HOLD_SOURCE_OWNER; zero published outputs)
+SYNTHETIC WITNESS: PASS (actual split converter source -123 -> generated CII 11; source identity refused)
 UNAPPROVED CATALOG WEIGHT: PASS (HOLD_NOT_APPROVED; zero published outputs)
 ORIGINAL CII SHA-256: a4e322275084b55ffd8e3b30e070ade8fb45321664ed50c6887a7eb90532c73c
 NO-EDIT REPLAY SHA-256: a4e322275084b55ffd8e3b30e070ade8fb45321664ed50c6887a7eb90532c73c
