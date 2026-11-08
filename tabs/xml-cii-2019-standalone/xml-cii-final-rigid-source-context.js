@@ -5,7 +5,7 @@
  * must agree. Synthetic/renumbered edges without an explicit source
  * identity are reported unresolved instead of being guessed by length.
  */
-import { collectXmlCiiWeightMatchRows, xmlCiiForwardElementLengths } from '../../converters/xml-cii2019-core/weight-match-model.js';
+import { collectXmlCiiWeightMatchRows, xmlCiiForwardElementLengths, qualifiedXmlCiiNominalBoreFromOd } from '../../converters/xml-cii2019-core/weight-match-model.js';
 import { buildDtxrContext, resolveDtxrForXmlNode } from '../../converters/xml-cii2019-core/dtxr-resolver.js';
 import { resolveStandaloneWeightReviewRating } from './ui-adapted/xml-cii-adapted-weight-rating-authority.js';
 
@@ -41,7 +41,9 @@ function rowOf(node, branchName, index) {
     rigid: Number(value(node, 'Rigid')) === 2,
     endpoint: value(node, 'Endpoint'), nodeName: value(node, 'NodeName'),
     boreRaw: value(node, 'BoreMm'), odRaw: value(node, 'OutsideDiameter'),
-    ratingRaw: value(node, 'Rating') };
+    ratingRaw: value(node, 'Rating'),
+    dtxrRaw: value(node, 'DTXR_POS') || value(node, 'DtxrPos') ||
+      value(node, 'DTXR_PS') || value(node, 'DtxrPs') };
 }
 function weightBearing(node) {
   return Boolean(node?.rigid || /^(RIGID|FLAN|VALV|VLV|INST)/.test(node?.componentType || ''));
@@ -58,6 +60,10 @@ function sourceIndex(xmlText, forwardLengths) {
     if (!branchName) continue;
     const nodes = [...(branch.childNodes || [])].filter((n) => n.nodeType === 1 && tag(n) === 'Node');
     const lengths = forwardLengths(nodes);
+    const qualifiedBranchBores = nodes.map((node) => positive(value(node, 'BoreMm')) ??
+      qualifiedXmlCiiNominalBoreFromOd(value(node, 'OutsideDiameter'))).filter((x) => x !== null);
+    const uniqueBranchBores = [...new Set(qualifiedBranchBores)];
+    const branchBore = uniqueBranchBores.length === 1 ? uniqueBranchBores[0] : null;
     let prev = null;
     nodes.forEach((node, index) => {
       const current = rowOf(node, branchName, index);
@@ -67,7 +73,7 @@ function sourceIndex(xmlText, forwardLengths) {
         if (lengthMm !== null && lengthMm > 0) {
           const key = triple(branchName, prev.number, current.number);
           const list = edges.get(key) || [];
-          list.push({ from: prev, to: current, branchName, lengthMm });
+          list.push({ from: prev, to: current, branchName, lengthMm, branchBore });
           edges.set(key, list);
         }
       }
@@ -99,15 +105,22 @@ function issueIndex(issues) {
   }
   return index;
 }
-function metadataFor(node, issue, config, dtxrContext) {
+function metadataFor(node, issue, config, dtxrContext, branchBore) {
   const selectedBore = positive(issue?.boreMm);
   const explicitBore = positive(node.boreRaw);
+  const nominalFromOd = qualifiedXmlCiiNominalBoreFromOd(node.odRaw);
+  const branchFallback = !node.odRaw && branchBore !== null && selectedBore === branchBore;
   const bore = explicitBore !== null
     ? observed(explicitBore, node.number, 'source BoreMm', { original: node.boreRaw })
-    : selectedBore !== null
-      ? observed(selectedBore, node.number, node.odRaw ? 'Weight Match OD-to-DN / branch context resolver' :
-        'Weight Match verified branch context', { original: node.odRaw || '', originalField: node.odRaw ? 'OutsideDiameter' : 'branch' })
-      : observed(null, node.number, 'No authoritative BoreMm or Weight Match fallback', { original: node.odRaw || '' });
+    : nominalFromOd !== null
+      ? observed(nominalFromOd, node.number, 'qualified Weight Match OD-to-DN', {
+        original: node.odRaw, originalField: 'OutsideDiameter' })
+      : branchFallback
+        ? observed(branchBore, node.number, 'single verified branch Bore / Weight Match context', {
+          originalField: 'branch', original: String(branchBore) })
+        : observed(null, node.number,
+          node.odRaw ? 'Unknown OD-to-DN mapping; nominal bore refused' :
+            'No verified component or unique branch bore', { original: node.odRaw || '' });
   // Use the actual shared rating-authority resolver, including approved
   // overrides and DTXR disagreement. Never use DTXR rating as a replacement.
   let dtxrResult;
@@ -171,13 +184,15 @@ export function buildFinalRigidSourceContexts(inventory, evidence = {}, authorit
     const matches = issueByOwner.get(ownerKey(owner.branchName, owner.number, owner.componentRefNo)) || [];
     if (matches.length > 1)
       return empty(row.rigidPointer, 'Ambiguous Weight Match rows for verified component and source node.');
-    const metadata = metadataFor(owner, matches[0], config, dtxrContext);
+    const metadata = metadataFor(owner, matches[0], config, dtxrContext, edge.branchBore);
     const conflicts = [];
     if (metadata.rating.conflict) conflicts.push('RATING_CONFLICT');
+    if (metadata.bore.value !== null && positive(matches[0]?.boreMm) !== null &&
+      metadata.bore.value !== positive(matches[0]?.boreMm)) conflicts.push('BORE_AUTHORITY_CONFLICT');
     // A shared physical ComponentRefNo must not silently carry contradictory
     // values between FROM and TO even when endpoint priority selects TO.
     if (edge.from.componentRefNo && edge.from.componentRefNo === edge.to.componentRefNo) {
-      for (const [key, raw] of [['bore', 'boreRaw'], ['rating', 'ratingRaw']]) {
+      for (const [key, raw] of [['bore', 'boreRaw'], ['rating', 'ratingRaw'], ['dtxr', 'dtxrRaw']]) {
         const a = clean(edge.from[raw]), b = clean(edge.to[raw]);
         if (a && b && (key === 'bore' ? Number(a) !== Number(b) : a.toUpperCase() !== b.toUpperCase()))
           conflicts.push(key.toUpperCase() + '_SOURCE_CONFLICT');
@@ -196,6 +211,6 @@ export function buildFinalRigidSourceContexts(inventory, evidence = {}, authorit
       reason: conflicts.length ? conflicts.join(', ') : 'Exact run/branch/edge/geometry/source-component evidence.',
       mapping, ...metadata, conflicts,
       eligibleForAutomaticReference: conflicts.length === 0 &&
-        metadata.bore.value !== null && Boolean(metadata.rating.value) };
+        metadata.bore.value !== null && Boolean(metadata.rating.value) && !metadata.dtxr.suppressed };
   });
 }
