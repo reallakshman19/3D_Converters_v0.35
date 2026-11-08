@@ -39,7 +39,7 @@ jobs:
       - name: Run existing standalone output integration regression
         run: node --test tests/xml-cii-standalone-output-run.test.js
   mutations:
-    name: Eight fail-closed safety mutations
+    name: Property plus source evidence safety mutations
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -47,8 +47,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Mutation kill suite
-        run: node --test tests/xml-cii-final-property-mutations.test.mjs
+      - name: Mutation kill suite — property patching and source engineering authority
+        run: |
+          node --test tests/xml-cii-final-property-mutations.test.mjs
+          node --test tests/xml-cii-final-rigid-source-mutations.test.mjs
   scale:
     name: Synthetic 20 to 50k ELEMENTS scale
     runs-on: ubuntu-latest
