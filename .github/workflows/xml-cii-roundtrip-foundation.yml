@@ -5,6 +5,7 @@ on:
       - 'tabs/xml-cii-2019-standalone/roundtrip/**'
       - 'tabs/xml-cii-2019-standalone/xml-cii-final-rigid-inventory.js'
       - 'tests/xml-cii-roundtrip-foundation.test.mjs'
+      - 'tests/xml-cii-roundtrip-xml-patcher.test.mjs'
       - '.github/workflows/xml-cii-roundtrip-foundation.yml'
   workflow_dispatch:
 jobs:
@@ -18,6 +19,7 @@ jobs:
       - name: Run R1 read-only foundation checks
         run: |
           node --test tests/xml-cii-roundtrip-foundation.test.mjs
+          node --test tests/xml-cii-roundtrip-xml-patcher.test.mjs
           node --test tests/xml-cii-final-property-transactions.test.mjs
           node --test tests/xml-cii-final-rigid-source-context.test.mjs
       - name: Safety receipt
