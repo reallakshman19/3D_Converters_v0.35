@@ -22,22 +22,22 @@ function fileDownload(filename, data, mime) {
   setTimeout(() => URL.revokeObjectURL(url), 0);
 }
 
-export function installFinalCiiPropertyEditor({ overlay, result, inventory, refresh, getCurrentResult }) {
+export function installFinalCiiPropertyEditor({ overlay, result, inventory, plans = [], refresh, getCurrentResult }) {
   const rows = [...overlay.querySelectorAll('[data-final-rigid-row]')];
   const heading = overlay.querySelector('thead tr');
   const titles = [...heading.querySelectorAll('th')];
   // Existing columns remain intact; extensions use semantic DOM elements.
-  titles[5].textContent = 'Original weight';
-  titles[7].textContent = 'Edited Error %';
+  titles[8].textContent = 'Original weight';
+  titles[10].textContent = 'Edited Error %';
   const addHeadingAfter = (after, title) => {
     const next = element('th', title);
     next.style.cssText = 'padding:9px;white-space:nowrap;';
     after.insertAdjacentElement('afterend', next);
     return next;
   };
-  addHeadingAfter(titles[5], 'Edited weight');
-  addHeadingAfter(titles[7], 'Original Error %');
-  const changeHeader = addHeadingAfter(titles[8], 'Change');
+  addHeadingAfter(titles[8], 'Edited weight');
+  addHeadingAfter(titles[10], 'Original Error %');
+  const changeHeader = addHeadingAfter(titles[11], 'Change');
   addHeadingAfter(changeHeader, 'Edit status / select');
 
   const byPointer = new Map();
@@ -58,17 +58,17 @@ export function installFinalCiiPropertyEditor({ overlay, result, inventory, refr
     const feedback = element('div', '', { 'data-final-rigid-edit-feedback': String(pointer) });
     feedback.style.cssText = 'font-size:10px;color:#fca5a5;max-width:190px;white-space:normal;';
     editedCell.append(editInput, zeroLabel, feedback);
-    cells[5].insertAdjacentElement('afterend', editedCell);
+    cells[8].insertAdjacentElement('afterend', editedCell);
     const origError = element('td', '—', { 'data-final-rigid-original-error': String(pointer) });
     origError.style.cssText = 'padding:9px;border-bottom:1px solid #26364b;';
-    cells[7].insertAdjacentElement('afterend', origError);
+    cells[10].insertAdjacentElement('afterend', origError);
     const diff = element('td', '—', { 'data-final-rigid-diff': String(pointer) });
     const status = element('td', 'Unchanged', { 'data-final-rigid-edit-status': String(pointer) });
     diff.style.cssText = status.style.cssText = 'padding:9px;border-bottom:1px solid #26364b;white-space:nowrap;';
     const selected = element('input', null, { type: 'checkbox', 'data-final-rigid-select': String(pointer),
       'aria-label': 'Select RIGID pointer ' + pointer });
     status.append(element('span', ' '), selected);
-    cells[8].insertAdjacentElement('afterend', diff);
+    cells[11].insertAdjacentElement('afterend', diff);
     diff.insertAdjacentElement('afterend', status);
     byPointer.set(pointer, { tr, original, editInput, zeroInput, feedback, origError, diff, status, selected });
   }
@@ -117,9 +117,10 @@ export function installFinalCiiPropertyEditor({ overlay, result, inventory, refr
     const row = byPointer.get(pointer).tr;
     const selection = row.querySelector('[data-final-rigid-suggestion]');
     const reference = row.querySelector('[data-final-rigid-reference]');
-    if (!reference?.value) return null;
+    const sourceContext = plans[pointer - 1]?.sourceContext || null;
+    if (!reference?.value) return { kind: 'not-assessed', value: '', sourceContext };
     const kind = reference.dataset.referenceKind || 'manual';
-    return { kind, value: reference.value, basis: row.querySelector('[data-final-rigid-basis-detail]')?.textContent || '' };
+    return { kind, value: reference.value, basis: row.querySelector('[data-final-rigid-basis-detail]')?.textContent || '', sourceContext };
   };
 
   const syncOne = (pointer) => {
