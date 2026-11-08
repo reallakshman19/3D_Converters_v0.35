@@ -4,6 +4,7 @@ import {
 } from '../../converters/xml-cii2019-core/weight-match-model.js';
 import { buildFinalRigidSourceContexts } from './xml-cii-final-rigid-source-context.js';
 import { rankXmlCiiWeightCandidates } from '../../converters/xml-cii2019-core/weight-valve-hints.js';
+import { buildFinalCiiNearestSuggestions } from './xml-cii-final-rigid-nearest-suggestions.js';
 
 const clean = (v) => String(v ?? '').trim();
 const localName = (node) => clean(node?.localName || node?.nodeName).replace(/^.*:/, '');
@@ -70,6 +71,9 @@ function normalizeCandidate(candidate, issue, scale, rank) {
   const semantic = clean(candidate.semanticReason);
   const weight = weightKg * scale;
   if (!Number.isFinite(weight) || weight <= 0) return null;
+  const fraction = Number(candidate.totalScore ?? candidate.score);
+  const matchPct = Number.isFinite(fraction)
+    ? Math.round(Math.max(0, Math.min(100, fraction <= 1 ? fraction * 100 : fraction))) : null;
   const basis = [
     'Master candidate', label,
     `Bore ${issue.boreMm} mm`, `rating ${issue.rating}`,
@@ -81,7 +85,7 @@ function normalizeCandidate(candidate, issue, scale, rank) {
   ].filter(Boolean).join(' · ');
   return {
     rank, referenceWeight: weight, masterWeightKg: weightKg,
-    title: label, method, source, masterLengthMm: masterLength,
+    matchPct, title: label, method, source, masterLengthMm: masterLength,
     basis, preferred: candidate.preferred === true, approximate,
     semanticTier: Number(candidate.semanticTier) || 0,
     direct: !approximate && ['master', 'exact'].includes(method.toLowerCase()),
@@ -97,6 +101,9 @@ export function buildFinalRigidReferencePlans(inventory, evidence = {}, authorit
   // Resolve engineering context separately: a missing master must not erase a
   // verified source component's Bore, Rating, DTXR or provenance.
   const contexts = buildFinalRigidSourceContexts(inventory, evidence, authorities);
+  // Mode A nearest matching is *display-only*: CII Bore and verified branch
+  // Rating may provide a useful comparison without establishing the mass owner.
+  const nearest = buildFinalCiiNearestSuggestions(inventory, evidence, contexts, authorities);
   const finish = (rows) => rows.map((plan, index) => {
     const context = contexts[index];
     if (!context) return plan;
@@ -112,6 +119,10 @@ export function buildFinalRigidReferencePlans(inventory, evidence = {}, authorit
         ? 'Source-component identities disagree: catalog evidence refused.' : '';
     return { ...plan, sourceContext: context,
       mapping: context.mapping || null, candidates, autoIndex,
+      // Preserve trusted plans in their original rank order so old autoIndex
+      // references cannot drift. Unresolved owners get independently ranked
+      // *comparison-only* choices, never promoted into trusted candidates.
+      nearestSuggestions: candidates.length ? candidates : (nearest[index] || []),
       reason: [restriction, plan.reason].filter(Boolean).join(' · ') };
   });
   const missing = (reason) => finish(finalRows.map((row) => failed(row.rigidPointer, reason)));
