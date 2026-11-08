@@ -1,0 +1,26 @@
+name: XML-CII source roundtrip R1 foundation
+on:
+  pull_request:
+    paths:
+      - 'tabs/xml-cii-2019-standalone/roundtrip/**'
+      - 'tabs/xml-cii-2019-standalone/xml-cii-final-rigid-inventory.js'
+      - 'tests/xml-cii-roundtrip-foundation.test.mjs'
+      - '.github/workflows/xml-cii-roundtrip-foundation.yml'
+  workflow_dispatch:
+jobs:
+  foundation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run R1 read-only foundation checks
+        run: |
+          node --test tests/xml-cii-roundtrip-foundation.test.mjs
+          node --test tests/xml-cii-final-property-transactions.test.mjs
+          node --test tests/xml-cii-final-rigid-source-context.test.mjs
+      - name: Safety receipt
+        run: |
+          echo 'Synthetic/injected-runner tests do NOT prove authentic no-edit replay parity.'
+          echo 'Authentic GLRD and real-browser Pyodide replay remain NOT_RUN until captured.'
