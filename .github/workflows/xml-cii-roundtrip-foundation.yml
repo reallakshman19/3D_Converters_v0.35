@@ -6,6 +6,7 @@ on:
       - 'tabs/xml-cii-2019-standalone/xml-cii-final-rigid-inventory.js'
       - 'tests/xml-cii-roundtrip-foundation.test.mjs'
       - 'tests/xml-cii-roundtrip-xml-patcher.test.mjs'
+      - 'tests/xml-cii-roundtrip-native-vertical-slice.test.mjs'
       - '.github/workflows/xml-cii-roundtrip-foundation.yml'
   workflow_dispatch:
 jobs:
@@ -45,6 +46,7 @@ jobs:
           sha256sum "$RUNNER_TEMP/xml-roundtrip-smoke/baseline.cii" "$RUNNER_TEMP/xml-roundtrip-smoke/replayed.cii"
           echo 'CI result is the repository fixture Python-only path. Authentic GLRD with hydrated Preview/config and browser engine remains NOT_RUN.'
           node tests/xml-cii-roundtrip-repo-glrd-probe.mjs "$INPUT" "$RUNNER_TEMP/xml-roundtrip-smoke/baseline.cii"
+          node --test tests/xml-cii-roundtrip-native-vertical-slice.test.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
