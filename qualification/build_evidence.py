@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
+from decimal import Decimal
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -62,15 +63,15 @@ def build(out: Path):
         conversion_snapshot=snapshot, source_identity=identity,
         proposed_weight_kg="2.984", approved=True)
     assert result["ok"], "Positive scenario FAILED: " + str(result)
-    assert result["audit"]["ciiWeightBefore"] == "150"
-    assert result["audit"]["ciiWeightAfter"] == "29.840"
+    assert Decimal(result["audit"]["ciiWeightBefore"]) == Decimal("150")
+    assert Decimal(result["audit"]["ciiWeightAfter"]) == Decimal("29.84")
     # Assert independent serialized CII reparse and no unexpected engineering bytes.
     before = cii_inventory(original_cii)
     after = cii_inventory(result["regeneratedCii"])
     assert len(before["elements"]) == len(after["elements"]) == 1
     assert len(before["rigidWeights"]) == len(after["rigidWeights"]) == 1
-    assert str(before["rigidWeights"][0]) == "150"
-    assert str(after["rigidWeights"][0]) == "29.84"
+    assert before["rigidWeights"][0] == Decimal("150")
+    assert after["rigidWeights"][0] == Decimal("29.84")
     assert result["audit"]["ciiIntegrity"]["unexplainedEngineeringByteDifferences"] == 0
     assert result["audit"]["xmlUnrelatedByteDifferences"] == 0
 
