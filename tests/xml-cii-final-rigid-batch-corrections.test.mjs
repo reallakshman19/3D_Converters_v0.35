@@ -9,7 +9,7 @@ import {
 function candidate(referenceWeight, overrides = {}) {
   return {
     referenceWeight, masterWeightKg: referenceWeight / 10,
-    approximate: false, comparisonOnly: false, sourceVerified: true,
+    approximate: false, comparisonOnly: false, sourceVerified: true, direct: true,
     title: 'Qualified master', source: 'MASTER-ID', preferred: true,
     matchPct: 100, method: 'master', basis: 'evidence from run-pinned source',
     ...overrides,
