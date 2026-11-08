@@ -121,6 +121,7 @@ assert.equal(suppressed.dtxr.suppressed, true);
 assert.equal(suppressed.dtxr.suppressionReason, 'unsafe staged support');
 assert.equal(suppressed.dtxr.matchedBy, 'position');
 assert.equal(suppressed.dtxr.sourcePath, '$.items[1]');
+assert.equal(suppressed.eligibleForAutomaticReference, false, 'DTXR_SUPPRESSED_AUTOFILL_WITNESS');
 
 const mappedOd = contexts(xml(branch('/B', [
   pipe(1), rigid(2, '/A', { BoreMm: '', OutsideDiameter: '114.3' }),
