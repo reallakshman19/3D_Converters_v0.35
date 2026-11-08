@@ -41,20 +41,19 @@ export function buildRoundtripLineage({ snapshot, inventory, contexts = [], sour
     sourceOwnerIdentity: null,
     sourceMatchStatus: 'UNRESOLVED',
   }));
-  const nodes = [];
-  const nodeKeys = new Set();
+  const nodeIndex = new Map();
   for (const element of elements) {
     for (const nodeNumber of [element.fromNode, element.toNode]) {
       const key = identity([snapshot.runIdentity, element.branchName, nodeNumber]);
-      if (nodeKeys.has(key)) continue;
-      nodeKeys.add(key);
-      nodes.push({ kind: 'NODE', identity: key, branchName: element.branchName,
+      if (!nodeIndex.has(key)) nodeIndex.set(key, {
+        kind: 'NODE', identity: key, branchName: element.branchName,
         generatedNodeNumber: nodeNumber, originalNodeNumber: null,
-        originalSourceIdentity: null, generationStatus: 'UNKNOWN',
-        connectedElements: elements.filter((e) => e.branchName === element.branchName &&
-          (e.fromNode === nodeNumber || e.toNode === nodeNumber)).map((e) => e.elementIndex) });
+        originalSourceIdentity: null, generationStatus: 'UNKNOWN', connectedElements: [],
+      });
+      nodeIndex.get(key).connectedElements.push(element.elementIndex);
     }
   }
+  const nodes = [...nodeIndex.values()];
   const auxiliaries = inventory.rows.map((rigid) => {
     const context = byPointer.get(rigid.rigidPointer);
     const preliminary = classification(context);
