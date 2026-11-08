@@ -8,6 +8,7 @@
 import { collectXmlCiiWeightMatchRows, xmlCiiForwardElementLengths, qualifiedXmlCiiNominalBoreFromOd } from '../../converters/xml-cii2019-core/weight-match-model.js';
 import { buildDtxrContext, resolveDtxrForXmlNode } from '../../converters/xml-cii2019-core/dtxr-resolver.js';
 import { resolveStandaloneWeightReviewRating } from './ui-adapted/xml-cii-adapted-weight-rating-authority.js';
+import { buildFinalRigidEngineeringFallbacks } from './xml-cii-final-rigid-context-fallback.js';
 
 const clean = (v) => String(v ?? '').trim();
 const tag = (n) => clean(n?.localName || n?.nodeName).replace(/^.*:/, '');
@@ -152,7 +153,36 @@ function metadataFor(node, issue, config, dtxrContext, branchBore) {
 }
 export function buildFinalRigidSourceContexts(inventory, evidence = {}, authorities = {}) {
   const rows = Array.isArray(inventory?.rows) ? inventory.rows : [];
-  const unresolved = (reason) => rows.map((r) => empty(r.rigidPointer, reason));
+  // Engineering context is distinct from physical mass ownership. A synthetic
+  // final CII node can still carry a pipe OD and an exact branch label.
+  // Never turn those two metadata observations into a ComponentRefNo mapping.
+  const fallbacks = buildFinalRigidEngineeringFallbacks(inventory, evidence);
+  const mergeReadOnly = (context, index) => {
+    const fallback = fallbacks[index];
+    if (!fallback) return context;
+    const missingBore = context.bore?.value === null || context.bore?.value === undefined;
+    const missingRating = context.rating?.value === null || context.rating?.value === undefined;
+    const bore = missingBore ? fallback.bore : context.bore;
+    const rating = missingRating ? fallback.rating : context.rating;
+    const newConflicts = [
+      ...(context.conflicts || []),
+      ...(missingBore && fallback.bore.conflict ? ['CII_BORE_CONFLICT'] : []),
+      ...(missingRating && fallback.rating.conflict ? ['BRANCH_RATING_CONFLICT'] : []),
+    ];
+    const sourceUnresolved = !context.mapping;
+    return {
+      ...context, bore, rating,
+      conflicts: [...new Set(newConflicts)],
+      status: context.status === 'VERIFIED' && newConflicts.length ? 'CONFLICT_REVIEW' : context.status,
+      // The existing mass / catalog authority is never elevated by CII or
+      // branch-level metadata alone. Unresolved components remain unresolved.
+      eligibleForAutomaticReference: !sourceUnresolved && context.eligibleForAutomaticReference &&
+        newConflicts.length === 0,
+      fallbackEvidence: fallback,
+    };
+  };
+  const finish = (contexts) => contexts.map(mergeReadOnly);
+  const unresolved = (reason) => finish(rows.map((r) => empty(r.rigidPointer, reason)));
   if (evidence.sourceKind !== 'xml' || !clean(evidence.engineInputText))
     return unresolved('Exact run-pinned converter input XML unavailable.');
   const config = parseConfig(evidence);
@@ -167,7 +197,7 @@ export function buildFinalRigidSourceContexts(inventory, evidence = {}, authorit
     return unresolved('Source indexing / engineering authority failed: ' + (error?.message || String(error)));
   }
   const issueByOwner = issueIndex(issues);
-  return rows.map((row) => {
+  return finish(rows.map((row) => {
     if (row.linkedElements?.length !== 1)
       return empty(row.rigidPointer, 'Final RIGID pointer references zero/multiple ELEMENTS records.');
     const element = row.linkedElements[0];
@@ -212,5 +242,5 @@ export function buildFinalRigidSourceContexts(inventory, evidence = {}, authorit
       mapping, ...metadata, conflicts,
       eligibleForAutomaticReference: conflicts.length === 0 &&
         metadata.bore.value !== null && Boolean(metadata.rating.value) && !metadata.dtxr.suppressed };
-  });
+  }));
 }
