@@ -1,0 +1,83 @@
+{
+  "schema": "xml-cii-roundtrip-stage-map/v1",
+  "repository": "reallakshman19/3D_Converters_v0.35",
+  "baselineMainSha": "3394c022f9400f05a736948033d26eb46274446c",
+  "status": "SOURCE_INSPECTED_NOT_ENGINEERING_QUALIFIED",
+  "stages": [
+    {
+      "id": "uploaded",
+      "module": "xml-cii-workflow-service.js",
+      "artifact": "Original XML",
+      "preserved": true
+    },
+    {
+      "id": "js-parity",
+      "module": "xml-cii-standalone-run-parity.js",
+      "artifact": "Run-pinned engine-input XML",
+      "operations": [
+        "Weight overrides",
+        "DTXR annotations",
+        "Preview process field mapping",
+        "Split node propagation",
+        "Topology cleanup"
+      ],
+      "sourceIdentityMayChange": true
+    },
+    {
+      "id": "engine-input",
+      "module": "xml-cii-workflow-engine-client.js",
+      "artifact": "finalRigidReviewEvidence.engineInputText",
+      "candidateCanonicalEditable": true,
+      "qualification": "HOLD"
+    },
+    {
+      "id": "pyodide",
+      "module": "converters/xml-cii-2019-standalone/engine.js",
+      "operation": "run existing Python runtime-custody wrapper"
+    },
+    {
+      "id": "python-preprocess",
+      "module": "xml_to_cii2019_runtime_custody.py",
+      "operations": [
+        "Staged JSON enrichment",
+        "Process field mapping",
+        "Bend-radius policy",
+        "Negative-node renumbering",
+        "Restraint authority"
+      ],
+      "sourceIdentityMayChange": true,
+      "intermediateXmlCaptured": false
+    },
+    {
+      "id": "model",
+      "module": "xml_to_cii2019_patched.py",
+      "operation": "Parse XML, construct edges and auxiliary records; apply process case values"
+    },
+    {
+      "id": "writer",
+      "module": "xml_to_cii2019.py",
+      "artifact": "Final fixed-width CII",
+      "operations": [
+        "RIGID source selection",
+        "Weight scale",
+        "CII format serialization"
+      ]
+    },
+    {
+      "id": "review",
+      "module": "xml-cii-final-rigid-inventory.js",
+      "artifact": "Read-only RIGID/ELEMENT inventory"
+    },
+    {
+      "id": "source-context",
+      "module": "xml-cii-final-rigid-source-context.js",
+      "artifact": "Read-only exact edge context; no physical mass ownership authority"
+    }
+  ],
+  "nonReplayableWithoutAdditionalEvidence": [
+    "TopologyFix path",
+    "Original uploaded-to-engine-input node transformations",
+    "Post-Python intermediate node lineage",
+    "Authentic effective GLRD masters/config"
+  ]
+}
