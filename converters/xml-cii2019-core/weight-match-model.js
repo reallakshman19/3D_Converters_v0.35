@@ -407,6 +407,19 @@ function nominalDnFromOd(odNum) {
   return best && best.err <= Math.max(1.5, Math.abs(best.od) * 0.006) ? best.dn : odNum;
 }
 
+/**
+ * Authoritative *qualified* nominal-bore conversion for consumers that must
+ * not display an unknown outside diameter as if it were DN. Weight Match
+ * historically returns the OD itself when its mapping table has no match;
+ * this stricter read-only API reports that case as unresolved.
+ */
+export function qualifiedXmlCiiNominalBoreFromOd(od) {
+  const numeric = xmlCiiNumberText(od);
+  if (numeric === null) return null;
+  const mapped = nominalDnFromOd(numeric);
+  return mapped !== null && mapped !== numeric ? mapped : null;
+}
+
 function normalizeLineKey(value) {
   return toText(value).trim().toUpperCase().replace(/\s+/g, '');
 }
