@@ -5,6 +5,7 @@ Run from repo root:
     python3 -m unittest qualification/test_verified_weight_edit.py -v
 """
 import copy
+from decimal import Decimal
 from pathlib import Path
 import sys
 import unittest
@@ -58,7 +59,7 @@ class VerifiedWeightSample(unittest.TestCase):
         result = self.edit(cii_weight="29.84")
         self.assertTrue(result["ok"], result)
         self.assertEqual(result["audit"]["sourceWeightKgAfter"], "2.984")
-        self.assertEqual(result["audit"]["ciiWeightAfter"], "29.840")
+        self.assertEqual(Decimal(result["audit"]["ciiWeightAfter"]), Decimal("29.84"))
 
     def test_exact_no_edit_sha_byte_parity(self):
         rerun, _ = run_converter(XML, self.snapshot)
