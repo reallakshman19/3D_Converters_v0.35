@@ -106,6 +106,8 @@ function runModified(modifiedSource) {
     copyFileSync(join(root, witness), join(testsDir, 'xml-cii-final-rigid-source-context.test.mjs'));
     copyFileSync(join(root, 'tabs/xml-cii-2019-standalone/xml-cii-final-rigid-master-references.js'),
       join(tabDir, 'xml-cii-final-rigid-master-references.js'));
+    copyFileSync(join(root, 'tabs/xml-cii-2019-standalone/xml-cii-final-rigid-context-fallback.js'),
+      join(tabDir, 'xml-cii-final-rigid-context-fallback.js'));
     writeFileSync(join(tabDir, moduleName), modifiedSource);
     const env = Object.fromEntries(Object.entries(process.env).filter(([key]) => !key.startsWith('NODE_TEST_')));
     const result = spawnSync(process.execPath, [
