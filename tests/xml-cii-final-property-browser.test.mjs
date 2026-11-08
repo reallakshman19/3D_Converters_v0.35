@@ -189,8 +189,8 @@ try {
     const first = page.locator('[data-final-rigid-row][data-pointer="1"]');
     assert.equal(await first.locator('td').nth(5).innerText(), '100', 'mapped source BoreMm');
     assert.equal(await first.locator('td').nth(6).innerText(), '300', 'mapped source Rating');
-    assert.match(await first.locator('[data-final-rigid-basis-detail]').innerText(), /Source mapping: VERIFIED/);
-    assert.match(await first.locator('[data-final-rigid-basis-detail]').innerText(), /source BoreMm/);
+    assert.match(await first.locator('[data-final-rigid-basis-detail]').textContent(), /Source mapping: VERIFIED/);
+    assert.match(await first.locator('[data-final-rigid-basis-detail]').textContent(), /source BoreMm/);
     const third = page.locator('[data-final-rigid-row][data-pointer="3"]');
     assert.match(await third.locator('td').last().innerText(), /Source unresolved/i,
       'different physical components do not inherit each other metadata');
