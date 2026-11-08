@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipeStressExport>
+  <DateTime>01:00:00 09 November 2026</DateTime>
+  <Source>QUALIFICATION SYNTHETIC</Source>
+  <Version>1.0</Version>
+  <ProjectName>XML-CII-CODER-SAMPLE</ProjectName>
+  <RestrainOpenEnds>No</RestrainOpenEnds>
+  <Pipe>
+    <Branch>
+      <Branchname>/QUALIFICATION/B1</Branchname>
+      <Node>
+        <NodeNumber>100</NodeNumber>
+        <ComponentType>PIPE</ComponentType>
+        <ComponentRefNo>/PIPE-100</ComponentRefNo>
+        <Position>0 0 0</Position>
+        <OutsideDiameter>60.3</OutsideDiameter>
+        <WallThickness>3.9</WallThickness>
+        <Weight>0</Weight>
+      </Node>
+      <Node>
+        <NodeNumber>110</NodeNumber>
+        <ComponentType>RIGID</ComponentType>
+        <ComponentRefNo>/PHYSICAL-RIGID-110</ComponentRefNo>
+        <Position>100 0 0</Position>
+        <OutsideDiameter>60.3</OutsideDiameter>
+        <WallThickness>3.9</WallThickness>
+        <Endpoint>2</Endpoint>
+        <Rigid>2</Rigid>
+        <Weight>15</Weight>
+      </Node>
+    </Branch>
+  </Pipe>
+</PipeStressExport>
