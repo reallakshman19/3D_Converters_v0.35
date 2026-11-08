@@ -15,7 +15,7 @@ from verified_weight_edit import (
     apply_verified_xml_weight_edit, cii_inventory, create_snapshot,
     pinned_options, run_converter, sha, source_identity, source_nodes,
 )
-from build_evidence import duplicate_number_branches
+from build_evidence import duplicate_number_branches, generated_node_witness
 
 XML = (Path(__file__).resolve().parent / "original.xml").read_bytes()
 
@@ -82,7 +82,10 @@ class VerifiedWeightSample(unittest.TestCase):
         self.assert_refusal(self.edit(xml=altered), "HOLD_STALE_SOURCE")
 
     def test_negative_C_generated_node_without_source_lineage(self):
-        fake_identity = {**self.identity, "nodeNumber": "10020"}
+        witness = generated_node_witness()
+        generated = witness["generatedCiiNodeNumber"]
+        self.assertNotIn(generated, [n["nodeNumber"] for n in self.nodes])
+        fake_identity = {**self.identity, "nodeNumber": generated}
         self.assert_refusal(self.edit(identity=fake_identity), "HOLD_SOURCE_OWNER")
 
     def test_negative_D_unapproved_catalog_suggestion(self):
