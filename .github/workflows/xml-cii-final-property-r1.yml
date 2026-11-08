@@ -1,0 +1,100 @@
+name: Final CII Property R1 — safety gate
+
+on:
+  push:
+    branches:
+      - 'feat/xml-cii-final-property-edit-reextract-r1-*'
+  pull_request:
+    paths:
+      - 'tabs/xml-cii-2019-standalone/**'
+      - 'tests/xml-cii-final-*.test.mjs'
+      - '.github/workflows/xml-cii-final-property-r1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  transaction:
+    name: Property, parity, reference and regression
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Parse modules
+        run: |
+          node --check tabs/xml-cii-2019-standalone/xml-cii-final-property-transactions.js
+          node --check tabs/xml-cii-2019-standalone/xml-cii-final-property-editor-ui.js
+          node --check tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-final-rigid-review.js
+      - name: Run property, formatting, parity and transaction tests
+        run: node --test tests/xml-cii-final-property-transactions.test.mjs tests/xml-cii-final-property-reference-error.test.mjs
+      - name: Run existing final RIGID, reference and UI compatibility suites
+        run: |
+          node --test tests/xml-cii-final-rigid-review.test.mjs tests/xml-cii-final-rigid-length-error.test.mjs tests/xml-cii-final-rigid-master-reference.test.mjs tests/xml-cii-final-review-smartfill-scope.test.mjs
+      - name: Run existing standalone output integration regression
+        run: node --test tests/xml-cii-standalone-output-run.test.js
+  mutations:
+    name: Eight fail-closed safety mutations
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Mutation kill suite
+        run: node --test tests/xml-cii-final-property-mutations.test.mjs
+  scale:
+    name: Synthetic 20 to 50k ELEMENTS scale
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Scale bench and full parity
+        run: node --max-old-space-size=4096 --test tests/xml-cii-final-property-scale.test.mjs
+
+  browser:
+    name: Chromium final CII edit to download E2E
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install isolated Playwright browser dependency
+        run: |
+          npm install --no-save --package-lock=false playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Exercise actual Final Weight Review browser interactions
+        run: node --test tests/xml-cii-final-property-browser.test.mjs
+
+  repository-glrd:
+    name: Repo GLRD XML native writer / property patch smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Generate from genuine repository GLRD XML (not Owner's configured run)
+        run: |
+          mkdir -p "$RUNNER_TEMP/glrd-property-r1"
+          sha256sum 'Benchmarks/XML to CII 2019/GLRD-1000-PI-01.xml'
+          python3 converters/scripts/xml_to_cii2019_runtime_custody.py --input 'Benchmarks/XML to CII 2019/GLRD-1000-PI-01.xml' --output "$RUNNER_TEMP/glrd-property-r1/native.cii" --coords-mode first --weight-scale 10 --split-condensed-valve-flange
+      - name: Apply exact-pointer atomic edits and verify full byte parity
+        run: node tests/xml-cii-final-property-repo-glrd-replay.mjs "$RUNNER_TEMP/glrd-property-r1/native.cii" "$RUNNER_TEMP/glrd-property-r1/evidence"
+      - name: Retain original/revised CII, audit and count evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: xml-cii-final-r1-repository-glrd-smoke
+          path: ${{ runner.temp }}/glrd-property-r1/
+          if-no-files-found: warn
