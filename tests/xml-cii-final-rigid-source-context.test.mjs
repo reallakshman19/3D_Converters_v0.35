@@ -122,6 +122,29 @@ assert.equal(suppressed.dtxr.suppressionReason, 'unsafe staged support');
 assert.equal(suppressed.dtxr.matchedBy, 'position');
 assert.equal(suppressed.dtxr.sourcePath, '$.items[1]');
 
+const mappedOd = contexts(xml(branch('/B', [
+  pipe(1), rigid(2, '/A', { BoreMm: '', OutsideDiameter: '114.3' }),
+])), one, authority())[0];
+assert.equal(mappedOd.bore.value, 100);
+assert.equal(mappedOd.bore.basis, 'qualified Weight Match OD-to-DN');
+assert.equal(mappedOd.bore.original, '114.3');
+const refusedOd = contexts(xml(branch('/B', [
+  pipe(1), rigid(2, '/A', { BoreMm: '', OutsideDiameter: '123.45' }),
+])), one, authority([issue('/A', { boreMm: 123.45 })]))[0];
+assert.equal(refusedOd.bore.value, null, 'unrecognized OD is not a nominal Bore');
+assert.equal(refusedOd.eligibleForAutomaticReference, false);
+const verifiedBranch = contexts(xml(branch('/B', [
+  pipe(1, { BoreMm: 100 }), rigid(2, '/A', { BoreMm: '' }),
+])), one, authority())[0];
+assert.equal(verifiedBranch.bore.value, 100);
+assert.match(verifiedBranch.bore.basis, /verified branch/);
+const dtxrConflict = contexts(xml(branch('/B', [
+  pipe(1, { ComponentRefNo: '/A', DTXR_POS: 'VALVE-A' }),
+  rigid(2, '/A', { DTXR_POS: 'VALVE-B' }),
+])))[0];
+assert.equal(dtxrConflict.status, 'CONFLICT_REVIEW');
+assert.ok(dtxrConflict.conflicts.includes('DTXR_SOURCE_CONFLICT'));
+
 const noMaster = buildFinalRigidReferencePlans(one, evidence(source, {}), authority())[0];
 assert.equal(noMaster.sourceContext.status, 'VERIFIED',
   'missing weight masters must not discard source metadata');
