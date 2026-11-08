@@ -1,0 +1,25 @@
+<CleanXML sourceName="qualification">
+  <Branch>
+    <Branchname>/QUAL</Branchname>
+    <Node>
+      <NodeNumber>10</NodeNumber>
+      <Position>0 0 0</Position>
+      <ComponentType>PIPE</ComponentType>
+      <ComponentRefNo>/QUAL-PIPE</ComponentRefNo>
+      <Rigid>0</Rigid>
+      <Weight>0</Weight>
+      <OutsideDiameter>60.3</OutsideDiameter>
+      <WallThickness>3.9</WallThickness>
+    </Node>
+    <Node>
+      <NodeNumber>20</NodeNumber>
+      <Position>100 0 0</Position>
+      <ComponentType>RIGID</ComponentType>
+      <ComponentRefNo>/QUAL-RIGID</ComponentRefNo>
+      <Rigid>2</Rigid>
+      <Weight>15</Weight>
+      <OutsideDiameter>60.3</OutsideDiameter>
+      <WallThickness>3.9</WallThickness>
+    </Node>
+  </Branch>
+</CleanXML>
