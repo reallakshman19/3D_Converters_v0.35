@@ -44,7 +44,14 @@ function rowMarkup(row, plan) {
         (item.matchedBy ? ' · matched by ' + item.matchedBy : '') +
         (item.sourcePath ? ' · source path ' + item.sourcePath : '') +
         (item.dtxrRating ? ' · DTXR rating ' + item.dtxrRating : '') +
-        (item.suppressed ? ' · SUPPRESSED: ' + (item.suppressionReason || 'unspecified') : '');
+        (item.suppressed ? ' · SUPPRESSED: ' + (item.suppressionReason || 'unspecified') : '') +
+        (item.source ? ' · authority ' + item.source : '') +
+        (item.originalField ? ' · field ' + item.originalField : '') +
+        (item.branchName ? ' · exact CII branch ' + item.branchName : '') +
+        (item.engineInputDigest ? ' · run input ' + item.engineInputDigest : '') +
+        (item.conflictingRatings ? ' · conflicting ratings ' + item.conflictingRatings.join(', ') : '') +
+        (item.elements ? ' · CII element OD evidence ' + item.elements.map((e) =>
+          '#' + e.elementIndex + ': OD ' + e.od + ' → DN ' + (e.dn ?? 'unresolved')).join('; ') : '');
     }),
     ...(context.conflicts || []).map((conflict) => 'CONFLICT / REVIEW: ' + conflict),
   ].join('\n') : '';
@@ -54,6 +61,24 @@ function rowMarkup(row, plan) {
     valueOrStatus(context?.bore), valueOrStatus(context?.rating),
     valueOrStatus(context?.dtxr), mapping?.componentRefNo].join(' ').toLowerCase();
   const cell = (value) => `<td style="padding:9px;border-bottom:1px solid #26364b;white-space:nowrap;">${esc(value)}</td>`;
+  const metadataCell = (property, kind) => {
+    const derivedBore = kind === 'bore' && property?.source === 'cii-od-dn';
+    const branchRating = kind === 'rating' && [
+      'enriched-xml-branch-rating', 'enriched-xml-branch-node-rating',
+      'configured-branch-rating', 'branch-rating-override',
+    ].includes(property?.source);
+    const conflicted = property?.conflict === true;
+    const display = conflicted
+      ? (kind === 'rating' ? 'Rating conflict — Review' : 'Bore conflict — Review')
+      : derivedBore ? 'DN ' + property.value : valueOrStatus(property);
+    const sourceLabel = derivedBore ? 'CII OD ' + property.original + ' mm' :
+      branchRating ? (property.source === 'branch-rating-override'
+        ? 'Approved branch override' : property.source === 'configured-branch-rating'
+          ? 'Branch rating resolver' : 'Enriched XML branch') : '';
+    return `<td data-final-rigid-${kind}-source="${esc(property?.source || '')}"
+      title="${esc(property?.basis || '')}" style="padding:9px;border-bottom:1px solid #26364b;white-space:nowrap;">
+      ${esc(display)}${sourceLabel ? `<div style="font-size:10px;color:#93c5fd;">${esc(sourceLabel)}</div>` : ''}</td>`;
+  };
   const status = [
     !linked.length ? 'Unreferenced pointer' : (linked.length > 1 ? 'Shared by multiple elements' : 'Linked'),
     row.weight <= 0 ? 'Zero / negative weight' : '',
@@ -62,8 +87,8 @@ function rowMarkup(row, plan) {
     data-nonpositive="${row.weight <= 0}">
     ${cell(row.rigidPointer)}${cell(elementIds)}${cell(fromNodes)}${cell(toNodes)}
     ${cell(lengths)}
-    ${cell(valueOrStatus(context?.bore))}
-    ${cell(valueOrStatus(context?.rating))}
+    ${metadataCell(context?.bore, 'bore')}
+    ${metadataCell(context?.rating, 'rating')}
     ${cell(valueOrStatus(context?.dtxr))}
     ${cell(row.rawWeight)}
     <td style="padding:7px;border-bottom:1px solid #26364b;">
@@ -109,7 +134,7 @@ function modalMarkup(inventory, filename, thresholdPct = 20, plans = []) {
     </div>
     <div style="background:#2a210b;border:1px solid #7c5a18;border-radius:6px;padding:9px;
       font-size:12px;color:#ffe7a3;margin-bottom:12px;">
-      Bore, Rating and DTXR are read-only source-component context; unresolved or conflicting evidence is explicitly marked and never inferred from catalog similarity. RIGID Pointer is the
+      Bore and Rating are read-only engineering context. When source-component ownership is unresolved, nominal Bore can be derived from the final CII ELEMENTS outside diameter using the qualified OD-to-DN map, and Rating from the exact branch in the run-pinned enriched XML. This does not establish physical-component identity or authorize any reference or weight. Conflicts remain marked for review. DTXR remains source-component-only. RIGID Pointer is the
       1-based index into the final RIGID section, read from each ELEMENTS record's 13th line,
       second field. Weight is the exact exported first-field value in the CII file
       (output mass/force units depend on the conversion setting). Length is computed
