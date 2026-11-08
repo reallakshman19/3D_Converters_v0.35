@@ -3,6 +3,8 @@
 from __future__ import annotations
 import json
 import sys
+import subprocess
+import tempfile
 from itertools import zip_longest
 from decimal import Decimal
 from pathlib import Path
@@ -86,11 +88,43 @@ def run():
         conversionSnapshot=manifest, sourceIdentity=IDENTITY,
         proposedWeightKg="2.984", approved=True), "HOLD_STALE_SOURCE", log)
 
-    # C: a generated number not in the original source has no source lineage.
-    synthetic_identity = {**IDENTITY, "nodeNumber": "10000"}
+    # C: obtain an ACTUAL generated positive CII node from a negative original
+    # via the unmodified split-aware runtime converter. Do not invent 10000.
+    negative_source = original.replace(
+        b"<NodeNumber>20</NodeNumber>", b"<NodeNumber>-123</NodeNumber>"
+    ).replace(b"<Weight>15</Weight>",
+              b"<ElementLengthMm>100</ElementLengthMm>\n      <Weight>15</Weight>")
+    with tempfile.TemporaryDirectory(prefix="cii-qual-generated-witness-") as temp:
+        source_path, cii_path = Path(temp) / "negative.xml", Path(temp) / "split.cii"
+        source_path.write_bytes(negative_source)
+        split_flags = ["--split-condensed-valve-flange"
+                       if flag == "--no-split-condensed-valve-flange" else flag
+                       for flag in FLAGS]
+        command = [sys.executable,
+                   str(SCRIPTS / "xml_to_cii2019_runtime_custody.py"),
+                   "--input", str(source_path), "--output", str(cii_path),
+                   *split_flags]
+        process = subprocess.run(command, cwd=str(ROOT), capture_output=True,
+                                 text=True, timeout=60)
+        required(process.returncode == 0 and cii_path.exists(),
+                 "Actual negative-node renumbering converter failed: " + process.stderr[-500:])
+        from cii2019_section_rules import parse_section_map
+        emitted = parse_section_map(cii_path.read_text())["ELEMENTS"]
+        generated_number = str(int(Decimal(emitted[0].split()[1])))
+    required(generated_number != "-123" and int(generated_number) > 0,
+             "Split converter did not emit a generated positive node.")
+    from verified_weight_edit import Hold
+    try:
+        inspect_source(negative_source, {**IDENTITY, "nodeNumber": generated_number})
+        raise AssertionError("Generated CII node falsely accepted as source owner.")
+    except Hold as exc:
+        required(exc.code == "HOLD_SOURCE_OWNER", "Wrong generated-node refusal.")
+    synthetic_identity = {**IDENTITY, "nodeNumber": generated_number}
     refusal("SYNTHETIC GENERATED NODE", dict(originalXml=original, originalCii=baseline,
         conversionSnapshot=manifest, sourceIdentity=synthetic_identity,
         proposedWeightKg="2.984", approved=True), "HOLD_SOURCE_OWNER", log)
+    log.append("SYNTHETIC WITNESS: PASS (actual split converter source -123 -> generated CII "
+               + generated_number + "; source identity refused)")
 
     # D: catalog suggestion cannot edit without explicit user approval.
     refusal("UNAPPROVED CATALOG WEIGHT", dict(originalXml=original, originalCii=baseline,
