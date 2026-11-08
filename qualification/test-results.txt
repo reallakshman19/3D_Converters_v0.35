@@ -1,0 +1,45 @@
+Task XML-CII2019-CODER-QUALIFICATION-SAMPLE-R1
+Mode: SYNTHETIC_REAL_PYTHON; NOT complete bidirectional support
+REPRODUCE FROM REPOSITORY ROOT:
+  python3 qualification/build_evidence.py --out qualification
+  python3 -m unittest qualification/test_verified_weight_edit.py -v
+  python3 converters/scripts/xml_to_cii2019_runtime_custody.py --input qualification/original.xml --output /tmp/qualification-noedit.cii --coords-mode first --weight-scale 10 --support-config-json '{}' --no-split-condensed-valve-flange --use-restraint-type-based-on-json
+  sha256sum qualification/original.cii /tmp/qualification-noedit.cii
+  cmp qualification/original.cii /tmp/qualification-noedit.cii
+REAL CONVERTER: Wrote /tmp/cii-qualification-wx42lk7f/regenerated.cii with 1 elements and 0 restraints. runtime_custody=1; bend_radius_1_5d=False; use_restraint_type_based_on_json=True; split_condensed_valve_flange=False
+ORIGINAL_CII_SHA256: 3c54fb2daa908e29ec3e5fd88445aefe77089671352e995b5902cab7ee6e0c20
+NO_EDIT_REGENERATED_CII_SHA256: 3c54fb2daa908e29ec3e5fd88445aefe77089671352e995b5902cab7ee6e0c20
+ORIGINAL_CII_BYTES: 3770
+NO_EDIT_REGENERATED_CII_BYTES: 3770
+NO_EDIT_DIFFERING_BYTES: 0
+SOURCE_WEIGHT: 15 kg -> 2.984 kg
+CII_WEIGHT: 150 -> 29.84 (scale 10)
+XML_NON_TARGET_BYTE_DIFFERENCES: 0
+UNEXPLAINED_CII_ENGINEERING_BYTE_DIFFERENCES: 0
+CONTROL/POINTERS: valid via section_rules and independent cii2019_reparse_proof
+POSITIVE: PASS
+AMBIGUOUS_SOURCE: PASS_REFUSED HOLD_SOURCE_OWNER output_published=False
+STALE_SOURCE: PASS_REFUSED HOLD_STALE_SOURCE output_published=False
+SYNTHETIC_GENERATED_NODE: PASS_REFUSED HOLD_SOURCE_OWNER output_published=False
+UNAPPROVED_SUGGESTION: PASS_REFUSED HOLD_UNAPPROVED output_published=False
+NEGATIVE_PASS: 4
+NEGATIVE_FAIL: 0
+NOT_RUN: authentic Owner GLRD 433/144, GUI/Pyodide, full split mass allocation
+WARNING: The original fixture must not be replaced by a catalog weight without physical approval.
+
+INDEPENDENT_UNITTEST_OUTPUT:
+test_exact_no_edit_sha_byte_parity (qualification.test_verified_weight_edit.VerifiedWeightSample.test_exact_no_edit_sha_byte_parity) ... ok
+test_missing_mass_approval_or_negative_proposal_refused (qualification.test_verified_weight_edit.VerifiedWeightSample.test_missing_mass_approval_or_negative_proposal_refused) ... ok
+test_negative_A_same_number_different_branch_requires_context (qualification.test_verified_weight_edit.VerifiedWeightSample.test_negative_A_same_number_different_branch_requires_context) ... ok
+test_negative_B_stale_original_xml_fingerprint (qualification.test_verified_weight_edit.VerifiedWeightSample.test_negative_B_stale_original_xml_fingerprint) ... ok
+test_negative_C_generated_node_without_source_lineage (qualification.test_verified_weight_edit.VerifiedWeightSample.test_negative_C_generated_node_without_source_lineage) ... ok
+test_negative_D_unapproved_catalog_suggestion (qualification.test_verified_weight_edit.VerifiedWeightSample.test_negative_D_unapproved_catalog_suggestion) ... ok
+test_positive_accepts_explicit_cii_value_converted_to_kg (qualification.test_verified_weight_edit.VerifiedWeightSample.test_positive_accepts_explicit_cii_value_converted_to_kg) ... ok
+test_positive_real_converter_source_15_to_2_984 (qualification.test_verified_weight_edit.VerifiedWeightSample.test_positive_real_converter_source_15_to_2_984) ... ok
+test_tampered_original_cii_refused (qualification.test_verified_weight_edit.VerifiedWeightSample.test_tampered_original_cii_refused) ... ok
+test_wrong_converter_config_or_runtime_hash_blocked (qualification.test_verified_weight_edit.VerifiedWeightSample.test_wrong_converter_config_or_runtime_hash_blocked) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.457s
+
+OK
