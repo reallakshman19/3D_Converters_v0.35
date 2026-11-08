@@ -1,0 +1,68 @@
+name: XML CII 2019 — coder qualification sample R1
+
+on:
+  push:
+    branches:
+      - 'feat/xml-cii2019-coder-qualification-sample-r1-*'
+    paths:
+      - 'qualification/verified_weight_edit.py'
+      - 'qualification/run_qualification.py'
+      - 'qualification/original.xml'
+      - '.github/workflows/xml-cii-coder-qualification-sample-r1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  real-converter-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Source syntax
+        run: |
+          python3 -m py_compile qualification/verified_weight_edit.py qualification/run_qualification.py
+      - name: Real converter positive and negative qualification
+        run: |
+          python3 qualification/run_qualification.py
+      - name: Independently regenerate both CII files through real CLI
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 converters/scripts/xml_to_cii2019_runtime_custody.py --input qualification/original.xml --output "$RUNNER_TEMP/noedit.cii" --coords-mode first --weight-scale 10 --support-config-json '{}' --no-split-condensed-valve-flange --use-restraint-type-based-on-json
+          cmp qualification/original.cii "$RUNNER_TEMP/noedit.cii"
+          python3 converters/scripts/xml_to_cii2019_runtime_custody.py --input qualification/revised.xml --output "$RUNNER_TEMP/reextracted.cii" --coords-mode first --weight-scale 10 --support-config-json '{}' --no-split-condensed-valve-flange --use-restraint-type-based-on-json
+          cmp qualification/regenerated.cii "$RUNNER_TEMP/reextracted.cii"
+          sha256sum qualification/original.cii qualification/regenerated.cii
+      - name: Retain complete evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: xml-cii2019-coder-qualification-r1-evidence
+          path: |
+            qualification/source-understanding.md
+            qualification/baseline-manifest.json
+            qualification/original.xml
+            qualification/original.cii
+            qualification/revised.xml
+            qualification/regenerated.cii
+            qualification/source-edit-audit.json
+            qualification/test-results.txt
+          if-no-files-found: warn
+      - name: Commit synthetic real-converter evidence to qualification branch
+        if: success() && github.event_name == 'push'
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add qualification/baseline-manifest.json qualification/original.cii qualification/revised.xml qualification/regenerated.cii qualification/source-edit-audit.json qualification/test-results.txt
+          if ! git diff --cached --quiet; then
+            git commit -m "test: publish real-converter qualification evidence [skip ci]"
+            git push origin "HEAD:refs/heads/$GITHUB_REF_NAME"
+          fi
