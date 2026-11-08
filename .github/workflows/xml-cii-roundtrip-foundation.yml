@@ -32,6 +32,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
       - name: Exercise real runtime-custody writer twice with identical effective settings
         run: |
           mkdir -p "$RUNNER_TEMP/xml-roundtrip-smoke"
@@ -41,6 +44,7 @@ jobs:
           cmp "$RUNNER_TEMP/xml-roundtrip-smoke/baseline.cii" "$RUNNER_TEMP/xml-roundtrip-smoke/replayed.cii"
           sha256sum "$RUNNER_TEMP/xml-roundtrip-smoke/baseline.cii" "$RUNNER_TEMP/xml-roundtrip-smoke/replayed.cii"
           echo 'CI result is the repository fixture Python-only path. Authentic GLRD with hydrated Preview/config and browser engine remains NOT_RUN.'
+          node tests/xml-cii-roundtrip-repo-glrd-probe.mjs "$INPUT" "$RUNNER_TEMP/xml-roundtrip-smoke/baseline.cii"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
