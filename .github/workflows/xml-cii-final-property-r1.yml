@@ -59,7 +59,9 @@ jobs:
         with:
           node-version: '22'
       - name: Scale bench and full parity
-        run: node --max-old-space-size=4096 --test tests/xml-cii-final-property-scale.test.mjs
+        run: |
+          node --max-old-space-size=4096 --test tests/xml-cii-final-property-scale.test.mjs
+          node --max-old-space-size=4096 --test tests/xml-cii-final-rigid-source-scale.test.mjs
 
   browser:
     name: Chromium final CII edit to download E2E
