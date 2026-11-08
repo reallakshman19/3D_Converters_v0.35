@@ -1,0 +1,31 @@
+{
+  "converter": "xml_to_cii2019_runtime_custody.py",
+  "newSourceValueKg": "2.984",
+  "originalCiiElementIndex": 1,
+  "originalCiiSha256": "a4e322275084b55ffd8e3b30e070ade8fb45321664ed50c6887a7eb90532c73c",
+  "originalCiiWeight": "150.000",
+  "originalRigidPointer": 1,
+  "originalSourceValueKg": "15",
+  "regeneratedCiiElementIndex": 1,
+  "regeneratedCiiSha256": "3365fade4d9493e79471c3892ed9bbb75a1d7a259e2b8feed007ef3bb587e774",
+  "regeneratedCiiWeight": "29.8400",
+  "regeneratedRigidPointer": 1,
+  "revisedSourceSha256": "eb3c46e142df360d61f36105b2bc977cdbb40587af80d2ab0df9ef8c4f477b1b",
+  "schema": "xml-cii-weight-qualification-audit/v1",
+  "sourceByteSpan": [
+    585,
+    587
+  ],
+  "sourceIdentity": {
+    "branchName": "/QUAL",
+    "branchOrdinal": 0,
+    "componentRefNo": "/QUAL-RIGID",
+    "nodeNumber": "20",
+    "nodeOrdinal": 1
+  },
+  "sourceOtherBytesChanged": false,
+  "sourceSha256": "2c7288106ce9bbcc422893c19c4e8265a3e46e721b9aa6d9e591f5a857355694",
+  "unexplainedCiiDifferences": 0,
+  "verdict": "VERIFIED",
+  "weightScale": "10"
+}
