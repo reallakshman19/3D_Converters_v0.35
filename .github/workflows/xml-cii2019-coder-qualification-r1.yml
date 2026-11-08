@@ -1,0 +1,80 @@
+name: XML-CII2019 coder qualification sample R1
+on:
+  push:
+    branches:
+      - 'qualification/xml-cii2019-coder-sample-r1-*'
+    paths:
+      - 'qualification/verified_weight_edit.py'
+      - 'qualification/build_evidence.py'
+      - 'qualification/test_verified_weight_edit.py'
+      - 'qualification/original.xml'
+      - 'qualification/source-understanding.md'
+      - '.github/workflows/xml-cii2019-coder-qualification-r1.yml'
+  pull_request:
+    paths:
+      - 'qualification/**'
+      - '.github/workflows/xml-cii2019-coder-qualification-r1.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  qualification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify source modules compile
+        run: |
+          python3 -m py_compile qualification/verified_weight_edit.py qualification/build_evidence.py qualification/test_verified_weight_edit.py
+      - name: Generate exact 8-artifact qualification package using actual converter
+        run: |
+          python3 qualification/build_evidence.py --out qualification
+      - name: Run positive and refusal tests
+        run: |
+          python3 -m unittest qualification/test_verified_weight_edit.py -v 2>&1 | tee "$RUNNER_TEMP/unittest.txt"
+          grep -q 'OK' "$RUNNER_TEMP/unittest.txt"
+          printf '\nINDEPENDENT_UNITTEST_OUTPUT:\n' >> qualification/test-results.txt
+          cat "$RUNNER_TEMP/unittest.txt" >> qualification/test-results.txt
+      - name: Source byte and CII no-edit independent shell parity
+        run: |
+          python3 converters/scripts/xml_to_cii2019_runtime_custody.py --input qualification/original.xml --output "$RUNNER_TEMP/qualification-noedit.cii" --coords-mode first --weight-scale 10 --support-config-json '{}' --no-split-condensed-valve-flange --use-restraint-type-based-on-json
+          cmp qualification/original.cii "$RUNNER_TEMP/qualification-noedit.cii"
+          sha256sum qualification/original.cii "$RUNNER_TEMP/qualification-noedit.cii"
+          python3 - <<'PY'
+          from pathlib import Path
+          a=Path("qualification/original.xml").read_bytes()
+          b=Path("qualification/revised.xml").read_bytes()
+          assert a.replace(b"<Weight>15</Weight>", b"<Weight>2.984</Weight>") == b
+          print("XML exactly one intended source Weight token changed; no unrelated XML bytes")
+          PY
+      - name: Verify all required evidence outputs are present
+        run: |
+          test -s qualification/source-understanding.md
+          test -s qualification/baseline-manifest.json
+          test -s qualification/original.xml
+          test -s qualification/original.cii
+          test -s qualification/revised.xml
+          test -s qualification/regenerated.cii
+          test -s qualification/source-edit-audit.json
+          test -s qualification/test-results.txt
+      - name: Upload exact qualification outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: xml-cii2019-coder-qualification-r1
+          path: qualification/
+          if-no-files-found: error
+      - name: Commit verified evidence back to qualification branch only
+        if: github.event_name == 'push'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add qualification/baseline-manifest.json qualification/original.cii qualification/revised.xml qualification/regenerated.cii qualification/source-edit-audit.json qualification/test-results.txt
+          if ! git diff --cached --quiet; then
+            git commit -m "test(qualification): retain exact real-converter evidence after CI PASS"
+            git push origin "HEAD:${{ github.ref_name }}"
+          fi
