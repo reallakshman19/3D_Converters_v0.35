@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - 'feat/xml-cii-final-property-edit-reextract-r1-*'
+      - 'feat/xml-cii-final-source-context-r1-*'
   pull_request:
     paths:
       - 'tabs/xml-cii-2019-standalone/**'
