@@ -240,7 +240,19 @@ export function openFinalRigidWeightReview(result, options = {}) {
           : 'MANUAL · reference comparison (not catalog verified)';
       if (basisDetail && isSelection) basisDetail.textContent = [
         plan?.reason || '', plan?.mapping ? `Source ${plan.mapping.branchName} ${plan.mapping.fromNode} → ${plan.mapping.toNode}; ComponentRefNo ${plan.mapping.componentRefNo || 'none'}; CII ${Number(plan.mapping.ciiLengthMm).toFixed(3)} mm` : '',
-        candidate.basis, 'Error % = 100 × (edited CII weight − reference weight) / reference weight',
+        plan?.sourceContext ? [
+          'Ownership status: ' + plan.sourceContext.status,
+          'Bore: ' + (plan.sourceContext.bore.value ?? 'Not resolved') +
+            ' from ' + (plan.sourceContext.bore.sourceNode || '?') +
+            ' (' + plan.sourceContext.bore.basis + ')',
+          'Rating: ' + (plan.sourceContext.rating.value ?? 'Not resolved') +
+            ' (' + plan.sourceContext.rating.basis + ')',
+          'DTXR: ' + (plan.sourceContext.dtxr.value ?? (plan.sourceContext.dtxr.suppressed ? 'Suppressed' : 'Not resolved')) +
+            ' (' + plan.sourceContext.dtxr.basis + ')',
+          'DTXR source path: ' + (plan.sourceContext.dtxr.sourcePath || 'not provided'),
+          ...plan.sourceContext.conflicts,
+        ].join('\\n') : '', candidate.basis,
+        'Error % = 100 × (edited CII weight − reference weight) / reference weight',
       ].filter(Boolean).join('\n');
       if (comparison.errorPct !== null) assessed += 1;
       if (comparison.outside === true) overLimit += 1;
@@ -293,7 +305,7 @@ export function openFinalRigidWeightReview(result, options = {}) {
   limitInput?.addEventListener('input', refresh);
   search?.addEventListener('input', refresh);
   filter?.addEventListener('change', refresh);
-  installFinalCiiPropertyEditor({ overlay, result, inventory, refresh, getCurrentResult: options.getCurrentResult });
+  installFinalCiiPropertyEditor({ overlay, result, inventory, plans, refresh, getCurrentResult: options.getCurrentResult });
   refresh();
   search?.focus();
   return true;
