@@ -173,7 +173,7 @@ export function parseFinalCiiRigidInventory(ciiText) {
   });
   return {
     schema: 'xml-cii-final-rigid-inventory/v1',
-    declared, rows,
+    declared, rows, elements,
     linkedCount: rows.filter((row) => row.elementCount === 1).length,
     unreferencedCount: rows.filter((row) => row.elementCount === 0).length,
     sharedCount: rows.filter((row) => row.elementCount > 1).length,
