@@ -284,7 +284,9 @@ export function openFinalRigidWeightReview(result, options = {}) {
           : (comparison.outside ? 'Outside selected error limit' : 'Within selected error limit');
       }
       const plan = plans[pointer - 1];
-      const candidate = plan?.candidates?.[Number(tr.querySelector('[data-final-rigid-suggestion]')?.value)];
+      const selectedIndex = tr.querySelector('[data-final-rigid-suggestion]')?.value || '';
+      const candidate = selectedIndex === '' ? null :
+        (plan?.nearestSuggestions || plan?.candidates || [])[Number(selectedIndex)];
       const basisSummary = tr.querySelector('[data-final-rigid-basis-summary]');
       const basisDetail = tr.querySelector('[data-final-rigid-basis-detail]');
       const isSelection = Boolean(tr.querySelector('[data-final-rigid-suggestion]')?.value !== ''
@@ -292,9 +294,12 @@ export function openFinalRigidWeightReview(result, options = {}) {
       if (basisSummary) basisSummary.textContent =
         comparison.errorPct === null ? (plan?.reason || 'No independent catalog reference')
         : isSelection ? (refInput?.dataset.referenceKind === 'auto'
-          ? 'AUTO · exact catalog comparison' : candidate.approximate
-            ? 'SELECTED · approximate catalog comparison (review only)'
-            : 'SELECTED · catalog comparison (review)')
+          ? 'AUTO · exact catalog comparison'
+          : !plan?.mapping
+            ? 'NEAREST · provisional catalog comparison, NOT physical mass proof'
+            : candidate.approximate
+              ? 'SELECTED · approximate catalog comparison (review only)'
+              : 'SELECTED · catalog comparison (review)')
           : 'MANUAL · reference comparison (not catalog verified)';
       if (basisDetail && isSelection) basisDetail.textContent = [
         plan?.reason || '', plan?.mapping ? `Source ${plan.mapping.branchName} ${plan.mapping.fromNode} → ${plan.mapping.toNode}; ComponentRefNo ${plan.mapping.componentRefNo || 'none'}; CII ${Number(plan.mapping.ciiLengthMm).toFixed(3)} mm` : '',
@@ -336,16 +341,37 @@ export function openFinalRigidWeightReview(result, options = {}) {
   overlay.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') { event.preventDefault(); close(); }
   });
+  const syncNearestButtons = (tr, selectedIndex = '') => {
+    tr?.querySelectorAll('[data-final-rigid-nearest-candidate]').forEach((button) => {
+      const selected = selectedIndex !== '' && button.dataset.finalRigidNearestIndex === selectedIndex;
+      button.setAttribute('aria-pressed', String(selected));
+      button.style.borderColor = selected ? '#60a5fa' : '#334155';
+      button.style.background = selected ? '#1d4ed8' : '#1e293b';
+    });
+  };
+  overlay.querySelectorAll('[data-final-rigid-nearest-candidate]').forEach((button) =>
+    button.addEventListener('click', () => {
+      const tr = button.closest('[data-final-rigid-row]');
+      const select = tr?.querySelector('[data-final-rigid-suggestion]');
+      if (!select) return;
+      const selected = button.dataset.finalRigidNearestIndex;
+      // A second click clears the provisional reference; no CII edit occurs.
+      select.value = select.value === selected ? '' : selected;
+      select.dispatchEvent(new Event('change', { bubbles: true }));
+    }));
   overlay.querySelectorAll('[data-final-rigid-suggestion]').forEach((select) =>
     select.addEventListener('change', () => {
       const pointer = Number(select.getAttribute('data-final-rigid-suggestion'));
       const plan = plans[pointer - 1];
-      const candidate = select.value === '' ? null : plan?.candidates?.[Number(select.value)];
+      const candidate = select.value === '' ? null :
+        (plan?.nearestSuggestions || plan?.candidates || [])[Number(select.value)];
       const tr = select.closest('[data-final-rigid-row]');
       const input = tr?.querySelector('[data-final-rigid-reference]');
       if (!input) return;
       input.value = candidate ? String(candidate.referenceWeight) : '';
-      input.dataset.referenceKind = candidate ? 'selected' : '';
+      input.dataset.referenceKind = candidate
+        ? (plan?.mapping ? 'selected' : 'nearest-review') : '';
+      syncNearestButtons(tr, select.value);
       const detail = tr?.querySelector('[data-final-rigid-basis-detail]');
       if (detail && !candidate) detail.textContent = plan?.reason || 'No qualified reference.';
       refresh();
@@ -356,10 +382,16 @@ export function openFinalRigidWeightReview(result, options = {}) {
       const tr = input.closest('[data-final-rigid-row]');
       const select = tr?.querySelector('[data-final-rigid-suggestion]');
       if (select) select.value = '';
+      syncNearestButtons(tr, '');
       const detail = tr?.querySelector('[data-final-rigid-basis-detail]');
       if (detail) detail.textContent = 'User-entered comparison reference. Verify independent source and exported units.';
       refresh();
     }));
+  const guidance = overlay.querySelector('[data-final-rigid-guidance]');
+  guidance?.addEventListener('toggle', () => {
+    const icon = guidance.querySelector('[data-final-rigid-guidance-icon]');
+    if (icon) icon.textContent = guidance.open ? '▼' : '▶';
+  });
   limitInput?.addEventListener('input', refresh);
   search?.addEventListener('input', refresh);
   filter?.addEventListener('change', refresh);
