@@ -410,25 +410,39 @@ try {
     await page.locator('[data-final-rigid-batch-preview]').click();
     let modal = page.locator('[data-final-rigid-batch-dialog]');
     assert.match(await modal.locator('[data-final-rigid-batch-summary]').innerText(), /0 eligible/);
-    assert.match(await modal.locator('[data-final-rigid-batch-summary]').innerText(), /held\/review-only/);
-    // All unmatched RIGIDs are also held; only pointer 1 has a >40% proposal.
+    assert.match(await modal.locator('[data-final-rigid-batch-summary]').innerText(), /1 review-only/);
+    assert.match(await modal.locator('[data-final-rigid-batch-summary]').innerText(), /2 hard-held/);
+    assert.equal(await modal.locator('[data-final-rigid-batch-approve-all]').isDisabled(), true,
+      'Approve All must not bypass the review-only opt-in');
+    assert.equal(await modal.locator('[data-final-rigid-batch-approve-all-checkbox]').isDisabled(), true);
     assert.equal(await modal.locator('[data-final-rigid-batch-stage]').isDisabled(), true);
-    await modal.locator('[data-final-rigid-batch-cancel]').click();
     assert.equal(await first.locator('[data-final-rigid-edited]').inputValue(), '150');
 
-    // Explicit opt-in allows review-only suggestions; the row still starts UNCHECKED.
-    await page.locator('[data-final-rigid-batch-review-only]').check();
-    await page.locator('[data-final-rigid-batch-preview]').click();
-    modal = page.locator('[data-final-rigid-batch-dialog]');
+    // The review-only opt-in is available inside this modal; no need to close,
+    // search for the toolbar toggle and restart the preview.
+    await modal.locator('[data-final-rigid-batch-include-review]').check();
+    assert.equal(await page.locator('[data-final-rigid-batch-review-only]').isChecked(), true);
     assert.match(await modal.locator('[data-final-rigid-batch-summary]').innerText(), /1 eligible/);
     const proposed = modal.locator('[data-final-rigid-batch-row="1"]');
     assert.match(await proposed.innerText(), /29\.84/);
     assert.match(await proposed.innerText(), /\+402\.7%/);
     assert.match(await proposed.innerText(), /REVIEW/);
     assert.equal(await proposed.locator('[data-final-rigid-batch-approve]').isChecked(), false);
-    await proposed.locator('[data-final-rigid-batch-approve]').check();
+
+    // Approve All is selection only: does not edit the CII and cannot stage
+    // a provisional candidate without the separate review attestation.
+    await modal.locator('[data-final-rigid-batch-approve-all]').click();
+    assert.equal(await proposed.locator('[data-final-rigid-batch-approve]').isChecked(), true);
+    assert.equal(await modal.locator('[data-final-rigid-batch-approve-all-checkbox]').isChecked(), true);
+    assert.equal(await modal.locator('[data-final-rigid-batch-stage]').isDisabled(), true);
+    assert.equal(await first.locator('[data-final-rigid-edited]').inputValue(), '150');
+    await modal.locator('[data-final-rigid-batch-clear-all]').click();
+    assert.equal(await proposed.locator('[data-final-rigid-batch-approve]').isChecked(), false);
+    assert.equal(await modal.locator('[data-final-rigid-batch-approve-all-checkbox]').isChecked(), false);
+    await modal.locator('[data-final-rigid-batch-approve-all-checkbox]').check();
+    assert.equal(await proposed.locator('[data-final-rigid-batch-approve]').isChecked(), true);
     assert.equal(await modal.locator('[data-final-rigid-batch-stage]').isDisabled(), true,
-      'approving an unverified physical mass also requires explicit review attestation');
+      'bulk selection still requires review acknowledgement');
     await modal.locator('[data-final-rigid-batch-confirm-review]').check();
     assert.equal(await modal.locator('[data-final-rigid-batch-stage]').isDisabled(), false);
     await modal.locator('[data-final-rigid-batch-stage]').click();
