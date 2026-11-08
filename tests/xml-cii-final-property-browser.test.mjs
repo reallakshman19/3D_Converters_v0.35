@@ -270,6 +270,105 @@ try {
     assert.equal(await page.evaluate(() => window.currentResult.ciiText), synthetic,
       'run result CII remains byte-identical after edited CII is exported separately');
   });
+
+  await test('Chromium Nearest Suggestions match consolidated multiple-choice score, provenance and output scale', async () => {
+    await page.goto(address + '/tests/fixtures/final-cii-property-ui-host.html');
+    const modified = original.replace(
+      row([1000, 1001, 19.1, 0, 0, 80]),
+      row([639, 10000, 19.1, 0, 0, 168.3]),
+    );
+    assert.notEqual(modified, original);
+    const branchSource = '<Root><Branch><Branchname>/B</Branchname>' +
+      '<Rating>900</Rating><Node><NodeNumber>1</NodeNumber><ComponentType>PIPE</ComponentType>' +
+      '<Position>0 0 0</Position></Node></Branch></Root>';
+    const masterRows = [
+      { id: 'GATE-19.1', boreMm: 150, rating: '900', lengthMm: 19.1, weight: 59,
+        type: 'VALVE', typeDesc: 'Gate Valve exact' },
+      { id: 'GATE-20', boreMm: 150, rating: '900', lengthMm: 20, weight: 65,
+        type: 'VALVE', typeDesc: 'Gate Valve alternate' },
+      { id: 'OTHER-CLASS', boreMm: 150, rating: '600', lengthMm: 19.1, weight: 70,
+        type: 'VALVE', typeDesc: 'Wrong rating' },
+    ];
+    await page.evaluate(async ({ ciiText, branchSource, masterRows }) => {
+      const { openFinalRigidWeightReview } = await import('/tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-final-rigid-review.js');
+      window.currentResult = {
+        ok: true, ciiText, ciiName: 'Nearest-SYNTHETIC.cii',
+        finalRigidReviewEvidence: {
+          sourceKind: 'xml', engineInputText: branchSource,
+          engineInputDigest: 'sha256:nearest-browser',
+          stagedJsonText: '',
+          supportConfigJson: JSON.stringify({ weight: {
+            masterRows, useWeightExtrapolation: false,
+            valveHintLengthToleranceMm: 6,
+          } }),
+          weightScale: 10,
+        },
+      };
+      openFinalRigidWeightReview(window.currentResult, {
+        getCurrentResult: () => window.currentResult,
+      });
+    }, { ciiText: modified, branchSource, masterRows });
+
+    const guidance = page.locator('[data-final-rigid-guidance]');
+    assert.equal(await guidance.evaluate((node) => node.open), false, 'engineering guidance must start collapsed');
+    assert.equal(await page.locator('[data-final-rigid-guidance-icon]').innerText(), '▶');
+    await guidance.locator('summary').click();
+    assert.equal(await guidance.evaluate((node) => node.open), true);
+    await page.waitForFunction(() => document.querySelector('[data-final-rigid-guidance-icon]')?.textContent === '▼');
+    await guidance.locator('summary').click();
+    assert.equal(await guidance.evaluate((node) => node.open), false);
+    await page.waitForFunction(() => document.querySelector('[data-final-rigid-guidance-icon]')?.textContent === '▶');
+
+    const first = page.locator('[data-final-rigid-row][data-pointer="1"]');
+    assert.match(await page.locator('thead').innerText(), /Nearest Suggestions/);
+    assert.doesNotMatch(await page.locator('thead').innerText(), /Reference suggestions \(same units\)/);
+    const picks = first.locator('[data-final-rigid-nearest-candidate]');
+    assert.equal(await picks.count(), 2, 'multiple equal-Bore/Rating catalog rows must remain individually selectable');
+    assert.match(await picks.nth(0).innerText(), /59 kg/);
+    assert.match(await picks.nth(0).innerText(), /100%/, 'exact master scores 100%');
+    assert.match(await picks.nth(0).getAttribute('title'), /GATE-19\.1/);
+    assert.equal(await first.locator('[data-final-rigid-reference]').inputValue(), '',
+      'unresolved source owner must not auto-fill reference');
+    assert.equal(await first.locator('[data-final-rigid-edited]').inputValue(), '430',
+      'suggestions must not edit CII output weights');
+    assert.match(await first.locator('td').last().innerText(), /Source unresolved/);
+    await picks.nth(0).click();
+    assert.equal(await first.locator('[data-final-rigid-reference]').inputValue(), '590',
+      '59 kg is a 590-unit comparison reference with scale 10');
+    assert.equal(await first.locator('[data-final-rigid-reference]').getAttribute('data-reference-kind'),
+      'nearest-review');
+    assert.equal(await picks.nth(0).getAttribute('aria-pressed'), 'true');
+    assert.equal(await first.locator('[data-final-rigid-edited]').inputValue(), '430');
+    assert.match(await first.locator('[data-final-rigid-basis-summary]').innerText(), /provisional/i);
+    assert.match(await first.locator('[data-final-rigid-basis-detail]').textContent(), /NOT physical mass confidence/);
+    await picks.nth(1).click();
+    assert.equal(await first.locator('[data-final-rigid-reference]').inputValue(), '650',
+      'clicking alternate candidate must change comparison only');
+    assert.equal(await picks.nth(0).getAttribute('aria-pressed'), 'false');
+    assert.equal(await picks.nth(1).getAttribute('aria-pressed'), 'true');
+    await picks.nth(1).click();
+    assert.equal(await first.locator('[data-final-rigid-reference]').inputValue(), '');
+    assert.equal(await picks.nth(1).getAttribute('aria-pressed'), 'false');
+    await picks.nth(0).click();
+    assert.equal(await first.locator('[data-final-rigid-reference]').inputValue(), '590');
+    await first.locator('[data-final-rigid-edited]').fill('350');
+    await page.locator('[data-final-rigid-preview]').click();
+    await page.waitForFunction(() => document.querySelector('[data-final-rigid-preview-report]')?.textContent.includes('VERIFIED PREVIEW'));
+    await page.locator('[data-final-rigid-apply]').click();
+    await page.waitForFunction(() => document.querySelector('[data-final-rigid-preview-report]')?.textContent.includes('VERIFIED REVISED CII READY'));
+    const [auditDownload] = await Promise.all([
+      page.waitForEvent('download'), page.locator('[data-final-rigid-audit]').click(),
+    ]);
+    const audit = JSON.parse(await readFile(await auditDownload.path(), 'utf8'));
+    assert.equal(audit.changes.length, 1);
+    assert.equal(audit.changes[0].reference.kind, 'nearest-review');
+    assert.equal(audit.changes[0].reference.value, '590');
+    assert.match(audit.changes[0].reference.basis, /GATE-19\.1/);
+    assert.equal(audit.changes[0].reference.sourceContext.mapping, null);
+    assert.equal(audit.changes[0].reference.sourceContext.eligibleForAutomaticReference, false);
+    assert.equal(audit.untouchedBytesEqual, true);
+    assert.equal(await page.evaluate(() => window.currentResult.ciiText), modified);
+  });
 } finally {
   await browser.close();
   await new Promise((resolve) => server.close(resolve));
