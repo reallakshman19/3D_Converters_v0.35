@@ -72,7 +72,7 @@ export function installFinalRigidBatchControls({
 
     // A fresh review must never inherit stale decisions from a prior preview.
     const selections = new Set();
-    const candidateIndices = new Map();
+    const candidateIndices = new Map(base.selectedIndices);
     const recalc = () => planFinalRigidBatchCorrections(inventory, plans, {
       ...base, selectedIndices: candidateIndices,
     });
