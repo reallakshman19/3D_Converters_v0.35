@@ -74,7 +74,7 @@ export function installFinalRigidBatchControls({
     const selections = new Set();
     const candidateIndices = new Map(base.selectedIndices);
     const recalc = () => planFinalRigidBatchCorrections(inventory, plans, {
-      ...base, selectedIndices: candidateIndices,
+      ...base, includeReviewOnly: base.includeReviewOnly, selectedIndices: candidateIndices,
     });
     dialogLayer = document.createElement('div');
     dialogLayer.setAttribute('data-final-rigid-batch-dialog', '');
@@ -87,11 +87,21 @@ export function installFinalRigidBatchControls({
       '<h3 style="margin:0;">Preview Batch Weight Corrections</h3>' +
       '<p style="margin:0;font-size:12px;color:#fbbf24;">A nearest catalog suggestion is not a proven physical mass. Confirm each proposed pointer. Unverified or approximate estimates require explicit approval. No CII output changes at this stage.</p>' +
       '<div data-final-rigid-batch-summary role="status" style="font-size:12px;color:#dbeafe;"></div>' +
-      '<label style="font-size:12px;"><input type="checkbox" data-final-rigid-batch-show-held> Show held / below-threshold rows</label>' +
+      '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px;font-size:12px;">' +
+      '<label title="Unlock separately reviewed approximate/unverified suggestions; hard HOLD and below-threshold rows remain blocked">' +
+      '<input type="checkbox" data-final-rigid-batch-include-review> Include approximate / unverified nearest</label>' +
+      '<button type="button" data-final-rigid-batch-approve-all disabled style="cursor:pointer;background:#1d4ed8;color:#fff;' +
+      'padding:6px 10px;border-radius:5px;border:1px solid #60a5fa;">✓ Approve All Eligible (0)</button>' +
+      '<button type="button" data-final-rigid-batch-clear-all disabled style="cursor:pointer;background:#1e293b;color:#e2e8f0;' +
+      'padding:6px 10px;border-radius:5px;border:1px solid #475569;">Clear Selection</button>' +
+      '</div><label style="font-size:12px;"><input type="checkbox" data-final-rigid-batch-show-held> Show held / below-threshold rows</label>' +
       '<div style="overflow:auto;flex:1;border:1px solid #334155;border-radius:5px;">' +
       '<table style="width:100%;border-collapse:collapse;font-size:12px;text-align:left;">' +
       '<thead><tr style="position:sticky;top:0;background:#1e293b;">' +
-      ['Approve', 'RIGID', 'Element / FROM → TO', 'Original CII units', 'Nearest suggestion (kg / score)',
+      ['<label title="Select/deselect all currently eligible RIGIDs in the selected scope">' +
+        '<input type="checkbox" data-final-rigid-batch-approve-all-checkbox disabled ' +
+        'aria-label="Approve all eligible RIGID pointers"> All eligible</label>',
+        'RIGID', 'Element / FROM → TO', 'Original CII units', 'Nearest suggestion (kg / score)',
         'Proposed CII units', 'Error %', 'Decision / evidence'].map((s) =>
         '<th style="padding:8px;white-space:nowrap;">' + s + '</th>').join('') +
       '</tr></thead><tbody data-final-rigid-batch-rows></tbody></table></div>' +
@@ -105,19 +115,40 @@ export function installFinalRigidBatchControls({
     const summary = dialogLayer.querySelector('[data-final-rigid-batch-summary]');
     const body = dialogLayer.querySelector('[data-final-rigid-batch-rows]');
     const showHeld = dialogLayer.querySelector('[data-final-rigid-batch-show-held]');
+    const includeReview = dialogLayer.querySelector('[data-final-rigid-batch-include-review]');
+    const approveAll = dialogLayer.querySelector('[data-final-rigid-batch-approve-all]');
+    const clearAll = dialogLayer.querySelector('[data-final-rigid-batch-clear-all]');
+    const approveAllCheckbox = dialogLayer.querySelector('[data-final-rigid-batch-approve-all-checkbox]');
     const confirm = dialogLayer.querySelector('[data-final-rigid-batch-confirm-review]');
     const stage = dialogLayer.querySelector('[data-final-rigid-batch-stage]');
+    includeReview.checked = base.includeReviewOnly;
     const candidateFor = (row) => plans[row.pointer - 1]?.nearestSuggestions || [];
 
     function updateStage() {
       const current = recalc();
+      const eligibleIds = new Set(current.eligible.map((r) => r.pointer));
+      // Never retain a prior bulk selection if its candidate/eligibility changed.
+      for (const pointer of selections) if (!eligibleIds.has(pointer)) selections.delete(pointer);
       const chosen = current.eligible.filter((r) => selections.has(r.pointer));
       const needsApproval = chosen.some((r) => r.reviewRequired);
       stage.disabled = !chosen.length || (needsApproval && !confirm.checked);
-      summary.textContent = current.eligible.length + ' eligible · ' + current.held.length +
-        ' held/review-only · ' + current.belowThreshold.length + ' below threshold · ' +
-        chosen.length + ' selected · ' +
-        (needsApproval && !confirm.checked ? 'review approval required' : 'no exported weights changed');
+      approveAll.disabled = current.eligible.length === 0;
+      approveAll.textContent = '✓ Approve All Eligible (' + current.eligible.length + ')';
+      approveAllCheckbox.disabled = current.eligible.length === 0;
+      approveAllCheckbox.checked = current.eligible.length > 0 &&
+        chosen.length === current.eligible.length;
+      approveAllCheckbox.indeterminate = chosen.length > 0 &&
+        chosen.length < current.eligible.length;
+      clearAll.disabled = chosen.length === 0;
+      const reviewOnlyCount = current.proposals.filter((r) => r.status === 'REVIEW_ONLY').length;
+      const hardHoldCount = current.proposals.filter((r) =>
+        r.status === 'HOLD' || r.status === 'ALREADY_EDITED').length;
+      summary.textContent = current.eligible.length + ' eligible · ' +
+        reviewOnlyCount + ' review-only (requires Include) · ' +
+        hardHoldCount + ' hard-held · ' + current.belowThreshold.length +
+        ' below threshold · ' + chosen.length + ' selected · ' +
+        (needsApproval && !confirm.checked ? 'review acknowledgement required' :
+          'no exported weights changed');
     }
 
     function render() {
@@ -161,6 +192,25 @@ export function installFinalRigidBatchControls({
         }).join('') || '<tr><td colspan="8" style="padding:14px;">No qualifying RIGIDs for this scope and threshold.</td></tr>';
       updateStage();
     }
+    const selectAllEligible = (checked) => {
+      const current = recalc();
+      selections.clear();
+      if (checked) for (const proposal of current.eligible) selections.add(proposal.pointer);
+      // Select-all is only an explicit choice of rows, not a mass approval.
+      // A provisional mass still needs the separate review acknowledgement.
+      render();
+    };
+    includeReview.addEventListener('change', () => {
+      base.includeReviewOnly = includeReview.checked;
+      includeInput.checked = includeReview.checked;
+      selections.clear();
+      confirm.checked = false;
+      render();
+    });
+    approveAll.addEventListener('click', () => selectAllEligible(true));
+    clearAll.addEventListener('click', () => selectAllEligible(false));
+    approveAllCheckbox.addEventListener('change', () =>
+      selectAllEligible(approveAllCheckbox.checked));
     showHeld.addEventListener('change', render);
     dialogLayer.querySelector('[data-final-rigid-batch-cancel]').addEventListener('click', close);
     confirm.addEventListener('change', updateStage);

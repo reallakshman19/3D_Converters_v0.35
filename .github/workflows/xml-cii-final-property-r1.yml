@@ -8,6 +8,7 @@ on:
       - 'fix/xml-cii-final-review-cii-bore-branch-rating-*'
       - 'feat/xml-cii-final-nearest-suggestions-r2-*'
       - 'feat/xml-cii-final-batch-weight-correction-*'
+      - 'feat/xml-cii-final-batch-approve-all-*'
   pull_request:
     paths:
       - 'tabs/xml-cii-2019-standalone/**'
