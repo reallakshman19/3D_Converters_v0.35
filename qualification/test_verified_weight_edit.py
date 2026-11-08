@@ -47,8 +47,8 @@ class VerifiedWeightSample(unittest.TestCase):
     def test_positive_real_converter_source_15_to_2_984(self):
         result = self.edit()
         self.assertTrue(result["ok"], result)
-        self.assertEqual(cii_inventory(result["regeneratedCii"])["rigidWeights"][0], 29.84)
-        self.assertEqual(cii_inventory(self.original_cii)["rigidWeights"][0], 150)
+        self.assertEqual(cii_inventory(result["regeneratedCii"])["rigidWeights"][0], Decimal("29.84"))
+        self.assertEqual(cii_inventory(self.original_cii)["rigidWeights"][0], Decimal("150"))
         self.assertEqual(result["revisedXml"],
                          XML.replace(b"<Weight>15</Weight>", b"<Weight>2.984</Weight>"))
         self.assertEqual(result["audit"]["xmlUnrelatedByteDifferences"], 0)
