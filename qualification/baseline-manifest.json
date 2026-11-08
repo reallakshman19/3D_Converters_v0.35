@@ -1,0 +1,42 @@
+{
+  "configuration": {},
+  "conversionFlags": [
+    "--coords-mode",
+    "first",
+    "--weight-scale",
+    "10",
+    "--support-config-json",
+    "{}",
+    "--no-split-condensed-valve-flange",
+    "--use-restraint-type-based-on-json"
+  ],
+  "converterFileSha256": {
+    "cii2019_hanger_miscel_control.py": "e96b63b35f0535f901af063061f34fa970b325759ca3c517f7e9cd695205e3d7",
+    "cii2019_section_rules.py": "877eba71cb8ee2dbcdeb4946e56eb6a0491f91b3fedb513043bc44edd5600696",
+    "cii_syntax_check_2019.py": "c2e4cc8014da54ed1ea6a516d11d778de60d304feef181dcfe3397e031b6dc74",
+    "master_customization.py": "288c519e99afcc932d371e550b98c2254f83088dd084dbc436b6e7eff7d5e768",
+    "xml_to_cii2019.py": "8c1a5d8619091df49b349cf918e1a36d1e3b41baa5ba0eaca3e60d5d9bd0c026",
+    "xml_to_cii2019_bend_radius_policy.py": "9e16b2ee49a1eabbea8ee6eedb787859795d45b452185eac15c7605d194117d8",
+    "xml_to_cii2019_direction.py": "9234e2d30aca367174fefcdb650009f7e5ae805a4b8e35922b86409e9da1677e",
+    "xml_to_cii2019_master_addon.py": "c5c70263910cf4a8fb6a5f969cbf1c3ca94142fe538a36de9c7696a0f5a460ef",
+    "xml_to_cii2019_patched.py": "e6e1cb30aac897af5b3285b4f9b7c9af8078fa325710a96a6329c792264a0632",
+    "xml_to_cii2019_runtime_custody.py": "a3a30969ad110e853d865291cca1a56b56f23a63b39b68cbb7dae42508280a3c"
+  },
+  "massPolicy": "TO_NODE_RIGID_ONLY",
+  "noEditProof": {
+    "differingBytes": 0,
+    "fixtureType": "SYNTHETIC_REAL_CONVERTER",
+    "originalByteLength": 3735,
+    "originalCiiSha256": "a4e322275084b55ffd8e3b30e070ade8fb45321664ed50c6887a7eb90532c73c",
+    "regeneratedByteLength": 3735,
+    "regeneratedCiiSha256": "a4e322275084b55ffd8e3b30e070ade8fb45321664ed50c6887a7eb90532c73c",
+    "verdict": "PASS"
+  },
+  "originalCiiSha256": "a4e322275084b55ffd8e3b30e070ade8fb45321664ed50c6887a7eb90532c73c",
+  "schema": "xml-cii-weight-qualification/v1",
+  "sourceStage": "ENGINE_INPUT_XML",
+  "sourceXmlSha256": "2c7288106ce9bbcc422893c19c4e8265a3e46e721b9aa6d9e591f5a857355694",
+  "stagedJson": null,
+  "topofix": false,
+  "weightScale": "10"
+}

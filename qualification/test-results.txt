@@ -1,0 +1,24 @@
+TASK XML-CII2019-CODER-QUALIFICATION-SAMPLE-R1
+Evidence: actual repository xml_to_cii2019_runtime_custody.py, not a mocked writer
+POSITIVE: PASS (Node/Weight 15 -> 2.984; CII RIGID 150 -> 29.84)
+XML NON-TARGET BYTES: PASS (only exact Weight token span replaced)
+REGENERATED CII: PASS (real converter, structural validator, pointer read-back, no other bytes)
+AMBIGUOUS SOURCE: PASS (HOLD_SOURCE_OWNER; zero published outputs)
+STALE SOURCE: PASS (HOLD_STALE_SOURCE; zero published outputs)
+SYNTHETIC GENERATED NODE: PASS (HOLD_SOURCE_OWNER; zero published outputs)
+UNAPPROVED CATALOG WEIGHT: PASS (HOLD_NOT_APPROVED; zero published outputs)
+ORIGINAL CII SHA-256: a4e322275084b55ffd8e3b30e070ade8fb45321664ed50c6887a7eb90532c73c
+NO-EDIT REPLAY SHA-256: a4e322275084b55ffd8e3b30e070ade8fb45321664ed50c6887a7eb90532c73c
+ORIGINAL BYTE LENGTH: 3735
+REGENERATED NO-EDIT BYTE LENGTH: 3735
+DIFFERING BYTES: 0
+SOURCE XML ORIGINAL PRESERVED: YES
+UNEXPLAINED CII DIFFERENCES: 0
+TESTS: 5 scenarios (1 positive + 4 refusals), PASS 5, FAIL 0
+EXACT REPRODUCTION COMMANDS (from repository root):
+  python3 qualification/run_qualification.py
+  python3 converters/scripts/xml_to_cii2019_runtime_custody.py --input qualification/original.xml --output /tmp/qualification-original.cii --coords-mode first --weight-scale 10 --support-config-json {} --no-split-condensed-valve-flange --use-restraint-type-based-on-json
+  cmp qualification/original.cii /tmp/qualification-original.cii
+  python3 converters/scripts/xml_to_cii2019_runtime_custody.py --input qualification/revised.xml --output /tmp/qualification-regenerated.cii --coords-mode first --weight-scale 10 --support-config-json {} --no-split-condensed-valve-flange --use-restraint-type-based-on-json
+  cmp qualification/regenerated.cii /tmp/qualification-regenerated.cii
+  sha256sum qualification/original.cii qualification/regenerated.cii
