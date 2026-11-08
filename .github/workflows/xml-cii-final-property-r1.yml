@@ -9,6 +9,7 @@ on:
       - 'feat/xml-cii-final-nearest-suggestions-r2-*'
       - 'feat/xml-cii-final-batch-weight-correction-*'
       - 'feat/xml-cii-final-batch-approve-all-*'
+      - 'feat/xml-cii-final-review-fullscreen-compact-*'
   pull_request:
     paths:
       - 'tabs/xml-cii-2019-standalone/**'
@@ -34,6 +35,7 @@ jobs:
           node --check tabs/xml-cii-2019-standalone/xml-cii-final-property-transactions.js
           node --check tabs/xml-cii-2019-standalone/xml-cii-final-property-editor-ui.js
           node --check tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-final-rigid-review.js
+          node --check tabs/xml-cii-2019-standalone/xml-cii-final-rigid-layout.js
           node --check tabs/xml-cii-2019-standalone/xml-cii-final-rigid-context-fallback.js
           node --check tabs/xml-cii-2019-standalone/xml-cii-final-rigid-nearest-suggestions.js
           node --check tabs/xml-cii-2019-standalone/xml-cii-final-rigid-batch-corrections.js

@@ -1,4 +1,5 @@
 import { installFinalCiiPropertyEditor } from '../xml-cii-final-property-editor-ui.js';
+import { installFinalRigidReviewLayout } from '../xml-cii-final-rigid-layout.js';
 import { buildFinalRigidReferencePlans } from '../xml-cii-final-rigid-master-references.js';
 import { classifyFinalRigidWeightError, configuredFinalRigidErrorThreshold, formatFinalRigidErrorPercent } from '../xml-cii-final-rigid-weight-error.js';
 import { parseFinalCiiRigidInventory } from '../xml-cii-final-rigid-inventory.js';
@@ -121,7 +122,7 @@ function rowMarkup(row, plan) {
           aria-label="Reference for Error % in output units for RIGID pointer ${row.rigidPointer}"
           placeholder="Not assessed" style="display:block;width:130px;background:#0b1220;color:#e2e8f0;border:1px solid #475569;border-radius:4px;padding:5px;margin-top:2px;">
       </label>
-      <div style="font-size:10px;color:#fbbf24;">Clicking a suggestion compares weights only; it never edits CII.</div>
+      <div data-final-rigid-nearest-caution style="font-size:10px;color:#fbbf24;">Clicking a suggestion compares weights only; it never edits CII.</div>
     </td>
     <td data-final-rigid-error="${row.rigidPointer}" style="padding:9px;border-bottom:1px solid #26364b;">—</td>
     <td style="padding:8px;border-bottom:1px solid #26364b;min-width:240px;">
@@ -142,17 +143,22 @@ function modalMarkup(inventory, filename, thresholdPct = 20, plans = []) {
       aria-label="Review final CII rigid weights" tabindex="-1"
       style="background:#0f172a;color:#e2e8f0;border:1px solid #253a55;border-radius:8px;
         padding:18px;max-width:1350px;width:96%;max-height:90vh;overflow:auto;">
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;
+    <div data-final-rigid-header style="display:flex;justify-content:space-between;align-items:center;gap:16px;
       padding-bottom:12px;border-bottom:1px solid #253a55;margin-bottom:12px;">
       <div>
-        <div style="font-size:18px;font-weight:700;color:#9cc5ff;">Review Final weight — Emitted CII RIGID</div>
-        <div style="font-size:12px;color:#94a3b8;margin-top:4px;">${esc(filename)}
+        <div data-final-rigid-title style="font-size:18px;font-weight:700;color:#9cc5ff;">Review Final weight — Emitted CII RIGID</div>
+        <div data-final-rigid-subtitle title="${esc(filename)}" style="font-size:12px;color:#94a3b8;margin-top:4px;">${esc(filename)}
           · ${rows.length} RIGID pointers · ${declared.elements} final elements
           · ${unreferencedCount} unreferenced · ${sharedCount} shared
           · ${nonpositiveCount} zero/negative weights</div>
       </div>
-      <button type="button" data-final-rigid-close style="padding:7px 12px;background:#1e293b;
-        border:1px solid #475569;color:#e2e8f0;border-radius:6px;cursor:pointer;">Close</button>
+      <div data-final-rigid-header-actions>
+        <button type="button" data-final-rigid-fullscreen aria-pressed="false" aria-label="Enter fullscreen"
+          title="Enter fullscreen" style="padding:7px 10px;background:#1e293b;border:1px solid #475569;
+          color:#e2e8f0;border-radius:6px;cursor:pointer;font-size:18px;line-height:1;">⛶</button>
+        <button type="button" data-final-rigid-close style="padding:7px 12px;background:#1e293b;
+          border:1px solid #475569;color:#e2e8f0;border-radius:6px;cursor:pointer;">Close</button>
+      </div>
     </div>
     <details data-final-rigid-guidance style="background:#2a210b;border:1px solid #7c5a18;
       border-radius:6px;padding:9px;font-size:12px;color:#ffe7a3;margin-bottom:12px;">
@@ -181,7 +187,7 @@ function modalMarkup(inventory, filename, thresholdPct = 20, plans = []) {
       Catalog references never overwrite CII weights. Explicit edits can be previewed and applied to a separate, verified revised CII. The original is unchanged.
       </div>
     </details>
-    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px;">
+    <div data-final-rigid-controls style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px;">
       <input type="search" data-final-rigid-search placeholder="Search pointer / element / FROM / TO / weight"
         style="background:#0b1220;color:#e2e8f0;border:1px solid #475569;border-radius:5px;
           padding:7px;min-width:300px;">
@@ -204,7 +210,7 @@ function modalMarkup(inventory, filename, thresholdPct = 20, plans = []) {
       style="margin:0 0 10px;color:#cbd5e1;font-size:12px;">
       Reference-based weight error not assessed until independent weights are supplied.
     </div>
-    <div style="max-height:52vh;overflow:auto;border:1px solid #334155;border-radius:6px;">
+    <div data-final-rigid-table-wrap style="max-height:52vh;overflow:auto;border:1px solid #334155;border-radius:6px;">
       <table style="width:100%;border-collapse:collapse;text-align:left;font-size:12px;">
         <thead><tr style="position:sticky;top:0;background:#1e293b;">
           ${['Rigid pointer', 'Element #', 'FROM node', 'TO node', 'Element length (mm)',
@@ -215,7 +221,7 @@ function modalMarkup(inventory, filename, thresholdPct = 20, plans = []) {
       </table>
       ${rows.length ? '' : '<div style="padding:14px;">Final CII contains zero RIGID records.</div>'}
     </div>
-    <div style="display:flex;justify-content:flex-end;margin-top:14px;">
+    <div data-final-rigid-bottom-close style="display:flex;justify-content:flex-end;margin-top:14px;">
       <button type="button" data-final-rigid-close style="background:#1d4ed8;color:#fff;
         border:0;border-radius:6px;padding:9px 16px;cursor:pointer;">Close Review</button>
     </div>
@@ -336,10 +342,14 @@ export function openFinalRigidWeightReview(result, options = {}) {
     }
   };
   const close = () => overlay.remove();
+  let layout = null;
   overlay.querySelectorAll('[data-final-rigid-close]').forEach((button) =>
     button.addEventListener('click', close));
   overlay.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') { event.preventDefault(); close(); }
+    if (event.key !== 'Escape') return;
+    event.preventDefault();
+    if (layout?.isFullscreen()) layout.setFullscreen(false);
+    else close();
   });
   const syncNearestButtons = (tr, selectedIndex = '') => {
     tr?.querySelectorAll('[data-final-rigid-nearest-candidate]').forEach((button) => {
@@ -396,6 +406,7 @@ export function openFinalRigidWeightReview(result, options = {}) {
   search?.addEventListener('input', refresh);
   filter?.addEventListener('change', refresh);
   installFinalCiiPropertyEditor({ overlay, result, inventory, plans, refresh, getCurrentResult: options.getCurrentResult });
+  layout = installFinalRigidReviewLayout(overlay);
   refresh();
   search?.focus();
   return true;

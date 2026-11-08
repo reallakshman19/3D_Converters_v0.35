@@ -24,6 +24,19 @@ function ciiFile() {
   parts.push('#$ RIGID', row([430, '0.000000']), row([590, '0.000000']), row([590, '0.000000']));
   return parts.join('\r\n') + '\r\n';
 }
+function ciiFileMany(count = 144) {
+  const parts = ['#$ VERSION', '2019', '#$ CONTROL', row([count, 0, 0, 0, 0, 0]),
+    row([0, count, 0, 0, 0, 0]), row([0, 0, 0, 0, 0, 0]), row([0]), '#$ ELEMENTS'];
+  for (let i = 0; i < count; i++) {
+    parts.push(row([1000 + i, 1001 + i, i === 0 ? 19.1 : 109, 0, 0, 60.3]),
+      ...Array.from({ length: 9 }, () => row([0, 0, 0, 0, 0, 0])),
+      branchRow('/B'), row([0, 0, 0, 0, 0, 0]),
+      row([0, i + 1, 0, 0, 0, 0]), row([0, 0, 0, 0, 0, 0]), row([0, 0, 0]));
+  }
+  parts.push('#$ RIGID',
+    ...Array.from({ length: count }, (_, i) => row([i === 19 ? 150 : 590, '0.000000'])));
+  return parts.join('\r\n') + '\r\n';
+}
 const original = ciiFile();
 const out = await mkdtemp(join(tmpdir(), 'cii-final-ui-'));
 const server = createServer(async (req, res) => {
@@ -569,6 +582,134 @@ try {
     assert.deepEqual(audit.changes.map((r) => r.recordPointer), [1, 2]);
     assert.equal(audit.untouchedBytesEqual, true);
     assert.equal(await page.evaluate(() => window.currentResult.ciiText), sourceCii);
+  });
+
+  await test('Chromium compact 144-RIGID review expands fullscreen without losing edits, scroll, filters or CII parity', async () => {
+    await page.setViewportSize({ width: 1600, height: 900 });
+    await page.goto(address + '/tests/fixtures/final-cii-property-ui-host.html');
+    const sourceCii = ciiFileMany();
+    await page.evaluate(async (ciiText) => {
+      const { openFinalRigidWeightReview } = await import(
+        '/tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-final-rigid-review.js');
+      window.currentResult = { ok: true, ciiText, ciiName: 'GLRD-144.cii' };
+      openFinalRigidWeightReview(window.currentResult, {
+        getCurrentResult: () => window.currentResult,
+      });
+    }, sourceCii);
+    await page.waitForFunction(() =>
+      document.querySelector('[data-final-rigid-preview-report]')?.textContent.includes('Ready:'));
+    const dialog = page.locator('.mc-rigid-review-dialog');
+    const toggle = page.locator('[data-final-rigid-fullscreen]');
+    const tableWrap = page.locator('[data-final-rigid-table-wrap]');
+    const footer = page.locator('[data-final-rigid-footer]');
+    const edit20 = page.locator('[data-final-rigid-row][data-pointer="20"] [data-final-rigid-edited]');
+    const guidance = page.locator('[data-final-rigid-guidance]');
+    assert.equal(await page.locator('[data-final-rigid-row]').count(), 144);
+    assert.equal(await guidance.evaluate((node) => node.open), false);
+    assert.equal(await toggle.getAttribute('aria-label'), 'Enter fullscreen');
+    assert.equal(await toggle.getAttribute('aria-pressed'), 'false');
+    const normal = await page.evaluate(() => {
+      const dlg = document.querySelector('.mc-rigid-review-dialog').getBoundingClientRect();
+      const table = document.querySelector('[data-final-rigid-table-wrap]');
+      const footer = document.querySelector('[data-final-rigid-footer]').getBoundingClientRect();
+      return {
+        width: dlg.width, height: dlg.height, tableHeight: table.getBoundingClientRect().height,
+        tableBottom: table.getBoundingClientRect().bottom, footerTop: footer.top,
+        footerBottom: footer.bottom, scrollHeight: table.scrollHeight, clientHeight: table.clientHeight,
+        hasOverflow: table.scrollWidth > table.clientWidth,
+      };
+    });
+    assert.ok(normal.tableHeight > 260, 'compact layout must reserve meaningful height for actual data');
+    assert.ok(normal.scrollHeight > normal.clientHeight, '144 rows scroll inside table');
+    assert.ok(normal.footerTop >= normal.tableBottom - 2, 'sticky footer remains below table');
+    assert.ok(normal.footerBottom <= 900, 'footer must remain in viewport before fullscreen');
+    assert.equal(normal.hasOverflow, true, 'all engineering columns remain available by horizontal scroll');
+    await edit20.fill('29.84');
+    await page.locator('[data-final-rigid-row][data-pointer="20"] [data-final-rigid-select]').check();
+    await page.locator('[data-final-rigid-row][data-pointer="20"] [data-final-rigid-reference]').fill('29.84');
+    await page.evaluate(() => {
+      const table = document.querySelector('[data-final-rigid-table-wrap]');
+      table.scrollTop = 310;
+      table.scrollLeft = 360;
+    });
+    const before = await tableWrap.evaluate((node) => ({ top: node.scrollTop, left: node.scrollLeft }));
+    assert.ok(before.top > 0);
+    assert.ok(before.left > 0);
+    await toggle.click();
+    await page.waitForFunction(() => document.querySelector('[data-final-rigid-fullscreen]')?.getAttribute('aria-pressed') === 'true');
+    assert.equal(await toggle.getAttribute('title'), 'Exit fullscreen');
+    const expanded = await page.evaluate(() => {
+      const dlg = document.querySelector('.mc-rigid-review-dialog').getBoundingClientRect();
+      const table = document.querySelector('[data-final-rigid-table-wrap]');
+      const footer = document.querySelector('[data-final-rigid-footer]').getBoundingClientRect();
+      return {
+        width: dlg.width, height: dlg.height,
+        tableHeight: table.getBoundingClientRect().height,
+        scrollTop: table.scrollTop, scrollLeft: table.scrollLeft,
+        footerBottom: footer.bottom,
+      };
+    });
+    assert.ok(expanded.width > normal.width + 25, 'fullscreen widens the existing dialog');
+    assert.ok(expanded.height > normal.height + 25, 'fullscreen increases vertical viewport');
+    assert.ok(expanded.tableHeight > normal.tableHeight + 20, 'fullscreen increases visible data rows');
+    assert.ok(expanded.footerBottom <= 900, 'fullscreen footer remains visible');
+    await page.waitForFunction(({ top, left }) => {
+      const table = document.querySelector('[data-final-rigid-table-wrap]');
+      return Math.abs(table.scrollTop - top) <= 2 && Math.abs(table.scrollLeft - left) <= 2;
+    }, before);
+    assert.equal(await edit20.inputValue(), '29.84');
+    assert.equal(await page.locator('[data-final-rigid-row][data-pointer="20"] [data-final-rigid-select]').isChecked(), true);
+    assert.equal(await page.locator('[data-final-rigid-row][data-pointer="20"] [data-final-rigid-reference]').inputValue(), '29.84');
+    await page.locator('[data-final-rigid-search]').fill('20');
+    await page.locator('[data-final-rigid-modified-only]').check();
+    assert.equal(await page.locator('[data-final-rigid-row]:visible').count(), 1,
+      'search and modified filter remain active in fullscreen');
+    await page.locator('[data-final-rigid-search]').fill('');
+    await page.keyboard.press('Escape');
+    assert.equal(await toggle.getAttribute('aria-pressed'), 'false', 'Escape exits fullscreen before closing review');
+    assert.equal(await dialog.count(), 1, 'Escape from fullscreen must not close the modal');
+    assert.equal(await edit20.inputValue(), '29.84');
+    await page.locator('[data-final-rigid-modified-only]').uncheck();
+    await page.locator('[data-final-rigid-preview]').click();
+    await page.waitForFunction(() =>
+      document.querySelector('[data-final-rigid-preview-report]')?.textContent.includes('VERIFIED PREVIEW'));
+    await page.locator('[data-final-rigid-apply]').click();
+    await page.waitForFunction(() =>
+      document.querySelector('[data-final-rigid-preview-report]')?.textContent.includes('VERIFIED REVISED CII READY'));
+    const [download] = await Promise.all([
+      page.waitForEvent('download'), page.locator('[data-final-rigid-download]').click(),
+    ]);
+    const revised = await readFile(await download.path(), 'utf8');
+    const inventory = parseFinalCiiRigidInventory(revised);
+    assert.equal(inventory.rows.length, 144);
+    assert.equal(inventory.rows[19].weight, 29.84);
+    assert.equal(inventory.rows[18].weight, 590);
+    assert.equal(inventory.rows[20].weight, 590);
+    assert.equal(await page.evaluate(() => window.currentResult.ciiText), sourceCii);
+    const [auditDownload] = await Promise.all([
+      page.waitForEvent('download'), page.locator('[data-final-rigid-audit]').click(),
+    ]);
+    const audit = JSON.parse(await readFile(await auditDownload.path(), 'utf8'));
+    assert.equal(audit.untouchedBytesEqual, true);
+    assert.deepEqual(audit.changes.map((r) => r.recordPointer), [20]);
+    await page.setViewportSize({ width: 390, height: 800 });
+    const mobile = await page.evaluate(() => {
+      const dlg = document.querySelector('.mc-rigid-review-dialog').getBoundingClientRect();
+      const table = document.querySelector('[data-final-rigid-table-wrap]').getBoundingClientRect();
+      const footer = document.querySelector('[data-final-rigid-footer]').getBoundingClientRect();
+      return { left: dlg.left, right: dlg.right, bottom: dlg.bottom,
+        tableHeight: table.height, tableBottom: table.bottom, footerBottom: footer.bottom };
+    });
+    assert.ok(mobile.left >= -1 && mobile.right <= 391, 'mobile modal cannot overflow the viewport');
+    assert.ok(mobile.bottom <= 801 && mobile.footerBottom <= 801, 'mobile footer remains on-screen');
+    assert.ok(mobile.tableHeight >= 120, 'mobile still reserves a scrollable data area');
+    await toggle.click();
+    assert.equal(await toggle.getAttribute('aria-pressed'), 'true', 'fullscreen toggle works in narrow viewport');
+    await toggle.click();
+    assert.equal(await toggle.getAttribute('aria-pressed'), 'false');
+    await page.keyboard.press('Escape');
+    assert.equal(await dialog.count(), 0, 'second Escape in normal mode closes the review');
+    await page.setViewportSize({ width: 1440, height: 900 });
   });
 } finally {
   await browser.close();
