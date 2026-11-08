@@ -15,7 +15,12 @@ export function collectRoundtripEngineSourceNodes(snapshot, parserFactory = () =
   const doc = parserFactory().parseFromString(snapshot.engineInputText, 'application/xml');
   if (!doc || doc.getElementsByTagName('parsererror').length)
     throw new Error('ROUNDTRIP_ENGINE_INPUT_XML_MALFORMED');
-  const branches = [...doc.getElementsByTagName('*')].filter((n) => local(n) === 'Branch');
+  const branches = [];
+  const visit = (node) => {
+    if (local(node) === 'Branch') branches.push(node);
+    for (const nested of elements(node)) visit(nested);
+  };
+  visit(doc.documentElement);
   const records = [];
   branches.forEach((branch, branchOrdinal) => {
     const branchName = value(branch, 'Branchname');
