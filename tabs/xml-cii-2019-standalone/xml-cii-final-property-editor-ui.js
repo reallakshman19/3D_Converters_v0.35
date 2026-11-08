@@ -6,6 +6,7 @@
 import { createCiiPropertySession, stageCiiPropertyEdit, resetCiiPropertyEdit,
   resetAllCiiPropertyEdits, verifyCiiPropertyTransaction } from './xml-cii-final-property-transactions.js';
 import { classifyFinalRigidWeightError, formatFinalRigidErrorPercent } from './xml-cii-final-rigid-weight-error.js';
+import { installFinalRigidBatchControls } from './xml-cii-final-rigid-batch-ui.js';
 
 function element(tag, content, attributes = {}) {
   const item = document.createElement(tag);
@@ -118,6 +119,10 @@ export function installFinalCiiPropertyEditor({ overlay, result, inventory, plan
     const selection = row.querySelector('[data-final-rigid-suggestion]');
     const reference = row.querySelector('[data-final-rigid-reference]');
     const sourceContext = plans[pointer - 1]?.sourceContext || null;
+    if (row.dataset.batchProposedValue &&
+      row.querySelector('[data-final-rigid-edited]')?.value === row.dataset.batchProposedValue &&
+      reference?.value === row.dataset.batchProposedValue && row.batchReferenceEvidence)
+      return row.batchReferenceEvidence;
     if (!reference?.value) return { kind: 'not-assessed', value: '', sourceContext };
     const kind = reference.dataset.referenceKind || 'manual';
     return { kind, value: reference.value, basis: row.querySelector('[data-final-rigid-basis-detail]')?.textContent || '', sourceContext };
@@ -183,7 +188,17 @@ export function installFinalCiiPropertyEditor({ overlay, result, inventory, plan
     }
   };
 
-  const changed = (pointer) => { if (!session) return; syncOne(pointer); dirty(); repaint(); };
+  const changed = (pointer) => {
+    if (!session) return;
+    const row = byPointer.get(pointer);
+    if (row && row.tr.dataset.batchProposedValue &&
+        (row.editInput.value !== row.tr.dataset.batchProposedValue ||
+         row.tr.querySelector('[data-final-rigid-reference]')?.value !== row.tr.dataset.batchProposedValue)) {
+      delete row.tr.dataset.batchProposedValue;
+      delete row.tr.batchReferenceEvidence;
+    }
+    syncOne(pointer); dirty(); repaint();
+  };
   for (const [pointer, row] of byPointer) {
     row.editInput.addEventListener('input', () => changed(pointer));
     row.zeroInput.addEventListener('change', () => changed(pointer));
@@ -201,6 +216,8 @@ export function installFinalCiiPropertyEditor({ overlay, result, inventory, plan
     row.zeroInput.checked = false;
     row.selected.checked = false;
     row.feedback.textContent = '';
+    delete row.tr.dataset.batchProposedValue;
+    delete row.tr.batchReferenceEvidence;
     invalid.delete(pointer);
     if (session) resetCiiPropertyEdit(session, 'RIGID.weight', pointer);
   };
@@ -212,6 +229,101 @@ export function installFinalCiiPropertyEditor({ overlay, result, inventory, plan
     for (const pointer of byPointer.keys()) restore(pointer);
     if (session) resetAllCiiPropertyEdits(session);
     dirty(); repaint();
+  });
+
+  // The batch toolbar is a PREVIEW and explicitly approved staging aid, not a
+  // second writer. The same property transaction verifies the original source
+  // digest, exact RIGID pointers, reparse and all bytes outside edited fields.
+  installFinalRigidBatchControls({
+    overlay, inventory, plans,
+    getEditedValues: () => new Map([...byPointer].map(([pointer, row]) =>
+      [pointer, row.editInput.value])),
+    getCurrentResult: () => current() === result ? result : null,
+    isReady: () => Boolean(session) && current() === result && invalid.size === 0,
+    stageAndVerify: async (proposals, thresholdPct, approval) => {
+      if (!session || invalid.size || current() !== result)
+        throw new Error('Stale conversion run or invalid pre-existing weight edits.');
+      const snapshotVersion = version;
+      const scratch = { ...session, edits: new Map(session.edits) };
+      const staged = [];
+      const unique = new Set();
+      for (const item of proposals) {
+        const pointer = item.pointer;
+        if (unique.has(pointer)) throw new Error('Duplicate batch pointer ' + pointer);
+        unique.add(pointer);
+        const row = byPointer.get(pointer);
+        if (!row || row.editInput.value.trim() !== row.original.rawWeight.trim())
+          throw new Error('RIGID ' + pointer + ' was edited since the batch preview.');
+        if (item.status !== 'ELIGIBLE' || !item.candidate || !Number.isFinite(item.proposedWeight) ||
+          item.proposedWeight <= 0 || Math.abs(item.errorPct) <= thresholdPct)
+          throw new Error('RIGID ' + pointer + ' is not an eligible >±' + thresholdPct + '% correction.');
+        if (item.reviewRequired && !approval)
+          throw new Error('RIGID ' + pointer + ' requires explicit review-only approval.');
+        const comparison = item.candidate;
+        const reference = {
+          kind: 'batch-nearest-review', value: String(item.proposedWeight),
+          basis: comparison.basis || '', sourceContext: plans[pointer - 1]?.sourceContext || null,
+          batch: {
+            thresholdPct, originalErrorPct: item.errorPct,
+            pointer, candidateIndex: item.candidateIndex,
+            masterWeightKg: comparison.masterWeightKg,
+            candidateSource: comparison.source || '',
+            candidateMethod: comparison.method || '',
+            matchPct: comparison.matchPct ?? null,
+            approximate: Boolean(comparison.approximate),
+            reviewRequired: item.reviewRequired,
+            individuallyApproved: true, reviewOnlyAccepted: Boolean(item.reviewRequired && approval),
+            generatedFromRun: String(result.finalRigidReviewEvidence?.engineInputDigest || ''),
+          },
+        };
+        stageCiiPropertyEdit(scratch, {
+          propertyId: 'RIGID.weight', recordPointer: pointer,
+          originalToken: row.original.rawWeight,
+          newValue: String(item.proposedWeight), unit: 'CII_OUTPUT_WEIGHT',
+          confirmed: true, zeroConfirmed: false, reference,
+        }, { replace: true });
+        staged.push({ pointer, row, item, reference });
+      }
+      // Preflight the COMPLETE transaction before touching live input fields.
+      const verified = await verifyCiiPropertyTransaction(scratch, {
+        currentCiiText: current()?.ciiText, runIdentity,
+      });
+      if (snapshotVersion !== version || current() !== result || invalid.size)
+        throw new Error('Editor changed while batch verification was running.');
+      for (const { pointer } of staged) {
+        if (!verified.audit.changes.some((entry) => entry.propertyId === 'RIGID.weight' &&
+            entry.recordPointer === pointer))
+          throw new Error('Batch pointer ' + pointer + ' was not written into revised CII.');
+      }
+      // No UI state or live session edits are committed until all checks pass.
+      session.edits = scratch.edits;
+      for (const { row, item, reference } of staged) {
+        row.editInput.value = String(item.proposedWeight);
+        row.tr.dataset.batchProposedValue = String(item.proposedWeight);
+        row.tr.batchReferenceEvidence = reference;
+        const select = row.tr.querySelector('[data-final-rigid-suggestion]');
+        const input = row.tr.querySelector('[data-final-rigid-reference]');
+        if (select) select.value = String(item.candidateIndex);
+        if (input) { input.value = String(item.proposedWeight); input.dataset.referenceKind = 'batch-nearest-review'; }
+        row.tr.querySelectorAll('[data-final-rigid-nearest-candidate]').forEach((button) => {
+          const active = Number(button.dataset.finalRigidNearestIndex) === item.candidateIndex;
+          button.setAttribute('aria-pressed', String(active));
+          button.style.borderColor = active ? '#60a5fa' : '#334155';
+          button.style.background = active ? '#1d4ed8' : '#1e293b';
+        });
+      }
+      dirty();
+      previewVersion = version;
+      buttons.apply.disabled = false;
+      repaint();
+      report.textContent = 'VERIFIED BATCH PREVIEW — select Apply Changes & Re-extract CII to publish a separate revised file.\n' +
+        staged.map(({ pointer, item }) => 'RIGID pointer ' + pointer + ': ' +
+          item.originalWeight + ' → ' + item.proposedWeight +
+          ' CII units (' + item.errorPct.toFixed(1) + '%)').join('\n') +
+        '\nFull CII reparse PASS; untouched bytes EQUAL.\nOriginal SHA-256: ' +
+        verified.audit.originalSha256 + '\nRevised SHA-256: ' + verified.audit.revisedSha256;
+      return verified;
+    },
   });
 
   buttons.preview.addEventListener('click', async () => {
