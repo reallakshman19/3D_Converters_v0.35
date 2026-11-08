@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - 'feat/xml-cii-final-property-edit-reextract-r1-*'
+      - 'feat/xml-cii-final-source-context-r1-*'
   pull_request:
     paths:
       - 'tabs/xml-cii-2019-standalone/**'
@@ -29,15 +30,17 @@ jobs:
           node --check tabs/xml-cii-2019-standalone/xml-cii-final-property-transactions.js
           node --check tabs/xml-cii-2019-standalone/xml-cii-final-property-editor-ui.js
           node --check tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-final-rigid-review.js
+          node --check tabs/xml-cii-2019-standalone/xml-cii-final-rigid-source-context.js
       - name: Run property, formatting, parity and transaction tests
         run: node --test tests/xml-cii-final-property-transactions.test.mjs tests/xml-cii-final-property-reference-error.test.mjs
       - name: Run existing final RIGID, reference and UI compatibility suites
         run: |
           node --test tests/xml-cii-final-rigid-review.test.mjs tests/xml-cii-final-rigid-length-error.test.mjs tests/xml-cii-final-rigid-master-reference.test.mjs tests/xml-cii-final-review-smartfill-scope.test.mjs
+          node --test tests/xml-cii-final-rigid-source-context.test.mjs
       - name: Run existing standalone output integration regression
         run: node --test tests/xml-cii-standalone-output-run.test.js
   mutations:
-    name: Eight fail-closed safety mutations
+    name: Property plus source evidence safety mutations
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -45,8 +48,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Mutation kill suite
-        run: node --test tests/xml-cii-final-property-mutations.test.mjs
+      - name: Mutation kill suite — property patching and source engineering authority
+        run: |
+          node --test tests/xml-cii-final-property-mutations.test.mjs
+          node --test tests/xml-cii-final-rigid-source-mutations.test.mjs
   scale:
     name: Synthetic 20 to 50k ELEMENTS scale
     runs-on: ubuntu-latest
@@ -57,7 +62,9 @@ jobs:
         with:
           node-version: '22'
       - name: Scale bench and full parity
-        run: node --max-old-space-size=4096 --test tests/xml-cii-final-property-scale.test.mjs
+        run: |
+          node --max-old-space-size=4096 --test tests/xml-cii-final-property-scale.test.mjs
+          node --max-old-space-size=4096 --test tests/xml-cii-final-rigid-source-scale.test.mjs
 
   browser:
     name: Chromium final CII edit to download E2E

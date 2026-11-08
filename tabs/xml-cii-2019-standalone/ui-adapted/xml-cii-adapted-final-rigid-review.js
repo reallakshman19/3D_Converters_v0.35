@@ -30,9 +30,29 @@ function rowMarkup(row, plan) {
   ].join('');
   const basisReason = plan?.reason || 'No run-pinned source-to-CII evidence.';
   const mapping = plan?.mapping;
-  const trace = [mapping ? `CII branch ${mapping.branchName} · edge ${mapping.fromNode} → ${mapping.toNode} · ComponentRefNo ${mapping.componentRefNo || '(absent)'} · source span ${Number(mapping.sourceLengthMm).toFixed(3)} mm · CII span ${Number(mapping.ciiLengthMm).toFixed(3)} mm · engine input ${mapping.engineInputDigest || '(digest unavailable)'}` : '', basisReason].filter(Boolean).join('\n');
+  const context = plan?.sourceContext;
+  const valueOrStatus = (property) => property?.value ?? (property?.suppressed ? 'Suppressed' : 'Not resolved');
+  const contextTrace = context ? [
+    'Source mapping: ' + context.status + ' · ' + context.reason,
+    ...['bore', 'rating', 'dtxr'].map((key) => {
+      const item = context[key] || {};
+      return key.toUpperCase() + ': ' + valueOrStatus(item) +
+        ' · source node ' + (item.sourceNode || 'unresolved') +
+        ' · basis ' + (item.basis || 'not found') +
+        (item.original ? ' · raw ' + item.original : '') +
+        (item.matchedKey ? ' · match key ' + item.matchedKey : '') +
+        (item.matchedBy ? ' · matched by ' + item.matchedBy : '') +
+        (item.sourcePath ? ' · source path ' + item.sourcePath : '') +
+        (item.dtxrRating ? ' · DTXR rating ' + item.dtxrRating : '') +
+        (item.suppressed ? ' · SUPPRESSED: ' + (item.suppressionReason || 'unspecified') : '');
+    }),
+    ...(context.conflicts || []).map((conflict) => 'CONFLICT / REVIEW: ' + conflict),
+  ].join('\n') : '';
+  const trace = [mapping ? `CII branch ${mapping.branchName} · edge ${mapping.fromNode} → ${mapping.toNode} · ComponentRefNo ${mapping.componentRefNo || '(absent)'} · source span ${Number(mapping.sourceLengthMm).toFixed(3)} mm · CII span ${Number(mapping.ciiLengthMm).toFixed(3)} mm · engine input ${mapping.engineInputDigest || '(digest unavailable)'}` : '', contextTrace, basisReason].filter(Boolean).join('\n');
   const search = [row.rigidPointer, row.weight, row.rawWeight, row.status,
-    elementIds, fromNodes, toNodes, lengths].join(' ').toLowerCase();
+    elementIds, fromNodes, toNodes, lengths, context?.status,
+    valueOrStatus(context?.bore), valueOrStatus(context?.rating),
+    valueOrStatus(context?.dtxr), mapping?.componentRefNo].join(' ').toLowerCase();
   const cell = (value) => `<td style="padding:9px;border-bottom:1px solid #26364b;white-space:nowrap;">${esc(value)}</td>`;
   const status = [
     !linked.length ? 'Unreferenced pointer' : (linked.length > 1 ? 'Shared by multiple elements' : 'Linked'),
@@ -41,7 +61,11 @@ function rowMarkup(row, plan) {
   return `<tr data-final-rigid-row data-pointer="${row.rigidPointer}" data-search="${esc(search)}" data-status="${esc(row.status)}"
     data-nonpositive="${row.weight <= 0}">
     ${cell(row.rigidPointer)}${cell(elementIds)}${cell(fromNodes)}${cell(toNodes)}
-    ${cell(lengths)}${cell(row.rawWeight)}
+    ${cell(lengths)}
+    ${cell(valueOrStatus(context?.bore))}
+    ${cell(valueOrStatus(context?.rating))}
+    ${cell(valueOrStatus(context?.dtxr))}
+    ${cell(row.rawWeight)}
     <td style="padding:7px;border-bottom:1px solid #26364b;">
       <select data-final-rigid-suggestion="${row.rigidPointer}" aria-label="Catalog suggestions for RIGID pointer ${row.rigidPointer}"
         style="width:230px;background:#0b1220;color:#e2e8f0;border:1px solid #475569;border-radius:4px;padding:5px;margin-bottom:3px;">
@@ -61,7 +85,8 @@ function rowMarkup(row, plan) {
         <pre data-final-rigid-basis-detail="${row.rigidPointer}" style="white-space:pre-wrap;font-size:11px;max-width:310px;">${esc([trace, auto?.basis || ''].filter(Boolean).join('\n'))}</pre>
       </details>
     </td>
-    ${cell(status)}</tr>`;
+    ${cell(context?.status === 'CONFLICT_REVIEW' ? status + ' · Source conflict / Review' :
+      context?.status === 'NOT_RESOLVED' ? status + ' · Source unresolved' : status)}</tr>`;
 }
 
 function modalMarkup(inventory, filename, thresholdPct = 20, plans = []) {
@@ -84,7 +109,7 @@ function modalMarkup(inventory, filename, thresholdPct = 20, plans = []) {
     </div>
     <div style="background:#2a210b;border:1px solid #7c5a18;border-radius:6px;padding:9px;
       font-size:12px;color:#ffe7a3;margin-bottom:12px;">
-      Read-only final CII output, not source XML or proposed weights. RIGID Pointer is the
+      Bore, Rating and DTXR are read-only source-component context; unresolved or conflicting evidence is explicitly marked and never inferred from catalog similarity. RIGID Pointer is the
       1-based index into the final RIGID section, read from each ELEMENTS record's 13th line,
       second field. Weight is the exact exported first-field value in the CII file
       (output mass/force units depend on the conversion setting). Length is computed
@@ -125,7 +150,7 @@ function modalMarkup(inventory, filename, thresholdPct = 20, plans = []) {
       <table style="width:100%;border-collapse:collapse;text-align:left;font-size:12px;">
         <thead><tr style="position:sticky;top:0;background:#1e293b;">
           ${['Rigid pointer', 'Element #', 'FROM node', 'TO node', 'Element length (mm)',
-            'Final CII weight (as exported)', 'Reference suggestions (same units)', 'Error %', 'Basis / evidence', 'Status'].map((item) =>
+            'Bore (mm)', 'Rating', 'DTXR', 'Final CII weight (as exported)', 'Reference suggestions (same units)', 'Error %', 'Basis / evidence', 'Status'].map((item) =>
               `<th style="padding:9px;white-space:nowrap;">${item}</th>`).join('')}
         </tr></thead>
         <tbody>${rows.map((row, index) => rowMarkup(row, plans[index])).join('')}</tbody>
@@ -215,7 +240,19 @@ export function openFinalRigidWeightReview(result, options = {}) {
           : 'MANUAL · reference comparison (not catalog verified)';
       if (basisDetail && isSelection) basisDetail.textContent = [
         plan?.reason || '', plan?.mapping ? `Source ${plan.mapping.branchName} ${plan.mapping.fromNode} → ${plan.mapping.toNode}; ComponentRefNo ${plan.mapping.componentRefNo || 'none'}; CII ${Number(plan.mapping.ciiLengthMm).toFixed(3)} mm` : '',
-        candidate.basis, 'Error % = 100 × (edited CII weight − reference weight) / reference weight',
+        plan?.sourceContext ? [
+          'Ownership status: ' + plan.sourceContext.status,
+          'Bore: ' + (plan.sourceContext.bore.value ?? 'Not resolved') +
+            ' from ' + (plan.sourceContext.bore.sourceNode || '?') +
+            ' (' + plan.sourceContext.bore.basis + ')',
+          'Rating: ' + (plan.sourceContext.rating.value ?? 'Not resolved') +
+            ' (' + plan.sourceContext.rating.basis + ')',
+          'DTXR: ' + (plan.sourceContext.dtxr.value ?? (plan.sourceContext.dtxr.suppressed ? 'Suppressed' : 'Not resolved')) +
+            ' (' + plan.sourceContext.dtxr.basis + ')',
+          'DTXR source path: ' + (plan.sourceContext.dtxr.sourcePath || 'not provided'),
+          ...plan.sourceContext.conflicts,
+        ].join('\\n') : '', candidate.basis,
+        'Error % = 100 × (edited CII weight − reference weight) / reference weight',
       ].filter(Boolean).join('\n');
       if (comparison.errorPct !== null) assessed += 1;
       if (comparison.outside === true) overLimit += 1;
@@ -268,7 +305,7 @@ export function openFinalRigidWeightReview(result, options = {}) {
   limitInput?.addEventListener('input', refresh);
   search?.addEventListener('input', refresh);
   filter?.addEventListener('change', refresh);
-  installFinalCiiPropertyEditor({ overlay, result, inventory, refresh, getCurrentResult: options.getCurrentResult });
+  installFinalCiiPropertyEditor({ overlay, result, inventory, plans, refresh, getCurrentResult: options.getCurrentResult });
   refresh();
   search?.focus();
   return true;

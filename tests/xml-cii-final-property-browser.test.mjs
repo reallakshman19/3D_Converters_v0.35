@@ -9,13 +9,15 @@ import { chromium } from 'playwright';
 
 const root = resolve(fileURLToPath(new URL('../', import.meta.url)));
 function row(values) { return values.map((value, i) => String(value).padStart(i ? 13 : 15, ' ')).join(''); }
+function branchRow(label) { return (' '.repeat(7) + String(label.length).padStart(5) + ' ' + label).padEnd(80); }
 function ciiFile() {
   const parts = ['#$ VERSION', '2019', '#$ CONTROL', row([3, 0, 0, 0, 0, 0]),
     row([0, 3, 0, 0, 0, 0]), row([0, 0, 0, 0, 0, 0]), row([0]),
     '#$ ELEMENTS'];
   for (let i = 0; i < 3; i++) {
     parts.push(row([1000 + i, 1001 + i, i === 0 ? 19.1 : 109, 0, 0, 80]),
-      ...Array.from({ length: 11 }, () => row([0, 0, 0, 0, 0, 0])),
+      ...Array.from({ length: 9 }, () => row([0, 0, 0, 0, 0, 0])),
+      branchRow('/B'), row([0, 0, 0, 0, 0, 0]),
       row([0, i + 1, 0, 0, 0, 0]), row([0, 0, 0, 0, 0, 0]), row([0, 0, 0]));
   }
   parts.push('#$ RIGID', row([430, '0.000000']), row([590, '0.000000']), row([590, '0.000000']));
@@ -158,6 +160,58 @@ try {
     const audit = JSON.parse(await readFile(await auditDownload.path(), 'utf8'));
     assert.deepEqual(audit.changes.map((change) => change.recordPointer), [1, 3]);
     assert.equal(audit.untouchedBytesEqual, true);
+  });
+  await test('Chromium mapped Bore/Rating source provenance survives revised CII audit', async () => {
+    await page.goto(address + '/tests/fixtures/final-cii-property-ui-host.html');
+    const xmlNode = (data) => '<Node>' + Object.entries(data)
+      .map(([key, value]) => '<' + key + '>' + value + '</' + key + '>').join('') + '</Node>';
+    const sourceXml = '<Root><Branch><Branchname>/B</Branchname>' + [
+      { NodeNumber: 1000, Position: '0 0 0', ComponentType: 'PIPE' },
+      { NodeNumber: 1001, Position: '19.1 0 0', ComponentType: 'RIGID',
+        Rigid: 2, ComponentRefNo: '/A', Endpoint: 2, BoreMm: 100, Rating: 300 },
+      { NodeNumber: 1002, Position: '128.1 0 0', ComponentType: 'RIGID',
+        Rigid: 2, ComponentRefNo: '/A', Endpoint: 2, BoreMm: 100, Rating: 300 },
+      { NodeNumber: 1003, Position: '237.1 0 0', ComponentType: 'RIGID',
+        Rigid: 2, ComponentRefNo: '/OTHER', Endpoint: 2, BoreMm: 80, Rating: 150 },
+    ].map(xmlNode).join('') + '</Branch></Root>';
+    await page.evaluate(async ({ ciiText, sourceXml }) => {
+      const { openFinalRigidWeightReview } = await import('/tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-final-rigid-review.js');
+      window.currentResult = {
+        ok: true, ciiText, ciiName: 'Mapped.cii',
+        finalRigidReviewEvidence: {
+          sourceKind: 'xml', engineInputText: sourceXml, engineInputDigest: 'sha256:browser-source',
+          stagedJsonText: '', supportConfigJson: '{}', weightScale: 10,
+        },
+      };
+      openFinalRigidWeightReview(window.currentResult,
+        { getCurrentResult: () => window.currentResult });
+    }, { ciiText: original, sourceXml });
+    const first = page.locator('[data-final-rigid-row][data-pointer="1"]');
+    assert.equal(await first.locator('td').nth(5).innerText(), '100', 'mapped source BoreMm');
+    assert.equal(await first.locator('td').nth(6).innerText(), '300', 'mapped source Rating');
+    assert.match(await first.locator('[data-final-rigid-basis-detail]').textContent(), /Source mapping: VERIFIED/);
+    assert.match(await first.locator('[data-final-rigid-basis-detail]').textContent(), /source BoreMm/);
+    const third = page.locator('[data-final-rigid-row][data-pointer="3"]');
+    assert.match(await third.locator('td').last().innerText(), /Source unresolved/i,
+      'different physical components do not inherit each other metadata');
+    await first.locator('[data-final-rigid-edited]').fill('333');
+    await page.locator('[data-final-rigid-preview]').click();
+    await page.waitForFunction(() =>
+      document.querySelector('[data-final-rigid-preview-report]')?.textContent.includes('VERIFIED PREVIEW'));
+    await page.locator('[data-final-rigid-apply]').click();
+    await page.waitForFunction(() =>
+      document.querySelector('[data-final-rigid-preview-report]')?.textContent.includes('VERIFIED REVISED CII READY'));
+    const [auditDownload] = await Promise.all([
+      page.waitForEvent('download'), page.locator('[data-final-rigid-audit]').click(),
+    ]);
+    const audit = JSON.parse(await readFile(await auditDownload.path(), 'utf8'));
+    assert.equal(audit.changes.length, 1);
+    assert.equal(audit.changes[0].reference.sourceContext.bore.value, 100);
+    assert.equal(audit.changes[0].reference.sourceContext.rating.value, '300');
+    assert.equal(audit.changes[0].reference.sourceContext.mapping.sourceNodeSide, 'TO');
+    assert.equal(audit.changes[0].reference.sourceContext.mapping.engineInputDigest, 'sha256:browser-source');
+    assert.equal(audit.untouchedBytesEqual, true);
+    assert.equal(await page.evaluate(() => window.currentResult.ciiText), original);
   });
 } finally {
   await browser.close();
