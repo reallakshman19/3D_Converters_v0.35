@@ -517,6 +517,19 @@ function resolveRigidWeightBranchContext(branch, config, pipingClassIndex) {
   return { branchName, lineKey, lineRow: resolverLineRow, boreMm, requestedPipingClass: resolverLineRow.pipingClass, resolvedPipingClass: resolved.pipingClass, rating, pipingClassMatchMethod: resolved.pipingClassMatchMethod, pipingClassNeedsReview: resolved.pipingClassNeedsReview, pipingClassCandidates: resolved.pipingClassCandidates || [] };
 }
 
+/**
+ * Read-only final-CII review boundary. Reuse the same branch-level process,
+ * line-list, piping-class and configured rating resolution as Weight Match.
+ * Caller must independently verify the exact CII branch identity and must
+ * not treat this result as ownership or as an approved physical mass.
+ */
+export function resolveXmlCiiRigidReviewBranchContext(branch, config = {}, pipingClassIndex = null) {
+  return resolveRigidWeightBranchContext(
+    branch, config,
+    pipingClassIndex || buildPipingClassIndex(config?.pipingClass?.masterRows || []),
+  );
+}
+
 function ratingForRigidWeightIssue(node, branchContext, config) {
   const nodeRating = xmlText(node, 'Rating');
   if (toText(branchContext.rating).trim()) return toText(branchContext.rating).trim();
