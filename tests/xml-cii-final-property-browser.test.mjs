@@ -314,9 +314,10 @@ try {
     assert.equal(await page.locator('[data-final-rigid-guidance-icon]').innerText(), '▶');
     await guidance.locator('summary').click();
     assert.equal(await guidance.evaluate((node) => node.open), true);
-    assert.equal(await page.locator('[data-final-rigid-guidance-icon]').innerText(), '▼');
+    await page.waitForFunction(() => document.querySelector('[data-final-rigid-guidance-icon]')?.textContent === '▼');
     await guidance.locator('summary').click();
     assert.equal(await guidance.evaluate((node) => node.open), false);
+    await page.waitForFunction(() => document.querySelector('[data-final-rigid-guidance-icon]')?.textContent === '▶');
 
     const first = page.locator('[data-final-rigid-row][data-pointer="1"]');
     assert.match(await page.locator('thead').innerText(), /Nearest Suggestions/);
