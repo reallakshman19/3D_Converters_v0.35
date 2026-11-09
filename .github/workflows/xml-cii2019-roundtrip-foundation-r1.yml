@@ -27,15 +27,23 @@ jobs:
           python-version: '3.11'
       - name: Compile foundation and test code
         run: |
-          python3 -m py_compile roundtrip_foundation/snapshot_replay.py roundtrip_foundation/lineage.py tests/test_roundtrip_foundation.py
+          python3 -m py_compile roundtrip_foundation/snapshot_replay.py roundtrip_foundation/lineage.py roundtrip_foundation/generate_evidence.py tests/test_roundtrip_foundation.py
       - name: Run real-converter replay and lineage tests
         run: |
           set -o pipefail
           python3 -m unittest discover -s tests -p 'test_roundtrip_foundation.py' -v 2>&1 | tee "$RUNNER_TEMP/roundtrip-unittests.txt"
-      - name: Preserve native test receipt
+      - name: Generate seven synthetic-only engineering evidence artifacts
+        run: |
+          python3 -m roundtrip_foundation.generate_evidence --out roundtrip-evidence --unittest-log "$RUNNER_TEMP/roundtrip-unittests.txt"
+          for f in architecture-audit.md conversion-stage-map.json snapshot-manifest.json no-edit-replay-report.json source-cii-lineage.json lineage-coverage-report.json test-results.md; do
+            test -s "roundtrip-evidence/$f"
+          done
+      - name: Upload synthetic-only evidence and test receipts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: xml-cii-roundtrip-foundation-native-tests
-          path: ${{ runner.temp }}/roundtrip-unittests.txt
+          name: xml-cii-roundtrip-foundation-r1-evidence
+          path: |
+            roundtrip-evidence/
+            ${{ runner.temp }}/roundtrip-unittests.txt
           if-no-files-found: warn
