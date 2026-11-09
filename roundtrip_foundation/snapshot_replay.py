@@ -293,9 +293,16 @@ def validate_serialized_cii(contents: bytes) -> dict:
         require(control.numelt == len(reparsed["elements"]) and
                 control.rigids == counts.get("RIGID", 0), "HOLD_CII_INVALID",
                 "CONTROL element/RIGID counts disagree with actual payload")
+        # The production independent reparser decodes only six of 15 IEL
+        # auxiliary fields. This second, read-only validator covers all fifteen
+        # and their *physical* auxiliary record counts without modifying it.
+        from .full_pointer_validation import validate_all_element_pointers
+        full = validate_all_element_pointers(contents)
         return {"status": "PASS", "elementCount": len(reparsed["elements"]),
-                "rigidCount": counts.get("RIGID", 0), "auxiliaryCounts": counts,
-                "allPointersValid": True, "independentReparse": "PASS"}
+                "rigidCount": full["recordCounts"]["RIGID"],
+                "auxiliaryCounts": full["recordCounts"],
+                "pointerFieldsValidated": full["pointerFieldsValidated"],
+                "allPointersValid": full["allPointersValid"], "independentReparse": "PASS"}
     except Hold:
         raise
     except Exception as exc:
