@@ -78,7 +78,7 @@ export function indexAll15CiiAuxiliaryPointers(text) {
 
 function elementKey(element){return [
   element.branchName,element.fromNode,element.toNode,
-  String(element.lengthMm),String(element.outsideDiameterMm)].join('|');}
+  Number(element.lengthMm).toFixed(6),String(element.outsideDiameterMm)].join('|');}
 function linkedMap(index) {
   const map=new Map();
   for(const r of index.inventory.rows){
