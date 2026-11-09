@@ -128,6 +128,17 @@ class OwnerBundleIntakeTests(unittest.TestCase):
         self.save_manifest()
         self.assert_hold("HOLD_MISSING_INPUT")
 
+
+    def test_changed_effective_config_is_configuration_mismatch(self):
+        p = self.root / "effective-support.json"
+        p.write_bytes(b'{"unexpected": true}')
+        self.assert_hold("HOLD_CONFIGURATION_MISMATCH")
+
+    def test_changed_master_bytes_is_configuration_mismatch(self):
+        p = self.root / "masters/piping_class.bin"
+        p.write_bytes(b"modified synthetic master")
+        self.assert_hold("HOLD_CONFIGURATION_MISMATCH")
+
     def test_converter_identity_change_refuses(self):
         self.manifest["converter"]["codeIdentity"][ENTRYPOINT] = "stale"
         self.save_manifest()
