@@ -164,7 +164,13 @@
         {
           "branch": "/RT/B1",
           "from": "10",
-          "to": "20"
+          "fromComponentCandidates": [
+            "/PIPE-10"
+          ],
+          "to": "20",
+          "toComponentCandidates": [
+            "/SHARED-COMP"
+          ]
         }
       ],
       "toNode": "20"
@@ -205,7 +211,13 @@
         {
           "branch": "/RT/B1",
           "from": "20",
-          "to": "30"
+          "fromComponentCandidates": [
+            "/SHARED-COMP"
+          ],
+          "to": "30",
+          "toComponentCandidates": [
+            "/SHARED-COMP"
+          ]
         }
       ],
       "toNode": "30"
@@ -246,7 +258,13 @@
         {
           "branch": "/RT/B1",
           "from": "30",
-          "to": "40"
+          "fromComponentCandidates": [
+            "/SHARED-COMP"
+          ],
+          "to": "40",
+          "toComponentCandidates": [
+            "/RIGID-40"
+          ]
         }
       ],
       "toNode": "40"
@@ -287,7 +305,13 @@
         {
           "branch": "/RT/B1",
           "from": "40",
-          "to": "50"
+          "fromComponentCandidates": [
+            "/RIGID-40"
+          ],
+          "to": "50",
+          "toComponentCandidates": [
+            "/PIPE-50"
+          ]
         }
       ],
       "toNode": "50"
@@ -328,7 +352,13 @@
         {
           "branch": "/RT/B2",
           "from": "10",
-          "to": "20"
+          "fromComponentCandidates": [
+            "/PIPE-B2-10"
+          ],
+          "to": "20",
+          "toComponentCandidates": [
+            "/RIGID-B2-20"
+          ]
         }
       ],
       "toNode": "20"
@@ -369,7 +399,13 @@
         {
           "branch": "/RT/B2",
           "from": "20",
-          "to": "30"
+          "fromComponentCandidates": [
+            "/RIGID-B2-20"
+          ],
+          "to": "30",
+          "toComponentCandidates": [
+            "/PIPE-B2-30"
+          ]
         }
       ],
       "toNode": "30"
@@ -410,7 +446,13 @@
         {
           "branch": "/RT/B3",
           "from": "100",
-          "to": "110"
+          "fromComponentCandidates": [
+            "/PIPE-B3-100"
+          ],
+          "to": "110",
+          "toComponentCandidates": [
+            "/RIGID-B3-110"
+          ]
         }
       ],
       "toNode": "110"
@@ -451,7 +493,13 @@
         {
           "branch": "/RT/B3",
           "from": "110",
-          "to": "120"
+          "fromComponentCandidates": [
+            "/RIGID-B3-110"
+          ],
+          "to": "120",
+          "toComponentCandidates": [
+            "/RIGID-B3-120"
+          ]
         }
       ],
       "toNode": "120"
@@ -492,7 +540,13 @@
         {
           "branch": "/RT/B3",
           "from": "120",
-          "to": "130"
+          "fromComponentCandidates": [
+            "/RIGID-B3-120"
+          ],
+          "to": "130",
+          "toComponentCandidates": [
+            "/PIPE-B3-130"
+          ]
         }
       ],
       "toNode": "130"
@@ -533,7 +587,13 @@
         {
           "branch": "/RT/B4",
           "from": "500",
-          "to": "519"
+          "fromComponentCandidates": [
+            "/PIPE-B4-500"
+          ],
+          "to": "519",
+          "toComponentCandidates": [
+            "/FLAN-B4-NEG"
+          ]
         }
       ],
       "toNode": "519"
@@ -574,7 +634,13 @@
         {
           "branch": "/RT/B4",
           "from": "519",
-          "to": "520"
+          "fromComponentCandidates": [
+            "/FLAN-B4-NEG"
+          ],
+          "to": "520",
+          "toComponentCandidates": [
+            "/PIPE-B4-520"
+          ]
         }
       ],
       "toNode": "520"
