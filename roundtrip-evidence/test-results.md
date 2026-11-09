@@ -71,11 +71,11 @@ test_private_frozen_existing_cii_replay_real_converter (test_roundtrip_owner_bun
 test_staged_flag_without_staged_bytes_refuses (test_roundtrip_owner_bundle.OwnerBundleIntakeTests.test_staged_flag_without_staged_bytes_refuses) ... ok
 
 ----------------------------------------------------------------------
-Ran 56 tests in 14.848s
+Ran 56 tests in 17.414s
 
 OK
-{"status": "PASS_EXACT_REPLAY", "reportDir": "/tmp/private-owner-intake-test-n72xyw3v/private-reports", "privateLineageWritten": true}
-{"status": "HOLD_STALE_SOURCE", "reportDir": "/tmp/private-owner-intake-test-n72xyw3v/private-reports", "privateLineageWritten": false}
+{"status": "PASS_EXACT_REPLAY", "reportDir": "/tmp/private-owner-intake-test-dnr53eww/private-reports", "privateLineageWritten": true}
+{"status": "HOLD_STALE_SOURCE", "reportDir": "/tmp/private-owner-intake-test-dnr53eww/private-reports", "privateLineageWritten": false}
 
 \`\`\`
 

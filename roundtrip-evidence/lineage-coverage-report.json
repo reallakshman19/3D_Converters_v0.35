@@ -161,10 +161,12 @@
     }
   },
   "verification": {
+    "allAuxiliaryPointerFieldsValidated": 15,
     "allElementsClassified": 11,
     "allRigidsClassified": 6,
     "noInvalidPointers": true,
     "readOnly": true,
+    "relationshipsValidated": 99,
     "status": "PASS"
   }
 }
