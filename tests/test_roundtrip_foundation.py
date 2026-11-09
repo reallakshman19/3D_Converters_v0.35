@@ -376,6 +376,10 @@ class FourLevelLineageTests(unittest.TestCase):
         self.assertEqual(sum(ledger["statistics"]["elementMappings"].values()),
                          len(ledger["elements"]))
         self.assertTrue(ledger["readOnly"])
+        unresolved = [e for e in ledger["elements"]
+                      if e["lineageStatus"] in ("UNMATCHED", "AMBIGUOUS", "CONFLICT")]
+        self.assertTrue(all(e.get("lineageReason") for e in unresolved))
+        self.assertTrue(all(row.get("reason") for row in ledger["unresolved"]))
 
 if __name__ == "__main__":
     unittest.main()
