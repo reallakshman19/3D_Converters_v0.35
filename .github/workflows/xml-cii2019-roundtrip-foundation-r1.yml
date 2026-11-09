@@ -25,6 +25,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
       - name: Compile foundation and test code
         run: |
           python3 -m py_compile roundtrip_foundation/snapshot_replay.py roundtrip_foundation/lineage.py roundtrip_foundation/generate_evidence.py tests/test_roundtrip_foundation.py
@@ -32,6 +35,11 @@ jobs:
         run: |
           set -o pipefail
           python3 -m unittest discover -s tests -p 'test_roundtrip_foundation.py' -v 2>&1 | tee "$RUNNER_TEMP/roundtrip-unittests.txt"
+      - name: Run existing direct-CII and standalone regression suites
+        run: |
+          node --test tests/xml-cii-final-property-transactions.test.mjs
+          node --test tests/xml-cii-final-rigid-source-context.test.mjs
+          node --test tests/xml-cii-standalone-output-run.test.js
       - name: Generate seven synthetic-only engineering evidence artifacts
         run: |
           python3 -m roundtrip_foundation.generate_evidence --out roundtrip-evidence --unittest-log "$RUNNER_TEMP/roundtrip-unittests.txt"
