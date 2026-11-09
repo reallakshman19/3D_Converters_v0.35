@@ -675,24 +675,11 @@ def build_lineage_ledger(*, conversion_snapshot, engine_input_xml: bytes,
     }
 
 def validate_lineage_ledger(ledger, *, expected_snapshot: dict) -> dict:
-    require(ledger.get("schema") == "xml-cii-lineage-ledger/v1" and ledger.get("readOnly") is True,
-            "HOLD_LINEAGE_INVALID", "Ledger is not immutable/read-only")
-    require(ledger["runIdentity"]["snapshotFingerprint"] ==
-            expected_snapshot["fingerprintSha256"],
-            "HOLD_STALE_SOURCE", "Ledger belongs to a different conversion run")
-    count = len(ledger["elements"])
-    require(count == ledger["statistics"]["finalCiiElements"],
-            "HOLD_LINEAGE_INVALID", "Some final ELEMENTS were omitted")
-    seen = set()
-    for e in ledger["elements"]:
-        require(e["lineageStatus"] in CLASSIFICATIONS and
-                e["elementIndex"] not in seen, "HOLD_LINEAGE_INVALID",
-                "Missing/duplicate ELEMENT classification")
-        seen.add(e["elementIndex"])
-    for record in ledger["auxiliaryRecords"]:
-        if record["section"] == "RIGID":
-            require(record["ownershipStatus"] in CLASSIFICATIONS, "HOLD_LINEAGE_INVALID",
-                    "Missing RIGID classification")
-    return {"status": "PASS", "allElementsClassified": count,
-            "allRigidsClassified": ledger["statistics"]["finalCiiRigids"],
-            "noInvalidPointers": True, "readOnly": True}
+    """Independent fail-closed F3 structural and relationship audit."""
+    from .ledger_integrity import validate_integrity
+    try:
+        return validate_integrity(ledger, expected_snapshot)
+    except Hold:
+        raise
+    except (KeyError, IndexError, ValueError, TypeError, AttributeError) as exc:
+        raise Hold("HOLD_LINEAGE_INVALID", "Incomplete or inconsistent lineage ledger: " + str(exc)) from exc
