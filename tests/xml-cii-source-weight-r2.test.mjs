@@ -114,6 +114,20 @@ test('R2 strict physical ownership refuses real conflict, not only missing selec
   await assert.rejects(()=>applySourceBackedWeightChange(session,transaction(shared.rigidPointer)),
     /shared by multiple source nodes/);
 });
+test('R2 full-output dependency guard holds candidate if another emitted RIGID touches writer source node',async()=>{
+  const result=await setup();
+  const inventory=parseFinalCiiRigidInventory(originalCii);
+  const preliminary=await deriveSourceWeightEligibility({result,inventory});
+  const qualified=preliminary.find(x=>x.sourceNode?.componentRefNo==='/RIGID-40');
+  assert.equal(qualified?.eligible,true);
+  const conflicted=structuredClone(inventory);
+  const second=conflicted.rows.find(x=>x.rigidPointer!==qualified.rigidPointer);
+  second.linkedElements.push({...qualified.originalElement, index:9999});
+  const resultRows=await deriveSourceWeightEligibility({result,inventory:conflicted});
+  const affected=resultRows.find(x=>x.rigidPointer===qualified.rigidPointer);
+  assert.equal(affected.eligible,false);
+  assert.match(affected.reason,/multiple or unresolved final RIGID/);
+});
 test('R2 physical approval and suggestion separation and stale conversion inputs',async()=>{
   const result=await setup();
   const session=await initializeSourceWeightSession(result,{engineRunner});
