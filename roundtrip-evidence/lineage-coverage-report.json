@@ -94,7 +94,102 @@
     "evidenceClass": "REPOSITORY_NATIVE_CURRENT_WRITER_SMOKE",
     "originalCiiSha256": "e1cd0edf8e8f6864ad1160b3a172f348518b770c6455cb1936fd9086ae54bde7",
     "readOnly": true,
-    "replayVerdict": "PASS_EXACT_REPLAY"
+    "replayVerdict": "PASS_EXACT_REPLAY",
+    "unmatchedDiagnostics": {
+      "sourceNodesWithoutComponentRef": 0,
+      "unmatchedElementCoreEdgeCandidateCounts": {
+        "1": 239
+      },
+      "unmatchedElementReasons": {
+        "Nonadjacent original nodes without verified deletion/transform event": 239
+      },
+      "unmatchedElementSamples": [
+        {
+          "branchName": "/GLRD-1000-4\"-P4110001-93834-01/B2",
+          "coreEdgeCandidates": 1,
+          "elementIndex": 3,
+          "fromNode": "40",
+          "reason": "Nonadjacent original nodes without verified deletion/transform event",
+          "toNode": "50"
+        },
+        {
+          "branchName": "/GLRD-1000-4\"-P4110001-93834-01/B2",
+          "coreEdgeCandidates": 1,
+          "elementIndex": 4,
+          "fromNode": "50",
+          "reason": "Nonadjacent original nodes without verified deletion/transform event",
+          "toNode": "60"
+        },
+        {
+          "branchName": "/GLRD-1000-4\"-P4110001-93834-01/B2",
+          "coreEdgeCandidates": 1,
+          "elementIndex": 5,
+          "fromNode": "60",
+          "reason": "Nonadjacent original nodes without verified deletion/transform event",
+          "toNode": "70"
+        },
+        {
+          "branchName": "/GLRD-1000-4\"-P4110001-93834-01/B2",
+          "coreEdgeCandidates": 1,
+          "elementIndex": 6,
+          "fromNode": "70",
+          "reason": "Nonadjacent original nodes without verified deletion/transform event",
+          "toNode": "80"
+        },
+        {
+          "branchName": "/GLRD-1000-4\"-P4110001-93834-01/B2",
+          "coreEdgeCandidates": 1,
+          "elementIndex": 7,
+          "fromNode": "80",
+          "reason": "Nonadjacent original nodes without verified deletion/transform event",
+          "toNode": "90"
+        },
+        {
+          "branchName": "/GLRD-1000-4\"-P4110001-93834-01/B2",
+          "coreEdgeCandidates": 1,
+          "elementIndex": 8,
+          "fromNode": "90",
+          "reason": "Nonadjacent original nodes without verified deletion/transform event",
+          "toNode": "100"
+        },
+        {
+          "branchName": "/GLRD-1000-4\"-P4110001-93834-01/B2",
+          "coreEdgeCandidates": 1,
+          "elementIndex": 9,
+          "fromNode": "100",
+          "reason": "Nonadjacent original nodes without verified deletion/transform event",
+          "toNode": "110"
+        },
+        {
+          "branchName": "/GLRD-1000-4\"-P4110001-93834-01/B2",
+          "coreEdgeCandidates": 1,
+          "elementIndex": 10,
+          "fromNode": "110",
+          "reason": "Nonadjacent original nodes without verified deletion/transform event",
+          "toNode": "120"
+        },
+        {
+          "branchName": "/GLRD-1000-4\"-P4110001-93834-01/B2",
+          "coreEdgeCandidates": 1,
+          "elementIndex": 12,
+          "fromNode": "140",
+          "reason": "Nonadjacent original nodes without verified deletion/transform event",
+          "toNode": "150"
+        },
+        {
+          "branchName": "/GLRD-1000-4\"-P4110001-93834-01/B2",
+          "coreEdgeCandidates": 1,
+          "elementIndex": 13,
+          "fromNode": "150",
+          "reason": "Nonadjacent original nodes without verified deletion/transform event",
+          "toNode": "160"
+        }
+      ],
+      "unmatchedElementsWithMissingSourceEdge": 0,
+      "unmatchedRigidReasons": {
+        "NO_MATCHED_SOURCE_ELEMENT": 65
+      }
+    }
   },
   "schema": "xml-cii-lineage-coverage/v1",
   "synthetic433_144Scale": {
@@ -139,7 +234,15 @@
     "evidenceClass": "SYNTHETIC_433_144_NOT_OWNER",
     "originalCiiSha256": "90f5ddaeca5912481d2031a51433ed16237235adeed4ae58d7de8283440da7e0",
     "readOnly": true,
-    "replayVerdict": "PASS_EXACT_REPLAY"
+    "replayVerdict": "PASS_EXACT_REPLAY",
+    "unmatchedDiagnostics": {
+      "sourceNodesWithoutComponentRef": 0,
+      "unmatchedElementCoreEdgeCandidateCounts": {},
+      "unmatchedElementReasons": {},
+      "unmatchedElementSamples": [],
+      "unmatchedElementsWithMissingSourceEdge": 0,
+      "unmatchedRigidReasons": {}
+    }
   },
   "verification": {
     "allElementsClassified": 11,
