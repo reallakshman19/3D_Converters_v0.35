@@ -19,8 +19,10 @@ test_L07_no_cross_component_mass_on_shared_endpoints (test_roundtrip_foundation.
 test_L08_shared_rigid_pointer_explicitly_visible_in_parser (test_roundtrip_foundation.FourLevelLineageTests.test_L08_shared_rigid_pointer_explicitly_visible_in_parser) ... ok
 test_L09_invalid_auxiliary_pointer_rejected (test_roundtrip_foundation.FourLevelLineageTests.test_L09_invalid_auxiliary_pointer_rejected) ... ok
 test_L10_TO_source_weight_selected_without_FROM_carry (test_roundtrip_foundation.FourLevelLineageTests.test_L10_TO_source_weight_selected_without_FROM_carry) ... ok
+test_L11_actual_missing_wall_serializes_converter_derived_value (test_roundtrip_foundation.FourLevelLineageTests.test_L11_actual_missing_wall_serializes_converter_derived_value) ... ok
 test_L11_wall_thickness_fallback_not_claimed_source_lossless (test_roundtrip_foundation.FourLevelLineageTests.test_L11_wall_thickness_fallback_not_claimed_source_lossless) ... ok
 test_L12_element_indices_are_output_ordinals_not_source_ids (test_roundtrip_foundation.FourLevelLineageTests.test_L12_element_indices_are_output_ordinals_not_source_ids) ... ok
+test_L12_swapped_element_blocks_do_not_preserve_output_ordinal_identity (test_roundtrip_foundation.FourLevelLineageTests.test_L12_swapped_element_blocks_do_not_preserve_output_ordinal_identity) ... ok
 test_L13_same_geometry_in_distinct_branches_never_maps_across (test_roundtrip_foundation.FourLevelLineageTests.test_L13_same_geometry_in_distinct_branches_never_maps_across) ... ok
 test_L17_observational_trace_does_not_change_converter_bytes (test_roundtrip_foundation.FourLevelLineageTests.test_L17_observational_trace_does_not_change_converter_bytes) ... ok
 test_every_final_element_and_rigid_classified (test_roundtrip_foundation.FourLevelLineageTests.test_every_final_element_and_rigid_classified) ... ok
@@ -37,11 +39,12 @@ test_modified_original_cii_refuses (test_roundtrip_foundation.SnapshotReplayTest
 test_multi_element_and_rigid_control_pointer_counts (test_roundtrip_foundation.SnapshotReplayTests.test_multi_element_and_rigid_control_pointer_counts) ... ok
 test_repository_native_glrd_real_converter_smoke (test_roundtrip_foundation.SnapshotReplayTests.test_repository_native_glrd_real_converter_smoke) ... ok
 test_snapshot_invocation_is_exact_no_implicit_flags (test_roundtrip_foundation.SnapshotReplayTests.test_snapshot_invocation_is_exact_no_implicit_flags) ... ok
+test_synthetic_433_144_real_converter_scale_no_authentic_claim (test_roundtrip_foundation.SnapshotReplayTests.test_synthetic_433_144_real_converter_scale_no_authentic_claim) ... ok
 test_unqualified_external_master_refuses (test_roundtrip_foundation.SnapshotReplayTests.test_unqualified_external_master_refuses) ... ok
 test_wrong_weight_scale_or_split_setting_refuses (test_roundtrip_foundation.SnapshotReplayTests.test_wrong_weight_scale_or_split_setting_refuses) ... ok
 
 ----------------------------------------------------------------------
-Ran 30 tests in 2.077s
+Ran 33 tests in 3.367s
 
 OK
 
