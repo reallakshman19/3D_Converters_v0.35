@@ -74,13 +74,15 @@ def inventory_xml(xml: bytes, source_sha: str, *, stage="ENGINE_INPUT_XML"):
     return result, len(branches)
 
 def stable_match(a, b):
-    # Stable ordinal only when the physical facts actually agree at both stages.
+    # Original *node* identity must not require a physical ComponentRefNo.
+    # Stable ordinal + exact branch, position, type and same (possibly empty)
+    # component field establishes the node across this observed Python stage.
+    # Physical mass ownership is a separate, stricter ledger classification.
     return (a["branchOrdinal"] == b["branchOrdinal"] and
             a["nodeOrdinal"] == b["nodeOrdinal"] and
             a["branchName"] == b["branchName"] and
             a["position"] == b["position"] and a["componentType"] == b["componentType"] and
-            a["componentRefNo"] == b["componentRefNo"] and a["position"] is not None and
-            bool(a["componentRefNo"]))
+            a["componentRefNo"] == b["componentRefNo"] and a["position"] is not None)
 
 def observe_python_transformations(engine_input_xml: bytes, config_bytes: bytes, assets: dict, options: dict):
     """Observational second pass through active Python preprocessing, NOT writer.
@@ -227,6 +229,7 @@ def parse_elements_and_auxiliaries(cii_bytes):
                 "linkedElements": references, "sourceOwners": [],
                 "ownerCandidates": [], "ownershipStatus": "UNMATCHED",
                 "physicalMassAuthority": "UNVERIFIED",
+                "writerWeightSourceNode": None,
                 "unreferenced": not references, "shared": len(references) > 1,
             })
     return elements, auxiliary
@@ -424,7 +427,10 @@ def build_lineage_ledger(*, conversion_snapshot, engine_input_xml: bytes,
         else:
             cref = owner["componentRefNo"]
             other_nodes = component_to_all_nodes.get(cref, []) if cref else []
-            aux["sourceOwners"] = [owner["identity"]]
+            # A source node selected by writer is not necessarily the verified
+            # physical owner of that RIGID. Only unique ComponentRefNo can be
+            # retained as a structural owner; no estimate is approved here.
+            aux["writerWeightSourceNode"] = owner["identity"]
             aux["ownerCandidates"] = [cref] if cref else []
             aux["observedSourceWeight"] = owner["fields"]["Weight"]
             scale = float(conversion_snapshot["configuration"]["weightScale"])
@@ -435,12 +441,16 @@ def build_lineage_ledger(*, conversion_snapshot, engine_input_xml: bytes,
             if not math.isfinite(expected) or abs(expected - aux["weight"]) > 1e-5:
                 aux["ownershipStatus"] = "CONFLICT"
                 aux["reason"] = "Emitted RIGID differs from selected source Weight × scale"
-            elif not cref or len(other_nodes) != 1:
+            elif not cref:
+                aux["ownershipStatus"] = "UNMATCHED"
+                aux["reason"] = "Writer-selected source node verified; physical ComponentRefNo absent"
+            elif len(other_nodes) != 1:
                 aux["ownershipStatus"] = "AMBIGUOUS"
-                aux["reason"] = "ComponentRefNo missing or shared; source allocation unproved"
+                aux["reason"] = "Multiple source nodes carry ComponentRefNo; mass allocation unproved"
             else:
+                aux["sourceOwners"] = [owner["identity"]]
                 aux["ownershipStatus"] = e["lineageStatus"]
-                aux["reason"] = "Unique writer-selected TO source node, physical mass not independently approved"
+                aux["reason"] = "Unique writer-selected source node and ComponentRefNo; physical mass not independently approved"
         rigid_ownership[aux["ownershipStatus"]] += 1
 
     relationships = []
