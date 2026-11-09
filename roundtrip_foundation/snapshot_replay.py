@@ -8,7 +8,7 @@ No CII writer, XML editor or engineering policy is implemented here.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass
+import ast
 import hashlib
 import json
 import pathlib
@@ -54,8 +54,41 @@ def canonical_json(data: Any) -> bytes:
                       separators=(",", ":")).encode("utf-8")
 
 def converter_code_identity() -> dict[str, str]:
-    return {filename: digest((SCRIPTS / filename).read_bytes())
-            for filename in SOURCE_FILES}
+    """Hash entrypoint, validators and their static local Python import closure.
+
+    Deliberately fail closed on any changed imported module, rather than
+    pinning only the eight initial files. Nonlocal packages/runtime still
+    require separate runtime custody and may need further qualification.
+    """
+    local_modules = {p.stem: p for p in SCRIPTS.glob("*.py") if p.is_file()}
+    queue = list(SOURCE_FILES)
+    seen: set[str] = set()
+    identities: dict[str, str] = {}
+    while queue:
+        name = queue.pop()
+        if name in seen:
+            continue
+        seen.add(name)
+        path = SCRIPTS / name
+        data = path.read_bytes()
+        identities[name] = digest(data)
+        try:
+            tree = ast.parse(data, filename=str(path))
+        except SyntaxError as exc:
+            raise Hold("HOLD_CONVERTER_IDENTITY", f"Cannot inspect converter {name}: {exc}") from exc
+        for stmt in ast.walk(tree):
+            imported = []
+            if isinstance(stmt, ast.Import):
+                imported = [alias.name for alias in stmt.names]
+            elif isinstance(stmt, ast.ImportFrom) and stmt.module:
+                imported = [stmt.module]
+            for module in imported:
+                local = module.rsplit(".", 1)[-1]
+                if local in local_modules:
+                    dependent = local_modules[local].name
+                    if dependent not in seen:
+                        queue.append(dependent)
+    return dict(sorted(identities.items()))
 
 def validate_options(options: dict):
     require(type(options) is dict, "HOLD_MISSING_INPUT", "Effective options are missing")
@@ -220,15 +253,27 @@ def run_existing_converter(snapshot: dict, engine_input_xml: bytes, config: byte
                 argv.append(str(paths[item]))
             else:
                 argv.append(item)
-        result = subprocess.run(argv, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                                text=True, check=False)
+        try:
+            result = subprocess.run(
+                argv, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                text=True, check=False, timeout=120)
+        except subprocess.TimeoutExpired as exc:
+            raise Hold("HOLD_CONVERTER_ERROR", "Native converter exceeded bounded runtime") from exc
         require(result.returncode == 0 and output.is_file(),
                 "HOLD_CONVERTER_ERROR", f"Native existing converter failed: {result.stderr[-1000:]}")
+        # The actual effective config is preserved as SHA in the snapshot.
+        # Never publish its raw contents in a CI/evidence receipt.
+        def redacted(value):
+            if value == config.decode("utf-8"):
+                return "<EFFECTIVE_CONFIG_SHA256:" + digest(config) + ">"
+            return (value.replace(str(source), "<INPUT_XML>")
+                    .replace(str(output), "<OUTPUT_CII>")
+                    .replace(str(root), "<TEMP_ASSET_DIR>"))
         return output.read_bytes(), {
             "entrypoint": ENTRYPOINT,
-            "actualArguments": [x.replace(str(source), "<INPUT_XML>").replace(str(output), "<OUTPUT_CII>")
-                                .replace(str(root), "<TEMP_ASSET_DIR>") for x in argv[2:]],
-            "stdout": result.stdout[-1500:], "stderr": result.stderr[-1500:],
+            "actualArguments": [redacted(x) for x in argv[2:]],
+            "stdout": result.stdout[-1500:].replace(str(root), "<TEMP_ASSET_DIR>"),
+            "stderr": result.stderr[-1500:].replace(str(root), "<TEMP_ASSET_DIR>"),
         }
 
 def validate_serialized_cii(contents: bytes) -> dict:
