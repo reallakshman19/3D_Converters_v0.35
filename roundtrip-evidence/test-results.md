@@ -103,11 +103,11 @@ test_valid_six_old_and_nine_new_zero_or_in_range (test_roundtrip_review_fixes.Fu
 test_wrong_aux_width_refused_even_if_control_is_zero (test_roundtrip_review_fixes.FullAuxiliaryPointerReviewTests.test_wrong_aux_width_refused_even_if_control_is_zero) ... ok
 
 ----------------------------------------------------------------------
-Ran 88 tests in 17.905s
+Ran 88 tests in 16.170s
 
 OK
-{"status": "PASS_EXACT_REPLAY", "reportDir": "/tmp/private-owner-intake-test-xcaet7bm/private-reports", "privateLineageWritten": true}
-{"status": "HOLD_STALE_SOURCE", "reportDir": "/tmp/private-owner-intake-test-xcaet7bm/private-reports", "privateLineageWritten": false}
+{"status": "PASS_EXACT_REPLAY", "reportDir": "/tmp/private-owner-intake-test-vnwo6fd_/private-reports", "privateLineageWritten": true}
+{"status": "HOLD_STALE_SOURCE", "reportDir": "/tmp/private-owner-intake-test-vnwo6fd_/private-reports", "privateLineageWritten": false}
 
 \`\`\`
 
