@@ -46,6 +46,25 @@ export function installSourceBackedWeightReview({
     {style:'font-size:11px;color:#cbd5e1;'});
   const content=add(panel,'div',null,{'data-source-weight-content':'',
     style:'display:none;padding-top:12px;'});
+  // A compact source status/inspect cell per existing emitted RIGID row.
+  // All prior columns, suggestion buttons, reference and direct-CII actions
+  // remain untouched. Details appear in the separate panel, not clipped cells.
+  const table=overlay.querySelector('[data-final-rigid-table-wrap] table');
+  const header=table?.querySelector('thead tr');
+  if(header){
+    const th=add(header,'th','Source XML',{style:'padding:9px;white-space:nowrap;'});
+    th.dataset.sourceWeightHeader='';
+  }
+  const rowCells=new Map();
+  for(const tr of overlay.querySelectorAll('[data-final-rigid-row]')){
+    const pointer=Number(tr.dataset.pointer);
+    const td=add(tr,'td',null,{style:'padding:8px;min-width:150px;'});
+    const state=add(td,'div','Not qualified',{'data-source-weight-cell-status':pointer,
+      style:'font-size:10px;color:#fbbf24;'});
+    const inspect=button(td,'Inspect source',{'data-source-weight-inspect':pointer});
+    inspect.style.cssText='font-size:10px;padding:4px 7px;color:#e2e8f0;background:#334155;border:1px solid #64748b;border-radius:5px;';
+    rowCells.set(pointer,{state,inspect});
+  }
   const status=add(content,'pre','Not initialized.',{'data-source-weight-status':'',
     role:'status',style:'white-space:pre-wrap;color:#fbbf24;font-size:12px;'});
   const form=add(content,'div',null,{style:'display:flex;flex-wrap:wrap;gap:12px;align-items:end;'});
@@ -84,6 +103,7 @@ export function installSourceBackedWeightReview({
   const report=add(content,'pre','Source ownership and no-edit parity not yet verified.',{
     'data-source-weight-report':'',style:'white-space:pre-wrap;max-height:210px;overflow:auto;color:#cbd5e1;font-size:11px;'});
   let session=null, committed=null, ready=false, applying=false, previewSignature='';
+  let pendingPointer=null;
   let version=0;
   const current=()=>typeof getCurrentResult==='function'?getCurrentResult():result;
   const markDirty=()=>{
@@ -146,6 +166,18 @@ export function installSourceBackedWeightReview({
         built.rows.filter(r=>r.eligible).length+'/'+built.rows.length+
         ' source owners structurally eligible; physical mass approval is still required.';
       resetPicker();
+      for(const row of built.rows) {
+        const item=rowCells.get(row.rigidPointer);
+        if(item){
+          item.state.textContent=row.eligible?'ELIGIBLE · approve owner':'HOLD · '+row.reason;
+          item.state.style.color=row.eligible?'#86efac':'#fbbf24';
+        }
+      }
+      if(pendingPointer!=null){
+        picker.value=String(pendingPointer);
+        pendingPointer=null;
+        renderFacts();
+      }
       downloads.originalXml.disabled=false;downloads.originalCii.disabled=false;
     } catch(e){
       status.textContent='HOLD: '+(e?.message||e);
@@ -159,6 +191,20 @@ export function installSourceBackedWeightReview({
     open.textContent=on?'Close source-backed XML edit mode':'Open source-backed XML edit mode';
     if(on&&!ready&&!session)init();
   });
+  for(const [pointer,{inspect}] of rowCells){
+    inspect.addEventListener('click',()=>{
+      pendingPointer=pointer;
+      if(content.style.display==='none')open.click();
+      if(ready){
+        picker.value=String(pointer);
+        pendingPointer=null;
+        proposed.value='';
+        clearApproval();
+        renderFacts();
+        panel.scrollIntoView({block:'nearest'});
+      }
+    });
+  }
   picker.addEventListener('change',()=>{proposed.value='';clearApproval();renderFacts();});
   for(const control of [proposed,approval,owner,zero])
     control.addEventListener(control.type==='checkbox'?'change':'input',markDirty);
