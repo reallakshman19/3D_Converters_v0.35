@@ -156,7 +156,7 @@ def detect_removed_short_nodes(processed_nodes, parsed_document, source_binding)
             succeeding = positive[original_index + 1] if original_index + 1 < len(positive) else None
             next_retained = next((r for r in predicted if r["nodeOrdinal"] > cur["nodeOrdinal"]), None)
             events.append({
-                "stage": "PYTHON_SHORT_NODE_DROP", "status": "TRANSFORMED_WITH_LINEAGE",
+                "stage": "PYTHON_SHORT_NODE_DROP", "status": "TRANSFORMED_WITH_LINEAGE" if source_binding.get(cur["identity"]) else "UNMATCHED",
                 "sourceIdentity": source_binding.get(cur["identity"]),
                 "intermediateNodeIdentity": cur["identity"],
                 "nodeNumber": cur["originalNodeNumber"],
@@ -313,17 +313,27 @@ def build_lineage_ledger(*, conversion_snapshot, engine_input_xml: bytes,
                 endpoints.append((ids, source_ids))
             if all(len(records) == 1 and len(ids) == 1 for records, ids in endpoints):
                 identities = [next(iter(ids)) for _, ids in endpoints]
-                element["sourceEdgeIdentity"] = identities
-                for sid, node_num in zip(identities, (element["fromNode"], element["toNode"])):
-                    source_node_to_elements[sid].add(element["elementIndex"])
-                    source_node_to_final[sid].add((element["branchName"], node_num))
-                moved = any(sid in transformation_nodes for sid in identities)
                 a_source = source_by_id[identities[0]]
                 z_source = source_by_id[identities[1]]
                 adjacent = (a_source["branchOrdinal"] == z_source["branchOrdinal"] and
                             z_source["nodeOrdinal"] - a_source["nodeOrdinal"] == 1)
-                element["lineageStatus"] = (
-                    "TRANSFORMED_WITH_LINEAGE" if moved or not adjacent else "EXACT_UNIQUE")
+                documented_collapse = any(
+                    event["stage"] == "PYTHON_SHORT_NODE_DROP" and
+                    event["sourceIdentity"] is not None and
+                    source_by_id[event["sourceIdentity"]]["branchOrdinal"] == a_source["branchOrdinal"] and
+                    a_source["nodeOrdinal"] < source_by_id[event["sourceIdentity"]]["nodeOrdinal"]
+                    < z_source["nodeOrdinal"] for event in deletions)
+                if not adjacent and not documented_collapse:
+                    element["lineageStatus"] = "UNMATCHED"
+                    element["lineageReason"] = "Nonadjacent original nodes without verified deletion/transform event"
+                else:
+                    element["sourceEdgeIdentity"] = identities
+                    for sid, node_num in zip(identities, (element["fromNode"], element["toNode"])):
+                        source_node_to_elements[sid].add(element["elementIndex"])
+                        source_node_to_final[sid].add((element["branchName"], node_num))
+                    moved = any(sid in transformation_nodes for sid in identities)
+                    element["lineageStatus"] = (
+                        "TRANSFORMED_WITH_LINEAGE" if moved or documented_collapse else "EXACT_UNIQUE")
                 element["fieldProvenance"] = {
                     "rigidWeight": "TO if TO.rigid=2; FLAN/TO if FROM.rigid=2 and TO is FLAN; else zero",
                     "outsideDiameter": "FROM normally; special BRAN/TO endpoint=2",
