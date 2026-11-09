@@ -144,6 +144,19 @@ class FinalNodeIncidentEdgeReviewTests(unittest.TestCase):
         self.assertIn(old_candidate,corrected["sourceNodeCandidates"])
         self.assertIn(unresolved_index,corrected["unverifiedIncidentElements"])
 
+    def test_f1_self_connecting_element_has_two_distinct_source_sides(self):
+        synthetic=[{"elementIndex":1, "branchName":"/SELF",
+                    "fromNode":"20", "toNode":"20",
+                    "lineageStatus":"EXACT_UNIQUE",
+                    "sourceEdgeIdentity":["SOURCE-A","SOURCE-B"]}]
+        nodes={("/SELF","20"):{"branchName":"/SELF","ciiNodeNumber":"20",
+                              "connectedElements":[1,1]}}
+        reconcile_final_node_identities(synthetic,nodes,set())
+        result=nodes[("/SELF","20")]
+        self.assertEqual(result["lineageStatus"],"AMBIGUOUS")
+        self.assertEqual(result["sourceNodeCandidates"],["SOURCE-A","SOURCE-B"])
+        self.assertIsNone(result["sourceNodeIdentity"])
+
     def test_f1_reviewer_counterexample_forged_exact_rejected(self):
         altered=copy.deepcopy(self.ledger)
         n=next(n for n in altered["finalNodes"] if len(n["connectedElements"])>=2
@@ -238,6 +251,29 @@ class AdversarialLineageIntegrityReviewTests(unittest.TestCase):
 
     def test_f3_invalid_physical_mass_authority_rejected(self):
         self.assert_reject(lambda d: d.__setitem__("physicalMassAuthority","VERIFIED"))
+
+    def test_f3_forged_final_node_transformation_status_rejected(self):
+        def mutate(d):
+            n=next(n for n in d["finalNodes"] if n["lineageStatus"]=="EXACT_UNIQUE")
+            n["lineageStatus"]="TRANSFORMED_WITH_LINEAGE"
+            n["transformation"]="PYTHON_RENUMBER"
+            d["statistics"]["finalNodes"]["originalIdentityVerified"] -= 1
+            d["statistics"]["finalNodes"]["generatedRenumberedWithLineage"] += 1
+        self.assert_reject(mutate)
+
+    def test_f3_forged_python_node_digest_rejected(self):
+        self.assert_reject(lambda d: d["pythonPreprocessedNodes"][0].__setitem__(
+            "sourceXmlDigest", "fake-stage-digest"))
+
+    def test_f3_changed_rigid_component_ref_candidate_rejected(self):
+        target=next(i for i,a in enumerate(self.ledger["auxiliaryRecords"])
+                    if a["section"]=="RIGID" and a["ownerCandidates"])
+        def mutate(d):
+            a=d["auxiliaryRecords"][target]
+            a["ownerCandidates"]=["FAKE-COMPONENT"]
+            idx=d["index"]["rigidPointerToOwnerCandidates"][str(a["recordPointer"])]
+            idx["componentRefs"]=["FAKE-COMPONENT"]
+        self.assert_reject(mutate)
 
     def test_f3_fabricated_transformation_target_rejected(self):
         def mutate(d):
