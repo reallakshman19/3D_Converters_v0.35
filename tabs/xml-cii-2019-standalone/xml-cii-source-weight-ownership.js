@@ -69,6 +69,15 @@ export async function deriveSourceWeightEligibility({ result, inventory }) {
       directEdges.set(key,matches);
     }
   }
+  const potentiallyAffectedByNode = new Map();
+  for (const row of rows) for (const edge of row.linkedElements) {
+    for (const number of [edge.fromNode, edge.toNode]) {
+      const key=[edge.branchName,number].join('|');
+      const bucket=potentiallyAffectedByNode.get(key)||new Set();
+      bucket.add(row.rigidPointer);
+      potentiallyAffectedByNode.set(key,bucket);
+    }
+  }
   const candidates = [];
   for (const row of rows) {
     if (row.linkedElements.length !== 1) {
@@ -109,13 +118,10 @@ export async function deriveSourceWeightEligibility({ result, inventory }) {
     // *touching* the same source node may conceal an unresolved FROM/TO or
     // transformed ownership. Never authorize a one-pointer edit until the
     // entire potential output dependency set is exactly this one pointer.
-    const potentiallyAffected = rows.filter(other =>
-      other.linkedElements.some(link =>
-        eq(link.branchName, writer.branchName) &&
-        (eq(link.fromNode, writer.nodeNumber) ||
-         eq(link.toNode, writer.nodeNumber))));
-    if (potentiallyAffected.length !== 1 ||
-        potentiallyAffected[0].rigidPointer !== row.rigidPointer) {
+    const potentiallyAffected = potentiallyAffectedByNode.get(
+      [writer.branchName,writer.nodeNumber].join('|')) || new Set();
+    if (potentiallyAffected.size !== 1 ||
+        !potentiallyAffected.has(row.rigidPointer)) {
       candidates.push(hold('Source node touches multiple or unresolved final RIGID records; full allocation/dependency proof absent.',
         row.rigidPointer)); continue;
     }
