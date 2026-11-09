@@ -94,7 +94,10 @@ function firstRigidToken(line){
   const field=String(line||'').slice(0,15);
   const tail=String(line||'').slice(15);
   if(!field.trim())hold('blank emitted RIGID weight');
-  return {weight:numeric(field),tail};
+  // Compare the entire serialized 15-column weight field on every
+  // *unchanged* source-linked RIGID. Numeric equality alone can conceal
+  // unauthorized sub-tolerance edits and alternate serialized values.
+  return {weight:numeric(field),weightToken:field,tail};
 }
 function stableElementBlock(before,after){
   for(let i=0;i<15;i++){
@@ -158,9 +161,19 @@ export async function verifySourceEditedCii({originalCiiText,revisedCiiText,appr
     if(beforeRecord.tail!==afterRecord.tail)
       hold('Unexpected RIGID type/second-field difference for edge '+key);
     const isApproved = key===selected;
-    const anticipated = isApproved?expected:beforeRecord.weight;
-    if(Math.abs(afterRecord.weight-anticipated) > 0.00001)
-      hold('Unapproved or missing RIGID weight change at edge '+key);
+    if(!isApproved) {
+      // Pointer order may change: the ELEMENT/source edge is the identity.
+      // No tolerance or reformatting is permitted for any other RIGID value.
+      if(afterRecord.weightToken !== beforeRecord.weightToken)
+        hold('Unapproved unchanged RIGID weight token changed at edge '+key);
+    } else {
+      // Only the approved field may differ. The current CII writer emits a
+      // finite-width numeric representation; retain the existing 1e-5 output-
+      // unit numeric round-trip bound here until serializer-specific precision
+      // is represented explicitly. Never apply this bound to another RIGID.
+      if(Math.abs(afterRecord.weight-expected) > 0.00001)
+        hold('Approved RIGID weight differs from serialized target at edge '+key);
+    }
     if(isApproved){
       modified++;newPointer=fresh.row.rigidPointer;
       if(afterRecord.weight===beforeRecord.weight)hold('Approved edited Weight was overwritten');
