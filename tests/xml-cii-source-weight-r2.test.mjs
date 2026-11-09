@@ -369,25 +369,3 @@ test('R2 renamed RIGID pointers reconcile by source-linked element, not previous
   assert.equal(audit.pointerReconciledBySource,true);
   assert.equal(audit.unexpectedDifferences,0);
 });
-))break;
-    const pointer=Number(raw.slice(15,28).trim());
-    if(pointer===row.rigidPointer||pointer===other){
-      lines[rowIndex]=raw.slice(0,15)+String(pointer===row.rigidPointer?other:row.rigidPointer).padStart(13,' ')+raw.slice(28);
-      moved++;
-    }
-  }
-  assert.ok(moved>=2,'both source-linked ELEMENT RIGID pointers must be remapped');
-  [lines[r+row.rigidPointer],lines[r+other]]=[lines[r+other],lines[r+row.rigidPointer]];
-  const permutation=lines.join(eol);
-  assert.notEqual(permutation,revisedCii);
-  const audit=await verifySourceEditedCii({
-    originalCiiText:originalCii,revisedCiiText:permutation,
-    originalSha256:await ciiSha256(originalCii),
-    approved:{...row,newValue:2.984},
-  });
-  assert.equal(audit.status,'PASS_ENGINEERING_DIFF');
-  assert.equal(audit.oldPointer,row.rigidPointer);
-  assert.equal(audit.newPointer,other);
-  assert.equal(audit.pointerReconciledBySource,true);
-  assert.equal(audit.unexpectedDifferences,0);
-});
