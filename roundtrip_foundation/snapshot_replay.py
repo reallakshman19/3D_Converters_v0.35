@@ -246,7 +246,7 @@ def validate_serialized_cii(contents: bytes) -> dict:
                         "HOLD_CII_INVALID", f"Element {elem['index']} invalid {section} pointer {ptr}")
         control = parse_control_counts(sections["CONTROL"])
         require(control.numelt == len(reparsed["elements"]) and
-                control.numrig == counts.get("RIGID", 0), "HOLD_CII_INVALID",
+                control.rigids == counts.get("RIGID", 0), "HOLD_CII_INVALID",
                 "CONTROL element/RIGID counts disagree with actual payload")
         return {"status": "PASS", "elementCount": len(reparsed["elements"]),
                 "rigidCount": counts.get("RIGID", 0), "auxiliaryCounts": counts,
