@@ -4,6 +4,8 @@
 
 **Scope:** Read-only effective-input snapshot, exact CII no-edit replay using the existing Python runtime-custody converter, source-node/Python-transformed-node/final ELEMENT/auxiliary ledger and private archive intake. No weight edits, no UI redesign, no direct final CII mutation. Do not merge or deploy as part of review.
 
+**PR #18 review-fix closeout:** See [REVIEW_FIX_RECEIPT.md](./REVIEW_FIX_RECEIPT.md) for F1–F3 counterexamples, full 15-field auxiliary validation, independent ledger cross-checks and CI execution. Reviewer approval must be based on the corrected exact head, not the producer's receipt.
+
 ## Reviewer procedure
 
 1. Source-first: inspect `converters/scripts/xml_to_cii2019_runtime_custody.py`, `xml_to_cii2019_patched.py`, `xml_to_cii2019.py`, `cii2019_reparse_proof.py`, `cii2019_section_rules.py` and `converters/xml-cii-2019-standalone/invocation-builder.js`. Independently determine the real Python input boundary, transformation ordering, short-node/drop behavior, actual ELEMENT pointer positions, and weight-source selection.
@@ -34,7 +36,13 @@ The first command uses Python 3.11 in CI. Compare counts and digests to `roundtr
 | Repository-native public GLRD | 308 ELEMENT/65 RIGID real-converter replay; 42 exact + 266 transformed ELEMENT; 349 final nodes with observed original identities | Actual Owner 433/144, 65 physically approved RIGID owners |
 | Actual Owner historical GLRD | **NOT_RUN** until the original frozen bundle is available | Cannot conclude historical parity from any fixture above |
 
-The 65 repository-native RIGIDs remain **AMBIGUOUS physical owners**, even though emitted ELEMENT and node **structural** lineage is complete. A shared ComponentRefNo is not a mass-allocation authority.
+The 65 repository-native RIGIDs remain **AMBIGUOUS physical owners**, even though emitted ELEMENT and node **structural** lineage is complete. A shared ComponentRefNo is not a mass-allocation authority. F1 requires every incident ELEMENT to be resolved before a final node can claim `EXACT_UNIQUE`.
+
+## Focused F1–F3 review gate
+
+- **F1:** Reproduce a node with a verified and unresolved incident ELEMENT. Its known source candidate remains visible, but it cannot be `EXACT_UNIQUE`. Check the same FROM=TO node case with different source IDs.
+- **F2:** Confirm the new independent 15-slot validator checks EXPJT, DISPLMNT, FORCMNT, UNIFORM, WIND, OFFSETS, ALLOWBLS, FLANGES and EQUIPMNT, as well as the prior six. Verify physical records *and* CONTROL counts, including blank FLANGES payload rows.
+- **F3:** Run `tests/test_roundtrip_review_fixes.py`; inspect `ledger_integrity.py` and verify fabricated source IDs, broken reverse indexes, changed counts, missing auxiliary records and invalid relationships fail closed. The validator must derive completeness from incident edges and source events, not claims within the node or status fields.
 
 ## Key negative-case expectations
 
