@@ -105,6 +105,20 @@ export async function deriveSourceWeightEligibility({ result, inventory }) {
       candidates.push(hold('Adjacent distinct weight-bearing components compete for physical ownership.',
         row.rigidPointer)); continue;
     }
+    // Complete-impact fail-closed boundary: a second emitted RIGID even
+    // *touching* the same source node may conceal an unresolved FROM/TO or
+    // transformed ownership. Never authorize a one-pointer edit until the
+    // entire potential output dependency set is exactly this one pointer.
+    const potentiallyAffected = rows.filter(other =>
+      other.linkedElements.some(link =>
+        eq(link.branchName, writer.branchName) &&
+        (eq(link.fromNode, writer.nodeNumber) ||
+         eq(link.toNode, writer.nodeNumber))));
+    if (potentiallyAffected.length !== 1 ||
+        potentiallyAffected[0].rigidPointer !== row.rigidPointer) {
+      candidates.push(hold('Source node touches multiple or unresolved final RIGID records; full allocation/dependency proof absent.',
+        row.rigidPointer)); continue;
+    }
     const observed = weightNumeric(writer.weightField.value);
     if (observed === null || Math.abs(observed*scale-row.weight) > 0.00001) {
       candidates.push(hold('Serialized CII Weight not identical to source Weight × pinned scale.',
