@@ -82,7 +82,7 @@ def stable_match(a, b):
             a["componentRefNo"] == b["componentRefNo"] and a["position"] is not None and
             bool(a["componentRefNo"]))
 
-def observe_python_transformations(engine_input_xml: bytes, config_bytes: bytes, assets: dict):
+def observe_python_transformations(engine_input_xml: bytes, config_bytes: bytes, assets: dict, options: dict):
     """Observational second pass through active Python preprocessing, NOT writer.
 
     If branch/node ordinal alignment is disrupted, refuse to claim source identity.
@@ -90,6 +90,7 @@ def observe_python_transformations(engine_input_xml: bytes, config_bytes: bytes,
     """
     try:
         cfg = patched._load_support_config(config_bytes.decode("utf-8"))
+        cfg["splitCondensedValveFlange"] = options["splitCondensedValveFlange"]
         cfg.setdefault("teeSifTypeMapping", direction.DEFAULT_TEE_SIF_TYPE_MAPPING)
         cfg.setdefault("defaultTeeSifType", 0)
         with tempfile.TemporaryDirectory(prefix="xml-cii-lineage-trace-") as d:
@@ -236,7 +237,8 @@ def build_lineage_ledger(*, conversion_snapshot, engine_input_xml: bytes,
     originals, original_branches = inventory_xml(
         engine_input_xml, digest(engine_input_xml))
     post_bytes, parsed_document, bend_evidence = observe_python_transformations(
-        engine_input_xml, effective_config_json, configuration_assets)
+        engine_input_xml, effective_config_json, configuration_assets,
+        conversion_snapshot["configuration"]["options"])
     processed, post_branches = inventory_xml(
         post_bytes, digest(post_bytes), stage="PYTHON_PREPROCESSED")
     original_by_locator = {(r["branchOrdinal"], r["nodeOrdinal"]): r for r in originals}
