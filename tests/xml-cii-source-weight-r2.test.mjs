@@ -15,6 +15,8 @@ const originalXml=readFileSync(join(root,'original.xml'),'utf8');
 const revisedXml=readFileSync(join(root,'approved.xml'),'utf8');
 const originalCii=readFileSync(join(root,'original.cii'),'utf8');
 const revisedCii=readFileSync(join(root,'approved.cii'),'utf8');
+const original15Xml=readFileSync(join(root,'original15.xml'),'utf8');
+const original15Cii=readFileSync(join(root,'original15.cii'),'utf8');
 const zeroXml=readFileSync(join(root,'zero.xml'),'utf8');
 const zeroCii=readFileSync(join(root,'zero.cii'),'utf8');
 
@@ -86,6 +88,25 @@ test('R2 one explicitly approved unique source Weight edit regenerates correct 2
     {getCurrentResult:()=>result});
   assert.equal(repeat,verified);
   assert.equal(engineCalls.length,2,'second Apply must not rerun same edit');
+});
+test('R2 Owner acceptance values: 15 kg → 2.984 kg and output 150 → 29.84',async()=>{
+  const result=await setup(original15Xml,original15Cii);
+  const runner=job=>({ok:true,ciiText:job.sourceText===original15Xml?original15Cii:
+    job.sourceText===revisedXml?revisedCii:null,
+    error: 'not a qualified synthetic source edit'});
+  const session=await initializeSourceWeightSession(result,{engineRunner:runner});
+  const row=r40(session);
+  assert.equal(row.sourceNode.originalXmlWeight,15);
+  assert.equal(row.originalCiiWeight,150);
+  assert.equal(row.weightScale,10);
+  const out=await applySourceBackedWeightChange(session,transaction(row.rigidPointer));
+  assert.equal(out.status,'VERIFIED_REEXTRACT');
+  assert.equal(out.revisedXml,revisedXml);
+  assert.equal(out.revisedCii,revisedCii);
+  assert.deepEqual(out.audit.ciiEngineeringDiff.expectedDifferences.map(x=>[
+    x.oldWeight,x.newWeight]),[[150,29.84]]);
+  assert.equal(out.audit.unrelatedXmlBytesChanged,0);
+  assert.equal(out.audit.ciiEngineeringDiff.unexpectedDifferences,0);
 });
 test('R2 explicit zero is a numeric approved source edit, never a blank',async()=>{
   const result=await setup();
