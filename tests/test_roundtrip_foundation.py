@@ -242,6 +242,22 @@ class FourLevelLineageTests(unittest.TestCase):
         self.assertEqual(len(self.elements), sum(
             self.ledger["statistics"]["elementMappings"].values()))
 
+
+    def test_source_python_intermediate_bidirectional_identity_index(self):
+        links = self.ledger["index"]["pythonNodeToOriginalSourceNode"]
+        direct = [r for r in self.ledger["relationships"]
+                  if r["kind"] == "SOURCE_NODE_TO_PYTHON_PREPROCESSED_NODE"]
+        self.assertEqual(len(direct), len(links))
+        self.assertEqual({x["to"] for x in direct}, set(links))
+        self.assertEqual({x["from"] for x in direct}, set(links.values()))
+        self.assertTrue(all(x["evidence"] for x in direct))
+        for rigid in self.rigids:
+            pointer = str(rigid["recordPointer"])
+            index = self.ledger["index"]["rigidPointerToOwnerCandidates"][pointer]
+            self.assertEqual(index["ownershipStatus"], rigid["ownershipStatus"])
+            self.assertEqual(index["sourceNodes"], rigid["sourceOwners"])
+            self.assertEqual(index["componentRefs"], rigid["ownerCandidates"])
+
     def test_L03_duplicate_node_numbers_are_branch_scoped(self):
         same = [n for n in self.ledger["sourceNodes"] if n["originalNodeNumber"] == "20"]
         self.assertEqual({n["branchName"] for n in same}, {"/RT/B1", "/RT/B2"})
