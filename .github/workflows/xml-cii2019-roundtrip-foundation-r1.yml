@@ -6,11 +6,13 @@ on:
     paths:
       - 'roundtrip_foundation/**'
       - 'tests/test_roundtrip_foundation.py'
+      - 'tests/test_roundtrip_owner_bundle.py'
       - '.github/workflows/xml-cii2019-roundtrip-foundation-r1.yml'
   pull_request:
     paths:
       - 'roundtrip_foundation/**'
       - 'tests/test_roundtrip_foundation.py'
+      - 'tests/test_roundtrip_owner_bundle.py'
       - '.github/workflows/xml-cii2019-roundtrip-foundation-r1.yml'
   workflow_dispatch:
 permissions:
