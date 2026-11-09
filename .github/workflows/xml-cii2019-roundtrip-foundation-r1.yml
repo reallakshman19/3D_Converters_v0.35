@@ -30,11 +30,11 @@ jobs:
           node-version: '22'
       - name: Compile foundation and test code
         run: |
-          python3 -m py_compile roundtrip_foundation/snapshot_replay.py roundtrip_foundation/lineage.py roundtrip_foundation/generate_evidence.py tests/test_roundtrip_foundation.py
+          python3 -m py_compile roundtrip_foundation/snapshot_replay.py roundtrip_foundation/lineage.py roundtrip_foundation/generate_evidence.py roundtrip_foundation/owner_bundle_replay.py tests/test_roundtrip_foundation.py tests/test_roundtrip_owner_bundle.py
       - name: Run real-converter replay and lineage tests
         run: |
           set -o pipefail
-          python3 -m unittest discover -s tests -p 'test_roundtrip_foundation.py' -v 2>&1 | tee "$RUNNER_TEMP/roundtrip-unittests.txt"
+          python3 -m unittest discover -s tests -p 'test_roundtrip*.py' -v 2>&1 | tee "$RUNNER_TEMP/roundtrip-unittests.txt"
       - name: Run existing direct-CII and standalone regression suites
         run: |
           node --test tests/xml-cii-final-property-transactions.test.mjs
