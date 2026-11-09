@@ -46,6 +46,7 @@ test_missing_asset_refuses (test_roundtrip_foundation.SnapshotReplayTests.test_m
 test_modified_original_cii_refuses (test_roundtrip_foundation.SnapshotReplayTests.test_modified_original_cii_refuses) ... ok
 test_multi_element_and_rigid_control_pointer_counts (test_roundtrip_foundation.SnapshotReplayTests.test_multi_element_and_rigid_control_pointer_counts) ... ok
 test_repository_native_glrd_real_converter_smoke (test_roundtrip_foundation.SnapshotReplayTests.test_repository_native_glrd_real_converter_smoke) ... ok
+test_snapshot_import_closure_and_no_raw_effective_config_in_receipt (test_roundtrip_foundation.SnapshotReplayTests.test_snapshot_import_closure_and_no_raw_effective_config_in_receipt) ... ok
 test_snapshot_invocation_is_exact_no_implicit_flags (test_roundtrip_foundation.SnapshotReplayTests.test_snapshot_invocation_is_exact_no_implicit_flags) ... ok
 test_synthetic_433_144_real_converter_scale_no_authentic_claim (test_roundtrip_foundation.SnapshotReplayTests.test_synthetic_433_144_real_converter_scale_no_authentic_claim) ... ok
 test_unqualified_external_master_refuses (test_roundtrip_foundation.SnapshotReplayTests.test_unqualified_external_master_refuses) ... ok
@@ -68,7 +69,7 @@ test_private_frozen_existing_cii_replay_real_converter (test_roundtrip_owner_bun
 test_staged_flag_without_staged_bytes_refuses (test_roundtrip_owner_bundle.OwnerBundleIntakeTests.test_staged_flag_without_staged_bytes_refuses) ... ok
 
 ----------------------------------------------------------------------
-Ran 53 tests in 7.323s
+Ran 54 tests in 15.401s
 
 OK
 

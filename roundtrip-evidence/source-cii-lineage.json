@@ -2011,7 +2011,7 @@
     "configurationSha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
     "engineInputSha256": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054",
     "pythonPreprocessedXmlSha256": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c",
-    "snapshotFingerprint": "7b889e2b191d26b4648cc6b84a484c66336a9a83a8e527b4b13a5aef11e2b194",
+    "snapshotFingerprint": "9c0f80b1ec719bd47c7158c3fed8a757f47c1c3774f695626509888fbb73f135",
     "sourceSha256": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054"
   },
   "schema": "xml-cii-lineage-ledger/v1",

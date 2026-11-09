@@ -32,6 +32,7 @@
     "codeIdentity": {
       "cii2019_reparse_proof.py": "f5884bcfde3f7e098a4160e43ade0095d4def3fa61cf6846716dfe2f40a2bd2a",
       "cii2019_section_rules.py": "877eba71cb8ee2dbcdeb4946e56eb6a0491f91b3fedb513043bc44edd5600696",
+      "master_customization.py": "288c519e99afcc932d371e550b98c2254f83088dd084dbc436b6e7eff7d5e768",
       "xml_to_cii2019.py": "8c1a5d8619091df49b349cf918e1a36d1e3b41baa5ba0eaca3e60d5d9bd0c026",
       "xml_to_cii2019_bend_radius_policy.py": "9e16b2ee49a1eabbea8ee6eedb787859795d45b452185eac15c7605d194117d8",
       "xml_to_cii2019_direction.py": "9234e2d30aca367174fefcdb650009f7e5ae805a4b8e35922b86409e9da1677e",
@@ -45,7 +46,7 @@
       "pythonVersion": "3.11.18"
     }
   },
-  "fingerprintSha256": "7b889e2b191d26b4648cc6b84a484c66336a9a83a8e527b4b13a5aef11e2b194",
+  "fingerprintSha256": "9c0f80b1ec719bd47c7158c3fed8a757f47c1c3774f695626509888fbb73f135",
   "inputs": {
     "engineInputXmlBytes": 4418,
     "engineInputXmlSha256": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054",
