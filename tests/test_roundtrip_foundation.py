@@ -260,6 +260,29 @@ class FourLevelLineageTests(unittest.TestCase):
         self.assertFalse(any(e["fromNode"] == "111" or e["toNode"] == "111"
                              for e in self.elements if e["branchName"] == "/RT/B3"))
 
+
+    def test_L05b_nonpositive_original_nodes_omitted_with_full_lineage(self):
+        """No fixed generated-number pattern: actual parser retention is proof."""
+        options = dict(OPTIONS, splitCondensedValveFlange=False)
+        _, _, receipt, ledger = ledger_for(
+            FIXTURE, options=options, run_id="NONPOSITIVE_OMISSION_WITHOUT_SPLIT")
+        self.assertEqual(receipt["verdict"], "PASS_EXACT_REPLAY")
+        events = [e for e in ledger["transformations"]
+                  if e["stage"] == "PYTHON_NONPOSITIVE_NODE_OMISSION"]
+        self.assertTrue(events)
+        self.assertTrue(any(e["nodeNumber"] == "-1"
+                            and e["sourceIdentity"] for e in events))
+        collapsed = next(e for e in ledger["elements"]
+                         if e["branchName"] == "/RT/B4"
+                         and e["fromNode"] == "500" and e["toNode"] == "520")
+        self.assertEqual(collapsed["lineageStatus"], "TRANSFORMED_WITH_LINEAGE")
+        self.assertTrue(collapsed["sourceEdgeIdentity"])
+        # The omitted negative flange has no emitted RIGID ownership.
+        omitted = next(e for e in events if e["nodeNumber"] == "-1")
+        self.assertFalse(any(
+            omitted["sourceIdentity"] in e.get("sourceEdgeIdentity", [])
+            for e in ledger["elements"]))
+
     def test_L06_shared_component_one_to_many_with_no_mass_allocation(self):
         groups = self.ledger["index"]["componentToSourceNodes"]
         self.assertEqual(len(groups["/SHARED-COMP"]), 2)
@@ -386,6 +409,25 @@ class FourLevelLineageTests(unittest.TestCase):
         with self.assertRaises(Hold):
             validate_lineage_ledger(self.ledger, expected_snapshot=wrong)
 
+
+
+    def test_repo_native_omitted_negative_source_node_classified(self):
+        """Repository-native smoke must improve only with real omission proof."""
+        path = REPO / "Benchmarks" / "XML to CII 2019" / "GLRD-1000-PI-01.xml"
+        if not path.is_file():
+            self.skipTest("Native GLRD source absent")
+        _, _, _, ledger = ledger_for(
+            path.read_bytes(), run_id="REPO_NATIVE_NEGATIVE_OMISSION")
+        omissions = [e for e in ledger["transformations"]
+                     if e["stage"] == "PYTHON_NONPOSITIVE_NODE_OMISSION"
+                     and e["sourceIdentity"]]
+        self.assertGreater(len(omissions), 0)
+        counts = ledger["statistics"]["elementMappings"]
+        self.assertGreater(counts["TRANSFORMED_WITH_LINEAGE"], 27)
+        for e in ledger["elements"]:
+            if e["lineageStatus"] == "UNMATCHED":
+                self.assertIsNone(e["sourceEdgeIdentity"])
+        self.assertEqual(ledger["physicalMassAuthority"], "NOT_ATTESTED")
 
     def test_repo_native_no_silent_writer_source_to_owner_promotion(self):
         """Verify owner field is empty whenever physical owner is unresolved."""
