@@ -27,6 +27,10 @@ test_L13_same_geometry_in_distinct_branches_never_maps_across (test_roundtrip_fo
 test_L17_observational_trace_does_not_change_converter_bytes (test_roundtrip_foundation.FourLevelLineageTests.test_L17_observational_trace_does_not_change_converter_bytes) ... ok
 test_every_final_element_and_rigid_classified (test_roundtrip_foundation.FourLevelLineageTests.test_every_final_element_and_rigid_classified) ... ok
 test_lineage_rejects_stale_snapshot (test_roundtrip_foundation.FourLevelLineageTests.test_lineage_rejects_stale_snapshot) ... ok
+test_missing_component_ref_does_not_erase_verified_node_lineage (test_roundtrip_foundation.FourLevelLineageTests.test_missing_component_ref_does_not_erase_verified_node_lineage)
+Source identity remains resolvable without claiming physical mass. ... ok
+test_repo_native_no_silent_writer_source_to_owner_promotion (test_roundtrip_foundation.FourLevelLineageTests.test_repo_native_no_silent_writer_source_to_owner_promotion)
+Verify owner field is empty whenever physical owner is unresolved. ... ok
 test_repository_native_lineage_is_classified_not_fabricated (test_roundtrip_foundation.FourLevelLineageTests.test_repository_native_lineage_is_classified_not_fabricated) ... ok
 test_L14_stale_source_refuses (test_roundtrip_foundation.SnapshotReplayTests.test_L14_stale_source_refuses) ... ok
 test_L15_missing_config_or_unattested_completeness_refuses (test_roundtrip_foundation.SnapshotReplayTests.test_L15_missing_config_or_unattested_completeness_refuses) ... ok
@@ -44,7 +48,7 @@ test_unqualified_external_master_refuses (test_roundtrip_foundation.SnapshotRepl
 test_wrong_weight_scale_or_split_setting_refuses (test_roundtrip_foundation.SnapshotReplayTests.test_wrong_weight_scale_or_split_setting_refuses) ... ok
 
 ----------------------------------------------------------------------
-Ran 33 tests in 1.899s
+Ran 35 tests in 4.557s
 
 OK
 
