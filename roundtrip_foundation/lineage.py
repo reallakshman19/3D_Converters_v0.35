@@ -136,11 +136,11 @@ def detect_removed_short_nodes(processed_nodes, parsed_document, source_binding)
             (str(n.node_number), tuple(n.position), n.component_type) for n in branch.nodes]
         predicted = [positive[0]] if positive else []
         dropped = []
-        for cur in positive[1:]:
+        for original_index, cur in enumerate(positive[1:], 1):
             prev = predicted[-1]
             dist = math.dist(prev["position"], cur["position"])
             if dist <= 6.0:
-                dropped.append((cur, prev, dist))
+                dropped.append((cur, prev, dist, original_index))
             else:
                 predicted.append(cur)
         if len(predicted) < 2:
@@ -151,8 +151,7 @@ def detect_removed_short_nodes(processed_nodes, parsed_document, source_binding)
         if signatures != output_signatures:
             continue
         retained[bi] = {r["identity"] for r in predicted}
-        for cur, prev, length in dropped:
-            original_index = positive.index(cur)
+        for cur, prev, length, original_index in dropped:
             succeeding = positive[original_index + 1] if original_index + 1 < len(positive) else None
             next_retained = next((r for r in predicted if r["nodeOrdinal"] > cur["nodeOrdinal"]), None)
             events.append({
@@ -208,10 +207,16 @@ def parse_elements_and_auxiliaries(cii_bytes):
         })
     auxiliary = []
     count_by_name = structural["auxiliaryCounts"]
+    # One pass over emitted pointers rather than scanning all ELEMENTS for
+    # every auxiliary record. Shared pointers remain explicitly represented.
+    pointer_to_elements = defaultdict(list)
+    for element in elements:
+        for section, ptr in element["pointers"].items():
+            if ptr:
+                pointer_to_elements[(section, ptr)].append(element["elementIndex"])
     for section in AUX_LAYOUT:
         for ptr in range(1, count_by_name.get(section, 0) + 1):
-            references = [e["elementIndex"] for e in elements
-                          if e["pointers"].get(section, 0) == ptr]
+            references = pointer_to_elements.get((section, ptr), [])
             weight = None
             if section == "RIGID":
                 rows = [x for x in sections.get(section, []) if x.strip()]
@@ -375,6 +380,10 @@ def build_lineage_ledger(*, conversion_snapshot, engine_input_xml: bytes,
 
     elem_lookup = {e["elementIndex"]: e for e in elements}
     rigid_ownership = Counter()
+    component_to_all_nodes = defaultdict(list)
+    for original in originals:
+        if original["componentRefNo"]:
+            component_to_all_nodes[original["componentRefNo"]].append(original)
     for aux in auxiliaries:
         if aux["section"] != "RIGID":
             continue
@@ -397,7 +406,7 @@ def build_lineage_ledger(*, conversion_snapshot, engine_input_xml: bytes,
             aux["ownershipStatus"] = "CONFLICT"
         else:
             cref = owner["componentRefNo"]
-            other_nodes = [n for n in originals if n["componentRefNo"] == cref] if cref else []
+            other_nodes = component_to_all_nodes.get(cref, []) if cref else []
             aux["sourceOwners"] = [owner["identity"]]
             aux["ownerCandidates"] = [cref] if cref else []
             aux["observedSourceWeight"] = owner["fields"]["Weight"]
