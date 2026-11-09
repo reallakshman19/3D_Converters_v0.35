@@ -266,11 +266,76 @@ test('R2 unapproved RIGID Type/OD or other engineering changes refuse revised ou
     approved:{...row,newValue:2.984}};
   assert.equal((await verifySourceEditedCii({...params,revisedCiiText:revisedCii})).status,
     'PASS_ENGINEERING_DIFF');
-  const odChange=revisedCii.replace('6.030000E+01','6.040000E+01');
-  if(odChange!==revisedCii)
-    await assert.rejects(()=>verifySourceEditedCii({...params,revisedCiiText:odChange}),
-      /engineering|HOLD_CII/);
+  const mutate=fn=>{
+    const eol=revisedCii.includes('\r\n')?'\r\n':'\n';
+    const lines=revisedCii.split(/\r?\n/);
+    fn(lines);
+    const text=lines.join(eol);
+    assert.notEqual(text,revisedCii,'mutation must change actual serialized CII bytes');
+    return text;
+  };
+  const odChange=mutate(lines=>{
+    const e=lines.findIndex(x=>x.startsWith('#$ ELEMENTS'));
+    assert.ok(e>=0);
+    const idx=e+1;
+    const original=lines[idx];
+    const first=67,last=80;
+    const old=Number(original.slice(first,last).trim());
+    assert.ok(Number.isFinite(old));
+    lines[idx]=original.slice(0,first)+String(old+1).padStart(last-first,' ')+original.slice(last);
+  });
+  await assert.rejects(()=>verifySourceEditedCii({...params,revisedCiiText:odChange}),
+    /engineering|HOLD_CII/);
+  const typeChange=mutate(lines=>{
+    const h=lines.findIndex(x=>x.startsWith('#$ RIGID'));
+    assert.ok(h>=0);
+    const idx=h+row.rigidPointer;
+    const old=lines[idx];
+    const type=Number(old.slice(15,28).trim());
+    assert.ok(Number.isFinite(type));
+    lines[idx]=old.slice(0,15)+String(type+1).padStart(13,' ')+old.slice(28);
+  });
+  await assert.rejects(()=>verifySourceEditedCii({...params,revisedCiiText:typeChange}),
+    /RIGID type|HOLD_CII/);
   const extras=revisedCii.replace('#$ RIGID\n','#$ RIGID\n   0.0\n');
+  assert.notEqual(extras,revisedCii);
   await assert.rejects(()=>verifySourceEditedCii({...params,revisedCiiText:extras}),
     /CONTROL|record|section|HOLD_CII/);
+});
+test('R2 renamed RIGID pointers reconcile by source-linked element, not previous index',async()=>{
+  const result=await setup();
+  const session=await initializeSourceWeightSession(result,{engineRunner});
+  const row=r40(session);
+  const other=row.rigidPointer===1 ? 2 : 1;
+  const eol=revisedCii.includes('\r\n')?'\r\n':'\n';
+  const lines=revisedCii.split(/\r?\n/);
+  const e=lines.findIndex(x=>x.startsWith('#$ ELEMENTS'));
+  const r=lines.findIndex(x=>x.startsWith('#$ RIGID'));
+  assert.ok(e>=0 && r>e);
+  let moved=0;
+  for(let idx=e+1;idx<r;idx+=15){
+    if(lines[idx]?.startsWith('#$ AUX_DATA'))break;
+    const rowIndex=idx+12, raw=lines[rowIndex];
+    if(!raw || raw.startsWith('#
+))break;
+    const pointer=Number(raw.slice(15,28).trim());
+    if(pointer===row.rigidPointer||pointer===other){
+      lines[rowIndex]=raw.slice(0,15)+String(pointer===row.rigidPointer?other:row.rigidPointer).padStart(13,' ')+raw.slice(28);
+      moved++;
+    }
+  }
+  assert.ok(moved>=2,'both source-linked ELEMENT RIGID pointers must be remapped');
+  [lines[r+row.rigidPointer],lines[r+other]]=[lines[r+other],lines[r+row.rigidPointer]];
+  const permutation=lines.join(eol);
+  assert.notEqual(permutation,revisedCii);
+  const audit=await verifySourceEditedCii({
+    originalCiiText:originalCii,revisedCiiText:permutation,
+    originalSha256:await ciiSha256(originalCii),
+    approved:{...row,newValue:2.984},
+  });
+  assert.equal(audit.status,'PASS_ENGINEERING_DIFF');
+  assert.equal(audit.oldPointer,row.rigidPointer);
+  assert.equal(audit.newPointer,other);
+  assert.equal(audit.pointerReconciledBySource,true);
+  assert.equal(audit.unexpectedDifferences,0);
 });
