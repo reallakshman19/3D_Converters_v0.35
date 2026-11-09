@@ -6,7 +6,7 @@ Task: XML-CII2019-ROUNDTRIP-FOUNDATION-R1, continuation of draft PR #18.
 
 ## Required private directory
 
-Create a directory **outside the repository**, e.g. `D:\CodeD\Handoffs\STEP4_GLDR_R1\owner-frozen-run`:
+Create a directory **outside the repository**, e.g. `/private/owner-frozen-run`:
 
 ```text
 owner-frozen-run/
