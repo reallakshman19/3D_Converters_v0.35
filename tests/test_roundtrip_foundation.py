@@ -174,6 +174,22 @@ class SnapshotReplayTests(unittest.TestCase):
             validate_serialized_cii(b"#$ CONTROL\n1\n")
         self.assertEqual(ctx.exception.code, "HOLD_CII_INVALID")
 
+
+    def test_snapshot_import_closure_and_no_raw_effective_config_in_receipt(self):
+        secret_config = b'{"unitTestSecret":"do-not-publish-synthetic-marker"}'
+        fixture = FIXTURE
+        snapshot, cii = generate_context(
+            fixture, config=secret_config, run_id="REDACTED_EFFECTIVE_CONFIG_TEST")
+        receipt = replay(snapshot, fixture, cii, secret_config)
+        self.assertEqual(receipt["verdict"], "PASS_EXACT_REPLAY", receipt)
+        serialized = json.dumps(receipt)
+        self.assertNotIn("do-not-publish-synthetic-marker", serialized)
+        self.assertIn("EFFECTIVE_CONFIG_SHA256:", serialized)
+        self.assertIn("xml_to_cii2019.py", snapshot["converter"]["codeIdentity"])
+        self.assertIn("xml_to_cii2019_runtime_custody.py",
+                      snapshot["converter"]["codeIdentity"])
+        self.assertGreaterEqual(len(snapshot["converter"]["codeIdentity"]), 8)
+
     def test_snapshot_invocation_is_exact_no_implicit_flags(self):
         argv = build_argv(OPTIONS)
         self.assertIn("--split-condensed-valve-flange", argv)
