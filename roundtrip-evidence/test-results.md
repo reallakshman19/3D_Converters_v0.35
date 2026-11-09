@@ -36,6 +36,7 @@ Verify owner field is empty whenever physical owner is unresolved. ... ok
 test_repo_native_omitted_negative_source_node_classified (test_roundtrip_foundation.FourLevelLineageTests.test_repo_native_omitted_negative_source_node_classified)
 Repository-native smoke must improve only with real omission proof. ... ok
 test_repository_native_lineage_is_classified_not_fabricated (test_roundtrip_foundation.FourLevelLineageTests.test_repository_native_lineage_is_classified_not_fabricated) ... ok
+test_source_python_intermediate_bidirectional_identity_index (test_roundtrip_foundation.FourLevelLineageTests.test_source_python_intermediate_bidirectional_identity_index) ... ok
 test_L14_stale_source_refuses (test_roundtrip_foundation.SnapshotReplayTests.test_L14_stale_source_refuses) ... ok
 test_L15_missing_config_or_unattested_completeness_refuses (test_roundtrip_foundation.SnapshotReplayTests.test_L15_missing_config_or_unattested_completeness_refuses) ... ok
 test_L16_exact_real_converter_replay (test_roundtrip_foundation.SnapshotReplayTests.test_L16_exact_real_converter_replay) ... ok
@@ -69,7 +70,7 @@ test_private_frozen_existing_cii_replay_real_converter (test_roundtrip_owner_bun
 test_staged_flag_without_staged_bytes_refuses (test_roundtrip_owner_bundle.OwnerBundleIntakeTests.test_staged_flag_without_staged_bytes_refuses) ... ok
 
 ----------------------------------------------------------------------
-Ran 54 tests in 15.401s
+Ran 55 tests in 15.432s
 
 OK
 

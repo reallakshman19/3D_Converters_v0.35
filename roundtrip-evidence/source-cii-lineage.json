@@ -858,6 +858,24 @@
         "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:2"
       ]
     },
+    "pythonNodeToOriginalSourceNode": {
+      "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:0:0": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:0",
+      "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:0:1": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:1",
+      "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:0:2": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:2",
+      "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:0:3": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:3",
+      "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:0:4": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:4",
+      "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:1:0": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:0",
+      "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:1:1": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:1",
+      "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:1:2": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:2",
+      "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:2:0": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:0",
+      "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:2:1": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:1",
+      "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:2:2": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:2",
+      "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:2:3": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:3",
+      "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:2:4": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:4",
+      "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:3:0": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:0",
+      "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:3:1": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:1",
+      "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:3:2": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:2"
+    },
     "rigidPointerToElements": {
       "1": [
         1
@@ -877,6 +895,66 @@
       "6": [
         10
       ]
+    },
+    "rigidPointerToOwnerCandidates": {
+      "1": {
+        "componentRefs": [
+          "/SHARED-COMP"
+        ],
+        "ownershipStatus": "AMBIGUOUS",
+        "sourceNodes": [],
+        "writerWeightSourceNode": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:1"
+      },
+      "2": {
+        "componentRefs": [
+          "/RIGID-40"
+        ],
+        "ownershipStatus": "EXACT_UNIQUE",
+        "sourceNodes": [
+          "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:3"
+        ],
+        "writerWeightSourceNode": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:3"
+      },
+      "3": {
+        "componentRefs": [
+          "/RIGID-B2-20"
+        ],
+        "ownershipStatus": "EXACT_UNIQUE",
+        "sourceNodes": [
+          "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:1"
+        ],
+        "writerWeightSourceNode": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:1"
+      },
+      "4": {
+        "componentRefs": [
+          "/RIGID-B3-110"
+        ],
+        "ownershipStatus": "EXACT_UNIQUE",
+        "sourceNodes": [
+          "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:1"
+        ],
+        "writerWeightSourceNode": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:1"
+      },
+      "5": {
+        "componentRefs": [
+          "/RIGID-B3-120"
+        ],
+        "ownershipStatus": "TRANSFORMED_WITH_LINEAGE",
+        "sourceNodes": [
+          "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:3"
+        ],
+        "writerWeightSourceNode": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:3"
+      },
+      "6": {
+        "componentRefs": [
+          "/FLAN-B4-NEG"
+        ],
+        "ownershipStatus": "TRANSFORMED_WITH_LINEAGE",
+        "sourceNodes": [
+          "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:1"
+        ],
+        "writerWeightSourceNode": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:1"
+      }
     },
     "sourceNodeToElements": {
       "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:0": [
@@ -1590,6 +1668,102 @@
   ],
   "readOnly": true,
   "relationships": [
+    {
+      "evidence": "Exact branch/ordinal/component/position stage identity",
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:0",
+      "kind": "SOURCE_NODE_TO_PYTHON_PREPROCESSED_NODE",
+      "to": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:0:0"
+    },
+    {
+      "evidence": "Exact branch/ordinal/component/position stage identity",
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:1",
+      "kind": "SOURCE_NODE_TO_PYTHON_PREPROCESSED_NODE",
+      "to": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:0:1"
+    },
+    {
+      "evidence": "Exact branch/ordinal/component/position stage identity",
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:2",
+      "kind": "SOURCE_NODE_TO_PYTHON_PREPROCESSED_NODE",
+      "to": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:0:2"
+    },
+    {
+      "evidence": "Exact branch/ordinal/component/position stage identity",
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:3",
+      "kind": "SOURCE_NODE_TO_PYTHON_PREPROCESSED_NODE",
+      "to": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:0:3"
+    },
+    {
+      "evidence": "Exact branch/ordinal/component/position stage identity",
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:4",
+      "kind": "SOURCE_NODE_TO_PYTHON_PREPROCESSED_NODE",
+      "to": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:0:4"
+    },
+    {
+      "evidence": "Exact branch/ordinal/component/position stage identity",
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:0",
+      "kind": "SOURCE_NODE_TO_PYTHON_PREPROCESSED_NODE",
+      "to": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:1:0"
+    },
+    {
+      "evidence": "Exact branch/ordinal/component/position stage identity",
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:1",
+      "kind": "SOURCE_NODE_TO_PYTHON_PREPROCESSED_NODE",
+      "to": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:1:1"
+    },
+    {
+      "evidence": "Exact branch/ordinal/component/position stage identity",
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:2",
+      "kind": "SOURCE_NODE_TO_PYTHON_PREPROCESSED_NODE",
+      "to": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:1:2"
+    },
+    {
+      "evidence": "Exact branch/ordinal/component/position stage identity",
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:0",
+      "kind": "SOURCE_NODE_TO_PYTHON_PREPROCESSED_NODE",
+      "to": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:2:0"
+    },
+    {
+      "evidence": "Exact branch/ordinal/component/position stage identity",
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:1",
+      "kind": "SOURCE_NODE_TO_PYTHON_PREPROCESSED_NODE",
+      "to": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:2:1"
+    },
+    {
+      "evidence": "Exact branch/ordinal/component/position stage identity",
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:2",
+      "kind": "SOURCE_NODE_TO_PYTHON_PREPROCESSED_NODE",
+      "to": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:2:2"
+    },
+    {
+      "evidence": "Exact branch/ordinal/component/position stage identity",
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:3",
+      "kind": "SOURCE_NODE_TO_PYTHON_PREPROCESSED_NODE",
+      "to": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:2:3"
+    },
+    {
+      "evidence": "Exact branch/ordinal/component/position stage identity",
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:4",
+      "kind": "SOURCE_NODE_TO_PYTHON_PREPROCESSED_NODE",
+      "to": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:2:4"
+    },
+    {
+      "evidence": "Exact branch/ordinal/component/position stage identity",
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:0",
+      "kind": "SOURCE_NODE_TO_PYTHON_PREPROCESSED_NODE",
+      "to": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:3:0"
+    },
+    {
+      "evidence": "Exact branch/ordinal/component/position stage identity",
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:1",
+      "kind": "SOURCE_NODE_TO_PYTHON_PREPROCESSED_NODE",
+      "to": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:3:1"
+    },
+    {
+      "evidence": "Exact branch/ordinal/component/position stage identity",
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:2",
+      "kind": "SOURCE_NODE_TO_PYTHON_PREPROCESSED_NODE",
+      "to": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:3:2"
+    },
     {
       "from": "/PIPE-10",
       "kind": "COMPONENT_CONTAINS_NODE",
