@@ -69,13 +69,41 @@ test_only_actual_run_dependencies_required_not_hardcoded_four (test_roundtrip_ow
 test_outside_bundle_symlink_or_parent_path_refuses (test_roundtrip_owner_bundle.OwnerBundleIntakeTests.test_outside_bundle_symlink_or_parent_path_refuses) ... ok
 test_private_frozen_existing_cii_replay_real_converter (test_roundtrip_owner_bundle.OwnerBundleIntakeTests.test_private_frozen_existing_cii_replay_real_converter) ... ok
 test_staged_flag_without_staged_bytes_refuses (test_roundtrip_owner_bundle.OwnerBundleIntakeTests.test_staged_flag_without_staged_bytes_refuses) ... ok
+test_f3_changed_element_count_rejected (test_roundtrip_review_fixes.AdversarialLineageIntegrityReviewTests.test_f3_changed_element_count_rejected) ... ok
+test_f3_changed_final_node_count_rejected (test_roundtrip_review_fixes.AdversarialLineageIntegrityReviewTests.test_f3_changed_final_node_count_rejected) ... ok
+test_f3_changed_pointer_alias_rejected (test_roundtrip_review_fixes.AdversarialLineageIntegrityReviewTests.test_f3_changed_pointer_alias_rejected) ... ok
+test_f3_component_membership_rejected (test_roundtrip_review_fixes.AdversarialLineageIntegrityReviewTests.test_f3_component_membership_rejected) ... ok
+test_f3_duplicate_relationship_rejected (test_roundtrip_review_fixes.AdversarialLineageIntegrityReviewTests.test_f3_duplicate_relationship_rejected) ... ok
+test_f3_existing_but_wrong_source_identity_rejected (test_roundtrip_review_fixes.AdversarialLineageIntegrityReviewTests.test_f3_existing_but_wrong_source_identity_rejected) ... ok
+test_f3_fabricated_auxiliary_ownership_source_rejected (test_roundtrip_review_fixes.AdversarialLineageIntegrityReviewTests.test_f3_fabricated_auxiliary_ownership_source_rejected) ... ok
+test_f3_fabricated_relationship_target_rejected (test_roundtrip_review_fixes.AdversarialLineageIntegrityReviewTests.test_f3_fabricated_relationship_target_rejected) ... ok
+test_f3_fabricated_source_edge_identity_rejected (test_roundtrip_review_fixes.AdversarialLineageIntegrityReviewTests.test_f3_fabricated_source_edge_identity_rejected) ... ok
+test_f3_fabricated_transformation_target_rejected (test_roundtrip_review_fixes.AdversarialLineageIntegrityReviewTests.test_f3_fabricated_transformation_target_rejected) ... ok
+test_f3_inconsistent_auxiliary_link_rejected (test_roundtrip_review_fixes.AdversarialLineageIntegrityReviewTests.test_f3_inconsistent_auxiliary_link_rejected) ... ok
+test_f3_index_link_rejected (test_roundtrip_review_fixes.AdversarialLineageIntegrityReviewTests.test_f3_index_link_rejected) ... ok
+test_f3_invalid_element_pointer_rejected (test_roundtrip_review_fixes.AdversarialLineageIntegrityReviewTests.test_f3_invalid_element_pointer_rejected) ... ok
+test_f3_invalid_physical_mass_authority_rejected (test_roundtrip_review_fixes.AdversarialLineageIntegrityReviewTests.test_f3_invalid_physical_mass_authority_rejected) ... ok
+test_f3_missing_auxiliary_record_rejected (test_roundtrip_review_fixes.AdversarialLineageIntegrityReviewTests.test_f3_missing_auxiliary_record_rejected) ... ok
+test_f3_missing_relationship_rejected (test_roundtrip_review_fixes.AdversarialLineageIntegrityReviewTests.test_f3_missing_relationship_rejected) ... ok
+test_f3_python_source_identity_binding_rejected (test_roundtrip_review_fixes.AdversarialLineageIntegrityReviewTests.test_f3_python_source_identity_binding_rejected) ... ok
+test_f3_unmapped_original_node_rejected (test_roundtrip_review_fixes.AdversarialLineageIntegrityReviewTests.test_f3_unmapped_original_node_rejected) ... ok
+test_valid_foundation_ledger_still_accepted (test_roundtrip_review_fixes.AdversarialLineageIntegrityReviewTests.test_valid_foundation_ledger_still_accepted) ... ok
+test_f1_mixed_verified_unmatched_incident_preserves_only_candidate (test_roundtrip_review_fixes.FinalNodeIncidentEdgeReviewTests.test_f1_mixed_verified_unmatched_incident_preserves_only_candidate) ... ok
+test_f1_reviewer_counterexample_forged_exact_rejected (test_roundtrip_review_fixes.FinalNodeIncidentEdgeReviewTests.test_f1_reviewer_counterexample_forged_exact_rejected) ... ok
+test_control_count_nonzero_but_no_physical_aux_refused (test_roundtrip_review_fixes.FullAuxiliaryPointerReviewTests.test_control_count_nonzero_but_no_physical_aux_refused) ... ok
+test_negative_and_fractional_pointers_refused (test_roundtrip_review_fixes.FullAuxiliaryPointerReviewTests.test_negative_and_fractional_pointers_refused) ... ok
+test_nonzero_valid_pointer_with_matching_real_aux_count_for_each_new_slot (test_roundtrip_review_fixes.FullAuxiliaryPointerReviewTests.test_nonzero_valid_pointer_with_matching_real_aux_count_for_each_new_slot) ... ok
+test_out_of_range_pointer_refused_in_every_legacy_slot (test_roundtrip_review_fixes.FullAuxiliaryPointerReviewTests.test_out_of_range_pointer_refused_in_every_legacy_slot) ... ok
+test_out_of_range_pointer_refused_in_every_new_slot (test_roundtrip_review_fixes.FullAuxiliaryPointerReviewTests.test_out_of_range_pointer_refused_in_every_new_slot) ... ok
+test_valid_six_old_and_nine_new_zero_or_in_range (test_roundtrip_review_fixes.FullAuxiliaryPointerReviewTests.test_valid_six_old_and_nine_new_zero_or_in_range) ... ok
+test_wrong_aux_width_refused_even_if_control_is_zero (test_roundtrip_review_fixes.FullAuxiliaryPointerReviewTests.test_wrong_aux_width_refused_even_if_control_is_zero) ... ok
 
 ----------------------------------------------------------------------
-Ran 56 tests in 17.414s
+Ran 84 tests in 11.362s
 
 OK
-{"status": "PASS_EXACT_REPLAY", "reportDir": "/tmp/private-owner-intake-test-dnr53eww/private-reports", "privateLineageWritten": true}
-{"status": "HOLD_STALE_SOURCE", "reportDir": "/tmp/private-owner-intake-test-dnr53eww/private-reports", "privateLineageWritten": false}
+{"status": "PASS_EXACT_REPLAY", "reportDir": "/tmp/private-owner-intake-test-v8pd1usu/private-reports", "privateLineageWritten": true}
+{"status": "HOLD_STALE_SOURCE", "reportDir": "/tmp/private-owner-intake-test-v8pd1usu/private-reports", "privateLineageWritten": false}
 
 \`\`\`
 
