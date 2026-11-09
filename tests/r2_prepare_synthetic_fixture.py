@@ -4,9 +4,11 @@ Never treat generated outputs as independently retained historical Owner CII.
 from __future__ import annotations
 import argparse
 from pathlib import Path
-from roundtrip_foundation.snapshot_replay import capture_snapshot, run_existing_converter
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from roundtrip_foundation.snapshot_replay import capture_snapshot, run_existing_converter
 FIXTURE = ROOT / "roundtrip_foundation/fixtures/multi-stage-synthetic.xml"
 OPTIONS = {"coordsMode":"first", "weightScale":"10",
            "splitCondensedValveFlange":True,
