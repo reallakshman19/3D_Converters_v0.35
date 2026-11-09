@@ -326,9 +326,10 @@ test('R2 non-target RIGID +0.000001 CII weight mutation refuses despite prior 0.
   assert.equal(parseFinalCiiRigidInventory(mutated).declared.rigids,
     parseFinalCiiRigidInventory(revisedCii).declared.rigids,
     'mutation preserves structural CII');
+  const originalSha256=await ciiSha256(originalCii);
   await assert.rejects(()=>verifySourceEditedCii({
     originalCiiText:originalCii,revisedCiiText:mutated,
-    originalSha256:await ciiSha256(originalCii),
+    originalSha256,
     approved:{...approved,newValue:2.984},
   }),/HOLD_CII_ENGINEERING_DIFF: Unapproved unchanged RIGID weight token changed/);
 });
