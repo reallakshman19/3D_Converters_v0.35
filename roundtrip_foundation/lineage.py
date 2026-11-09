@@ -301,12 +301,25 @@ def build_lineage_ledger(*, conversion_snapshot, engine_input_xml: bytes,
                       if all(abs(v - element[col]) <= 0.001 for v, col in
                              zip(coords, ("dx", "dy", "dz")))]
         element["sourceOwnerCandidates"] = [
-            {"branch": edge.branch_name, "from": str(edge.from_node.node_number),
-             "to": str(edge.to_node.node_number)} for edge, _ in candidates]
+            {
+                "branch": edge.branch_name,
+                "from": str(edge.from_node.node_number),
+                "to": str(edge.to_node.node_number),
+                "fromComponentCandidates": sorted({p["componentRefNo"] for p in
+                    processed_by_key.get((edge.branch_name, str(edge.from_node.node_number),
+                                          tuple(edge.from_node.position)), [])
+                    if p["componentRefNo"]}),
+                "toComponentCandidates": sorted({p["componentRefNo"] for p in
+                    processed_by_key.get((edge.branch_name, str(edge.to_node.node_number),
+                                          tuple(edge.to_node.position)), [])
+                    if p["componentRefNo"]}),
+            } for edge, _ in candidates]
         if len(candidates) > 1:
             element["lineageStatus"] = "AMBIGUOUS"
+            element["lineageReason"] = "Multiple same-branch edges match FROM/TO and emitted geometry"
         elif not candidates:
             element["lineageStatus"] = "UNMATCHED"
+            element["lineageReason"] = "No verified Python edge matches branch, FROM/TO and emitted geometry"
         else:
             edge, xyz = candidates[0]
             endpoints = []
@@ -350,6 +363,10 @@ def build_lineage_ledger(*, conversion_snapshot, engine_input_xml: bytes,
                 }
             else:
                 element["lineageStatus"] = "AMBIGUOUS" if any(len(ids) > 1 for _, ids in endpoints) else "UNMATCHED"
+                element["lineageReason"] = (
+                    "Multiple post-Python source nodes share endpoint identity" if
+                    element["lineageStatus"] == "AMBIGUOUS" else
+                    "No unique original source identity through frozen Python preprocessing")
         status_counters[element["lineageStatus"]] += 1
         for number in (element["fromNode"], element["toNode"]):
             nodekey = (element["branchName"], number)
@@ -485,7 +502,8 @@ def build_lineage_ledger(*, conversion_snapshot, engine_input_xml: bytes,
         "events": dict(Counter(e["stage"] for e in transformations)),
     }
     unresolved = [
-        {"level": "ELEMENT", "id": e["elementIndex"], "status": e["lineageStatus"]}
+        {"level": "ELEMENT", "id": e["elementIndex"], "status": e["lineageStatus"],
+         "reason": e.get("lineageReason", "Identity unqualified")}
         for e in elements if e["lineageStatus"] not in ("EXACT_UNIQUE", "TRANSFORMED_WITH_LINEAGE")
     ] + [
         {"level": "RIGID", "id": a["recordPointer"], "status": a["ownershipStatus"],
