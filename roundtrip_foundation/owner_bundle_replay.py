@@ -188,10 +188,14 @@ def main():
         return 2
     report, ledger = run_owner_bundle(bundle)
     reports.mkdir(parents=True, exist_ok=True)
+    # Never leave a previously verified lineage file beside a new HOLD report:
+    # it could otherwise be mistaken for this failed run's owner mapping.
+    current_ledger_path = reports / "owner-private-lineage.json"
+    current_ledger_path.unlink(missing_ok=True)
     (reports / "owner-independent-replay.json").write_text(
         json.dumps(report, sort_keys=True, indent=2) + "\n", encoding="utf-8")
     if ledger is not None:
-        (reports / "owner-private-lineage.json").write_text(
+        current_ledger_path.write_text(
             json.dumps(ledger, sort_keys=True, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"status": report["status"], "reportDir": str(reports),
                       "privateLineageWritten": ledger is not None}))
