@@ -14,7 +14,7 @@ on:
       - '.github/workflows/xml-cii2019-roundtrip-foundation-r1.yml'
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
 jobs:
   replay-lineage:
     name: Native converter replay and read-only lineage
@@ -47,3 +47,13 @@ jobs:
             roundtrip-evidence/
             ${{ runner.temp }}/roundtrip-unittests.txt
           if-no-files-found: warn
+      - name: Commit synthetic-only evidence after verified push CI
+        if: github.event_name == 'push'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add roundtrip-evidence/architecture-audit.md roundtrip-evidence/conversion-stage-map.json roundtrip-evidence/snapshot-manifest.json roundtrip-evidence/no-edit-replay-report.json roundtrip-evidence/source-cii-lineage.json roundtrip-evidence/lineage-coverage-report.json roundtrip-evidence/test-results.md
+          if ! git diff --cached --quiet; then
+            git commit -m "test(roundtrip): retain synthetic exact replay and lineage evidence after CI PASS"
+            git push origin "HEAD:${{ github.ref_name }}"
+          fi
