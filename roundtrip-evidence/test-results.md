@@ -72,6 +72,7 @@ test_staged_flag_without_staged_bytes_refuses (test_roundtrip_owner_bundle.Owner
 test_f3_changed_element_count_rejected (test_roundtrip_review_fixes.AdversarialLineageIntegrityReviewTests.test_f3_changed_element_count_rejected) ... ok
 test_f3_changed_final_node_count_rejected (test_roundtrip_review_fixes.AdversarialLineageIntegrityReviewTests.test_f3_changed_final_node_count_rejected) ... ok
 test_f3_changed_pointer_alias_rejected (test_roundtrip_review_fixes.AdversarialLineageIntegrityReviewTests.test_f3_changed_pointer_alias_rejected) ... ok
+test_f3_changed_rigid_component_ref_candidate_rejected (test_roundtrip_review_fixes.AdversarialLineageIntegrityReviewTests.test_f3_changed_rigid_component_ref_candidate_rejected) ... ok
 test_f3_component_membership_rejected (test_roundtrip_review_fixes.AdversarialLineageIntegrityReviewTests.test_f3_component_membership_rejected) ... ok
 test_f3_duplicate_relationship_rejected (test_roundtrip_review_fixes.AdversarialLineageIntegrityReviewTests.test_f3_duplicate_relationship_rejected) ... ok
 test_f3_existing_but_wrong_source_identity_rejected (test_roundtrip_review_fixes.AdversarialLineageIntegrityReviewTests.test_f3_existing_but_wrong_source_identity_rejected) ... ok
@@ -79,6 +80,8 @@ test_f3_fabricated_auxiliary_ownership_source_rejected (test_roundtrip_review_fi
 test_f3_fabricated_relationship_target_rejected (test_roundtrip_review_fixes.AdversarialLineageIntegrityReviewTests.test_f3_fabricated_relationship_target_rejected) ... ok
 test_f3_fabricated_source_edge_identity_rejected (test_roundtrip_review_fixes.AdversarialLineageIntegrityReviewTests.test_f3_fabricated_source_edge_identity_rejected) ... ok
 test_f3_fabricated_transformation_target_rejected (test_roundtrip_review_fixes.AdversarialLineageIntegrityReviewTests.test_f3_fabricated_transformation_target_rejected) ... ok
+test_f3_forged_final_node_transformation_status_rejected (test_roundtrip_review_fixes.AdversarialLineageIntegrityReviewTests.test_f3_forged_final_node_transformation_status_rejected) ... ok
+test_f3_forged_python_node_digest_rejected (test_roundtrip_review_fixes.AdversarialLineageIntegrityReviewTests.test_f3_forged_python_node_digest_rejected) ... ok
 test_f3_inconsistent_auxiliary_link_rejected (test_roundtrip_review_fixes.AdversarialLineageIntegrityReviewTests.test_f3_inconsistent_auxiliary_link_rejected) ... ok
 test_f3_index_link_rejected (test_roundtrip_review_fixes.AdversarialLineageIntegrityReviewTests.test_f3_index_link_rejected) ... ok
 test_f3_invalid_element_pointer_rejected (test_roundtrip_review_fixes.AdversarialLineageIntegrityReviewTests.test_f3_invalid_element_pointer_rejected) ... ok
@@ -90,6 +93,7 @@ test_f3_unmapped_original_node_rejected (test_roundtrip_review_fixes.Adversarial
 test_valid_foundation_ledger_still_accepted (test_roundtrip_review_fixes.AdversarialLineageIntegrityReviewTests.test_valid_foundation_ledger_still_accepted) ... ok
 test_f1_mixed_verified_unmatched_incident_preserves_only_candidate (test_roundtrip_review_fixes.FinalNodeIncidentEdgeReviewTests.test_f1_mixed_verified_unmatched_incident_preserves_only_candidate) ... ok
 test_f1_reviewer_counterexample_forged_exact_rejected (test_roundtrip_review_fixes.FinalNodeIncidentEdgeReviewTests.test_f1_reviewer_counterexample_forged_exact_rejected) ... ok
+test_f1_self_connecting_element_has_two_distinct_source_sides (test_roundtrip_review_fixes.FinalNodeIncidentEdgeReviewTests.test_f1_self_connecting_element_has_two_distinct_source_sides) ... ok
 test_control_count_nonzero_but_no_physical_aux_refused (test_roundtrip_review_fixes.FullAuxiliaryPointerReviewTests.test_control_count_nonzero_but_no_physical_aux_refused) ... ok
 test_negative_and_fractional_pointers_refused (test_roundtrip_review_fixes.FullAuxiliaryPointerReviewTests.test_negative_and_fractional_pointers_refused) ... ok
 test_nonzero_valid_pointer_with_matching_real_aux_count_for_each_new_slot (test_roundtrip_review_fixes.FullAuxiliaryPointerReviewTests.test_nonzero_valid_pointer_with_matching_real_aux_count_for_each_new_slot) ... ok
@@ -99,11 +103,11 @@ test_valid_six_old_and_nine_new_zero_or_in_range (test_roundtrip_review_fixes.Fu
 test_wrong_aux_width_refused_even_if_control_is_zero (test_roundtrip_review_fixes.FullAuxiliaryPointerReviewTests.test_wrong_aux_width_refused_even_if_control_is_zero) ... ok
 
 ----------------------------------------------------------------------
-Ran 84 tests in 11.362s
+Ran 88 tests in 17.905s
 
 OK
-{"status": "PASS_EXACT_REPLAY", "reportDir": "/tmp/private-owner-intake-test-v8pd1usu/private-reports", "privateLineageWritten": true}
-{"status": "HOLD_STALE_SOURCE", "reportDir": "/tmp/private-owner-intake-test-v8pd1usu/private-reports", "privateLineageWritten": false}
+{"status": "PASS_EXACT_REPLAY", "reportDir": "/tmp/private-owner-intake-test-xcaet7bm/private-reports", "privateLineageWritten": true}
+{"status": "HOLD_STALE_SOURCE", "reportDir": "/tmp/private-owner-intake-test-xcaet7bm/private-reports", "privateLineageWritten": false}
 
 \`\`\`
 
