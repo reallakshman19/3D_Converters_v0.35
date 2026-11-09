@@ -6,9 +6,11 @@ from pathlib import Path
 import platform
 import tempfile
 import unittest
+import sys
+from unittest.mock import patch
 
 from roundtrip_foundation.owner_bundle_replay import (SCHEMA, inspect_bundle,
-                                                     run_owner_bundle)
+                                                     run_owner_bundle, main)
 from roundtrip_foundation.snapshot_replay import (Hold, ENTRYPOINT, capture_snapshot,
                                                   converter_code_identity, digest,
                                                   run_existing_converter)
@@ -181,6 +183,23 @@ class OwnerBundleIntakeTests(unittest.TestCase):
         self.manifest["artifacts"]["effectiveConfigJson"]["path"] = "../not-private.json"
         self.save_manifest()
         self.assert_hold("HOLD_MISSING_INPUT")
+
+
+    def test_failed_second_replay_removes_stale_private_lineage(self):
+        reports = self.root / "private-reports"
+        argv = ["owner_bundle_replay", "--bundle-dir", str(self.root),
+                "--report-dir", str(reports)]
+        with patch.object(sys, "argv", argv):
+            self.assertEqual(main(), 0)
+        self.assertTrue((reports / "owner-private-lineage.json").exists())
+        p = self.root / "engine-input.xml"
+        p.write_bytes(p.read_bytes().replace(b"<Weight>15</Weight>",
+                                            b"<Weight>16</Weight>"))
+        with patch.object(sys, "argv", argv):
+            self.assertEqual(main(), 3)
+        self.assertFalse((reports / "owner-private-lineage.json").exists())
+        report = json.loads((reports / "owner-independent-replay.json").read_text())
+        self.assertEqual(report["status"], "HOLD_STALE_SOURCE")
 
     def test_attestation_missing_refuses(self):
         self.manifest["attestation"]["upstreamMastersComplete"] = False
