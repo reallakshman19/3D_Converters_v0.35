@@ -17,7 +17,8 @@ const weightNumeric = (raw) => {
   const n = Number(raw);
   return Number.isFinite(n) && n >= 0 ? n : null;
 };
-const keyOf = (e) => [e.branchName, e.fromNode, e.toNode, Number(e.lengthMm).toFixed(6)].join('|');
+const keyOf = (e) => [e.branchName, e.fromNode, e.toNode,
+  Number(e.lengthMm).toFixed(6), String(e.outsideDiameterMm)].join('|');
 
 export async function deriveSourceWeightEligibility({ result, inventory }) {
   const evidence = result?.finalRigidReviewEvidence;
