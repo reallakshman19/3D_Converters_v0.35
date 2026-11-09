@@ -57,8 +57,18 @@ export async function deriveSourceWeightEligibility({ result, inventory }) {
       all.push(s); byComponent.set(s.componentRefNo, all);
     }
   }
-  const byPointer = new Map();
-  for (const row of rows) byPointer.set(row.rigidPointer, row);
+  // One pass over the frozen XML's direct adjacency, then O(1) lookups for
+  // any number of RIGIDs. This cannot accidentally match across branches.
+  const directEdges = new Map();
+  for (const [branchOrdinal, arr] of byBranch) {
+    for (let i=1;i<arr.length;i++) {
+      const a=arr[i-1], b=arr[i];
+      const key=[a.branchName,a.nodeNumber,b.nodeNumber].join('|');
+      const matches=directEdges.get(key)||[];
+      matches.push({a,b,branchOrdinal});
+      directEdges.set(key,matches);
+    }
+  }
   const candidates = [];
   for (const row of rows) {
     if (row.linkedElements.length !== 1) {
@@ -67,15 +77,7 @@ export async function deriveSourceWeightEligibility({ result, inventory }) {
     const edge = row.linkedElements[0];
     // This bounded adapter accepts only the unchanged two-node edge in the
     // current EnrichedXML, not negative-node renumbering or cleanup collapses.
-    const pairs = [];
-    for (const [branchOrdinal, arr] of byBranch) {
-      for (let i=1;i<arr.length;i++) {
-        const a=arr[i-1], b=arr[i];
-        if (eq(a.branchName,edge.branchName) && eq(b.branchName,edge.branchName) &&
-          eq(a.nodeNumber,edge.fromNode) && eq(b.nodeNumber,edge.toNode))
-          pairs.push({ a,b,branchOrdinal });
-      }
-    }
+    const pairs=directEdges.get([edge.branchName,edge.fromNode,edge.toNode].join('|'))||[];
     if (!noDup(pairs)) {
       candidates.push(hold('No uniquely verified direct original source edge (split/renumber/collapse or ambiguity).',
         row.rigidPointer)); continue;
