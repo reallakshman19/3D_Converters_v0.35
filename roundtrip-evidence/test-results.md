@@ -51,6 +51,8 @@ test_synthetic_433_144_real_converter_scale_no_authentic_claim (test_roundtrip_f
 test_unqualified_external_master_refuses (test_roundtrip_foundation.SnapshotReplayTests.test_unqualified_external_master_refuses) ... ok
 test_wrong_weight_scale_or_split_setting_refuses (test_roundtrip_foundation.SnapshotReplayTests.test_wrong_weight_scale_or_split_setting_refuses) ... ok
 test_attestation_missing_refuses (test_roundtrip_owner_bundle.OwnerBundleIntakeTests.test_attestation_missing_refuses) ... ok
+test_changed_effective_config_is_configuration_mismatch (test_roundtrip_owner_bundle.OwnerBundleIntakeTests.test_changed_effective_config_is_configuration_mismatch) ... ok
+test_changed_master_bytes_is_configuration_mismatch (test_roundtrip_owner_bundle.OwnerBundleIntakeTests.test_changed_master_bytes_is_configuration_mismatch) ... ok
 test_converter_identity_change_refuses (test_roundtrip_owner_bundle.OwnerBundleIntakeTests.test_converter_identity_change_refuses) ... ok
 test_edited_engine_xml_refuses_stale (test_roundtrip_owner_bundle.OwnerBundleIntakeTests.test_edited_engine_xml_refuses_stale) ... ok
 test_historic_cii_snapshot_does_not_match_current_converter (test_roundtrip_owner_bundle.OwnerBundleIntakeTests.test_historic_cii_snapshot_does_not_match_current_converter) ... ok
@@ -63,7 +65,7 @@ test_private_frozen_existing_cii_replay_real_converter (test_roundtrip_owner_bun
 test_staged_flag_without_staged_bytes_refuses (test_roundtrip_owner_bundle.OwnerBundleIntakeTests.test_staged_flag_without_staged_bytes_refuses) ... ok
 
 ----------------------------------------------------------------------
-Ran 48 tests in 5.644s
+Ran 50 tests in 6.959s
 
 OK
 

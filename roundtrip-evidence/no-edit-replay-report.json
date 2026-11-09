@@ -25,7 +25,7 @@
     ],
     "entrypoint": "xml_to_cii2019_runtime_custody.py",
     "stderr": "",
-    "stdout": "Wrote /tmp/xml-cii-noedit-s70cgszl/regenerated.cii with 11 elements and 0 restraints. runtime_custody=1; bend_radius_1_5d=False; use_restraint_type_based_on_json=True; split_condensed_valve_flange=True\n"
+    "stdout": "Wrote /tmp/xml-cii-noedit-cngnsxqk/regenerated.cii with 11 elements and 0 restraints. runtime_custody=1; bend_radius_1_5d=False; use_restraint_type_based_on_json=True; split_condensed_valve_flange=True\n"
   },
   "converterRun": {
     "actualArguments": [
@@ -44,7 +44,7 @@
     ],
     "entrypoint": "xml_to_cii2019_runtime_custody.py",
     "stderr": "",
-    "stdout": "Wrote /tmp/xml-cii-noedit-3lgon4cc/regenerated.cii with 11 elements and 0 restraints. runtime_custody=1; bend_radius_1_5d=False; use_restraint_type_based_on_json=True; split_condensed_valve_flange=True\n"
+    "stdout": "Wrote /tmp/xml-cii-noedit-qoku93xn/regenerated.cii with 11 elements and 0 restraints. runtime_custody=1; bend_radius_1_5d=False; use_restraint_type_based_on_json=True; split_condensed_valve_flange=True\n"
   },
   "evidenceClass": "GENERATED_SYNTHETIC_BASELINE_REAL_PYTHON",
   "originalCiiSha256": "de2308bf6b473c305203a65cbfd8d0ea8b2fc1113fea0d17291fa148be400f57",
