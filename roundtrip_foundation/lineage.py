@@ -28,7 +28,8 @@ from xml_to_cii2019_bend_radius_policy import apply_bend_radius_policy
 
 CLASSIFICATIONS = ("EXACT_UNIQUE", "TRANSFORMED_WITH_LINEAGE",
                    "AMBIGUOUS", "UNMATCHED", "CONFLICT")
-AUX_LAYOUT = ("BEND", "RIGID", "RESTRANT", "SIF&TEES", "REDUCERS", "NODENAME")
+from .full_pointer_validation import POINTER_FIELDS, validate_all_element_pointers
+AUX_LAYOUT = tuple(POINTER_FIELDS)
 
 def local(tag: str) -> str:
     return tag.split("}", 1)[-1].split(":")[-1]
@@ -244,6 +245,7 @@ def parse_elements_and_auxiliaries(cii_bytes):
     structural = validate_serialized_cii(cii_bytes)
     cii = cii_bytes.decode("utf-8")
     parsed = parse_cii2019(cii)
+    full = validate_all_element_pointers(cii_bytes)
     sections = parse_section_map(cii)
     blocks = [line for line in sections["ELEMENTS"] if line.strip()]
     require(len(blocks) == len(parsed["elements"]) * 15,
@@ -270,8 +272,8 @@ def parse_elements_and_auxiliaries(cii_bytes):
             "dx": dx, "dy": dy, "dz": dz,
             "lengthMm": math.sqrt(dx*dx + dy*dy + dz*dz),
             "outsideDiameterMm": outside_dia, "branchName": branch_name,
-            "pointers": record["pointers"],
-            "rigidPointer": record["pointers"]["RIGID"],
+            "pointers": full["elementPointers"][pos],
+            "rigidPointer": full["elementPointers"][pos]["RIGID"],
             "sourceEdgeIdentity": None, "sourceOwnerCandidates": [],
             "lineageStatus": "UNMATCHED",
         })
@@ -301,6 +303,46 @@ def parse_elements_and_auxiliaries(cii_bytes):
                 "unreferenced": not references, "shared": len(references) > 1,
             })
     return elements, auxiliary
+
+def reconcile_final_node_identities(elements, final_nodes, transformed_sources):
+    """F1: node proof requires consensus of *every* incident ELEMENT.
+
+    Retain verified candidates even if an unresolved incident association
+    prevents a complete EXACT_UNIQUE classification. No mass qualification.
+    """
+    by_index = {e["elementIndex"]: e for e in elements}
+    candidates = defaultdict(set)
+    unverified = defaultdict(set)
+    for e in elements:
+        for side, index in (("fromNode", 0), ("toNode", 1)):
+            key = (e["branchName"], e[side])
+            edge_ids = e.get("sourceEdgeIdentity")
+            if (e.get("lineageStatus") in ("EXACT_UNIQUE", "TRANSFORMED_WITH_LINEAGE")
+                    and isinstance(edge_ids, (list, tuple)) and len(edge_ids) == 2
+                    and isinstance(edge_ids[index], str)):
+                candidates[key].add(edge_ids[index])
+            else:
+                unverified[key].add(e["elementIndex"])
+    for key, node in final_nodes.items():
+        known = sorted(candidates[key])
+        unresolved = sorted(unverified[key])
+        node["sourceNodeCandidates"] = known
+        node["unverifiedIncidentElements"] = unresolved
+        node["sourceNodeIdentity"] = None
+        node["lineageStatus"] = "UNMATCHED"
+        node["transformation"] = "UNRESOLVED"
+        # Never qualify a node simply because one of multiple incident edges
+        # happens to resolve; the other edges can carry conflicting history.
+        if len(known) > 1:
+            node["lineageStatus"] = "AMBIGUOUS"
+        elif len(known) == 1 and not unresolved:
+            sid = known[0]
+            node["sourceNodeIdentity"] = sid
+            node["lineageStatus"] = ("TRANSFORMED_WITH_LINEAGE"
+                                     if sid in transformed_sources else "EXACT_UNIQUE")
+            node["transformation"] = ("PYTHON_RENUMBER" if sid in transformed_sources
+                                       else "NONE")
+    return final_nodes
 
 def build_lineage_ledger(*, conversion_snapshot, engine_input_xml: bytes,
                          original_cii: bytes, effective_config_json: bytes,
@@ -462,22 +504,7 @@ def build_lineage_ledger(*, conversion_snapshot, engine_input_xml: bytes,
                     "connectedElements": [],
                 }
             final_nodes[nodekey]["connectedElements"].append(element["elementIndex"])
-    # Associate final node ONLY when all incident edges give an identical
-    # verified source identity; otherwise record ambiguity/UNMATCHED.
-    node_to_source = defaultdict(set)
-    for e in elements:
-        if e["sourceEdgeIdentity"]:
-            node_to_source[(e["branchName"], e["fromNode"])].add(e["sourceEdgeIdentity"][0])
-            node_to_source[(e["branchName"], e["toNode"])].add(e["sourceEdgeIdentity"][1])
-    for nodekey, n in final_nodes.items():
-        candidates = node_to_source.get(nodekey, set())
-        if len(candidates) == 1:
-            sid = next(iter(candidates))
-            n["sourceNodeIdentity"] = sid
-            n["lineageStatus"] = ("TRANSFORMED_WITH_LINEAGE" if sid in transformation_nodes else "EXACT_UNIQUE")
-            n["transformation"] = "PYTHON_RENUMBER" if sid in transformation_nodes else "NONE"
-        elif len(candidates) > 1:
-            n["lineageStatus"] = "AMBIGUOUS"
+    reconcile_final_node_identities(elements, final_nodes, transformation_nodes)
 
     elem_lookup = {e["elementIndex"]: e for e in elements}
     rigid_ownership = Counter()
