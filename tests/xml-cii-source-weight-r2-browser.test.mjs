@@ -92,17 +92,18 @@ try{
     assert.equal(output.audit.ciiEngineeringDiff.unexpectedDifferences,0);
     assert.equal(output.audit.unrelatedXmlBytesChanged,0);
 
-    // The actual fullscreen popup's source mode retains the existing direct-CII UI
-    // and only unlocks revised downloads after its own native browser parity.
+    // Test through the ACTUAL production Final Weight Review popup, not an
+    // isolated source-mode component. Existing direct-CII tools stay visible.
     await page.evaluate(async()=>{
-      const mod=await import('/tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-source-weight-review.js');
-      const inv=await import('/tabs/xml-cii-2019-standalone/xml-cii-final-rigid-inventory.js');
-      window.__r2.ui=mod.installSourceBackedWeightReview({
-        overlay:document.querySelector('#test-overlay'),result:window.__r2.result,
-        inventory:inv.parseFinalCiiRigidInventory(window.__r2.cii),
-        getCurrentResult:()=>window.__r2.result,
-      });
+      const mod=await import('/tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-final-rigid-review.js');
+      const opened=mod.openFinalRigidWeightReview(window.__r2.result,
+        {getCurrentResult:()=>window.__r2.result});
+      if(!opened)throw Error('Actual Final Weight Review modal did not open');
     });
+    assert.equal(await page.locator('[data-final-rigid-preview]').count(),1);
+    assert.equal(await page.locator('[data-final-rigid-apply]').count(),1);
+    assert.equal(await page.locator('[data-final-rigid-row]').count(),6);
+    assert.equal(await page.locator('[data-source-weight-inspect]').count(),6);
     await page.locator('[data-source-weight-open]').click();
     await page.waitForFunction(()=>document.querySelector('[data-source-weight-status]')?.textContent.includes('PASS:'),
       null,{timeout:180000});
