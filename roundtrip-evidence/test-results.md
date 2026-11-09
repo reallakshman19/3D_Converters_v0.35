@@ -50,9 +50,20 @@ test_snapshot_invocation_is_exact_no_implicit_flags (test_roundtrip_foundation.S
 test_synthetic_433_144_real_converter_scale_no_authentic_claim (test_roundtrip_foundation.SnapshotReplayTests.test_synthetic_433_144_real_converter_scale_no_authentic_claim) ... ok
 test_unqualified_external_master_refuses (test_roundtrip_foundation.SnapshotReplayTests.test_unqualified_external_master_refuses) ... ok
 test_wrong_weight_scale_or_split_setting_refuses (test_roundtrip_foundation.SnapshotReplayTests.test_wrong_weight_scale_or_split_setting_refuses) ... ok
+test_attestation_missing_refuses (test_roundtrip_owner_bundle.OwnerBundleIntakeTests.test_attestation_missing_refuses) ... ok
+test_converter_identity_change_refuses (test_roundtrip_owner_bundle.OwnerBundleIntakeTests.test_converter_identity_change_refuses) ... ok
+test_edited_engine_xml_refuses_stale (test_roundtrip_owner_bundle.OwnerBundleIntakeTests.test_edited_engine_xml_refuses_stale) ... ok
+test_historic_cii_snapshot_does_not_match_current_converter (test_roundtrip_owner_bundle.OwnerBundleIntakeTests.test_historic_cii_snapshot_does_not_match_current_converter) ... ok
+test_historical_sheet_is_preserved_not_silently_changed (test_roundtrip_owner_bundle.OwnerBundleIntakeTests.test_historical_sheet_is_preserved_not_silently_changed) ... ok
+test_missing_archived_original_cii_refuses (test_roundtrip_owner_bundle.OwnerBundleIntakeTests.test_missing_archived_original_cii_refuses) ... ok
+test_missing_master_files_or_roles_refuse (test_roundtrip_owner_bundle.OwnerBundleIntakeTests.test_missing_master_files_or_roles_refuse) ... ok
+test_modified_original_cii_refuses (test_roundtrip_owner_bundle.OwnerBundleIntakeTests.test_modified_original_cii_refuses) ... ok
+test_outside_bundle_symlink_or_parent_path_refuses (test_roundtrip_owner_bundle.OwnerBundleIntakeTests.test_outside_bundle_symlink_or_parent_path_refuses) ... ok
+test_private_frozen_existing_cii_replay_real_converter (test_roundtrip_owner_bundle.OwnerBundleIntakeTests.test_private_frozen_existing_cii_replay_real_converter) ... ok
+test_staged_flag_without_staged_bytes_refuses (test_roundtrip_owner_bundle.OwnerBundleIntakeTests.test_staged_flag_without_staged_bytes_refuses) ... ok
 
 ----------------------------------------------------------------------
-Ran 37 tests in 5.693s
+Ran 48 tests in 5.232s
 
 OK
 
