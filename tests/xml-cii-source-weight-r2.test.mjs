@@ -191,7 +191,7 @@ test('R2 XML patch preserves original bytes, rejects duplicate field, invalid/ne
   const missing=originalXml.replace('<Weight>6</Weight>','');
   const missingSha256=await ciiSha256(missing);
   await assert.rejects(()=>applyXmlSourceEdits({originalXml:missing,
-    originalSha256:missingSha256,edits:[edit]}),/missing/);
+    originalSha256:missingSha256,edits:[edit]}),/Weight/);
 });
 test('R2 other property descriptors can reuse byte patch core but production whitelist remains Weight only',async()=>{
   const row=inspectXmlWeightSources(originalXml).find(x=>x.componentRefNo==='/RIGID-40');
