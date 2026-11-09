@@ -1,0 +1,40 @@
+name: XML-CII2019 R2 Source-backed Browser Weight Edit
+on:
+  push:
+    branches:
+      - 'feature/xml-cii2019-enrichedxml-edit-reextract-r2-*'
+  pull_request:
+    paths:
+      - 'tabs/xml-cii-2019-standalone/**'
+      - 'tests/xml-cii-source-weight-r2.test.mjs'
+      - 'tests/r2_prepare_synthetic_fixture.py'
+      - '.github/workflows/xml-cii2019-source-weight-r2.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-weight-r2:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Generate CURRENT-WRITER synthetic XML and CII pairs
+        run: python3 tests/r2_prepare_synthetic_fixture.py --output "$RUNNER_TEMP/r2-synthetic"
+      - name: R2 executable source-backed re-extract/adversarial tests
+        env:
+          R2_SYNTHETIC_DIR: ${{ runner.temp }}/r2-synthetic
+        run: node --test tests/xml-cii-source-weight-r2.test.mjs
+      - name: Existing direct CII + source-context + UI regression
+        run: |
+          node --test tests/xml-cii-final-property-transactions.test.mjs
+          node --test tests/xml-cii-final-rigid-source-context.test.mjs
+          node --test tests/xml-cii-standalone-output-run.test.js
+          node --test tests/xml-cii-final-property-browser.test.mjs
+      - name: R1 source/custody Python regression
+        run: python3 -m unittest discover -s tests -p 'test_roundtrip*.py' -v
