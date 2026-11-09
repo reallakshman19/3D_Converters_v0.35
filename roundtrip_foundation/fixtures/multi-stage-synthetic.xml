@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipeStressExport>
+  <DateTime>02:00:00 09 November 2026</DateTime>
+  <Source>SYNTHETIC ROUNDTRIP FOUNDATION</Source>
+  <Version>1.0</Version>
+  <ProjectName>RT-FOUNDATION-SYNTH</ProjectName>
+  <RestrainOpenEnds>No</RestrainOpenEnds>
+  <Pipe>
+    <Branch>
+      <Branchname>/RT/B1</Branchname>
+      <Node><NodeNumber>10</NodeNumber><ComponentType>PIPE</ComponentType><ComponentRefNo>/PIPE-10</ComponentRefNo><Position>0 0 0</Position><OutsideDiameter>60.3</OutsideDiameter><WallThickness>3.9</WallThickness><Weight>0</Weight></Node>
+      <Node><NodeNumber>20</NodeNumber><ComponentType>RIGID</ComponentType><ComponentRefNo>/SHARED-COMP</ComponentRefNo><Position>100 0 0</Position><OutsideDiameter>60.3</OutsideDiameter><WallThickness>3.9</WallThickness><Rigid>2</Rigid><Endpoint>2</Endpoint><Weight>15</Weight></Node>
+      <Node><NodeNumber>30</NodeNumber><ComponentType>PIPE</ComponentType><ComponentRefNo>/SHARED-COMP</ComponentRefNo><Position>200 0 0</Position><OutsideDiameter>60.3</OutsideDiameter><WallThickness>3.9</WallThickness><Weight>0</Weight></Node>
+      <Node><NodeNumber>40</NodeNumber><ComponentType>RIGID</ComponentType><ComponentRefNo>/RIGID-40</ComponentRefNo><Position>300 0 0</Position><OutsideDiameter>60.3</OutsideDiameter><WallThickness>3.9</WallThickness><Rigid>2</Rigid><Endpoint>2</Endpoint><Weight>6</Weight></Node>
+      <Node><NodeNumber>50</NodeNumber><ComponentType>PIPE</ComponentType><ComponentRefNo>/PIPE-50</ComponentRefNo><Position>400 0 0</Position><OutsideDiameter>60.3</OutsideDiameter><WallThickness>3.9</WallThickness><Weight>0</Weight></Node>
+    </Branch>
+    <Branch>
+      <Branchname>/RT/B2</Branchname>
+      <Node><NodeNumber>10</NodeNumber><ComponentType>PIPE</ComponentType><ComponentRefNo>/PIPE-B2-10</ComponentRefNo><Position>0 300 0</Position><OutsideDiameter>60.3</OutsideDiameter><Weight>0</Weight></Node>
+      <Node><NodeNumber>20</NodeNumber><ComponentType>RIGID</ComponentType><ComponentRefNo>/RIGID-B2-20</ComponentRefNo><Position>100 300 0</Position><OutsideDiameter>60.3</OutsideDiameter><Rigid>2</Rigid><Endpoint>2</Endpoint><Weight>11</Weight></Node>
+      <Node><NodeNumber>30</NodeNumber><ComponentType>PIPE</ComponentType><ComponentRefNo>/PIPE-B2-30</ComponentRefNo><Position>200 300 0</Position><OutsideDiameter>60.3</OutsideDiameter><Weight>0</Weight></Node>
+    </Branch>
+    <Branch>
+      <Branchname>/RT/B3</Branchname>
+      <Node><NodeNumber>100</NodeNumber><ComponentType>PIPE</ComponentType><ComponentRefNo>/PIPE-B3-100</ComponentRefNo><Position>0 600 0</Position><OutsideDiameter>60.3</OutsideDiameter><Weight>0</Weight></Node>
+      <Node><NodeNumber>110</NodeNumber><ComponentType>RIGID</ComponentType><ComponentRefNo>/RIGID-B3-110</ComponentRefNo><Position>100 600 0</Position><OutsideDiameter>60.3</OutsideDiameter><Rigid>2</Rigid><Endpoint>2</Endpoint><Weight>5</Weight></Node>
+      <Node><NodeNumber>111</NodeNumber><ComponentType>PIPE</ComponentType><ComponentRefNo>/DROPPED-B3-111</ComponentRefNo><Position>103 600 0</Position><OutsideDiameter>60.3</OutsideDiameter><Weight>0</Weight></Node>
+      <Node><NodeNumber>120</NodeNumber><ComponentType>RIGID</ComponentType><ComponentRefNo>/RIGID-B3-120</ComponentRefNo><Position>200 600 0</Position><OutsideDiameter>60.3</OutsideDiameter><Rigid>2</Rigid><Endpoint>2</Endpoint><Weight>8</Weight></Node>
+      <Node><NodeNumber>130</NodeNumber><ComponentType>PIPE</ComponentType><ComponentRefNo>/PIPE-B3-130</ComponentRefNo><Position>300 600 0</Position><OutsideDiameter>60.3</OutsideDiameter><Weight>0</Weight></Node>
+    </Branch>
+    <Branch>
+      <Branchname>/RT/B4</Branchname>
+      <Node><NodeNumber>500</NodeNumber><ComponentType>PIPE</ComponentType><ComponentRefNo>/PIPE-B4-500</ComponentRefNo><Position>0 900 0</Position><OutsideDiameter>60.3</OutsideDiameter><Weight>0</Weight></Node>
+      <Node><NodeNumber>-1</NodeNumber><ComponentType>FLAN</ComponentType><ComponentRefNo>/FLAN-B4-NEG</ComponentRefNo><Position>50 900 0</Position><ElementLengthMm>50</ElementLengthMm><OutsideDiameter>60.3</OutsideDiameter><Rigid>2</Rigid><Endpoint>2</Endpoint><Weight>7</Weight></Node>
+      <Node><NodeNumber>520</NodeNumber><ComponentType>PIPE</ComponentType><ComponentRefNo>/PIPE-B4-520</ComponentRefNo><Position>100 900 0</Position><OutsideDiameter>60.3</OutsideDiameter><Weight>0</Weight></Node>
+    </Branch>
+  </Pipe>
+</PipeStressExport>
