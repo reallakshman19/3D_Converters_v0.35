@@ -172,6 +172,73 @@ def detect_removed_short_nodes(processed_nodes, parsed_document, source_binding)
             })
     return events, retained
 
+
+def detect_nonpositive_node_omissions(processed_nodes, parsed_document, source_binding):
+    """Observe original nonpositive nodes omitted by the active Python parser.
+
+    The real _parse_xml_document does not construct XmlNode for NodeNumber <=0.
+    We only attest an omission when BOTH emitted endpoint records can be
+    uniquely resolved to processed XML nodes, and are consecutive in the
+    *actual* returned parsed branch. This is not numeric-pattern matching.
+    Other intermediate positive nodes require separate verified drop events.
+    """
+    by_branch = defaultdict(list)
+    for row in processed_nodes:
+        by_branch[row["branchOrdinal"]].append(row)
+    events = []
+    for bi, branch in enumerate(parsed_document.branches):
+        rows = by_branch.get(bi, [])
+        if not rows or branch.branch_name != rows[0]["branchName"]:
+            continue
+        exact_signatures = defaultdict(list)
+        for row in rows:
+            if row["position"] is not None:
+                exact_signatures[(
+                    row["originalNodeNumber"], tuple(row["position"]), row["componentType"]
+                )].append(row)
+        retained = []
+        unique = True
+        for parsed in branch.nodes:
+            signature = (str(parsed.node_number), tuple(parsed.position), parsed.component_type)
+            found = exact_signatures.get(signature, [])
+            if len(found) != 1:
+                unique = False
+                break
+            retained.append(found[0])
+        if not unique or len(retained) < 2:
+            continue
+        for left, right in zip(retained, retained[1:]):
+            if left["nodeOrdinal"] >= right["nodeOrdinal"]:
+                continue
+            for candidate in rows:
+                ordinal = candidate["nodeOrdinal"]
+                if not (left["nodeOrdinal"] < ordinal < right["nodeOrdinal"]):
+                    continue
+                try:
+                    numeric = int(candidate["originalNodeNumber"])
+                except (ValueError, TypeError):
+                    continue
+                if numeric > 0:
+                    continue
+                original_id = source_binding.get(candidate["identity"])
+                events.append({
+                    "stage": "PYTHON_NONPOSITIVE_NODE_OMISSION",
+                    "status": "TRANSFORMED_WITH_LINEAGE" if original_id else "UNMATCHED",
+                    "sourceIdentity": original_id,
+                    "intermediateNodeIdentity": candidate["identity"],
+                    "nodeNumber": candidate["originalNodeNumber"],
+                    "branchName": candidate["branchName"],
+                    "branchOrdinal": bi,
+                    "reason": "Core XML parser skips nonpositive NodeNumber before edge creation",
+                    "originalAdjacency": [
+                        left["originalNodeNumber"], candidate["originalNodeNumber"],
+                        right["originalNodeNumber"]],
+                    "emittedAdjacencyAfterCollapse": [
+                        left["originalNodeNumber"], right["originalNodeNumber"]],
+                    "evidence": "Unique processed XML identity, actual parser kept endpoint adjacency",
+                })
+    return events
+
 def parse_elements_and_auxiliaries(cii_bytes):
     structural = validate_serialized_cii(cii_bytes)
     cii = cii_bytes.decode("utf-8")
@@ -273,6 +340,17 @@ def build_lineage_ledger(*, conversion_snapshot, engine_input_xml: bytes,
     deletions, retained = detect_removed_short_nodes(
         processed, parsed_document, transformed_to_source)
     transformations.extend(deletions)
+    omissions = detect_nonpositive_node_omissions(
+        processed, parsed_document, transformed_to_source)
+    transformations.extend(omissions)
+    # Require proof for every original source node lying between output edge endpoints.
+    verified_omissions = {
+        e["sourceIdentity"] for e in (*deletions, *omissions)
+        if e.get("sourceIdentity") and e["status"] == "TRANSFORMED_WITH_LINEAGE"
+    }
+    originals_by_branch = defaultdict(list)
+    for original in originals:
+        originals_by_branch[original["branchOrdinal"]].append(original)
     generated = {(e["branchName"], e["generatedNodeNumber"])
                  for e in transformations if e["stage"] == "PYTHON_NODE_RENUMBER"}
     transformation_nodes = {(e["sourceIdentity"]) for e in transformations
@@ -338,12 +416,14 @@ def build_lineage_ledger(*, conversion_snapshot, engine_input_xml: bytes,
                 z_source = source_by_id[identities[1]]
                 adjacent = (a_source["branchOrdinal"] == z_source["branchOrdinal"] and
                             z_source["nodeOrdinal"] - a_source["nodeOrdinal"] == 1)
-                documented_collapse = any(
-                    event["stage"] == "PYTHON_SHORT_NODE_DROP" and
-                    event["sourceIdentity"] is not None and
-                    source_by_id[event["sourceIdentity"]]["branchOrdinal"] == a_source["branchOrdinal"] and
-                    a_source["nodeOrdinal"] < source_by_id[event["sourceIdentity"]]["nodeOrdinal"]
-                    < z_source["nodeOrdinal"] for event in deletions)
+                interior = [
+                    original for original in originals_by_branch[a_source["branchOrdinal"]]
+                    if a_source["nodeOrdinal"] < original["nodeOrdinal"] < z_source["nodeOrdinal"]
+                ] if a_source["branchOrdinal"] == z_source["branchOrdinal"] else []
+                documented_collapse = (
+                    bool(interior) and not adjacent and
+                    all(original["identity"] in verified_omissions for original in interior)
+                )
                 if not adjacent and not documented_collapse:
                     element["lineageStatus"] = "UNMATCHED"
                     element["lineageReason"] = "Nonadjacent original nodes without verified deletion/transform event"
