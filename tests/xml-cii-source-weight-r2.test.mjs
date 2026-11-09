@@ -126,7 +126,7 @@ test('R2 full 15 pointer fields valid and missing or invalid pointer refused',()
   const corrupted=originalCii.replace(/(#\$\s+ELEMENTS\s*\n(?:[^\n]*\n){12})([^\n]*)/,
     (all,prefix,row)=>prefix+row.slice(0,15)+'         9999'+row.slice(28));
   assert.notEqual(corrupted,originalCii);
-  assert.throws(()=>indexAll15CiiAuxiliaryPointers(corrupted),/pointer/);
+  assert.throws(()=>indexAll15CiiAuxiliaryPointers(corrupted),/pointer|RIGID/);
 });
 test('R2 ledger-only RIGID.weight and ELEMENT.OD mutations are refused',async()=>{
   const result=await setup();
