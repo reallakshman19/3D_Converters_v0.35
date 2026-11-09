@@ -166,7 +166,7 @@ test('R2 writer overwrite failure never exposes revised outputs',async()=>{
   const sticky=(job)=>({ok:true,ciiText:originalCii});
   const session=await initializeSourceWeightSession(result,{engineRunner:sticky});
   await assert.rejects(()=>applySourceBackedWeightChange(session,
-    transaction(r40(session).rigidPointer)),/overwritten|missing RIGID weight change/);
+    transaction(r40(session).rigidPointer)),/HOLD_CII_ENGINEERING_DIFF: Approved RIGID weight differs from serialized target|overwritten|missing RIGID weight change/);
   assert.equal(session.committed,null);
 });
 test('R2 noedit mismatch fails closed before enabling source edit',async()=>{
