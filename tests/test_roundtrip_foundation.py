@@ -14,7 +14,7 @@ import unittest
 from roundtrip_foundation.snapshot_replay import (
     Hold, build_argv, capture_snapshot, converter_code_identity,
     digest, replay_cii_without_edits, run_existing_converter,
-    validate_serialized_cii,
+    validate_serialized_cii, parse_section_map,
 )
 from roundtrip_foundation.lineage import (
     build_lineage_ledger, parse_elements_and_auxiliaries,
@@ -70,6 +70,31 @@ def replace_aux_pointer(cii, element_index, value):
     # IEL row 13: first 15 columns, then RIGID index in 13 columns.
     lines[row] = old[:15] + str(value).rjust(13) + old[28:]
     return "".join(lines).encode("utf-8")
+
+
+def synthetic_scale_xml(elements=433, rigids=144):
+    """Explicitly synthetic scale witness; never the Owner's authentic GLRD."""
+    assert elements == 433 and rigids == 144
+    nodes = []
+    for i in range(elements + 1):
+        rigid = i > 0 and i % 3 == 1 and i <= 430
+        fields = [
+            f"<NodeNumber>{1000+i}</NodeNumber>",
+            f"<ComponentType>{'RIGID' if rigid else 'PIPE'}</ComponentType>",
+            f"<ComponentRefNo>/SCALE-{i}</ComponentRefNo>",
+            f"<Position>{100*i} 0 0</Position>",
+            "<OutsideDiameter>60.3</OutsideDiameter>",
+            "<WallThickness>3.9</WallThickness>",
+            f"<Weight>{15 if rigid else 0}</Weight>",
+        ]
+        if rigid:
+            fields.append("<Rigid>2</Rigid><Endpoint>2</Endpoint>")
+        nodes.append("<Node>" + "".join(fields) + "</Node>")
+    return (
+        "<PipeStressExport><RestrainOpenEnds>No</RestrainOpenEnds><Pipe>"
+        "<Branch><Branchname>/SYNTHETIC-433-144</Branchname>"
+        + "".join(nodes) + "</Branch></Pipe></PipeStressExport>"
+    ).encode("utf-8")
 
 class SnapshotReplayTests(unittest.TestCase):
     @classmethod
@@ -155,6 +180,21 @@ class SnapshotReplayTests(unittest.TestCase):
         self.assertIn("--weight-scale", argv)
         self.assertNotIn("--staged-json", argv)
         self.assertEqual(argv[-2:], ["--support-config-json", "<EXACT_CONFIG>"])
+
+
+    def test_synthetic_433_144_real_converter_scale_no_authentic_claim(self):
+        xml = synthetic_scale_xml()
+        snapshot, cii = generate_context(xml, run_id="SYNTHETIC_433_144_NOT_OWNER")
+        report = replay(snapshot, xml, cii)
+        self.assertEqual(report["verdict"], "PASS_EXACT_REPLAY", report)
+        self.assertEqual(report["structure"]["elementCount"], 433)
+        self.assertEqual(report["structure"]["rigidCount"], 144)
+        ledger = build_lineage_ledger(conversion_snapshot=snapshot, engine_input_xml=xml,
+            original_cii=cii, effective_config_json=CONFIG,
+            configuration_assets={}, replay_report=report)
+        self.assertEqual(ledger["statistics"]["finalCiiElements"], 433)
+        self.assertEqual(ledger["statistics"]["finalCiiRigids"], 144)
+        self.assertTrue(ledger["readOnly"])
 
     def test_repository_native_glrd_real_converter_smoke(self):
         path = REPO / "Benchmarks" / "XML to CII 2019" / "GLRD-1000-PI-01.xml"
@@ -267,12 +307,35 @@ class FourLevelLineageTests(unittest.TestCase):
         self.assertIn("fallback", element["fieldProvenance"]["wallThickness"])
         self.assertEqual(self.ledger["physicalMassAuthority"], "NOT_ATTESTED")
 
+
+    def test_L11_actual_missing_wall_serializes_converter_derived_value(self):
+        b2 = next(e for e in self.elements if e["branchName"] == "/RT/B2")
+        section = parse_section_map(self.cii.decode("utf-8"))["ELEMENTS"]
+        block = section[(b2["elementIndex"] - 1) * 15:
+                        b2["elementIndex"] * 15]
+        self.assertAlmostEqual(float(block[1].split()[0]), 0.01, places=9)
+        self.assertIn("fallback", b2["fieldProvenance"]["wallThickness"])
+
     def test_L12_element_indices_are_output_ordinals_not_source_ids(self):
         for e in self.elements:
             self.assertIn("elementIndex", e)
             self.assertNotEqual(e["sourceEdgeIdentity"], e["elementIndex"])
         self.assertTrue(any(e["lineageStatus"] == "TRANSFORMED_WITH_LINEAGE"
                             for e in self.elements))
+
+
+    def test_L12_swapped_element_blocks_do_not_preserve_output_ordinal_identity(self):
+        lines = self.cii.decode("utf-8").splitlines(keepends=True)
+        begin = next(i for i, row in enumerate(lines) if row.startswith("#$ ELEMENTS")) + 1
+        end = next(i for i, row in enumerate(lines) if row.startswith("#$ AUX_DATA"))
+        blocks = [lines[i:i+15] for i in range(begin, end, 15)]
+        self.assertGreater(len(blocks), 2)
+        blocks[0], blocks[-1] = blocks[-1], blocks[0]
+        swapped = "".join(lines[:begin] + [r for b in blocks for r in b] + lines[end:]).encode("utf-8")
+        elements, _ = parse_elements_and_auxiliaries(swapped)
+        self.assertNotEqual(elements[0]["fromNode"], self.elements[0]["fromNode"])
+        self.assertEqual(elements[0]["elementIndex"], 1)
+        self.assertEqual(replay(self.snapshot, FIXTURE, swapped)["verdict"], "HOLD_STALE_CII")
 
     def test_L13_same_geometry_in_distinct_branches_never_maps_across(self):
         b1 = next(e for e in self.elements if e["branchName"] == "/RT/B1")
