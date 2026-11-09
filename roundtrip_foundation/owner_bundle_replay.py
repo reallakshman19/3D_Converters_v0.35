@@ -12,12 +12,11 @@ import platform
 import sys
 
 from .snapshot_replay import (Hold, REPO, ENTRYPOINT, capture_snapshot,
-                              converter_code_identity, digest,
+                              converter_code_identity, digest, canonical_json,
                               replay_cii_without_edits, require)
 from .lineage import build_lineage_ledger, validate_lineage_ledger
 
 SCHEMA = "xml-cii-owner-frozen-run-bundle/v1"
-REQUIRED_UPSTREAM_ROLES = {"line_list", "piping_class", "material_map", "weight_master"}
 
 
 def _safe_file(root: Path, descriptor: dict, label: str) -> bytes:
@@ -80,15 +79,23 @@ def inspect_bundle(bundle_dir: Path):
             "Actual staged/template assets differ from declared options")
     assets = {name: _safe_file(root, desc, name) for name, desc in python_desc.items()}
     upstream = manifest.get("upstreamAssets")
+    # The original run—not today's expected defaults—defines which imported
+    # masters/other dependencies are mandatory. A complete audit records those
+    # actual roles explicitly, including an intentionally empty set if true.
+    expected_roles = manifest.get("requiredUpstreamAssetRoles")
+    require(type(expected_roles) is list and
+            all(type(role) is str and bool(role.strip()) for role in expected_roles)
+            and len(set(expected_roles)) == len(expected_roles),
+            "HOLD_MISSING_INPUT", "Actual-run required upstream asset roles missing or duplicate")
     require(type(upstream) is list and all(type(row) is dict for row in upstream),
             "HOLD_MISSING_INPUT", "Original imported master inventory missing")
     roles = [row.get("role") for row in upstream]
-    require(len(roles) == len(set(roles)) and REQUIRED_UPSTREAM_ROLES.issubset(set(roles)),
-            "HOLD_MISSING_INPUT", "Line list, piping class, material map, weight master required")
+    require(all(type(role) is str and bool(role.strip()) for role in roles)
+            and len(roles) == len(set(roles)) and set(roles) == set(expected_roles),
+            "HOLD_MISSING_INPUT", "Archived upstream roles do not match actual-run dependency manifest")
     upstream_sha = {}
     for row in upstream:
         role = row["role"]
-        require(type(role) is str and role.strip(), "HOLD_MISSING_INPUT", "Blank master role")
         upstream_sha[role] = digest(_safe_file(root, row, "upstream:" + role))
     # Record actual historical selection, even if it is 'Coversheet'. NEVER
     # silently correct an original configuration to the 'Linelist' worksheet.
@@ -104,8 +111,18 @@ def inspect_bundle(bundle_dir: Path):
     # The attestation above means no *additional direct Python CLI* masters:
     # all original upstream files were verified separately, and their effects
     # are frozen within the browser engine-input XML and effective config.
+    complete_bundle_identity = {
+        "runId": manifest["runId"], "sourceStage": manifest["sourceStage"],
+        "replaySnapshotFingerprintSha256": snapshot["fingerprintSha256"],
+        "originalUploadedXmlSha256": digest(primary["originalUploadedXml"]),
+        "requiredUpstreamAssetRoles": sorted(expected_roles),
+        "upstreamAssetsSha256": upstream_sha,
+        "effectiveLineListSheet": manifest["effectiveLineListSheet"],
+        "originalCiiArchiveAttestation": manifest["attestation"]["originalCiiIndependentlyRetained"],
+    }
     return {"manifest": manifest, "primary": primary, "pythonAssets": assets,
-            "upstreamAssetSha256": upstream_sha, "snapshot": snapshot}
+            "upstreamAssetSha256": upstream_sha, "snapshot": snapshot,
+            "bundleFingerprintSha256": digest(canonical_json(complete_bundle_identity))}
 
 
 def run_owner_bundle(bundle_dir: Path):
@@ -121,9 +138,11 @@ def run_owner_bundle(bundle_dir: Path):
         result = {
             "schema": "xml-cii-owner-independent-replay-report/v1",
             "runId": custody["manifest"]["runId"],
-            "evidenceClass": "ARCHIVED_ORIGINAL_CII_NOT_GENERATED_DURING_THIS_TEST",
+            "evidenceClass": "CLAIMED_ARCHIVED_ORIGINAL_CII_INDEPENDENCE_REQUIRES_EXTERNAL_RECEIPT",
             "status": replay["verdict"],
             "snapshotFingerprintSha256": snapshot["fingerprintSha256"],
+            "bundleFingerprintSha256": custody["bundleFingerprintSha256"],
+            "requiredUpstreamAssetRoles": sorted(custody["manifest"]["requiredUpstreamAssetRoles"]),
             "upstreamAssetsSha256": custody["upstreamAssetSha256"],
             "originalUploadedXmlSha256": digest(p["originalUploadedXml"]),
             "engineInputXmlSha256": digest(p["engineInputXml"]),
