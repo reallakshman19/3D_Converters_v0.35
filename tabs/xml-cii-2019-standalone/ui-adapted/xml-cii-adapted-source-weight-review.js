@@ -52,13 +52,16 @@ export function installSourceBackedWeightReview({
   const table=overlay.querySelector('[data-final-rigid-table-wrap] table');
   const header=table?.querySelector('thead tr');
   if(header){
-    const th=add(header,'th','Source XML',{style:'padding:9px;white-space:nowrap;'});
+    const th=el('th','Source XML',{style:'padding:9px;white-space:nowrap;'});
+    header.lastElementChild?.insertAdjacentElement('beforebegin',th);
     th.dataset.sourceWeightHeader='';
   }
   const rowCells=new Map();
   for(const tr of overlay.querySelectorAll('[data-final-rigid-row]')){
     const pointer=Number(tr.dataset.pointer);
-    const td=add(tr,'td',null,{style:'padding:8px;min-width:150px;'});
+    const td=el('td',null,{style:'padding:8px;min-width:150px;'});
+    // Existing Status must stay the LAST cell; old code/tests use that index.
+    tr.lastElementChild?.insertAdjacentElement('beforebegin',td);
     const state=add(td,'div','Not qualified',{'data-source-weight-cell-status':pointer,
       style:'font-size:10px;color:#fbbf24;'});
     const inspect=button(td,'Inspect source',{'data-source-weight-inspect':pointer});
