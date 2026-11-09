@@ -57,8 +57,12 @@ def validate_integrity(ledger, expected_snapshot):
     python = {x["identity"]: x for x in processed}
     _check(len(src) == len(source_nodes) and len(python) == len(processed),
            "Duplicate source/Python node identities")
-    _check(all(x["sourceXmlDigest"] == identity["sourceSha256"] for x in source_nodes),
-           "Source-node digest is not from this run")
+    _check(all(x["sourceXmlDigest"] == identity["sourceSha256"] and
+               x["identity"] == f"{identity['sourceSha256']}:{x['branchOrdinal']}:{x['nodeOrdinal']}"
+               for x in source_nodes), "Source-node identity/digest is not from this run")
+    _check(all(x["sourceXmlDigest"] == identity.get("pythonPreprocessedXmlSha256") and
+               x["identity"] == f"{identity['pythonPreprocessedXmlSha256']}:{x['branchOrdinal']}:{x['nodeOrdinal']}"
+               for x in processed), "Python node identity/digest is not from this run")
     _check(len({(x["branchOrdinal"], x["nodeOrdinal"]) for x in source_nodes}) == len(src),
            "Duplicate branch-qualified source ordinals")
     _check(len({(x["branchOrdinal"], x["nodeOrdinal"]) for x in processed}) == len(python),
@@ -123,6 +127,7 @@ def validate_integrity(ledger, expected_snapshot):
     source_final_nodes = defaultdict(set)
     full_links = defaultdict(list)
     final_incident = defaultdict(list)
+    final_incident_sides = defaultdict(list)
     for e in elements:
         i=e["elementIndex"]
         _check(e.get("lineageStatus") in STATUSES and
@@ -140,6 +145,7 @@ def validate_integrity(ledger, expected_snapshot):
         for side, nodeidx in (("fromNode",0),("toNode",1)):
             key=(e["branchName"],e[side])
             final_incident[key].append(i)
+            final_incident_sides[key].append((i,nodeidx))
             if pair:
                 sid=pair[nodeidx]
                 _check(src[sid]["branchName"] == e["branchName"],
@@ -172,23 +178,28 @@ def validate_integrity(ledger, expected_snapshot):
                f"Final node {key}: missing or duplicated incident ELEMENT")
         known=set()
         unresolved=[]
-        for i in incident:
+        for i,side in final_incident_sides[key]:
             e=elems[i]
             pair=e.get("sourceEdgeIdentity")
             if pair is None:
                 unresolved.append(i)
             else:
-                known.add(pair[0] if e["fromNode"]==key[1] else pair[1])
+                known.add(pair[side])
         _check(n.get("sourceNodeCandidates")==sorted(known) and
                n.get("unverifiedIncidentElements")==sorted(set(unresolved)),
                f"Final node {key}: candidate/incident completeness mismatch")
+        transformed_sources={event["sourceIdentity"] for event in transformations
+                             if event.get("sourceIdentity")}
+        qualified_id=(next(iter(known)) if len(known)==1 and not unresolved else None)
         expected_status=("AMBIGUOUS" if len(known)>1 else
-                         "UNMATCHED" if unresolved or not known else
-                         "TRANSFORMED_WITH_LINEAGE" if n.get("transformation")=="PYTHON_RENUMBER"
+                         "UNMATCHED" if qualified_id is None else
+                         "TRANSFORMED_WITH_LINEAGE" if qualified_id in transformed_sources
                          else "EXACT_UNIQUE")
+        expected_transform=("PYTHON_RENUMBER" if qualified_id in transformed_sources
+                            else "NONE") if qualified_id else "UNRESOLVED"
         _check(n.get("lineageStatus")==expected_status and
-               n.get("sourceNodeIdentity")==(
-                   next(iter(known)) if len(known)==1 and not unresolved else None),
+               n.get("sourceNodeIdentity")==qualified_id and
+               n.get("transformation")==expected_transform,
                f"Final node {key}: overclassified or conflicting identity")
         _check(expected_status in STATUSES, "Invalid final-node classification")
         verified_nodes[expected_status]+=1
@@ -209,6 +220,13 @@ def validate_integrity(ledger, expected_snapshot):
         if section=="RIGID":
             _check(a.get("ownershipStatus") in STATUSES,
                    "Missing RIGID ownership classification")
+            writer=a.get("writerWeightSourceNode")
+            candidate_ref=src[writer]["componentRefNo"] if writer else None
+            _check(a.get("ownerCandidates") == ([candidate_ref] if candidate_ref else []),
+                   "RIGID ComponentRefNo candidate inconsistent with writer-selected source")
+            _check(a.get("sourceOwners") in ([],[writer]) and
+                   (a["ownershipStatus"] not in VERIFIED or a["sourceOwners"]==[writer]),
+                   "RIGID physical owner/source candidate improperly promoted")
 
     _check(counts.get("elementMappings")==
            {k:sum(e["lineageStatus"]==k for e in elements) for k in sorted(STATUSES)},
