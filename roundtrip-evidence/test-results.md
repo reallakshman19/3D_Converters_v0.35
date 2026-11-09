@@ -44,7 +44,7 @@ test_unqualified_external_master_refuses (test_roundtrip_foundation.SnapshotRepl
 test_wrong_weight_scale_or_split_setting_refuses (test_roundtrip_foundation.SnapshotReplayTests.test_wrong_weight_scale_or_split_setting_refuses) ... ok
 
 ----------------------------------------------------------------------
-Ran 33 tests in 3.367s
+Ran 33 tests in 3.305s
 
 OK
 
