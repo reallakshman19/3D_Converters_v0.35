@@ -31,9 +31,13 @@ def _safe_file(root: Path, descriptor: dict, label: str) -> bytes:
             "HOLD_MISSING_INPUT", f"{label}: unsafe path outside private bundle")
     require(path.is_file(), "HOLD_MISSING_INPUT", f"{label}: missing file {relative}")
     data = path.read_bytes()
+    mismatch_code = (
+        "HOLD_STALE_CII" if label == "originalCii" else
+        "HOLD_CONFIGURATION_MISMATCH" if label in ("effectiveConfigJson", "staged.json", "template.cii")
+        or label.startswith("upstream:") else "HOLD_STALE_SOURCE"
+    )
     require(len(data) == descriptor["bytes"] and digest(data) == descriptor["sha256"],
-            "HOLD_STALE_CII" if label == "originalCii" else "HOLD_STALE_SOURCE",
-            f"{label}: archive SHA-256/byte length mismatch")
+            mismatch_code, f"{label}: archive SHA-256/byte length mismatch")
     return data
 
 
