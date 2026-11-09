@@ -7,6 +7,7 @@ From repository root:
 The native historical Owner GLRD 433/144 snapshot is NOT present.
 """
 import argparse
+from collections import Counter
 import json
 from pathlib import Path
 
@@ -52,10 +53,31 @@ def report_other_fixture(xml: bytes, data_class: str, options=OPTIONS):
         conversion_snapshot=snapshot, engine_input_xml=xml,
         original_cii=cii, effective_config_json=CONFIG,
         configuration_assets={}, replay_report=replay)
+    unmatched = [e for e in ledger["elements"]
+                 if e["lineageStatus"] not in ("EXACT_UNIQUE", "TRANSFORMED_WITH_LINEAGE")]
+    unresolved_rigids = [a for a in ledger["auxiliaryRecords"] if a["section"] == "RIGID"
+                         and a["ownershipStatus"] not in ("EXACT_UNIQUE", "TRANSFORMED_WITH_LINEAGE")]
+    diagnostics = {
+        "unmatchedElementReasons": dict(Counter(e.get("lineageReason", "UNSPECIFIED")
+                                                  for e in unmatched)),
+        "unmatchedElementCoreEdgeCandidateCounts": dict(Counter(
+            str(len(e.get("sourceOwnerCandidates", []))) for e in unmatched)),
+        "unmatchedRigidReasons": dict(Counter(a.get("reason", "NO_MATCHED_SOURCE_ELEMENT")
+                                              for a in unresolved_rigids)),
+        "sourceNodesWithoutComponentRef": sum(not n["componentRefNo"] for n in ledger["sourceNodes"]),
+        "unmatchedElementsWithMissingSourceEdge": sum(
+            not e["sourceOwnerCandidates"] for e in unmatched),
+        "unmatchedElementSamples": [{
+            "elementIndex": e["elementIndex"], "branchName": e["branchName"],
+            "fromNode": e["fromNode"], "toNode": e["toNode"],
+            "reason": e.get("lineageReason", "UNSPECIFIED"),
+            "coreEdgeCandidates": len(e.get("sourceOwnerCandidates", [])),
+        } for e in unmatched[:10]],
+    }
     return {"evidenceClass": data_class, "baselineIndependence": "CURRENT_WRITER_GENERATED",
             "engineInputSha256": digest(xml), "originalCiiSha256": digest(cii),
             "replayVerdict": replay["verdict"], "differingBytes": replay["comparison"]["differingBytes"],
-            "coverage": ledger["statistics"], "readOnly": True}
+            "coverage": ledger["statistics"], "unmatchedDiagnostics": diagnostics, "readOnly": True}
 
 def synthetic_433_144():
     """Synthetic scale fixture, NOT historical Owner GLRD."""
