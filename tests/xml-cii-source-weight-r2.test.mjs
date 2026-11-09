@@ -346,7 +346,7 @@ test('R2 renamed RIGID pointers reconcile by source-linked element, not previous
   for(let idx=e+1;idx<r;idx+=15){
     if(lines[idx]?.startsWith('#$ AUX_DATA'))break;
     const rowIndex=idx+12, raw=lines[rowIndex];
-    if(!raw || raw.startsWith('#
+    if(!raw || raw.startsWith('#$'))break;
     const pointer=Number(raw.slice(15,28).trim());
     if(pointer===row.rigidPointer||pointer===other){
       lines[rowIndex]=raw.slice(0,15)+String(pointer===row.rigidPointer?other:row.rigidPointer).padStart(13,' ')+raw.slice(28);
