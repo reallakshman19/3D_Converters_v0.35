@@ -136,6 +136,52 @@ try{
     assert.equal(audit.ciiEngineeringDiff.unexpectedDifferences,0);
     assert.deepEqual(errors,[],errors.join('\n'));
   });
+  await test('R2 actual Chromium/Pyodide Owner example: uniquely-owned XML 15→2.984, output CII 150→29.84',async()=>{
+    await page.goto(address+'/tests/fixtures/r2-source-weight-browser-host.html');
+    const received=await page.evaluate(async()=>{
+      const [xml,cii] = await Promise.all([
+        fetch('/tests/.r2-synthetic-runtime/original15.xml').then(r=>r.text()),
+        fetch('/tests/.r2-synthetic-runtime/original15.cii').then(r=>r.text()),
+      ]);
+      const {ciiSha256}=await import('/tabs/xml-cii-2019-standalone/xml-cii-final-property-reader.js');
+      const {initializeSourceWeightSession,applySourceBackedWeightChange}=
+        await import('/tabs/xml-cii-2019-standalone/xml-cii-source-weight-reextract.js');
+      const result={
+        ok:true,ciiText:cii,ciiName:'r2-exact-owner-example-synthetic.cii',ciiInputSource:'original',
+        finalRigidReviewEvidence:{
+          sourceKind:'xml',engineInputText:xml,
+          engineInputSha256:await ciiSha256(xml),originalCiiSha256:await ciiSha256(cii),
+          engineInputDigest:'R2_EXACT_VALUES_CURRENT_WRITER_SYNTHETIC',
+          effectiveSourceName:'r2-synthetic-owner-example.xml',weightScale:10,
+          supportConfigJson:'{}',stagedJsonText:'',
+          effectiveOptions:{coordsMode:'first',kgToNewton:true,
+            splitCondensedValveFlange:true,useRestraintTypeBasedOnJson:true,outputMode:'both',
+            analyzeTopology:false,generateTopoFix:false,useTopoFixForCii:false},
+        },
+      };
+      const session=await initializeSourceWeightSession(result);
+      const owner=session.rows.find(row=>row.sourceNode?.componentRefNo==='/RIGID-40');
+      if(!owner?.eligible) throw Error('Expected uniquely qualified synthetic source owner');
+      const original={xml:owner.sourceNode.originalXmlWeight,cii:owner.originalCiiWeight};
+      const edited=await applySourceBackedWeightChange(session,{
+        rigidPointer:owner.rigidPointer,newValue:'2.984',
+        approved:true,ownerApproved:true,zeroConfirmed:false,
+      },{getCurrentResult:()=>result});
+      return {original,revisedXml:edited.revisedXml,revisedCii:edited.revisedCii,
+        differences:edited.audit.ciiEngineeringDiff.expectedDifferences,
+        unrelatedXmlBytesChanged:edited.audit.unrelatedXmlBytesChanged,
+        unexpectedCiiDifferences:edited.audit.ciiEngineeringDiff.unexpectedDifferences,
+        originalCiiUnchanged:result.ciiText===cii};
+    });
+    assert.deepEqual(received.original,{xml:15,cii:150});
+    assert.equal(received.revisedXml,await readFile(resolve(generated,'approved.xml'),'utf8'));
+    assert.equal(received.revisedCii,await readFile(resolve(generated,'approved.cii'),'utf8'));
+    assert.equal(received.differences.length,1);
+    assert.deepEqual([received.differences[0].oldWeight,received.differences[0].newWeight],[150,29.84]);
+    assert.equal(received.unrelatedXmlBytesChanged,0);
+    assert.equal(received.unexpectedCiiDifferences,0);
+    assert.equal(received.originalCiiUnchanged,true);
+  });
 }finally{
   await browser.close();
   await new Promise(resolve=>serve.close(resolve));
