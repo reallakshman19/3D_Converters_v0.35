@@ -15,6 +15,8 @@ const originalXml=readFileSync(join(root,'original.xml'),'utf8');
 const revisedXml=readFileSync(join(root,'approved.xml'),'utf8');
 const originalCii=readFileSync(join(root,'original.cii'),'utf8');
 const revisedCii=readFileSync(join(root,'approved.cii'),'utf8');
+const zeroXml=readFileSync(join(root,'zero.xml'),'utf8');
+const zeroCii=readFileSync(join(root,'zero.cii'),'utf8');
 
 async function setup(xml=originalXml,cii=originalCii,options={}){
   return {
@@ -84,6 +86,24 @@ test('R2 one explicitly approved unique source Weight edit regenerates correct 2
     {getCurrentResult:()=>result});
   assert.equal(repeat,verified);
   assert.equal(engineCalls.length,2,'second Apply must not rerun same edit');
+});
+test('R2 explicit zero is a numeric approved source edit, never a blank',async()=>{
+  const result=await setup();
+  const runner=job=>({ok:true,ciiText:job.sourceText===originalXml ? originalCii :
+    job.sourceText===zeroXml ? zeroCii : null,
+    error:'Source XML was not one of the actual synthetic converter outputs'});
+  const session=await initializeSourceWeightSession(result,{engineRunner:runner});
+  const p=r40(session).rigidPointer;
+  await assert.rejects(()=>applySourceBackedWeightChange(session,{
+    rigidPointer:p,newValue:'0',approved:true,ownerApproved:true,zeroConfirmed:false
+  }),/zero requires confirmation/);
+  const output=await applySourceBackedWeightChange(session,{
+    rigidPointer:p,newValue:'0',approved:true,ownerApproved:true,zeroConfirmed:true
+  });
+  assert.equal(output.revisedXml,zeroXml);
+  assert.equal(output.revisedCii,zeroCii);
+  assert.equal(output.audit.ciiEngineeringDiff.expectedDifferences[0].newWeight,0);
+  assert.equal(output.audit.unrelatedXmlBytesChanged,0);
 });
 test('R2 strict physical ownership refuses real conflict, not only missing selector',async()=>{
   const result=await setup();
