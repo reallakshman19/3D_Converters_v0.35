@@ -57,12 +57,13 @@
         "AMBIGUOUS": 0,
         "CONFLICT": 0,
         "EXACT_UNIQUE": 42,
-        "TRANSFORMED_WITH_LINEAGE": 27,
-        "UNMATCHED": 239
+        "TRANSFORMED_WITH_LINEAGE": 266,
+        "UNMATCHED": 0
       },
       "engineInputBranches": 41,
       "engineInputNodes": 1166,
       "events": {
+        "PYTHON_NONPOSITIVE_NODE_OMISSION": 777,
         "PYTHON_SHORT_NODE_DROP": 39
       },
       "finalCiiElements": 308,
@@ -70,8 +71,8 @@
       "finalNodes": {
         "count": 349,
         "generatedRenumberedWithLineage": 0,
-        "originalIdentityVerified": 130,
-        "unresolved": 219
+        "originalIdentityVerified": 349,
+        "unresolved": 0
       },
       "originalEnrichedXmlBranches": 41,
       "originalEnrichedXmlNodes": 1166,
@@ -79,15 +80,15 @@
       "pythonPreprocessedBranches": 41,
       "pythonPreprocessedNodes": 1166,
       "rigidOwnership": {
-        "AMBIGUOUS": 0,
+        "AMBIGUOUS": 65,
         "CONFLICT": 0,
         "EXACT_UNIQUE": 0,
         "TRANSFORMED_WITH_LINEAGE": 0,
-        "UNMATCHED": 65
+        "UNMATCHED": 0
       },
       "sharedRigidPointers": 0,
       "unreferencedRigidPointers": 0,
-      "unresolvedSourceComponents": 390
+      "unresolvedSourceComponents": 198
     },
     "differingBytes": 0,
     "engineInputSha256": "923a2b493483ecaaebe696f3d08a0b688f3ce3c9f456fb11b8e6a5889eea22ba",
@@ -97,97 +98,12 @@
     "replayVerdict": "PASS_EXACT_REPLAY",
     "unmatchedDiagnostics": {
       "sourceNodesWithoutComponentRef": 0,
-      "unmatchedElementCoreEdgeCandidateCounts": {
-        "1": 239
-      },
-      "unmatchedElementReasons": {
-        "Nonadjacent original nodes without verified deletion/transform event": 239
-      },
-      "unmatchedElementSamples": [
-        {
-          "branchName": "/GLRD-1000-4\"-P4110001-93834-01/B2",
-          "coreEdgeCandidates": 1,
-          "elementIndex": 3,
-          "fromNode": "40",
-          "reason": "Nonadjacent original nodes without verified deletion/transform event",
-          "toNode": "50"
-        },
-        {
-          "branchName": "/GLRD-1000-4\"-P4110001-93834-01/B2",
-          "coreEdgeCandidates": 1,
-          "elementIndex": 4,
-          "fromNode": "50",
-          "reason": "Nonadjacent original nodes without verified deletion/transform event",
-          "toNode": "60"
-        },
-        {
-          "branchName": "/GLRD-1000-4\"-P4110001-93834-01/B2",
-          "coreEdgeCandidates": 1,
-          "elementIndex": 5,
-          "fromNode": "60",
-          "reason": "Nonadjacent original nodes without verified deletion/transform event",
-          "toNode": "70"
-        },
-        {
-          "branchName": "/GLRD-1000-4\"-P4110001-93834-01/B2",
-          "coreEdgeCandidates": 1,
-          "elementIndex": 6,
-          "fromNode": "70",
-          "reason": "Nonadjacent original nodes without verified deletion/transform event",
-          "toNode": "80"
-        },
-        {
-          "branchName": "/GLRD-1000-4\"-P4110001-93834-01/B2",
-          "coreEdgeCandidates": 1,
-          "elementIndex": 7,
-          "fromNode": "80",
-          "reason": "Nonadjacent original nodes without verified deletion/transform event",
-          "toNode": "90"
-        },
-        {
-          "branchName": "/GLRD-1000-4\"-P4110001-93834-01/B2",
-          "coreEdgeCandidates": 1,
-          "elementIndex": 8,
-          "fromNode": "90",
-          "reason": "Nonadjacent original nodes without verified deletion/transform event",
-          "toNode": "100"
-        },
-        {
-          "branchName": "/GLRD-1000-4\"-P4110001-93834-01/B2",
-          "coreEdgeCandidates": 1,
-          "elementIndex": 9,
-          "fromNode": "100",
-          "reason": "Nonadjacent original nodes without verified deletion/transform event",
-          "toNode": "110"
-        },
-        {
-          "branchName": "/GLRD-1000-4\"-P4110001-93834-01/B2",
-          "coreEdgeCandidates": 1,
-          "elementIndex": 10,
-          "fromNode": "110",
-          "reason": "Nonadjacent original nodes without verified deletion/transform event",
-          "toNode": "120"
-        },
-        {
-          "branchName": "/GLRD-1000-4\"-P4110001-93834-01/B2",
-          "coreEdgeCandidates": 1,
-          "elementIndex": 12,
-          "fromNode": "140",
-          "reason": "Nonadjacent original nodes without verified deletion/transform event",
-          "toNode": "150"
-        },
-        {
-          "branchName": "/GLRD-1000-4\"-P4110001-93834-01/B2",
-          "coreEdgeCandidates": 1,
-          "elementIndex": 13,
-          "fromNode": "150",
-          "reason": "Nonadjacent original nodes without verified deletion/transform event",
-          "toNode": "160"
-        }
-      ],
+      "unmatchedElementCoreEdgeCandidateCounts": {},
+      "unmatchedElementReasons": {},
+      "unmatchedElementSamples": [],
       "unmatchedElementsWithMissingSourceEdge": 0,
       "unmatchedRigidReasons": {
-        "NO_MATCHED_SOURCE_ELEMENT": 65
+        "Multiple source nodes carry ComponentRefNo; mass allocation unproved": 65
       }
     }
   },
