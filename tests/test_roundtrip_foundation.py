@@ -268,6 +268,27 @@ class FourLevelLineageTests(unittest.TestCase):
         self.assertTrue(all(r["ownershipStatus"] == "AMBIGUOUS" for r in matching))
         self.assertEqual(self.ledger["physicalMassAuthority"], "NOT_ATTESTED")
 
+
+    def test_missing_component_ref_does_not_erase_verified_node_lineage(self):
+        """Source identity remains resolvable without claiming physical mass."""
+        altered = FIXTURE.replace(
+            b"<ComponentRefNo>/RIGID-B2-20</ComponentRefNo>",
+            b"<ComponentRefNo></ComponentRefNo>")
+        self.assertNotEqual(altered, FIXTURE)
+        snapshot, cii, receipt, ledger = ledger_for(
+            altered, run_id="MISSING_COMPONENT_REF_NODE_NOT_MASS")
+        self.assertEqual(receipt["verdict"], "PASS_EXACT_REPLAY")
+        edge = next(e for e in ledger["elements"]
+                    if e["branchName"] == "/RT/B2" and e["toNode"] == "20")
+        self.assertEqual(edge["lineageStatus"], "EXACT_UNIQUE")
+        self.assertEqual(len(edge["sourceEdgeIdentity"]), 2)
+        aux = next(a for a in ledger["auxiliaryRecords"]
+                   if a["section"] == "RIGID" and a["recordPointer"] == edge["rigidPointer"])
+        self.assertEqual(aux["ownershipStatus"], "UNMATCHED")
+        self.assertIsNotNone(aux["writerWeightSourceNode"])
+        self.assertEqual(aux["sourceOwners"], [])
+        self.assertEqual(aux["physicalMassAuthority"], "UNVERIFIED")
+
     def test_L07_no_cross_component_mass_on_shared_endpoints(self):
         observed = {r["sourceOwners"][0] for r in self.rigids
                     if r["sourceOwners"]}
@@ -364,6 +385,20 @@ class FourLevelLineageTests(unittest.TestCase):
         wrong["fingerprintSha256"] = "WRONG"
         with self.assertRaises(Hold):
             validate_lineage_ledger(self.ledger, expected_snapshot=wrong)
+
+
+    def test_repo_native_no_silent_writer_source_to_owner_promotion(self):
+        """Verify owner field is empty whenever physical owner is unresolved."""
+        path = REPO / "Benchmarks" / "XML to CII 2019" / "GLRD-1000-PI-01.xml"
+        if not path.is_file():
+            self.skipTest("Native GLRD source absent")
+        _, _, _, ledger = ledger_for(path.read_bytes(), run_id="REPO_NATIVE_NODE_VS_MASS")
+        for a in ledger["auxiliaryRecords"]:
+            if a["section"] != "RIGID":
+                continue
+            if a["ownershipStatus"] not in ("EXACT_UNIQUE", "TRANSFORMED_WITH_LINEAGE"):
+                self.assertFalse(a["sourceOwners"], a)
+            self.assertEqual(a["physicalMassAuthority"], "UNVERIFIED")
 
     def test_repository_native_lineage_is_classified_not_fabricated(self):
         path = REPO / "Benchmarks" / "XML to CII 2019" / "GLRD-1000-PI-01.xml"
