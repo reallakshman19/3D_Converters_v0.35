@@ -141,6 +141,10 @@ export async function applyXmlSourceEdits({ originalXml, originalSha256, edits,
   ensure(Array.isArray(edits) && edits.length > 0, 'no approved XML field edits');
   ensure(await ciiSha256(originalXml) === originalSha256, 'stale EnrichedXML SHA-256');
   const sources = inspectXmlWeightSources(originalXml);
+  const nodeByStart = new Map();
+  for (const branch of branches(xmlTree(originalXml))) {
+    for (const node of direct(branch, 'Node')) nodeByStart.set(node.start,node);
+  }
   const spans = [];
   const used = new Set();
   for (const edit of edits) {
@@ -156,7 +160,9 @@ export async function applyXmlSourceEdits({ originalXml, originalSha256, edits,
       row.nodeNumber === edit.nodeNumber &&
       row.componentRefNo === edit.componentRefNo);
     const row = exactlyOne(matches, 'qualified branch/source node');
-    const selected = descriptor.localField === 'Weight' ? row.weightField : null;
+    const node = nodeByStart.get(row.rawNodeStart);
+    ensure(node, 'qualified source XML node disappeared');
+    const selected = textField(originalXml,node,descriptor.localField,true);
     ensure(selected && !selected.element.children.length && selected.start < selected.end,
       'source XML property missing or not a leaf token');
     ensure(selected.value === edit.originalToken, 'stale source XML property token');
