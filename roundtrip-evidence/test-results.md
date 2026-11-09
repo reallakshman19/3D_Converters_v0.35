@@ -14,6 +14,8 @@ test_L02_multi_elements_and_other_aux_references (test_roundtrip_foundation.Four
 test_L03_duplicate_node_numbers_are_branch_scoped (test_roundtrip_foundation.FourLevelLineageTests.test_L03_duplicate_node_numbers_are_branch_scoped) ... ok
 test_L04_negative_node_renumber_with_observed_lineage (test_roundtrip_foundation.FourLevelLineageTests.test_L04_negative_node_renumber_with_observed_lineage) ... ok
 test_L05_short_node_deletion_has_original_and_emitted_adjacency (test_roundtrip_foundation.FourLevelLineageTests.test_L05_short_node_deletion_has_original_and_emitted_adjacency) ... ok
+test_L05b_nonpositive_original_nodes_omitted_with_full_lineage (test_roundtrip_foundation.FourLevelLineageTests.test_L05b_nonpositive_original_nodes_omitted_with_full_lineage)
+No fixed generated-number pattern: actual parser retention is proof. ... ok
 test_L06_shared_component_one_to_many_with_no_mass_allocation (test_roundtrip_foundation.FourLevelLineageTests.test_L06_shared_component_one_to_many_with_no_mass_allocation) ... ok
 test_L07_no_cross_component_mass_on_shared_endpoints (test_roundtrip_foundation.FourLevelLineageTests.test_L07_no_cross_component_mass_on_shared_endpoints) ... ok
 test_L08_shared_rigid_pointer_explicitly_visible_in_parser (test_roundtrip_foundation.FourLevelLineageTests.test_L08_shared_rigid_pointer_explicitly_visible_in_parser) ... ok
@@ -31,6 +33,8 @@ test_missing_component_ref_does_not_erase_verified_node_lineage (test_roundtrip_
 Source identity remains resolvable without claiming physical mass. ... ok
 test_repo_native_no_silent_writer_source_to_owner_promotion (test_roundtrip_foundation.FourLevelLineageTests.test_repo_native_no_silent_writer_source_to_owner_promotion)
 Verify owner field is empty whenever physical owner is unresolved. ... ok
+test_repo_native_omitted_negative_source_node_classified (test_roundtrip_foundation.FourLevelLineageTests.test_repo_native_omitted_negative_source_node_classified)
+Repository-native smoke must improve only with real omission proof. ... ok
 test_repository_native_lineage_is_classified_not_fabricated (test_roundtrip_foundation.FourLevelLineageTests.test_repository_native_lineage_is_classified_not_fabricated) ... ok
 test_L14_stale_source_refuses (test_roundtrip_foundation.SnapshotReplayTests.test_L14_stale_source_refuses) ... ok
 test_L15_missing_config_or_unattested_completeness_refuses (test_roundtrip_foundation.SnapshotReplayTests.test_L15_missing_config_or_unattested_completeness_refuses) ... ok
@@ -48,7 +52,7 @@ test_unqualified_external_master_refuses (test_roundtrip_foundation.SnapshotRepl
 test_wrong_weight_scale_or_split_setting_refuses (test_roundtrip_foundation.SnapshotReplayTests.test_wrong_weight_scale_or_split_setting_refuses) ... ok
 
 ----------------------------------------------------------------------
-Ran 35 tests in 4.405s
+Ran 37 tests in 5.902s
 
 OK
 
