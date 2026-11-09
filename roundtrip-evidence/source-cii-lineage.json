@@ -11,15 +11,14 @@
       ],
       "ownershipStatus": "AMBIGUOUS",
       "physicalMassAuthority": "UNVERIFIED",
-      "reason": "ComponentRefNo missing or shared; source allocation unproved",
+      "reason": "Multiple source nodes carry ComponentRefNo; mass allocation unproved",
       "recordPointer": 1,
       "section": "RIGID",
       "shared": false,
-      "sourceOwners": [
-        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:1"
-      ],
+      "sourceOwners": [],
       "unreferenced": false,
-      "weight": 150.0
+      "weight": 150.0,
+      "writerWeightSourceNode": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:1"
     },
     {
       "identity": "RIGID:2",
@@ -32,7 +31,7 @@
       ],
       "ownershipStatus": "EXACT_UNIQUE",
       "physicalMassAuthority": "UNVERIFIED",
-      "reason": "Unique writer-selected TO source node, physical mass not independently approved",
+      "reason": "Unique writer-selected source node and ComponentRefNo; physical mass not independently approved",
       "recordPointer": 2,
       "section": "RIGID",
       "shared": false,
@@ -40,7 +39,8 @@
         "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:3"
       ],
       "unreferenced": false,
-      "weight": 60.0
+      "weight": 60.0,
+      "writerWeightSourceNode": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:3"
     },
     {
       "identity": "RIGID:3",
@@ -53,7 +53,7 @@
       ],
       "ownershipStatus": "EXACT_UNIQUE",
       "physicalMassAuthority": "UNVERIFIED",
-      "reason": "Unique writer-selected TO source node, physical mass not independently approved",
+      "reason": "Unique writer-selected source node and ComponentRefNo; physical mass not independently approved",
       "recordPointer": 3,
       "section": "RIGID",
       "shared": false,
@@ -61,7 +61,8 @@
         "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:1"
       ],
       "unreferenced": false,
-      "weight": 110.0
+      "weight": 110.0,
+      "writerWeightSourceNode": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:1"
     },
     {
       "identity": "RIGID:4",
@@ -74,7 +75,7 @@
       ],
       "ownershipStatus": "EXACT_UNIQUE",
       "physicalMassAuthority": "UNVERIFIED",
-      "reason": "Unique writer-selected TO source node, physical mass not independently approved",
+      "reason": "Unique writer-selected source node and ComponentRefNo; physical mass not independently approved",
       "recordPointer": 4,
       "section": "RIGID",
       "shared": false,
@@ -82,7 +83,8 @@
         "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:1"
       ],
       "unreferenced": false,
-      "weight": 50.0
+      "weight": 50.0,
+      "writerWeightSourceNode": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:1"
     },
     {
       "identity": "RIGID:5",
@@ -95,7 +97,7 @@
       ],
       "ownershipStatus": "TRANSFORMED_WITH_LINEAGE",
       "physicalMassAuthority": "UNVERIFIED",
-      "reason": "Unique writer-selected TO source node, physical mass not independently approved",
+      "reason": "Unique writer-selected source node and ComponentRefNo; physical mass not independently approved",
       "recordPointer": 5,
       "section": "RIGID",
       "shared": false,
@@ -103,7 +105,8 @@
         "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:3"
       ],
       "unreferenced": false,
-      "weight": 80.0
+      "weight": 80.0,
+      "writerWeightSourceNode": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:3"
     },
     {
       "identity": "RIGID:6",
@@ -116,7 +119,7 @@
       ],
       "ownershipStatus": "TRANSFORMED_WITH_LINEAGE",
       "physicalMassAuthority": "UNVERIFIED",
-      "reason": "Unique writer-selected TO source node, physical mass not independently approved",
+      "reason": "Unique writer-selected source node and ComponentRefNo; physical mass not independently approved",
       "recordPointer": 6,
       "section": "RIGID",
       "shared": false,
@@ -124,7 +127,8 @@
         "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:1"
       ],
       "unreferenced": false,
-      "weight": 70.0
+      "weight": 70.0,
+      "writerWeightSourceNode": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:1"
     }
   ],
   "elements": [
@@ -2757,7 +2761,7 @@
     {
       "id": 1,
       "level": "RIGID",
-      "reason": "ComponentRefNo missing or shared; source allocation unproved",
+      "reason": "Multiple source nodes carry ComponentRefNo; mass allocation unproved",
       "status": "AMBIGUOUS"
     }
   ]
