@@ -2,8 +2,8 @@
  * Deliberately separate from the unchanged direct-CII edit transaction.
  */
 import { initializeSourceWeightSession, applySourceBackedWeightChange }
-  from './xml-cii-source-weight-reextract.js';
-import { numericalValue } from './xml-cii-final-property-validation.js';
+  from '../xml-cii-source-weight-reextract.js';
+import { numericalValue } from '../xml-cii-final-property-validation.js';
 
 function el(tag, text, attrs={}){
   const n=document.createElement(tag);
