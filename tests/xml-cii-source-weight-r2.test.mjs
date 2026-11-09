@@ -302,6 +302,36 @@ test('R2 unapproved RIGID Type/OD or other engineering changes refuse revised ou
   await assert.rejects(()=>verifySourceEditedCii({...params,revisedCiiText:extras}),
     /CONTROL|record|section|HOLD_CII/);
 });
+test('R2 non-target RIGID +0.000001 CII weight mutation refuses despite prior 0.00001 tolerance',async()=>{
+  const result=await setup();
+  const session=await initializeSourceWeightSession(result,{engineRunner});
+  const approved=r40(session);
+  const unrelated=session.inventory.rows.find(x=>x.rigidPointer!==approved.rigidPointer
+    && x.linkedElements.length===1 && Number.isFinite(x.weight));
+  assert.ok(unrelated,'must choose an existing emitted non-target RIGID');
+  const eol=revisedCii.includes('\r\n')?'\r\n':'\n';
+  const lines=revisedCii.split(/\r?\n/);
+  const rigidHeader=lines.findIndex(x=>x.startsWith('#$ RIGID'));
+  assert.ok(rigidHeader>=0);
+  const index=rigidHeader+unrelated.rigidPointer;
+  const original=lines[index];
+  assert.ok(original && original.length>=28,'real RIGID field must be serialized');
+  const originalWeight=Number(original.slice(0,15).trim().replace(/[dD]/g,'E'));
+  assert.ok(Number.isFinite(originalWeight));
+  const shifted=(originalWeight+0.000001).toFixed(6);
+  assert.equal(Number(shifted)-originalWeight>0,true,'delta must not be lost on serialization');
+  lines[index]=shifted.padStart(15,' ')+original.slice(15);
+  const mutated=lines.join(eol);
+  assert.notEqual(mutated,revisedCii);
+  assert.equal(parseFinalCiiRigidInventory(mutated).declared.rigids,
+    parseFinalCiiRigidInventory(revisedCii).declared.rigids,
+    'mutation preserves structural CII');
+  await assert.rejects(()=>verifySourceEditedCii({
+    originalCiiText:originalCii,revisedCiiText:mutated,
+    originalSha256:await ciiSha256(originalCii),
+    approved:{...approved,newValue:2.984},
+  }),/HOLD_CII_ENGINEERING_DIFF: Unapproved unchanged RIGID weight token changed/);
+});
 test('R2 renamed RIGID pointers reconcile by source-linked element, not previous index',async()=>{
   const result=await setup();
   const session=await initializeSourceWeightSession(result,{engineRunner});
@@ -317,6 +347,27 @@ test('R2 renamed RIGID pointers reconcile by source-linked element, not previous
     if(lines[idx]?.startsWith('#$ AUX_DATA'))break;
     const rowIndex=idx+12, raw=lines[rowIndex];
     if(!raw || raw.startsWith('#
+    const pointer=Number(raw.slice(15,28).trim());
+    if(pointer===row.rigidPointer||pointer===other){
+      lines[rowIndex]=raw.slice(0,15)+String(pointer===row.rigidPointer?other:row.rigidPointer).padStart(13,' ')+raw.slice(28);
+      moved++;
+    }
+  }
+  assert.ok(moved>=2,'both source-linked ELEMENT RIGID pointers must be remapped');
+  [lines[r+row.rigidPointer],lines[r+other]]=[lines[r+other],lines[r+row.rigidPointer]];
+  const permutation=lines.join(eol);
+  assert.notEqual(permutation,revisedCii);
+  const audit=await verifySourceEditedCii({
+    originalCiiText:originalCii,revisedCiiText:permutation,
+    originalSha256:await ciiSha256(originalCii),
+    approved:{...row,newValue:2.984},
+  });
+  assert.equal(audit.status,'PASS_ENGINEERING_DIFF');
+  assert.equal(audit.oldPointer,row.rigidPointer);
+  assert.equal(audit.newPointer,other);
+  assert.equal(audit.pointerReconciledBySource,true);
+  assert.equal(audit.unexpectedDifferences,0);
+});
 ))break;
     const pointer=Number(raw.slice(15,28).trim());
     if(pointer===row.rigidPointer||pointer===other){
