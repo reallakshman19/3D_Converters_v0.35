@@ -30,6 +30,51 @@ def write_json(dest: Path, value: dict):
     dest.write_text(json.dumps(value, sort_keys=True, indent=2,
                                ensure_ascii=False) + "\n", encoding="utf-8")
 
+
+def report_other_fixture(xml: bytes, data_class: str, options=OPTIONS):
+    """Retain counts/digests only, never source or generated engineering bytes."""
+    bootstrap = capture_snapshot(
+        engine_input_xml=xml, original_cii=b"GENERATE_BASELINE",
+        effective_config_json=CONFIG, options=options, assets={},
+        run_id=data_class, original_uploaded_xml=xml,
+        completeness_attestation=ATTEST)
+    cii, _ = run_existing_converter(bootstrap, xml, CONFIG, {})
+    snapshot = capture_snapshot(
+        engine_input_xml=xml, original_cii=cii, effective_config_json=CONFIG,
+        options=options, assets={}, run_id=data_class, original_uploaded_xml=xml,
+        completeness_attestation=ATTEST)
+    replay = replay_cii_without_edits(
+        conversion_snapshot=snapshot, engine_input_xml=xml,
+        original_cii=cii, effective_config_json=CONFIG, configuration_assets={})
+    if replay["verdict"] != "PASS_EXACT_REPLAY":
+        raise RuntimeError(data_class + " replay failed: " + str(replay))
+    ledger = build_lineage_ledger(
+        conversion_snapshot=snapshot, engine_input_xml=xml,
+        original_cii=cii, effective_config_json=CONFIG,
+        configuration_assets={}, replay_report=replay)
+    return {"evidenceClass": data_class, "baselineIndependence": "CURRENT_WRITER_GENERATED",
+            "engineInputSha256": digest(xml), "originalCiiSha256": digest(cii),
+            "replayVerdict": replay["verdict"], "differingBytes": replay["comparison"]["differingBytes"],
+            "coverage": ledger["statistics"], "readOnly": True}
+
+def synthetic_433_144():
+    """Synthetic scale fixture, NOT historical Owner GLRD."""
+    nodes = []
+    for i in range(434):
+        rigid = i > 0 and i % 3 == 1 and i <= 430
+        node = (f"<Node><NodeNumber>{1000+i}</NodeNumber>"
+                f"<ComponentType>{'RIGID' if rigid else 'PIPE'}</ComponentType>"
+                f"<ComponentRefNo>/SYN-433-{i}</ComponentRefNo>"
+                f"<Position>{i*100} 0 0</Position>"
+                "<OutsideDiameter>60.3</OutsideDiameter><WallThickness>3.9</WallThickness>"
+                f"<Weight>{15 if rigid else 0}</Weight>")
+        if rigid:
+            node += "<Rigid>2</Rigid><Endpoint>2</Endpoint>"
+        nodes.append(node + "</Node>")
+    return ("<PipeStressExport><RestrainOpenEnds>No</RestrainOpenEnds><Pipe><Branch>"
+            "<Branchname>/SYNTHETIC-433-144</Branchname>" + "".join(nodes) +
+            "</Branch></Pipe></PipeStressExport>").encode("utf-8")
+
 def generate(out: Path, unittest_log=""):
     out.mkdir(parents=True, exist_ok=True)
     engine_xml = FIXTURE.read_bytes()
@@ -68,10 +113,18 @@ def generate(out: Path, unittest_log=""):
         "originalCiiSha256": digest(original_cii),
     })
     write_json(out / "source-cii-lineage.json", ledger)
+    native_path = ROOT / "Benchmarks/XML to CII 2019/GLRD-1000-PI-01.xml"
+    repo_native_smoke = (report_other_fixture(native_path.read_bytes(),
+                         "REPOSITORY_NATIVE_CURRENT_WRITER_SMOKE")
+                         if native_path.is_file() else
+                         {"status": "NOT_RUN", "reason": "Repository source fixture missing"})
+    synthetic_scale = report_other_fixture(synthetic_433_144(), "SYNTHETIC_433_144_NOT_OWNER")
     write_json(out / "lineage-coverage-report.json", {
         "schema": "xml-cii-lineage-coverage/v1",
         "dataClass": "SYNTHETIC_MULTIBRANCH",
         "counts": coverage, "verification": validation,
+        "repositoryNativeSmoke": repo_native_smoke,
+        "synthetic433_144Scale": synthetic_scale,
         "physicalMassApproval": "NOT_ATTESTED",
         "authenticOwnerGlrd433_144": {
             "datasetAvailable": False, "status": "NOT_RUN",
