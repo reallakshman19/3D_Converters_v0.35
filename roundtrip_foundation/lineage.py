@@ -210,10 +210,11 @@ def detect_nonpositive_node_omissions(processed_nodes, parsed_document, source_b
         for left, right in zip(retained, retained[1:]):
             if left["nodeOrdinal"] >= right["nodeOrdinal"]:
                 continue
-            for candidate in rows:
+            # nodeOrdinal is a zero-based direct-child index for this branch.
+            # Indexing the contiguous original interval avoids a branch-wide
+            # scan for every output edge.
+            for candidate in rows[left["nodeOrdinal"] + 1:right["nodeOrdinal"]]:
                 ordinal = candidate["nodeOrdinal"]
-                if not (left["nodeOrdinal"] < ordinal < right["nodeOrdinal"]):
-                    continue
                 try:
                     numeric = int(candidate["originalNodeNumber"])
                 except (ValueError, TypeError):
@@ -534,6 +535,14 @@ def build_lineage_ledger(*, conversion_snapshot, engine_input_xml: bytes,
         rigid_ownership[aux["ownershipStatus"]] += 1
 
     relationships = []
+    # Persist the full source→observed-Python identity relation for *all*
+    # uniquely matched nodes, not only those whose NodeNumber changed.
+    for intermediate_id, original_id in sorted(transformed_to_source.items()):
+        relationships.append({
+            "from": original_id, "to": intermediate_id,
+            "kind": "SOURCE_NODE_TO_PYTHON_PREPROCESSED_NODE",
+            "evidence": "Exact branch/ordinal/component/position stage identity",
+        })
     components = {}
     for n in originals:
         ref = n["componentRefNo"] or f"UNRESOLVED:{n['identity']}"
@@ -627,6 +636,14 @@ def build_lineage_ledger(*, conversion_snapshot, engine_input_xml: bytes,
             "rigidPointerToElements": {
                 str(a["recordPointer"]): a["linkedElements"]
                 for a in auxiliaries if a["section"] == "RIGID"},
+            "rigidPointerToOwnerCandidates": {
+                str(a["recordPointer"]): {
+                    "sourceNodes": a["sourceOwners"],
+                    "componentRefs": a["ownerCandidates"],
+                    "writerWeightSourceNode": a.get("writerWeightSourceNode"),
+                    "ownershipStatus": a["ownershipStatus"],
+                } for a in auxiliaries if a["section"] == "RIGID"},
+            "pythonNodeToOriginalSourceNode": dict(transformed_to_source),
         },
     }
 
