@@ -184,6 +184,24 @@ test('R2 other property descriptors can reuse byte patch core but production whi
       nodeNumber:row.nodeNumber,componentRefNo:row.componentRefNo,
       propertyId:'Node/Rating',originalToken:'300',newValue:'600',
       approved:true,ownerApproved:true}]}),/unsupported/);
+  const otherProperty = new Map([['TEST_ONLY/OutsideDiameter', {
+    id:'TEST_ONLY/OutsideDiameter',localField:'OutsideDiameter',
+    encode: (raw)=>{const token=String(raw).trim();
+      const number=Number(token);
+      if(!Number.isFinite(number)||number<=0)throw Error('bad OD');
+      return {token,number,canonical:String(number)};},
+  }]]);
+  const target={propertyId:'TEST_ONLY/OutsideDiameter',approved:true,ownerApproved:true,
+    originalToken:'60.3',newValue:'61.2',branchName:row.branchName,
+    branchOrdinal:row.branchOrdinal,nodeOrdinal:row.nodeOrdinal,
+    nodeNumber:row.nodeNumber,componentRefNo:row.componentRefNo};
+  const synthetic=await applyXmlSourceEdits({originalXml,originalSha256:source,
+    edits:[target],registry:otherProperty});
+  assert.equal(synthetic.edits[0].propertyId,'TEST_ONLY/OutsideDiameter');
+  assert.equal(synthetic.unrelatedXmlBytesChanged,0);
+  assert.notEqual(synthetic.revisedXml,originalXml);
+  assert.equal(inspectXmlWeightSources(synthetic.revisedXml).find(x=>x.componentRefNo==='/RIGID-40')
+    .weightField.value,'6','OD descriptor cannot change Weight');
 });
 test('R2 unapproved RIGID Type/OD or other engineering changes refuse revised output',async()=>{
   const result=await setup();
