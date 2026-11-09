@@ -63,7 +63,7 @@ test_private_frozen_existing_cii_replay_real_converter (test_roundtrip_owner_bun
 test_staged_flag_without_staged_bytes_refuses (test_roundtrip_owner_bundle.OwnerBundleIntakeTests.test_staged_flag_without_staged_bytes_refuses) ... ok
 
 ----------------------------------------------------------------------
-Ran 48 tests in 5.447s
+Ran 48 tests in 5.644s
 
 OK
 
