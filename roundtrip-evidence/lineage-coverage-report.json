@@ -1,0 +1,61 @@
+{
+  "authenticOwnerGlrd433_144": {
+    "datasetAvailable": false,
+    "missingInputs": [
+      "Hydrated Owner final conversion configuration",
+      "Run-pinned actual EnrichedXML and full staged JSON",
+      "Imported effective master dependencies and overrides",
+      "Exact historically emitted 433 ELEMENT / 144 RIGID CII",
+      "Converter/Pyodide engine version custody at that run"
+    ],
+    "status": "NOT_RUN"
+  },
+  "counts": {
+    "elementMappings": {
+      "AMBIGUOUS": 0,
+      "CONFLICT": 0,
+      "EXACT_UNIQUE": 8,
+      "TRANSFORMED_WITH_LINEAGE": 3,
+      "UNMATCHED": 0
+    },
+    "engineInputBranches": 4,
+    "engineInputNodes": 16,
+    "events": {
+      "PYTHON_NODE_RENUMBER": 1,
+      "PYTHON_SHORT_NODE_DROP": 1
+    },
+    "finalCiiElements": 11,
+    "finalCiiRigids": 6,
+    "finalNodes": {
+      "count": 15,
+      "generatedRenumberedWithLineage": 1,
+      "originalIdentityVerified": 14,
+      "unresolved": 0
+    },
+    "originalEnrichedXmlBranches": 4,
+    "originalEnrichedXmlNodes": 16,
+    "otherAuxiliaryRecords": 0,
+    "pythonPreprocessedBranches": 4,
+    "pythonPreprocessedNodes": 16,
+    "rigidOwnership": {
+      "AMBIGUOUS": 1,
+      "CONFLICT": 0,
+      "EXACT_UNIQUE": 3,
+      "TRANSFORMED_WITH_LINEAGE": 2,
+      "UNMATCHED": 0
+    },
+    "sharedRigidPointers": 0,
+    "unreferencedRigidPointers": 0,
+    "unresolvedSourceComponents": 1
+  },
+  "dataClass": "SYNTHETIC_MULTIBRANCH",
+  "physicalMassApproval": "NOT_ATTESTED",
+  "schema": "xml-cii-lineage-coverage/v1",
+  "verification": {
+    "allElementsClassified": 11,
+    "allRigidsClassified": 6,
+    "noInvalidPointers": true,
+    "readOnly": true,
+    "status": "PASS"
+  }
+}

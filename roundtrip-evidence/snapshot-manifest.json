@@ -1,0 +1,61 @@
+{
+  "completeness": {
+    "missingInputs": [],
+    "status": "COMPLETE_NO_EXTERNAL_MASTERS"
+  },
+  "configuration": {
+    "assetsSha256": {},
+    "effectiveConfigSha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "effectiveInvocation": [
+      "--coords-mode",
+      "first",
+      "--weight-scale",
+      "10",
+      "--split-condensed-valve-flange",
+      "--use-restraint-type-based-on-json",
+      "--support-config-json",
+      "<EXACT_CONFIG>"
+    ],
+    "masterManifestSha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "options": {
+      "coordsMode": "first",
+      "splitCondensedValveFlange": true,
+      "stagedJsonPresent": false,
+      "templateCiiPresent": false,
+      "useRestraintTypeBasedOnJson": true,
+      "weightScale": "10"
+    },
+    "stagedJsonSha256": null,
+    "weightScale": "10"
+  },
+  "converter": {
+    "codeIdentity": {
+      "cii2019_reparse_proof.py": "f5884bcfde3f7e098a4160e43ade0095d4def3fa61cf6846716dfe2f40a2bd2a",
+      "cii2019_section_rules.py": "877eba71cb8ee2dbcdeb4946e56eb6a0491f91b3fedb513043bc44edd5600696",
+      "xml_to_cii2019.py": "8c1a5d8619091df49b349cf918e1a36d1e3b41baa5ba0eaca3e60d5d9bd0c026",
+      "xml_to_cii2019_bend_radius_policy.py": "9e16b2ee49a1eabbea8ee6eedb787859795d45b452185eac15c7605d194117d8",
+      "xml_to_cii2019_direction.py": "9234e2d30aca367174fefcdb650009f7e5ae805a4b8e35922b86409e9da1677e",
+      "xml_to_cii2019_master_addon.py": "c5c70263910cf4a8fb6a5f969cbf1c3ca94142fe538a36de9c7696a0f5a460ef",
+      "xml_to_cii2019_patched.py": "e6e1cb30aac897af5b3285b4f9b7c9af8078fa325710a96a6329c792264a0632",
+      "xml_to_cii2019_runtime_custody.py": "a3a30969ad110e853d865291cca1a56b56f23a63b39b68cbb7dae42508280a3c"
+    },
+    "entrypoint": "xml_to_cii2019_runtime_custody.py",
+    "runtimeIdentity": {
+      "implementation": "CPython",
+      "pythonVersion": "3.11.18"
+    }
+  },
+  "fingerprintSha256": "7b889e2b191d26b4648cc6b84a484c66336a9a83a8e527b4b13a5aef11e2b194",
+  "inputs": {
+    "engineInputXmlBytes": 4418,
+    "engineInputXmlSha256": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054",
+    "originalCiiBytes": 23934,
+    "originalCiiSha256": "de2308bf6b473c305203a65cbfd8d0ea8b2fc1113fea0d17291fa148be400f57",
+    "uploadedXmlSha256": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054",
+    "uploadedXmlStatus": "CAPTURED"
+  },
+  "runId": "SYNTHETIC_MULTIBRANCH_REAL_CONVERTER",
+  "schema": "xml-cii-roundtrip-snapshot/v1",
+  "sourceKind": "xml",
+  "sourceStage": "ENGINE_INPUT_XML"
+}

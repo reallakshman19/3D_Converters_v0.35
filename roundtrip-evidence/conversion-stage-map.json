@@ -1,0 +1,87 @@
+{
+  "dataClass": "SYNTHETIC",
+  "note": "The Python transformed XML is NOT assumed byte-identical to engine input XML.",
+  "pipeline": [
+    {
+      "custody": "Optional original uploaded bytes; not itself the Python engine input",
+      "order": 1,
+      "source": "workflow job sourceText",
+      "stage": "UPLOADED_XML"
+    },
+    {
+      "custody": "May include master/override, process, split, DTXR and cleanup",
+      "order": 2,
+      "source": "xml-cii-standalone-run-parity.js::enrichStandaloneXmlForRun",
+      "stage": "JS_PREVIEW_ENRICHMENT"
+    },
+    {
+      "custody": "Exact replay boundary: SHA-256 a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054",
+      "order": 3,
+      "source": "xml-cii-workflow-service.js::finalRigidReviewEvidence.engineInputText",
+      "stage": "ENGINE_INPUT_XML"
+    },
+    {
+      "arguments": [
+        "--coords-mode",
+        "first",
+        "--weight-scale",
+        "10",
+        "--split-condensed-valve-flange",
+        "--use-restraint-type-based-on-json",
+        "--support-config-json",
+        "<EXACT_CONFIG>"
+      ],
+      "entrypoint": "xml_to_cii2019_runtime_custody.py",
+      "order": 4,
+      "source": "converters/xml-cii-2019-standalone/invocation-builder.js",
+      "stage": "ENGINE_INVOCATION"
+    },
+    {
+      "operations": [
+        "staged JSON enrichment",
+        "process data",
+        "bend radius policy",
+        "negative-node renumber",
+        "effective restraint policy"
+      ],
+      "order": 5,
+      "source": "xml_to_cii2019_runtime_custody.py::main",
+      "stage": "PYTHON_PREPROCESS"
+    },
+    {
+      "operations": [
+        "positive source-node retention",
+        "<=6mm arriving node deletion"
+      ],
+      "order": 6,
+      "source": "xml_to_cii2019.py::_parse_xml_document / _drop_short_element_nodes",
+      "stage": "NODE_CLEANUP"
+    },
+    {
+      "operations": [
+        "branch edge creation",
+        "ELEMENTS",
+        "auxiliary pointers",
+        "RIGID weight from qualified FROM/TO rule",
+        "CII text serialize"
+      ],
+      "order": 7,
+      "source": "xml_to_cii2019.py::_build_edges / _build_cii_text",
+      "stage": "EDGE_AND_WRITER"
+    },
+    {
+      "operations": [
+        "original/source inventory",
+        "observational post-Python stage",
+        "real parser retained adjacency",
+        "independent CII reparse",
+        "multi-level mapping with UNMATCHED/AMBIGUOUS classifications"
+      ],
+      "order": 8,
+      "source": "roundtrip_foundation/lineage.py",
+      "stage": "READ_ONLY_LINEAGE"
+    }
+  ],
+  "productionSourceUnchanged": true,
+  "schema": "xml-cii-conversion-stage-map/v1"
+}

@@ -1,0 +1,2698 @@
+{
+  "auxiliaryRecords": [
+    {
+      "identity": "RIGID:1",
+      "linkedElements": [
+        1
+      ],
+      "observedSourceWeight": "15",
+      "ownerCandidates": [
+        "/SHARED-COMP"
+      ],
+      "ownershipStatus": "AMBIGUOUS",
+      "physicalMassAuthority": "UNVERIFIED",
+      "reason": "ComponentRefNo missing or shared; source allocation unproved",
+      "recordPointer": 1,
+      "section": "RIGID",
+      "shared": false,
+      "sourceOwners": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:1"
+      ],
+      "unreferenced": false,
+      "weight": 150.0
+    },
+    {
+      "identity": "RIGID:2",
+      "linkedElements": [
+        3
+      ],
+      "observedSourceWeight": "6",
+      "ownerCandidates": [
+        "/RIGID-40"
+      ],
+      "ownershipStatus": "EXACT_UNIQUE",
+      "physicalMassAuthority": "UNVERIFIED",
+      "reason": "Unique writer-selected TO source node, physical mass not independently approved",
+      "recordPointer": 2,
+      "section": "RIGID",
+      "shared": false,
+      "sourceOwners": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:3"
+      ],
+      "unreferenced": false,
+      "weight": 60.0
+    },
+    {
+      "identity": "RIGID:3",
+      "linkedElements": [
+        5
+      ],
+      "observedSourceWeight": "11",
+      "ownerCandidates": [
+        "/RIGID-B2-20"
+      ],
+      "ownershipStatus": "EXACT_UNIQUE",
+      "physicalMassAuthority": "UNVERIFIED",
+      "reason": "Unique writer-selected TO source node, physical mass not independently approved",
+      "recordPointer": 3,
+      "section": "RIGID",
+      "shared": false,
+      "sourceOwners": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:1"
+      ],
+      "unreferenced": false,
+      "weight": 110.0
+    },
+    {
+      "identity": "RIGID:4",
+      "linkedElements": [
+        7
+      ],
+      "observedSourceWeight": "5",
+      "ownerCandidates": [
+        "/RIGID-B3-110"
+      ],
+      "ownershipStatus": "EXACT_UNIQUE",
+      "physicalMassAuthority": "UNVERIFIED",
+      "reason": "Unique writer-selected TO source node, physical mass not independently approved",
+      "recordPointer": 4,
+      "section": "RIGID",
+      "shared": false,
+      "sourceOwners": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:1"
+      ],
+      "unreferenced": false,
+      "weight": 50.0
+    },
+    {
+      "identity": "RIGID:5",
+      "linkedElements": [
+        8
+      ],
+      "observedSourceWeight": "8",
+      "ownerCandidates": [
+        "/RIGID-B3-120"
+      ],
+      "ownershipStatus": "TRANSFORMED_WITH_LINEAGE",
+      "physicalMassAuthority": "UNVERIFIED",
+      "reason": "Unique writer-selected TO source node, physical mass not independently approved",
+      "recordPointer": 5,
+      "section": "RIGID",
+      "shared": false,
+      "sourceOwners": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:3"
+      ],
+      "unreferenced": false,
+      "weight": 80.0
+    },
+    {
+      "identity": "RIGID:6",
+      "linkedElements": [
+        10
+      ],
+      "observedSourceWeight": "7",
+      "ownerCandidates": [
+        "/FLAN-B4-NEG"
+      ],
+      "ownershipStatus": "TRANSFORMED_WITH_LINEAGE",
+      "physicalMassAuthority": "UNVERIFIED",
+      "reason": "Unique writer-selected TO source node, physical mass not independently approved",
+      "recordPointer": 6,
+      "section": "RIGID",
+      "shared": false,
+      "sourceOwners": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:1"
+      ],
+      "unreferenced": false,
+      "weight": 70.0
+    }
+  ],
+  "elements": [
+    {
+      "branchName": "/RT/B1",
+      "dx": 100.0,
+      "dy": 0.0,
+      "dz": 0.0,
+      "elementIndex": 1,
+      "fieldProvenance": {
+        "corrosionAllowance": "TO",
+        "insulationThickness": "TO",
+        "material": "Writer material selection/carry-forward",
+        "outsideDiameter": "FROM normally; special BRAN/TO endpoint=2",
+        "rigidWeight": "TO if TO.rigid=2; FLAN/TO if FROM.rigid=2 and TO is FLAN; else zero",
+        "temperaturePressure": "Branch and effective process mappings",
+        "wallThickness": "FROM with converter fallback/defaults"
+      },
+      "fromNode": "10",
+      "lengthMm": 100.0,
+      "lineageStatus": "EXACT_UNIQUE",
+      "outsideDiameterMm": 60.3,
+      "pointers": {
+        "BEND": 0,
+        "NODENAME": 0,
+        "REDUCERS": 0,
+        "RESTRANT": 0,
+        "RIGID": 1,
+        "SIF&TEES": 0
+      },
+      "rigidPointer": 1,
+      "sourceEdgeIdentity": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:0",
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:1"
+      ],
+      "sourceOwnerCandidates": [
+        {
+          "branch": "/RT/B1",
+          "from": "10",
+          "to": "20"
+        }
+      ],
+      "toNode": "20"
+    },
+    {
+      "branchName": "/RT/B1",
+      "dx": 100.0,
+      "dy": 0.0,
+      "dz": 0.0,
+      "elementIndex": 2,
+      "fieldProvenance": {
+        "corrosionAllowance": "TO",
+        "insulationThickness": "TO",
+        "material": "Writer material selection/carry-forward",
+        "outsideDiameter": "FROM normally; special BRAN/TO endpoint=2",
+        "rigidWeight": "TO if TO.rigid=2; FLAN/TO if FROM.rigid=2 and TO is FLAN; else zero",
+        "temperaturePressure": "Branch and effective process mappings",
+        "wallThickness": "FROM with converter fallback/defaults"
+      },
+      "fromNode": "20",
+      "lengthMm": 100.0,
+      "lineageStatus": "EXACT_UNIQUE",
+      "outsideDiameterMm": 60.3,
+      "pointers": {
+        "BEND": 0,
+        "NODENAME": 0,
+        "REDUCERS": 0,
+        "RESTRANT": 0,
+        "RIGID": 0,
+        "SIF&TEES": 0
+      },
+      "rigidPointer": 0,
+      "sourceEdgeIdentity": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:1",
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:2"
+      ],
+      "sourceOwnerCandidates": [
+        {
+          "branch": "/RT/B1",
+          "from": "20",
+          "to": "30"
+        }
+      ],
+      "toNode": "30"
+    },
+    {
+      "branchName": "/RT/B1",
+      "dx": 100.0,
+      "dy": 0.0,
+      "dz": 0.0,
+      "elementIndex": 3,
+      "fieldProvenance": {
+        "corrosionAllowance": "TO",
+        "insulationThickness": "TO",
+        "material": "Writer material selection/carry-forward",
+        "outsideDiameter": "FROM normally; special BRAN/TO endpoint=2",
+        "rigidWeight": "TO if TO.rigid=2; FLAN/TO if FROM.rigid=2 and TO is FLAN; else zero",
+        "temperaturePressure": "Branch and effective process mappings",
+        "wallThickness": "FROM with converter fallback/defaults"
+      },
+      "fromNode": "30",
+      "lengthMm": 100.0,
+      "lineageStatus": "EXACT_UNIQUE",
+      "outsideDiameterMm": 60.3,
+      "pointers": {
+        "BEND": 0,
+        "NODENAME": 0,
+        "REDUCERS": 0,
+        "RESTRANT": 0,
+        "RIGID": 2,
+        "SIF&TEES": 0
+      },
+      "rigidPointer": 2,
+      "sourceEdgeIdentity": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:2",
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:3"
+      ],
+      "sourceOwnerCandidates": [
+        {
+          "branch": "/RT/B1",
+          "from": "30",
+          "to": "40"
+        }
+      ],
+      "toNode": "40"
+    },
+    {
+      "branchName": "/RT/B1",
+      "dx": 100.0,
+      "dy": 0.0,
+      "dz": 0.0,
+      "elementIndex": 4,
+      "fieldProvenance": {
+        "corrosionAllowance": "TO",
+        "insulationThickness": "TO",
+        "material": "Writer material selection/carry-forward",
+        "outsideDiameter": "FROM normally; special BRAN/TO endpoint=2",
+        "rigidWeight": "TO if TO.rigid=2; FLAN/TO if FROM.rigid=2 and TO is FLAN; else zero",
+        "temperaturePressure": "Branch and effective process mappings",
+        "wallThickness": "FROM with converter fallback/defaults"
+      },
+      "fromNode": "40",
+      "lengthMm": 100.0,
+      "lineageStatus": "EXACT_UNIQUE",
+      "outsideDiameterMm": 60.3,
+      "pointers": {
+        "BEND": 0,
+        "NODENAME": 0,
+        "REDUCERS": 0,
+        "RESTRANT": 0,
+        "RIGID": 0,
+        "SIF&TEES": 0
+      },
+      "rigidPointer": 0,
+      "sourceEdgeIdentity": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:3",
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:4"
+      ],
+      "sourceOwnerCandidates": [
+        {
+          "branch": "/RT/B1",
+          "from": "40",
+          "to": "50"
+        }
+      ],
+      "toNode": "50"
+    },
+    {
+      "branchName": "/RT/B2",
+      "dx": 100.0,
+      "dy": 0.0,
+      "dz": 0.0,
+      "elementIndex": 5,
+      "fieldProvenance": {
+        "corrosionAllowance": "TO",
+        "insulationThickness": "TO",
+        "material": "Writer material selection/carry-forward",
+        "outsideDiameter": "FROM normally; special BRAN/TO endpoint=2",
+        "rigidWeight": "TO if TO.rigid=2; FLAN/TO if FROM.rigid=2 and TO is FLAN; else zero",
+        "temperaturePressure": "Branch and effective process mappings",
+        "wallThickness": "FROM with converter fallback/defaults"
+      },
+      "fromNode": "10",
+      "lengthMm": 100.0,
+      "lineageStatus": "EXACT_UNIQUE",
+      "outsideDiameterMm": 60.3,
+      "pointers": {
+        "BEND": 0,
+        "NODENAME": 0,
+        "REDUCERS": 0,
+        "RESTRANT": 0,
+        "RIGID": 3,
+        "SIF&TEES": 0
+      },
+      "rigidPointer": 3,
+      "sourceEdgeIdentity": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:0",
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:1"
+      ],
+      "sourceOwnerCandidates": [
+        {
+          "branch": "/RT/B2",
+          "from": "10",
+          "to": "20"
+        }
+      ],
+      "toNode": "20"
+    },
+    {
+      "branchName": "/RT/B2",
+      "dx": 100.0,
+      "dy": 0.0,
+      "dz": 0.0,
+      "elementIndex": 6,
+      "fieldProvenance": {
+        "corrosionAllowance": "TO",
+        "insulationThickness": "TO",
+        "material": "Writer material selection/carry-forward",
+        "outsideDiameter": "FROM normally; special BRAN/TO endpoint=2",
+        "rigidWeight": "TO if TO.rigid=2; FLAN/TO if FROM.rigid=2 and TO is FLAN; else zero",
+        "temperaturePressure": "Branch and effective process mappings",
+        "wallThickness": "FROM with converter fallback/defaults"
+      },
+      "fromNode": "20",
+      "lengthMm": 100.0,
+      "lineageStatus": "EXACT_UNIQUE",
+      "outsideDiameterMm": 60.3,
+      "pointers": {
+        "BEND": 0,
+        "NODENAME": 0,
+        "REDUCERS": 0,
+        "RESTRANT": 0,
+        "RIGID": 0,
+        "SIF&TEES": 0
+      },
+      "rigidPointer": 0,
+      "sourceEdgeIdentity": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:1",
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:2"
+      ],
+      "sourceOwnerCandidates": [
+        {
+          "branch": "/RT/B2",
+          "from": "20",
+          "to": "30"
+        }
+      ],
+      "toNode": "30"
+    },
+    {
+      "branchName": "/RT/B3",
+      "dx": 100.0,
+      "dy": 0.0,
+      "dz": 0.0,
+      "elementIndex": 7,
+      "fieldProvenance": {
+        "corrosionAllowance": "TO",
+        "insulationThickness": "TO",
+        "material": "Writer material selection/carry-forward",
+        "outsideDiameter": "FROM normally; special BRAN/TO endpoint=2",
+        "rigidWeight": "TO if TO.rigid=2; FLAN/TO if FROM.rigid=2 and TO is FLAN; else zero",
+        "temperaturePressure": "Branch and effective process mappings",
+        "wallThickness": "FROM with converter fallback/defaults"
+      },
+      "fromNode": "100",
+      "lengthMm": 100.0,
+      "lineageStatus": "EXACT_UNIQUE",
+      "outsideDiameterMm": 60.3,
+      "pointers": {
+        "BEND": 0,
+        "NODENAME": 0,
+        "REDUCERS": 0,
+        "RESTRANT": 0,
+        "RIGID": 4,
+        "SIF&TEES": 0
+      },
+      "rigidPointer": 4,
+      "sourceEdgeIdentity": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:0",
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:1"
+      ],
+      "sourceOwnerCandidates": [
+        {
+          "branch": "/RT/B3",
+          "from": "100",
+          "to": "110"
+        }
+      ],
+      "toNode": "110"
+    },
+    {
+      "branchName": "/RT/B3",
+      "dx": 100.0,
+      "dy": 0.0,
+      "dz": 0.0,
+      "elementIndex": 8,
+      "fieldProvenance": {
+        "corrosionAllowance": "TO",
+        "insulationThickness": "TO",
+        "material": "Writer material selection/carry-forward",
+        "outsideDiameter": "FROM normally; special BRAN/TO endpoint=2",
+        "rigidWeight": "TO if TO.rigid=2; FLAN/TO if FROM.rigid=2 and TO is FLAN; else zero",
+        "temperaturePressure": "Branch and effective process mappings",
+        "wallThickness": "FROM with converter fallback/defaults"
+      },
+      "fromNode": "110",
+      "lengthMm": 100.0,
+      "lineageStatus": "TRANSFORMED_WITH_LINEAGE",
+      "outsideDiameterMm": 60.3,
+      "pointers": {
+        "BEND": 0,
+        "NODENAME": 0,
+        "REDUCERS": 0,
+        "RESTRANT": 0,
+        "RIGID": 5,
+        "SIF&TEES": 0
+      },
+      "rigidPointer": 5,
+      "sourceEdgeIdentity": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:1",
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:3"
+      ],
+      "sourceOwnerCandidates": [
+        {
+          "branch": "/RT/B3",
+          "from": "110",
+          "to": "120"
+        }
+      ],
+      "toNode": "120"
+    },
+    {
+      "branchName": "/RT/B3",
+      "dx": 100.0,
+      "dy": 0.0,
+      "dz": 0.0,
+      "elementIndex": 9,
+      "fieldProvenance": {
+        "corrosionAllowance": "TO",
+        "insulationThickness": "TO",
+        "material": "Writer material selection/carry-forward",
+        "outsideDiameter": "FROM normally; special BRAN/TO endpoint=2",
+        "rigidWeight": "TO if TO.rigid=2; FLAN/TO if FROM.rigid=2 and TO is FLAN; else zero",
+        "temperaturePressure": "Branch and effective process mappings",
+        "wallThickness": "FROM with converter fallback/defaults"
+      },
+      "fromNode": "120",
+      "lengthMm": 100.0,
+      "lineageStatus": "EXACT_UNIQUE",
+      "outsideDiameterMm": 60.3,
+      "pointers": {
+        "BEND": 0,
+        "NODENAME": 0,
+        "REDUCERS": 0,
+        "RESTRANT": 0,
+        "RIGID": 0,
+        "SIF&TEES": 0
+      },
+      "rigidPointer": 0,
+      "sourceEdgeIdentity": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:3",
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:4"
+      ],
+      "sourceOwnerCandidates": [
+        {
+          "branch": "/RT/B3",
+          "from": "120",
+          "to": "130"
+        }
+      ],
+      "toNode": "130"
+    },
+    {
+      "branchName": "/RT/B4",
+      "dx": 50.0,
+      "dy": 0.0,
+      "dz": 0.0,
+      "elementIndex": 10,
+      "fieldProvenance": {
+        "corrosionAllowance": "TO",
+        "insulationThickness": "TO",
+        "material": "Writer material selection/carry-forward",
+        "outsideDiameter": "FROM normally; special BRAN/TO endpoint=2",
+        "rigidWeight": "TO if TO.rigid=2; FLAN/TO if FROM.rigid=2 and TO is FLAN; else zero",
+        "temperaturePressure": "Branch and effective process mappings",
+        "wallThickness": "FROM with converter fallback/defaults"
+      },
+      "fromNode": "500",
+      "lengthMm": 50.0,
+      "lineageStatus": "TRANSFORMED_WITH_LINEAGE",
+      "outsideDiameterMm": 60.3,
+      "pointers": {
+        "BEND": 0,
+        "NODENAME": 0,
+        "REDUCERS": 0,
+        "RESTRANT": 0,
+        "RIGID": 6,
+        "SIF&TEES": 0
+      },
+      "rigidPointer": 6,
+      "sourceEdgeIdentity": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:0",
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:1"
+      ],
+      "sourceOwnerCandidates": [
+        {
+          "branch": "/RT/B4",
+          "from": "500",
+          "to": "519"
+        }
+      ],
+      "toNode": "519"
+    },
+    {
+      "branchName": "/RT/B4",
+      "dx": 50.0,
+      "dy": 0.0,
+      "dz": 0.0,
+      "elementIndex": 11,
+      "fieldProvenance": {
+        "corrosionAllowance": "TO",
+        "insulationThickness": "TO",
+        "material": "Writer material selection/carry-forward",
+        "outsideDiameter": "FROM normally; special BRAN/TO endpoint=2",
+        "rigidWeight": "TO if TO.rigid=2; FLAN/TO if FROM.rigid=2 and TO is FLAN; else zero",
+        "temperaturePressure": "Branch and effective process mappings",
+        "wallThickness": "FROM with converter fallback/defaults"
+      },
+      "fromNode": "519",
+      "lengthMm": 50.0,
+      "lineageStatus": "TRANSFORMED_WITH_LINEAGE",
+      "outsideDiameterMm": 60.3,
+      "pointers": {
+        "BEND": 0,
+        "NODENAME": 0,
+        "REDUCERS": 0,
+        "RESTRANT": 0,
+        "RIGID": 0,
+        "SIF&TEES": 0
+      },
+      "rigidPointer": 0,
+      "sourceEdgeIdentity": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:1",
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:2"
+      ],
+      "sourceOwnerCandidates": [
+        {
+          "branch": "/RT/B4",
+          "from": "519",
+          "to": "520"
+        }
+      ],
+      "toNode": "520"
+    }
+  ],
+  "finalNodes": [
+    {
+      "branchName": "/RT/B1",
+      "ciiNodeNumber": "10",
+      "connectedElements": [
+        1
+      ],
+      "lineageStatus": "EXACT_UNIQUE",
+      "sourceNodeIdentity": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:0",
+      "transformation": "NONE"
+    },
+    {
+      "branchName": "/RT/B1",
+      "ciiNodeNumber": "20",
+      "connectedElements": [
+        1,
+        2
+      ],
+      "lineageStatus": "EXACT_UNIQUE",
+      "sourceNodeIdentity": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:1",
+      "transformation": "NONE"
+    },
+    {
+      "branchName": "/RT/B1",
+      "ciiNodeNumber": "30",
+      "connectedElements": [
+        2,
+        3
+      ],
+      "lineageStatus": "EXACT_UNIQUE",
+      "sourceNodeIdentity": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:2",
+      "transformation": "NONE"
+    },
+    {
+      "branchName": "/RT/B1",
+      "ciiNodeNumber": "40",
+      "connectedElements": [
+        3,
+        4
+      ],
+      "lineageStatus": "EXACT_UNIQUE",
+      "sourceNodeIdentity": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:3",
+      "transformation": "NONE"
+    },
+    {
+      "branchName": "/RT/B1",
+      "ciiNodeNumber": "50",
+      "connectedElements": [
+        4
+      ],
+      "lineageStatus": "EXACT_UNIQUE",
+      "sourceNodeIdentity": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:4",
+      "transformation": "NONE"
+    },
+    {
+      "branchName": "/RT/B2",
+      "ciiNodeNumber": "10",
+      "connectedElements": [
+        5
+      ],
+      "lineageStatus": "EXACT_UNIQUE",
+      "sourceNodeIdentity": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:0",
+      "transformation": "NONE"
+    },
+    {
+      "branchName": "/RT/B2",
+      "ciiNodeNumber": "20",
+      "connectedElements": [
+        5,
+        6
+      ],
+      "lineageStatus": "EXACT_UNIQUE",
+      "sourceNodeIdentity": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:1",
+      "transformation": "NONE"
+    },
+    {
+      "branchName": "/RT/B2",
+      "ciiNodeNumber": "30",
+      "connectedElements": [
+        6
+      ],
+      "lineageStatus": "EXACT_UNIQUE",
+      "sourceNodeIdentity": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:2",
+      "transformation": "NONE"
+    },
+    {
+      "branchName": "/RT/B3",
+      "ciiNodeNumber": "100",
+      "connectedElements": [
+        7
+      ],
+      "lineageStatus": "EXACT_UNIQUE",
+      "sourceNodeIdentity": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:0",
+      "transformation": "NONE"
+    },
+    {
+      "branchName": "/RT/B3",
+      "ciiNodeNumber": "110",
+      "connectedElements": [
+        7,
+        8
+      ],
+      "lineageStatus": "EXACT_UNIQUE",
+      "sourceNodeIdentity": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:1",
+      "transformation": "NONE"
+    },
+    {
+      "branchName": "/RT/B3",
+      "ciiNodeNumber": "120",
+      "connectedElements": [
+        8,
+        9
+      ],
+      "lineageStatus": "EXACT_UNIQUE",
+      "sourceNodeIdentity": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:3",
+      "transformation": "NONE"
+    },
+    {
+      "branchName": "/RT/B3",
+      "ciiNodeNumber": "130",
+      "connectedElements": [
+        9
+      ],
+      "lineageStatus": "EXACT_UNIQUE",
+      "sourceNodeIdentity": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:4",
+      "transformation": "NONE"
+    },
+    {
+      "branchName": "/RT/B4",
+      "ciiNodeNumber": "500",
+      "connectedElements": [
+        10
+      ],
+      "lineageStatus": "EXACT_UNIQUE",
+      "sourceNodeIdentity": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:0",
+      "transformation": "NONE"
+    },
+    {
+      "branchName": "/RT/B4",
+      "ciiNodeNumber": "519",
+      "connectedElements": [
+        10,
+        11
+      ],
+      "lineageStatus": "TRANSFORMED_WITH_LINEAGE",
+      "sourceNodeIdentity": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:1",
+      "transformation": "PYTHON_RENUMBER"
+    },
+    {
+      "branchName": "/RT/B4",
+      "ciiNodeNumber": "520",
+      "connectedElements": [
+        11
+      ],
+      "lineageStatus": "EXACT_UNIQUE",
+      "sourceNodeIdentity": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:2",
+      "transformation": "NONE"
+    }
+  ],
+  "index": {
+    "componentToSourceNodes": {
+      "/DROPPED-B3-111": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:2"
+      ],
+      "/FLAN-B4-NEG": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:1"
+      ],
+      "/PIPE-10": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:0"
+      ],
+      "/PIPE-50": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:4"
+      ],
+      "/PIPE-B2-10": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:0"
+      ],
+      "/PIPE-B2-30": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:2"
+      ],
+      "/PIPE-B3-100": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:0"
+      ],
+      "/PIPE-B3-130": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:4"
+      ],
+      "/PIPE-B4-500": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:0"
+      ],
+      "/PIPE-B4-520": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:2"
+      ],
+      "/RIGID-40": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:3"
+      ],
+      "/RIGID-B2-20": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:1"
+      ],
+      "/RIGID-B3-110": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:1"
+      ],
+      "/RIGID-B3-120": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:3"
+      ],
+      "/SHARED-COMP": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:1",
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:2"
+      ]
+    },
+    "rigidPointerToElements": {
+      "1": [
+        1
+      ],
+      "2": [
+        3
+      ],
+      "3": [
+        5
+      ],
+      "4": [
+        7
+      ],
+      "5": [
+        8
+      ],
+      "6": [
+        10
+      ]
+    },
+    "sourceNodeToElements": {
+      "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:0": [
+        1
+      ],
+      "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:1": [
+        1,
+        2
+      ],
+      "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:2": [
+        2,
+        3
+      ],
+      "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:3": [
+        3,
+        4
+      ],
+      "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:4": [
+        4
+      ],
+      "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:0": [
+        5
+      ],
+      "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:1": [
+        5,
+        6
+      ],
+      "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:2": [
+        6
+      ],
+      "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:0": [
+        7
+      ],
+      "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:1": [
+        7,
+        8
+      ],
+      "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:3": [
+        8,
+        9
+      ],
+      "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:4": [
+        9
+      ],
+      "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:0": [
+        10
+      ],
+      "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:1": [
+        10,
+        11
+      ],
+      "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:2": [
+        11
+      ]
+    },
+    "sourceNodeToFinalNodes": {
+      "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:0": [
+        {
+          "branchName": "/RT/B1",
+          "nodeNumber": "10"
+        }
+      ],
+      "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:1": [
+        {
+          "branchName": "/RT/B1",
+          "nodeNumber": "20"
+        }
+      ],
+      "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:2": [
+        {
+          "branchName": "/RT/B1",
+          "nodeNumber": "30"
+        }
+      ],
+      "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:3": [
+        {
+          "branchName": "/RT/B1",
+          "nodeNumber": "40"
+        }
+      ],
+      "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:4": [
+        {
+          "branchName": "/RT/B1",
+          "nodeNumber": "50"
+        }
+      ],
+      "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:0": [
+        {
+          "branchName": "/RT/B2",
+          "nodeNumber": "10"
+        }
+      ],
+      "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:1": [
+        {
+          "branchName": "/RT/B2",
+          "nodeNumber": "20"
+        }
+      ],
+      "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:2": [
+        {
+          "branchName": "/RT/B2",
+          "nodeNumber": "30"
+        }
+      ],
+      "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:0": [
+        {
+          "branchName": "/RT/B3",
+          "nodeNumber": "100"
+        }
+      ],
+      "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:1": [
+        {
+          "branchName": "/RT/B3",
+          "nodeNumber": "110"
+        }
+      ],
+      "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:3": [
+        {
+          "branchName": "/RT/B3",
+          "nodeNumber": "120"
+        }
+      ],
+      "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:4": [
+        {
+          "branchName": "/RT/B3",
+          "nodeNumber": "130"
+        }
+      ],
+      "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:0": [
+        {
+          "branchName": "/RT/B4",
+          "nodeNumber": "500"
+        }
+      ],
+      "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:1": [
+        {
+          "branchName": "/RT/B4",
+          "nodeNumber": "519"
+        }
+      ],
+      "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:2": [
+        {
+          "branchName": "/RT/B4",
+          "nodeNumber": "520"
+        }
+      ]
+    }
+  },
+  "physicalMassAuthority": "NOT_ATTESTED",
+  "pythonPreprocessedNodes": [
+    {
+      "branchName": "/RT/B1",
+      "branchOrdinal": 0,
+      "componentRefNo": "/PIPE-10",
+      "componentType": "PIPE",
+      "fields": {
+        "ComponentRefNo": "/PIPE-10",
+        "ComponentType": "PIPE",
+        "CorrosionAllowance": "",
+        "DTXR_POS": "",
+        "DTXR_PS": "",
+        "ElementLengthMm": "",
+        "InsulationThickness": "",
+        "NodeName": "",
+        "NodeNumber": "10",
+        "OutsideDiameter": "60.3",
+        "Position": "0 0 0",
+        "Rating": "",
+        "Rigid": "",
+        "WallThickness": "3.9",
+        "Weight": "0"
+      },
+      "identity": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:0:0",
+      "nodeOrdinal": 0,
+      "originalNodeNumber": "10",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "sourceStatus": "PYTHON_TRANSFORMED",
+      "sourceXmlDigest": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c",
+      "sourceXmlPath": "Branch[1]/Node[1]",
+      "stage": "PYTHON_PREPROCESSED"
+    },
+    {
+      "branchName": "/RT/B1",
+      "branchOrdinal": 0,
+      "componentRefNo": "/SHARED-COMP",
+      "componentType": "RIGID",
+      "fields": {
+        "ComponentRefNo": "/SHARED-COMP",
+        "ComponentType": "RIGID",
+        "CorrosionAllowance": "",
+        "DTXR_POS": "",
+        "DTXR_PS": "",
+        "ElementLengthMm": "",
+        "InsulationThickness": "",
+        "NodeName": "",
+        "NodeNumber": "20",
+        "OutsideDiameter": "60.3",
+        "Position": "100 0 0",
+        "Rating": "",
+        "Rigid": "2",
+        "WallThickness": "3.9",
+        "Weight": "15"
+      },
+      "identity": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:0:1",
+      "nodeOrdinal": 1,
+      "originalNodeNumber": "20",
+      "position": [
+        100.0,
+        0.0,
+        0.0
+      ],
+      "sourceStatus": "PYTHON_TRANSFORMED",
+      "sourceXmlDigest": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c",
+      "sourceXmlPath": "Branch[1]/Node[2]",
+      "stage": "PYTHON_PREPROCESSED"
+    },
+    {
+      "branchName": "/RT/B1",
+      "branchOrdinal": 0,
+      "componentRefNo": "/SHARED-COMP",
+      "componentType": "PIPE",
+      "fields": {
+        "ComponentRefNo": "/SHARED-COMP",
+        "ComponentType": "PIPE",
+        "CorrosionAllowance": "",
+        "DTXR_POS": "",
+        "DTXR_PS": "",
+        "ElementLengthMm": "",
+        "InsulationThickness": "",
+        "NodeName": "",
+        "NodeNumber": "30",
+        "OutsideDiameter": "60.3",
+        "Position": "200 0 0",
+        "Rating": "",
+        "Rigid": "",
+        "WallThickness": "3.9",
+        "Weight": "0"
+      },
+      "identity": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:0:2",
+      "nodeOrdinal": 2,
+      "originalNodeNumber": "30",
+      "position": [
+        200.0,
+        0.0,
+        0.0
+      ],
+      "sourceStatus": "PYTHON_TRANSFORMED",
+      "sourceXmlDigest": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c",
+      "sourceXmlPath": "Branch[1]/Node[3]",
+      "stage": "PYTHON_PREPROCESSED"
+    },
+    {
+      "branchName": "/RT/B1",
+      "branchOrdinal": 0,
+      "componentRefNo": "/RIGID-40",
+      "componentType": "RIGID",
+      "fields": {
+        "ComponentRefNo": "/RIGID-40",
+        "ComponentType": "RIGID",
+        "CorrosionAllowance": "",
+        "DTXR_POS": "",
+        "DTXR_PS": "",
+        "ElementLengthMm": "",
+        "InsulationThickness": "",
+        "NodeName": "",
+        "NodeNumber": "40",
+        "OutsideDiameter": "60.3",
+        "Position": "300 0 0",
+        "Rating": "",
+        "Rigid": "2",
+        "WallThickness": "3.9",
+        "Weight": "6"
+      },
+      "identity": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:0:3",
+      "nodeOrdinal": 3,
+      "originalNodeNumber": "40",
+      "position": [
+        300.0,
+        0.0,
+        0.0
+      ],
+      "sourceStatus": "PYTHON_TRANSFORMED",
+      "sourceXmlDigest": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c",
+      "sourceXmlPath": "Branch[1]/Node[4]",
+      "stage": "PYTHON_PREPROCESSED"
+    },
+    {
+      "branchName": "/RT/B1",
+      "branchOrdinal": 0,
+      "componentRefNo": "/PIPE-50",
+      "componentType": "PIPE",
+      "fields": {
+        "ComponentRefNo": "/PIPE-50",
+        "ComponentType": "PIPE",
+        "CorrosionAllowance": "",
+        "DTXR_POS": "",
+        "DTXR_PS": "",
+        "ElementLengthMm": "",
+        "InsulationThickness": "",
+        "NodeName": "",
+        "NodeNumber": "50",
+        "OutsideDiameter": "60.3",
+        "Position": "400 0 0",
+        "Rating": "",
+        "Rigid": "",
+        "WallThickness": "3.9",
+        "Weight": "0"
+      },
+      "identity": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:0:4",
+      "nodeOrdinal": 4,
+      "originalNodeNumber": "50",
+      "position": [
+        400.0,
+        0.0,
+        0.0
+      ],
+      "sourceStatus": "PYTHON_TRANSFORMED",
+      "sourceXmlDigest": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c",
+      "sourceXmlPath": "Branch[1]/Node[5]",
+      "stage": "PYTHON_PREPROCESSED"
+    },
+    {
+      "branchName": "/RT/B2",
+      "branchOrdinal": 1,
+      "componentRefNo": "/PIPE-B2-10",
+      "componentType": "PIPE",
+      "fields": {
+        "ComponentRefNo": "/PIPE-B2-10",
+        "ComponentType": "PIPE",
+        "CorrosionAllowance": "",
+        "DTXR_POS": "",
+        "DTXR_PS": "",
+        "ElementLengthMm": "",
+        "InsulationThickness": "",
+        "NodeName": "",
+        "NodeNumber": "10",
+        "OutsideDiameter": "60.3",
+        "Position": "0 300 0",
+        "Rating": "",
+        "Rigid": "",
+        "WallThickness": "",
+        "Weight": "0"
+      },
+      "identity": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:1:0",
+      "nodeOrdinal": 0,
+      "originalNodeNumber": "10",
+      "position": [
+        0.0,
+        300.0,
+        0.0
+      ],
+      "sourceStatus": "PYTHON_TRANSFORMED",
+      "sourceXmlDigest": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c",
+      "sourceXmlPath": "Branch[2]/Node[1]",
+      "stage": "PYTHON_PREPROCESSED"
+    },
+    {
+      "branchName": "/RT/B2",
+      "branchOrdinal": 1,
+      "componentRefNo": "/RIGID-B2-20",
+      "componentType": "RIGID",
+      "fields": {
+        "ComponentRefNo": "/RIGID-B2-20",
+        "ComponentType": "RIGID",
+        "CorrosionAllowance": "",
+        "DTXR_POS": "",
+        "DTXR_PS": "",
+        "ElementLengthMm": "",
+        "InsulationThickness": "",
+        "NodeName": "",
+        "NodeNumber": "20",
+        "OutsideDiameter": "60.3",
+        "Position": "100 300 0",
+        "Rating": "",
+        "Rigid": "2",
+        "WallThickness": "",
+        "Weight": "11"
+      },
+      "identity": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:1:1",
+      "nodeOrdinal": 1,
+      "originalNodeNumber": "20",
+      "position": [
+        100.0,
+        300.0,
+        0.0
+      ],
+      "sourceStatus": "PYTHON_TRANSFORMED",
+      "sourceXmlDigest": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c",
+      "sourceXmlPath": "Branch[2]/Node[2]",
+      "stage": "PYTHON_PREPROCESSED"
+    },
+    {
+      "branchName": "/RT/B2",
+      "branchOrdinal": 1,
+      "componentRefNo": "/PIPE-B2-30",
+      "componentType": "PIPE",
+      "fields": {
+        "ComponentRefNo": "/PIPE-B2-30",
+        "ComponentType": "PIPE",
+        "CorrosionAllowance": "",
+        "DTXR_POS": "",
+        "DTXR_PS": "",
+        "ElementLengthMm": "",
+        "InsulationThickness": "",
+        "NodeName": "",
+        "NodeNumber": "30",
+        "OutsideDiameter": "60.3",
+        "Position": "200 300 0",
+        "Rating": "",
+        "Rigid": "",
+        "WallThickness": "",
+        "Weight": "0"
+      },
+      "identity": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:1:2",
+      "nodeOrdinal": 2,
+      "originalNodeNumber": "30",
+      "position": [
+        200.0,
+        300.0,
+        0.0
+      ],
+      "sourceStatus": "PYTHON_TRANSFORMED",
+      "sourceXmlDigest": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c",
+      "sourceXmlPath": "Branch[2]/Node[3]",
+      "stage": "PYTHON_PREPROCESSED"
+    },
+    {
+      "branchName": "/RT/B3",
+      "branchOrdinal": 2,
+      "componentRefNo": "/PIPE-B3-100",
+      "componentType": "PIPE",
+      "fields": {
+        "ComponentRefNo": "/PIPE-B3-100",
+        "ComponentType": "PIPE",
+        "CorrosionAllowance": "",
+        "DTXR_POS": "",
+        "DTXR_PS": "",
+        "ElementLengthMm": "",
+        "InsulationThickness": "",
+        "NodeName": "",
+        "NodeNumber": "100",
+        "OutsideDiameter": "60.3",
+        "Position": "0 600 0",
+        "Rating": "",
+        "Rigid": "",
+        "WallThickness": "",
+        "Weight": "0"
+      },
+      "identity": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:2:0",
+      "nodeOrdinal": 0,
+      "originalNodeNumber": "100",
+      "position": [
+        0.0,
+        600.0,
+        0.0
+      ],
+      "sourceStatus": "PYTHON_TRANSFORMED",
+      "sourceXmlDigest": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c",
+      "sourceXmlPath": "Branch[3]/Node[1]",
+      "stage": "PYTHON_PREPROCESSED"
+    },
+    {
+      "branchName": "/RT/B3",
+      "branchOrdinal": 2,
+      "componentRefNo": "/RIGID-B3-110",
+      "componentType": "RIGID",
+      "fields": {
+        "ComponentRefNo": "/RIGID-B3-110",
+        "ComponentType": "RIGID",
+        "CorrosionAllowance": "",
+        "DTXR_POS": "",
+        "DTXR_PS": "",
+        "ElementLengthMm": "",
+        "InsulationThickness": "",
+        "NodeName": "",
+        "NodeNumber": "110",
+        "OutsideDiameter": "60.3",
+        "Position": "100 600 0",
+        "Rating": "",
+        "Rigid": "2",
+        "WallThickness": "",
+        "Weight": "5"
+      },
+      "identity": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:2:1",
+      "nodeOrdinal": 1,
+      "originalNodeNumber": "110",
+      "position": [
+        100.0,
+        600.0,
+        0.0
+      ],
+      "sourceStatus": "PYTHON_TRANSFORMED",
+      "sourceXmlDigest": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c",
+      "sourceXmlPath": "Branch[3]/Node[2]",
+      "stage": "PYTHON_PREPROCESSED"
+    },
+    {
+      "branchName": "/RT/B3",
+      "branchOrdinal": 2,
+      "componentRefNo": "/DROPPED-B3-111",
+      "componentType": "PIPE",
+      "fields": {
+        "ComponentRefNo": "/DROPPED-B3-111",
+        "ComponentType": "PIPE",
+        "CorrosionAllowance": "",
+        "DTXR_POS": "",
+        "DTXR_PS": "",
+        "ElementLengthMm": "",
+        "InsulationThickness": "",
+        "NodeName": "",
+        "NodeNumber": "111",
+        "OutsideDiameter": "60.3",
+        "Position": "103 600 0",
+        "Rating": "",
+        "Rigid": "",
+        "WallThickness": "",
+        "Weight": "0"
+      },
+      "identity": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:2:2",
+      "nodeOrdinal": 2,
+      "originalNodeNumber": "111",
+      "position": [
+        103.0,
+        600.0,
+        0.0
+      ],
+      "sourceStatus": "PYTHON_TRANSFORMED",
+      "sourceXmlDigest": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c",
+      "sourceXmlPath": "Branch[3]/Node[3]",
+      "stage": "PYTHON_PREPROCESSED"
+    },
+    {
+      "branchName": "/RT/B3",
+      "branchOrdinal": 2,
+      "componentRefNo": "/RIGID-B3-120",
+      "componentType": "RIGID",
+      "fields": {
+        "ComponentRefNo": "/RIGID-B3-120",
+        "ComponentType": "RIGID",
+        "CorrosionAllowance": "",
+        "DTXR_POS": "",
+        "DTXR_PS": "",
+        "ElementLengthMm": "",
+        "InsulationThickness": "",
+        "NodeName": "",
+        "NodeNumber": "120",
+        "OutsideDiameter": "60.3",
+        "Position": "200 600 0",
+        "Rating": "",
+        "Rigid": "2",
+        "WallThickness": "",
+        "Weight": "8"
+      },
+      "identity": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:2:3",
+      "nodeOrdinal": 3,
+      "originalNodeNumber": "120",
+      "position": [
+        200.0,
+        600.0,
+        0.0
+      ],
+      "sourceStatus": "PYTHON_TRANSFORMED",
+      "sourceXmlDigest": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c",
+      "sourceXmlPath": "Branch[3]/Node[4]",
+      "stage": "PYTHON_PREPROCESSED"
+    },
+    {
+      "branchName": "/RT/B3",
+      "branchOrdinal": 2,
+      "componentRefNo": "/PIPE-B3-130",
+      "componentType": "PIPE",
+      "fields": {
+        "ComponentRefNo": "/PIPE-B3-130",
+        "ComponentType": "PIPE",
+        "CorrosionAllowance": "",
+        "DTXR_POS": "",
+        "DTXR_PS": "",
+        "ElementLengthMm": "",
+        "InsulationThickness": "",
+        "NodeName": "",
+        "NodeNumber": "130",
+        "OutsideDiameter": "60.3",
+        "Position": "300 600 0",
+        "Rating": "",
+        "Rigid": "",
+        "WallThickness": "",
+        "Weight": "0"
+      },
+      "identity": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:2:4",
+      "nodeOrdinal": 4,
+      "originalNodeNumber": "130",
+      "position": [
+        300.0,
+        600.0,
+        0.0
+      ],
+      "sourceStatus": "PYTHON_TRANSFORMED",
+      "sourceXmlDigest": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c",
+      "sourceXmlPath": "Branch[3]/Node[5]",
+      "stage": "PYTHON_PREPROCESSED"
+    },
+    {
+      "branchName": "/RT/B4",
+      "branchOrdinal": 3,
+      "componentRefNo": "/PIPE-B4-500",
+      "componentType": "PIPE",
+      "fields": {
+        "ComponentRefNo": "/PIPE-B4-500",
+        "ComponentType": "PIPE",
+        "CorrosionAllowance": "",
+        "DTXR_POS": "",
+        "DTXR_PS": "",
+        "ElementLengthMm": "",
+        "InsulationThickness": "",
+        "NodeName": "",
+        "NodeNumber": "500",
+        "OutsideDiameter": "60.3",
+        "Position": "0 900 0",
+        "Rating": "",
+        "Rigid": "",
+        "WallThickness": "",
+        "Weight": "0"
+      },
+      "identity": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:3:0",
+      "nodeOrdinal": 0,
+      "originalNodeNumber": "500",
+      "position": [
+        0.0,
+        900.0,
+        0.0
+      ],
+      "sourceStatus": "PYTHON_TRANSFORMED",
+      "sourceXmlDigest": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c",
+      "sourceXmlPath": "Branch[4]/Node[1]",
+      "stage": "PYTHON_PREPROCESSED"
+    },
+    {
+      "branchName": "/RT/B4",
+      "branchOrdinal": 3,
+      "componentRefNo": "/FLAN-B4-NEG",
+      "componentType": "FLAN",
+      "fields": {
+        "ComponentRefNo": "/FLAN-B4-NEG",
+        "ComponentType": "FLAN",
+        "CorrosionAllowance": "",
+        "DTXR_POS": "",
+        "DTXR_PS": "",
+        "ElementLengthMm": "50",
+        "InsulationThickness": "",
+        "NodeName": "",
+        "NodeNumber": "519",
+        "OutsideDiameter": "60.3",
+        "Position": "50 900 0",
+        "Rating": "",
+        "Rigid": "2",
+        "WallThickness": "",
+        "Weight": "7"
+      },
+      "identity": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:3:1",
+      "nodeOrdinal": 1,
+      "originalNodeNumber": "519",
+      "position": [
+        50.0,
+        900.0,
+        0.0
+      ],
+      "sourceStatus": "PYTHON_TRANSFORMED",
+      "sourceXmlDigest": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c",
+      "sourceXmlPath": "Branch[4]/Node[2]",
+      "stage": "PYTHON_PREPROCESSED"
+    },
+    {
+      "branchName": "/RT/B4",
+      "branchOrdinal": 3,
+      "componentRefNo": "/PIPE-B4-520",
+      "componentType": "PIPE",
+      "fields": {
+        "ComponentRefNo": "/PIPE-B4-520",
+        "ComponentType": "PIPE",
+        "CorrosionAllowance": "",
+        "DTXR_POS": "",
+        "DTXR_PS": "",
+        "ElementLengthMm": "",
+        "InsulationThickness": "",
+        "NodeName": "",
+        "NodeNumber": "520",
+        "OutsideDiameter": "60.3",
+        "Position": "100 900 0",
+        "Rating": "",
+        "Rigid": "",
+        "WallThickness": "",
+        "Weight": "0"
+      },
+      "identity": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:3:2",
+      "nodeOrdinal": 2,
+      "originalNodeNumber": "520",
+      "position": [
+        100.0,
+        900.0,
+        0.0
+      ],
+      "sourceStatus": "PYTHON_TRANSFORMED",
+      "sourceXmlDigest": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c",
+      "sourceXmlPath": "Branch[4]/Node[3]",
+      "stage": "PYTHON_PREPROCESSED"
+    }
+  ],
+  "readOnly": true,
+  "relationships": [
+    {
+      "from": "/PIPE-10",
+      "kind": "COMPONENT_CONTAINS_NODE",
+      "to": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:0"
+    },
+    {
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:0",
+      "kind": "SOURCE_NODE_TO_ELEMENT",
+      "to": "ELEMENT:1"
+    },
+    {
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:0",
+      "kind": "SOURCE_NODE_TO_FINAL_NODE",
+      "to": "NODE:/RT/B1:10"
+    },
+    {
+      "from": "/SHARED-COMP",
+      "kind": "COMPONENT_CONTAINS_NODE",
+      "to": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:1"
+    },
+    {
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:1",
+      "kind": "SOURCE_NODE_TO_ELEMENT",
+      "to": "ELEMENT:1"
+    },
+    {
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:1",
+      "kind": "SOURCE_NODE_TO_ELEMENT",
+      "to": "ELEMENT:2"
+    },
+    {
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:1",
+      "kind": "SOURCE_NODE_TO_FINAL_NODE",
+      "to": "NODE:/RT/B1:20"
+    },
+    {
+      "from": "/SHARED-COMP",
+      "kind": "COMPONENT_CONTAINS_NODE",
+      "to": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:2"
+    },
+    {
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:2",
+      "kind": "SOURCE_NODE_TO_ELEMENT",
+      "to": "ELEMENT:2"
+    },
+    {
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:2",
+      "kind": "SOURCE_NODE_TO_ELEMENT",
+      "to": "ELEMENT:3"
+    },
+    {
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:2",
+      "kind": "SOURCE_NODE_TO_FINAL_NODE",
+      "to": "NODE:/RT/B1:30"
+    },
+    {
+      "from": "/RIGID-40",
+      "kind": "COMPONENT_CONTAINS_NODE",
+      "to": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:3"
+    },
+    {
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:3",
+      "kind": "SOURCE_NODE_TO_ELEMENT",
+      "to": "ELEMENT:3"
+    },
+    {
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:3",
+      "kind": "SOURCE_NODE_TO_ELEMENT",
+      "to": "ELEMENT:4"
+    },
+    {
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:3",
+      "kind": "SOURCE_NODE_TO_FINAL_NODE",
+      "to": "NODE:/RT/B1:40"
+    },
+    {
+      "from": "/PIPE-50",
+      "kind": "COMPONENT_CONTAINS_NODE",
+      "to": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:4"
+    },
+    {
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:4",
+      "kind": "SOURCE_NODE_TO_ELEMENT",
+      "to": "ELEMENT:4"
+    },
+    {
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:4",
+      "kind": "SOURCE_NODE_TO_FINAL_NODE",
+      "to": "NODE:/RT/B1:50"
+    },
+    {
+      "from": "/PIPE-B2-10",
+      "kind": "COMPONENT_CONTAINS_NODE",
+      "to": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:0"
+    },
+    {
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:0",
+      "kind": "SOURCE_NODE_TO_ELEMENT",
+      "to": "ELEMENT:5"
+    },
+    {
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:0",
+      "kind": "SOURCE_NODE_TO_FINAL_NODE",
+      "to": "NODE:/RT/B2:10"
+    },
+    {
+      "from": "/RIGID-B2-20",
+      "kind": "COMPONENT_CONTAINS_NODE",
+      "to": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:1"
+    },
+    {
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:1",
+      "kind": "SOURCE_NODE_TO_ELEMENT",
+      "to": "ELEMENT:5"
+    },
+    {
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:1",
+      "kind": "SOURCE_NODE_TO_ELEMENT",
+      "to": "ELEMENT:6"
+    },
+    {
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:1",
+      "kind": "SOURCE_NODE_TO_FINAL_NODE",
+      "to": "NODE:/RT/B2:20"
+    },
+    {
+      "from": "/PIPE-B2-30",
+      "kind": "COMPONENT_CONTAINS_NODE",
+      "to": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:2"
+    },
+    {
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:2",
+      "kind": "SOURCE_NODE_TO_ELEMENT",
+      "to": "ELEMENT:6"
+    },
+    {
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:2",
+      "kind": "SOURCE_NODE_TO_FINAL_NODE",
+      "to": "NODE:/RT/B2:30"
+    },
+    {
+      "from": "/PIPE-B3-100",
+      "kind": "COMPONENT_CONTAINS_NODE",
+      "to": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:0"
+    },
+    {
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:0",
+      "kind": "SOURCE_NODE_TO_ELEMENT",
+      "to": "ELEMENT:7"
+    },
+    {
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:0",
+      "kind": "SOURCE_NODE_TO_FINAL_NODE",
+      "to": "NODE:/RT/B3:100"
+    },
+    {
+      "from": "/RIGID-B3-110",
+      "kind": "COMPONENT_CONTAINS_NODE",
+      "to": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:1"
+    },
+    {
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:1",
+      "kind": "SOURCE_NODE_TO_ELEMENT",
+      "to": "ELEMENT:7"
+    },
+    {
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:1",
+      "kind": "SOURCE_NODE_TO_ELEMENT",
+      "to": "ELEMENT:8"
+    },
+    {
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:1",
+      "kind": "SOURCE_NODE_TO_FINAL_NODE",
+      "to": "NODE:/RT/B3:110"
+    },
+    {
+      "from": "/DROPPED-B3-111",
+      "kind": "COMPONENT_CONTAINS_NODE",
+      "to": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:2"
+    },
+    {
+      "from": "/RIGID-B3-120",
+      "kind": "COMPONENT_CONTAINS_NODE",
+      "to": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:3"
+    },
+    {
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:3",
+      "kind": "SOURCE_NODE_TO_ELEMENT",
+      "to": "ELEMENT:8"
+    },
+    {
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:3",
+      "kind": "SOURCE_NODE_TO_ELEMENT",
+      "to": "ELEMENT:9"
+    },
+    {
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:3",
+      "kind": "SOURCE_NODE_TO_FINAL_NODE",
+      "to": "NODE:/RT/B3:120"
+    },
+    {
+      "from": "/PIPE-B3-130",
+      "kind": "COMPONENT_CONTAINS_NODE",
+      "to": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:4"
+    },
+    {
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:4",
+      "kind": "SOURCE_NODE_TO_ELEMENT",
+      "to": "ELEMENT:9"
+    },
+    {
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:4",
+      "kind": "SOURCE_NODE_TO_FINAL_NODE",
+      "to": "NODE:/RT/B3:130"
+    },
+    {
+      "from": "/PIPE-B4-500",
+      "kind": "COMPONENT_CONTAINS_NODE",
+      "to": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:0"
+    },
+    {
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:0",
+      "kind": "SOURCE_NODE_TO_ELEMENT",
+      "to": "ELEMENT:10"
+    },
+    {
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:0",
+      "kind": "SOURCE_NODE_TO_FINAL_NODE",
+      "to": "NODE:/RT/B4:500"
+    },
+    {
+      "from": "/FLAN-B4-NEG",
+      "kind": "COMPONENT_CONTAINS_NODE",
+      "to": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:1"
+    },
+    {
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:1",
+      "kind": "SOURCE_NODE_TO_ELEMENT",
+      "to": "ELEMENT:10"
+    },
+    {
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:1",
+      "kind": "SOURCE_NODE_TO_ELEMENT",
+      "to": "ELEMENT:11"
+    },
+    {
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:1",
+      "kind": "SOURCE_NODE_TO_FINAL_NODE",
+      "to": "NODE:/RT/B4:519"
+    },
+    {
+      "from": "/PIPE-B4-520",
+      "kind": "COMPONENT_CONTAINS_NODE",
+      "to": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:2"
+    },
+    {
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:2",
+      "kind": "SOURCE_NODE_TO_ELEMENT",
+      "to": "ELEMENT:11"
+    },
+    {
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:2",
+      "kind": "SOURCE_NODE_TO_FINAL_NODE",
+      "to": "NODE:/RT/B4:520"
+    },
+    {
+      "from": "ELEMENT:1",
+      "kind": "ELEMENT_FROM",
+      "to": "NODE:/RT/B1:10"
+    },
+    {
+      "from": "ELEMENT:1",
+      "kind": "ELEMENT_TO",
+      "to": "NODE:/RT/B1:20"
+    },
+    {
+      "from": "ELEMENT:1",
+      "kind": "ELEMENT_AUX_POINTER",
+      "to": "RIGID:1"
+    },
+    {
+      "from": "ELEMENT:2",
+      "kind": "ELEMENT_FROM",
+      "to": "NODE:/RT/B1:20"
+    },
+    {
+      "from": "ELEMENT:2",
+      "kind": "ELEMENT_TO",
+      "to": "NODE:/RT/B1:30"
+    },
+    {
+      "from": "ELEMENT:3",
+      "kind": "ELEMENT_FROM",
+      "to": "NODE:/RT/B1:30"
+    },
+    {
+      "from": "ELEMENT:3",
+      "kind": "ELEMENT_TO",
+      "to": "NODE:/RT/B1:40"
+    },
+    {
+      "from": "ELEMENT:3",
+      "kind": "ELEMENT_AUX_POINTER",
+      "to": "RIGID:2"
+    },
+    {
+      "from": "ELEMENT:4",
+      "kind": "ELEMENT_FROM",
+      "to": "NODE:/RT/B1:40"
+    },
+    {
+      "from": "ELEMENT:4",
+      "kind": "ELEMENT_TO",
+      "to": "NODE:/RT/B1:50"
+    },
+    {
+      "from": "ELEMENT:5",
+      "kind": "ELEMENT_FROM",
+      "to": "NODE:/RT/B2:10"
+    },
+    {
+      "from": "ELEMENT:5",
+      "kind": "ELEMENT_TO",
+      "to": "NODE:/RT/B2:20"
+    },
+    {
+      "from": "ELEMENT:5",
+      "kind": "ELEMENT_AUX_POINTER",
+      "to": "RIGID:3"
+    },
+    {
+      "from": "ELEMENT:6",
+      "kind": "ELEMENT_FROM",
+      "to": "NODE:/RT/B2:20"
+    },
+    {
+      "from": "ELEMENT:6",
+      "kind": "ELEMENT_TO",
+      "to": "NODE:/RT/B2:30"
+    },
+    {
+      "from": "ELEMENT:7",
+      "kind": "ELEMENT_FROM",
+      "to": "NODE:/RT/B3:100"
+    },
+    {
+      "from": "ELEMENT:7",
+      "kind": "ELEMENT_TO",
+      "to": "NODE:/RT/B3:110"
+    },
+    {
+      "from": "ELEMENT:7",
+      "kind": "ELEMENT_AUX_POINTER",
+      "to": "RIGID:4"
+    },
+    {
+      "from": "ELEMENT:8",
+      "kind": "ELEMENT_FROM",
+      "to": "NODE:/RT/B3:110"
+    },
+    {
+      "from": "ELEMENT:8",
+      "kind": "ELEMENT_TO",
+      "to": "NODE:/RT/B3:120"
+    },
+    {
+      "from": "ELEMENT:8",
+      "kind": "ELEMENT_AUX_POINTER",
+      "to": "RIGID:5"
+    },
+    {
+      "from": "ELEMENT:9",
+      "kind": "ELEMENT_FROM",
+      "to": "NODE:/RT/B3:120"
+    },
+    {
+      "from": "ELEMENT:9",
+      "kind": "ELEMENT_TO",
+      "to": "NODE:/RT/B3:130"
+    },
+    {
+      "from": "ELEMENT:10",
+      "kind": "ELEMENT_FROM",
+      "to": "NODE:/RT/B4:500"
+    },
+    {
+      "from": "ELEMENT:10",
+      "kind": "ELEMENT_TO",
+      "to": "NODE:/RT/B4:519"
+    },
+    {
+      "from": "ELEMENT:10",
+      "kind": "ELEMENT_AUX_POINTER",
+      "to": "RIGID:6"
+    },
+    {
+      "from": "ELEMENT:11",
+      "kind": "ELEMENT_FROM",
+      "to": "NODE:/RT/B4:519"
+    },
+    {
+      "from": "ELEMENT:11",
+      "kind": "ELEMENT_TO",
+      "to": "NODE:/RT/B4:520"
+    },
+    {
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:1",
+      "kind": "PYTHON_NODE_RENUMBER",
+      "to": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:3:1"
+    },
+    {
+      "from": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:2",
+      "kind": "PYTHON_SHORT_NODE_DROP",
+      "to": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:2:2"
+    }
+  ],
+  "runIdentity": {
+    "ciiSha256": "de2308bf6b473c305203a65cbfd8d0ea8b2fc1113fea0d17291fa148be400f57",
+    "configurationSha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "engineInputSha256": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054",
+    "pythonPreprocessedXmlSha256": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c",
+    "snapshotFingerprint": "7b889e2b191d26b4648cc6b84a484c66336a9a83a8e527b4b13a5aef11e2b194",
+    "sourceSha256": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054"
+  },
+  "schema": "xml-cii-lineage-ledger/v1",
+  "sourceComponents": [
+    {
+      "componentIdentityStatus": "UNVERIFIED",
+      "componentRefNo": "/PIPE-10",
+      "sourceNodes": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:0"
+      ]
+    },
+    {
+      "componentIdentityStatus": "UNVERIFIED",
+      "componentRefNo": "/SHARED-COMP",
+      "sourceNodes": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:1",
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:2"
+      ]
+    },
+    {
+      "componentIdentityStatus": "UNVERIFIED",
+      "componentRefNo": "/RIGID-40",
+      "sourceNodes": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:3"
+      ]
+    },
+    {
+      "componentIdentityStatus": "UNVERIFIED",
+      "componentRefNo": "/PIPE-50",
+      "sourceNodes": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:4"
+      ]
+    },
+    {
+      "componentIdentityStatus": "UNVERIFIED",
+      "componentRefNo": "/PIPE-B2-10",
+      "sourceNodes": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:0"
+      ]
+    },
+    {
+      "componentIdentityStatus": "UNVERIFIED",
+      "componentRefNo": "/RIGID-B2-20",
+      "sourceNodes": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:1"
+      ]
+    },
+    {
+      "componentIdentityStatus": "UNVERIFIED",
+      "componentRefNo": "/PIPE-B2-30",
+      "sourceNodes": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:2"
+      ]
+    },
+    {
+      "componentIdentityStatus": "UNVERIFIED",
+      "componentRefNo": "/PIPE-B3-100",
+      "sourceNodes": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:0"
+      ]
+    },
+    {
+      "componentIdentityStatus": "UNVERIFIED",
+      "componentRefNo": "/RIGID-B3-110",
+      "sourceNodes": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:1"
+      ]
+    },
+    {
+      "componentIdentityStatus": "UNVERIFIED",
+      "componentRefNo": "/DROPPED-B3-111",
+      "sourceNodes": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:2"
+      ]
+    },
+    {
+      "componentIdentityStatus": "UNVERIFIED",
+      "componentRefNo": "/RIGID-B3-120",
+      "sourceNodes": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:3"
+      ]
+    },
+    {
+      "componentIdentityStatus": "UNVERIFIED",
+      "componentRefNo": "/PIPE-B3-130",
+      "sourceNodes": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:4"
+      ]
+    },
+    {
+      "componentIdentityStatus": "UNVERIFIED",
+      "componentRefNo": "/PIPE-B4-500",
+      "sourceNodes": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:0"
+      ]
+    },
+    {
+      "componentIdentityStatus": "UNVERIFIED",
+      "componentRefNo": "/FLAN-B4-NEG",
+      "sourceNodes": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:1"
+      ]
+    },
+    {
+      "componentIdentityStatus": "UNVERIFIED",
+      "componentRefNo": "/PIPE-B4-520",
+      "sourceNodes": [
+        "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:2"
+      ]
+    }
+  ],
+  "sourceNodes": [
+    {
+      "branchName": "/RT/B1",
+      "branchOrdinal": 0,
+      "componentRefNo": "/PIPE-10",
+      "componentType": "PIPE",
+      "fields": {
+        "ComponentRefNo": "/PIPE-10",
+        "ComponentType": "PIPE",
+        "CorrosionAllowance": "",
+        "DTXR_POS": "",
+        "DTXR_PS": "",
+        "ElementLengthMm": "",
+        "InsulationThickness": "",
+        "NodeName": "",
+        "NodeNumber": "10",
+        "OutsideDiameter": "60.3",
+        "Position": "0 0 0",
+        "Rating": "",
+        "Rigid": "",
+        "WallThickness": "3.9",
+        "Weight": "0"
+      },
+      "identity": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:0",
+      "nodeOrdinal": 0,
+      "originalNodeNumber": "10",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "sourceStatus": "ORIGINAL",
+      "sourceXmlDigest": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054",
+      "sourceXmlPath": "Branch[1]/Node[1]",
+      "stage": "ENGINE_INPUT_XML"
+    },
+    {
+      "branchName": "/RT/B1",
+      "branchOrdinal": 0,
+      "componentRefNo": "/SHARED-COMP",
+      "componentType": "RIGID",
+      "fields": {
+        "ComponentRefNo": "/SHARED-COMP",
+        "ComponentType": "RIGID",
+        "CorrosionAllowance": "",
+        "DTXR_POS": "",
+        "DTXR_PS": "",
+        "ElementLengthMm": "",
+        "InsulationThickness": "",
+        "NodeName": "",
+        "NodeNumber": "20",
+        "OutsideDiameter": "60.3",
+        "Position": "100 0 0",
+        "Rating": "",
+        "Rigid": "2",
+        "WallThickness": "3.9",
+        "Weight": "15"
+      },
+      "identity": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:1",
+      "nodeOrdinal": 1,
+      "originalNodeNumber": "20",
+      "position": [
+        100.0,
+        0.0,
+        0.0
+      ],
+      "sourceStatus": "ORIGINAL",
+      "sourceXmlDigest": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054",
+      "sourceXmlPath": "Branch[1]/Node[2]",
+      "stage": "ENGINE_INPUT_XML"
+    },
+    {
+      "branchName": "/RT/B1",
+      "branchOrdinal": 0,
+      "componentRefNo": "/SHARED-COMP",
+      "componentType": "PIPE",
+      "fields": {
+        "ComponentRefNo": "/SHARED-COMP",
+        "ComponentType": "PIPE",
+        "CorrosionAllowance": "",
+        "DTXR_POS": "",
+        "DTXR_PS": "",
+        "ElementLengthMm": "",
+        "InsulationThickness": "",
+        "NodeName": "",
+        "NodeNumber": "30",
+        "OutsideDiameter": "60.3",
+        "Position": "200 0 0",
+        "Rating": "",
+        "Rigid": "",
+        "WallThickness": "3.9",
+        "Weight": "0"
+      },
+      "identity": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:2",
+      "nodeOrdinal": 2,
+      "originalNodeNumber": "30",
+      "position": [
+        200.0,
+        0.0,
+        0.0
+      ],
+      "sourceStatus": "ORIGINAL",
+      "sourceXmlDigest": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054",
+      "sourceXmlPath": "Branch[1]/Node[3]",
+      "stage": "ENGINE_INPUT_XML"
+    },
+    {
+      "branchName": "/RT/B1",
+      "branchOrdinal": 0,
+      "componentRefNo": "/RIGID-40",
+      "componentType": "RIGID",
+      "fields": {
+        "ComponentRefNo": "/RIGID-40",
+        "ComponentType": "RIGID",
+        "CorrosionAllowance": "",
+        "DTXR_POS": "",
+        "DTXR_PS": "",
+        "ElementLengthMm": "",
+        "InsulationThickness": "",
+        "NodeName": "",
+        "NodeNumber": "40",
+        "OutsideDiameter": "60.3",
+        "Position": "300 0 0",
+        "Rating": "",
+        "Rigid": "2",
+        "WallThickness": "3.9",
+        "Weight": "6"
+      },
+      "identity": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:3",
+      "nodeOrdinal": 3,
+      "originalNodeNumber": "40",
+      "position": [
+        300.0,
+        0.0,
+        0.0
+      ],
+      "sourceStatus": "ORIGINAL",
+      "sourceXmlDigest": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054",
+      "sourceXmlPath": "Branch[1]/Node[4]",
+      "stage": "ENGINE_INPUT_XML"
+    },
+    {
+      "branchName": "/RT/B1",
+      "branchOrdinal": 0,
+      "componentRefNo": "/PIPE-50",
+      "componentType": "PIPE",
+      "fields": {
+        "ComponentRefNo": "/PIPE-50",
+        "ComponentType": "PIPE",
+        "CorrosionAllowance": "",
+        "DTXR_POS": "",
+        "DTXR_PS": "",
+        "ElementLengthMm": "",
+        "InsulationThickness": "",
+        "NodeName": "",
+        "NodeNumber": "50",
+        "OutsideDiameter": "60.3",
+        "Position": "400 0 0",
+        "Rating": "",
+        "Rigid": "",
+        "WallThickness": "3.9",
+        "Weight": "0"
+      },
+      "identity": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:0:4",
+      "nodeOrdinal": 4,
+      "originalNodeNumber": "50",
+      "position": [
+        400.0,
+        0.0,
+        0.0
+      ],
+      "sourceStatus": "ORIGINAL",
+      "sourceXmlDigest": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054",
+      "sourceXmlPath": "Branch[1]/Node[5]",
+      "stage": "ENGINE_INPUT_XML"
+    },
+    {
+      "branchName": "/RT/B2",
+      "branchOrdinal": 1,
+      "componentRefNo": "/PIPE-B2-10",
+      "componentType": "PIPE",
+      "fields": {
+        "ComponentRefNo": "/PIPE-B2-10",
+        "ComponentType": "PIPE",
+        "CorrosionAllowance": "",
+        "DTXR_POS": "",
+        "DTXR_PS": "",
+        "ElementLengthMm": "",
+        "InsulationThickness": "",
+        "NodeName": "",
+        "NodeNumber": "10",
+        "OutsideDiameter": "60.3",
+        "Position": "0 300 0",
+        "Rating": "",
+        "Rigid": "",
+        "WallThickness": "",
+        "Weight": "0"
+      },
+      "identity": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:0",
+      "nodeOrdinal": 0,
+      "originalNodeNumber": "10",
+      "position": [
+        0.0,
+        300.0,
+        0.0
+      ],
+      "sourceStatus": "ORIGINAL",
+      "sourceXmlDigest": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054",
+      "sourceXmlPath": "Branch[2]/Node[1]",
+      "stage": "ENGINE_INPUT_XML"
+    },
+    {
+      "branchName": "/RT/B2",
+      "branchOrdinal": 1,
+      "componentRefNo": "/RIGID-B2-20",
+      "componentType": "RIGID",
+      "fields": {
+        "ComponentRefNo": "/RIGID-B2-20",
+        "ComponentType": "RIGID",
+        "CorrosionAllowance": "",
+        "DTXR_POS": "",
+        "DTXR_PS": "",
+        "ElementLengthMm": "",
+        "InsulationThickness": "",
+        "NodeName": "",
+        "NodeNumber": "20",
+        "OutsideDiameter": "60.3",
+        "Position": "100 300 0",
+        "Rating": "",
+        "Rigid": "2",
+        "WallThickness": "",
+        "Weight": "11"
+      },
+      "identity": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:1",
+      "nodeOrdinal": 1,
+      "originalNodeNumber": "20",
+      "position": [
+        100.0,
+        300.0,
+        0.0
+      ],
+      "sourceStatus": "ORIGINAL",
+      "sourceXmlDigest": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054",
+      "sourceXmlPath": "Branch[2]/Node[2]",
+      "stage": "ENGINE_INPUT_XML"
+    },
+    {
+      "branchName": "/RT/B2",
+      "branchOrdinal": 1,
+      "componentRefNo": "/PIPE-B2-30",
+      "componentType": "PIPE",
+      "fields": {
+        "ComponentRefNo": "/PIPE-B2-30",
+        "ComponentType": "PIPE",
+        "CorrosionAllowance": "",
+        "DTXR_POS": "",
+        "DTXR_PS": "",
+        "ElementLengthMm": "",
+        "InsulationThickness": "",
+        "NodeName": "",
+        "NodeNumber": "30",
+        "OutsideDiameter": "60.3",
+        "Position": "200 300 0",
+        "Rating": "",
+        "Rigid": "",
+        "WallThickness": "",
+        "Weight": "0"
+      },
+      "identity": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:1:2",
+      "nodeOrdinal": 2,
+      "originalNodeNumber": "30",
+      "position": [
+        200.0,
+        300.0,
+        0.0
+      ],
+      "sourceStatus": "ORIGINAL",
+      "sourceXmlDigest": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054",
+      "sourceXmlPath": "Branch[2]/Node[3]",
+      "stage": "ENGINE_INPUT_XML"
+    },
+    {
+      "branchName": "/RT/B3",
+      "branchOrdinal": 2,
+      "componentRefNo": "/PIPE-B3-100",
+      "componentType": "PIPE",
+      "fields": {
+        "ComponentRefNo": "/PIPE-B3-100",
+        "ComponentType": "PIPE",
+        "CorrosionAllowance": "",
+        "DTXR_POS": "",
+        "DTXR_PS": "",
+        "ElementLengthMm": "",
+        "InsulationThickness": "",
+        "NodeName": "",
+        "NodeNumber": "100",
+        "OutsideDiameter": "60.3",
+        "Position": "0 600 0",
+        "Rating": "",
+        "Rigid": "",
+        "WallThickness": "",
+        "Weight": "0"
+      },
+      "identity": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:0",
+      "nodeOrdinal": 0,
+      "originalNodeNumber": "100",
+      "position": [
+        0.0,
+        600.0,
+        0.0
+      ],
+      "sourceStatus": "ORIGINAL",
+      "sourceXmlDigest": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054",
+      "sourceXmlPath": "Branch[3]/Node[1]",
+      "stage": "ENGINE_INPUT_XML"
+    },
+    {
+      "branchName": "/RT/B3",
+      "branchOrdinal": 2,
+      "componentRefNo": "/RIGID-B3-110",
+      "componentType": "RIGID",
+      "fields": {
+        "ComponentRefNo": "/RIGID-B3-110",
+        "ComponentType": "RIGID",
+        "CorrosionAllowance": "",
+        "DTXR_POS": "",
+        "DTXR_PS": "",
+        "ElementLengthMm": "",
+        "InsulationThickness": "",
+        "NodeName": "",
+        "NodeNumber": "110",
+        "OutsideDiameter": "60.3",
+        "Position": "100 600 0",
+        "Rating": "",
+        "Rigid": "2",
+        "WallThickness": "",
+        "Weight": "5"
+      },
+      "identity": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:1",
+      "nodeOrdinal": 1,
+      "originalNodeNumber": "110",
+      "position": [
+        100.0,
+        600.0,
+        0.0
+      ],
+      "sourceStatus": "ORIGINAL",
+      "sourceXmlDigest": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054",
+      "sourceXmlPath": "Branch[3]/Node[2]",
+      "stage": "ENGINE_INPUT_XML"
+    },
+    {
+      "branchName": "/RT/B3",
+      "branchOrdinal": 2,
+      "componentRefNo": "/DROPPED-B3-111",
+      "componentType": "PIPE",
+      "fields": {
+        "ComponentRefNo": "/DROPPED-B3-111",
+        "ComponentType": "PIPE",
+        "CorrosionAllowance": "",
+        "DTXR_POS": "",
+        "DTXR_PS": "",
+        "ElementLengthMm": "",
+        "InsulationThickness": "",
+        "NodeName": "",
+        "NodeNumber": "111",
+        "OutsideDiameter": "60.3",
+        "Position": "103 600 0",
+        "Rating": "",
+        "Rigid": "",
+        "WallThickness": "",
+        "Weight": "0"
+      },
+      "identity": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:2",
+      "nodeOrdinal": 2,
+      "originalNodeNumber": "111",
+      "position": [
+        103.0,
+        600.0,
+        0.0
+      ],
+      "sourceStatus": "ORIGINAL",
+      "sourceXmlDigest": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054",
+      "sourceXmlPath": "Branch[3]/Node[3]",
+      "stage": "ENGINE_INPUT_XML"
+    },
+    {
+      "branchName": "/RT/B3",
+      "branchOrdinal": 2,
+      "componentRefNo": "/RIGID-B3-120",
+      "componentType": "RIGID",
+      "fields": {
+        "ComponentRefNo": "/RIGID-B3-120",
+        "ComponentType": "RIGID",
+        "CorrosionAllowance": "",
+        "DTXR_POS": "",
+        "DTXR_PS": "",
+        "ElementLengthMm": "",
+        "InsulationThickness": "",
+        "NodeName": "",
+        "NodeNumber": "120",
+        "OutsideDiameter": "60.3",
+        "Position": "200 600 0",
+        "Rating": "",
+        "Rigid": "2",
+        "WallThickness": "",
+        "Weight": "8"
+      },
+      "identity": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:3",
+      "nodeOrdinal": 3,
+      "originalNodeNumber": "120",
+      "position": [
+        200.0,
+        600.0,
+        0.0
+      ],
+      "sourceStatus": "ORIGINAL",
+      "sourceXmlDigest": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054",
+      "sourceXmlPath": "Branch[3]/Node[4]",
+      "stage": "ENGINE_INPUT_XML"
+    },
+    {
+      "branchName": "/RT/B3",
+      "branchOrdinal": 2,
+      "componentRefNo": "/PIPE-B3-130",
+      "componentType": "PIPE",
+      "fields": {
+        "ComponentRefNo": "/PIPE-B3-130",
+        "ComponentType": "PIPE",
+        "CorrosionAllowance": "",
+        "DTXR_POS": "",
+        "DTXR_PS": "",
+        "ElementLengthMm": "",
+        "InsulationThickness": "",
+        "NodeName": "",
+        "NodeNumber": "130",
+        "OutsideDiameter": "60.3",
+        "Position": "300 600 0",
+        "Rating": "",
+        "Rigid": "",
+        "WallThickness": "",
+        "Weight": "0"
+      },
+      "identity": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:4",
+      "nodeOrdinal": 4,
+      "originalNodeNumber": "130",
+      "position": [
+        300.0,
+        600.0,
+        0.0
+      ],
+      "sourceStatus": "ORIGINAL",
+      "sourceXmlDigest": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054",
+      "sourceXmlPath": "Branch[3]/Node[5]",
+      "stage": "ENGINE_INPUT_XML"
+    },
+    {
+      "branchName": "/RT/B4",
+      "branchOrdinal": 3,
+      "componentRefNo": "/PIPE-B4-500",
+      "componentType": "PIPE",
+      "fields": {
+        "ComponentRefNo": "/PIPE-B4-500",
+        "ComponentType": "PIPE",
+        "CorrosionAllowance": "",
+        "DTXR_POS": "",
+        "DTXR_PS": "",
+        "ElementLengthMm": "",
+        "InsulationThickness": "",
+        "NodeName": "",
+        "NodeNumber": "500",
+        "OutsideDiameter": "60.3",
+        "Position": "0 900 0",
+        "Rating": "",
+        "Rigid": "",
+        "WallThickness": "",
+        "Weight": "0"
+      },
+      "identity": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:0",
+      "nodeOrdinal": 0,
+      "originalNodeNumber": "500",
+      "position": [
+        0.0,
+        900.0,
+        0.0
+      ],
+      "sourceStatus": "ORIGINAL",
+      "sourceXmlDigest": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054",
+      "sourceXmlPath": "Branch[4]/Node[1]",
+      "stage": "ENGINE_INPUT_XML"
+    },
+    {
+      "branchName": "/RT/B4",
+      "branchOrdinal": 3,
+      "componentRefNo": "/FLAN-B4-NEG",
+      "componentType": "FLAN",
+      "fields": {
+        "ComponentRefNo": "/FLAN-B4-NEG",
+        "ComponentType": "FLAN",
+        "CorrosionAllowance": "",
+        "DTXR_POS": "",
+        "DTXR_PS": "",
+        "ElementLengthMm": "50",
+        "InsulationThickness": "",
+        "NodeName": "",
+        "NodeNumber": "-1",
+        "OutsideDiameter": "60.3",
+        "Position": "50 900 0",
+        "Rating": "",
+        "Rigid": "2",
+        "WallThickness": "",
+        "Weight": "7"
+      },
+      "identity": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:1",
+      "nodeOrdinal": 1,
+      "originalNodeNumber": "-1",
+      "position": [
+        50.0,
+        900.0,
+        0.0
+      ],
+      "sourceStatus": "ORIGINAL",
+      "sourceXmlDigest": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054",
+      "sourceXmlPath": "Branch[4]/Node[2]",
+      "stage": "ENGINE_INPUT_XML"
+    },
+    {
+      "branchName": "/RT/B4",
+      "branchOrdinal": 3,
+      "componentRefNo": "/PIPE-B4-520",
+      "componentType": "PIPE",
+      "fields": {
+        "ComponentRefNo": "/PIPE-B4-520",
+        "ComponentType": "PIPE",
+        "CorrosionAllowance": "",
+        "DTXR_POS": "",
+        "DTXR_PS": "",
+        "ElementLengthMm": "",
+        "InsulationThickness": "",
+        "NodeName": "",
+        "NodeNumber": "520",
+        "OutsideDiameter": "60.3",
+        "Position": "100 900 0",
+        "Rating": "",
+        "Rigid": "",
+        "WallThickness": "",
+        "Weight": "0"
+      },
+      "identity": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:2",
+      "nodeOrdinal": 2,
+      "originalNodeNumber": "520",
+      "position": [
+        100.0,
+        900.0,
+        0.0
+      ],
+      "sourceStatus": "ORIGINAL",
+      "sourceXmlDigest": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054",
+      "sourceXmlPath": "Branch[4]/Node[3]",
+      "stage": "ENGINE_INPUT_XML"
+    }
+  ],
+  "statistics": {
+    "elementMappings": {
+      "AMBIGUOUS": 0,
+      "CONFLICT": 0,
+      "EXACT_UNIQUE": 8,
+      "TRANSFORMED_WITH_LINEAGE": 3,
+      "UNMATCHED": 0
+    },
+    "engineInputBranches": 4,
+    "engineInputNodes": 16,
+    "events": {
+      "PYTHON_NODE_RENUMBER": 1,
+      "PYTHON_SHORT_NODE_DROP": 1
+    },
+    "finalCiiElements": 11,
+    "finalCiiRigids": 6,
+    "finalNodes": {
+      "count": 15,
+      "generatedRenumberedWithLineage": 1,
+      "originalIdentityVerified": 14,
+      "unresolved": 0
+    },
+    "originalEnrichedXmlBranches": 4,
+    "originalEnrichedXmlNodes": 16,
+    "otherAuxiliaryRecords": 0,
+    "pythonPreprocessedBranches": 4,
+    "pythonPreprocessedNodes": 16,
+    "rigidOwnership": {
+      "AMBIGUOUS": 1,
+      "CONFLICT": 0,
+      "EXACT_UNIQUE": 3,
+      "TRANSFORMED_WITH_LINEAGE": 2,
+      "UNMATCHED": 0
+    },
+    "sharedRigidPointers": 0,
+    "unreferencedRigidPointers": 0,
+    "unresolvedSourceComponents": 1
+  },
+  "transformations": [
+    {
+      "branchName": "/RT/B4",
+      "evidence": "Exact ordinal, branch, ComponentRefNo, ComponentType and position across stage snapshots",
+      "generatedNodeNumber": "519",
+      "originalNodeNumber": "-1",
+      "outputIdentity": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:3:1",
+      "reason": "Real Python preprocessing changed NodeNumber",
+      "sourceIdentity": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:3:1",
+      "stage": "PYTHON_NODE_RENUMBER",
+      "status": "TRANSFORMED_WITH_LINEAGE"
+    },
+    {
+      "branchName": "/RT/B3",
+      "deletionReason": "Arriving node distance <= 6mm; active core._drop_short_element_nodes",
+      "emittedAdjacencyAfterCollapse": [
+        "110",
+        "120"
+      ],
+      "evidence": "Replayed core._parse_xml_document retained adjacency verified",
+      "intermediateNodeIdentity": "a0435835d12803338bd371934f59ebe4ff8d75671152612bc114a223c21cfa2c:2:2",
+      "lengthMm": 3.0,
+      "nodeNumber": "111",
+      "originalAdjacency": [
+        "110",
+        "111",
+        "120"
+      ],
+      "sourceIdentity": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054:2:2",
+      "stage": "PYTHON_SHORT_NODE_DROP",
+      "status": "TRANSFORMED_WITH_LINEAGE",
+      "thresholdMm": 6.0
+    }
+  ],
+  "unresolved": [
+    {
+      "id": 1,
+      "level": "RIGID",
+      "reason": "ComponentRefNo missing or shared; source allocation unproved",
+      "status": "AMBIGUOUS"
+    }
+  ]
+}
