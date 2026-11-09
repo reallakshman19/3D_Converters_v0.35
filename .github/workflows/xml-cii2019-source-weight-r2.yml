@@ -26,6 +26,10 @@ jobs:
           python-version: '3.11'
       - name: Generate CURRENT-WRITER synthetic XML and CII pairs
         run: python3 tests/r2_prepare_synthetic_fixture.py --output "$RUNNER_TEMP/r2-synthetic"
+      - name: Parse R2 test and verifier before executing regressions
+        run: |
+          node --check tests/xml-cii-source-weight-r2.test.mjs
+          node --check tabs/xml-cii-2019-standalone/xml-cii-source-weight-cii-verify.js
       - name: R2 executable source-backed re-extract/adversarial tests
         env:
           R2_SYNTHETIC_DIR: ${{ runner.temp }}/r2-synthetic
