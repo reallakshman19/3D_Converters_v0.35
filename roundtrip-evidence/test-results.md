@@ -54,18 +54,21 @@ test_attestation_missing_refuses (test_roundtrip_owner_bundle.OwnerBundleIntakeT
 test_changed_effective_config_is_configuration_mismatch (test_roundtrip_owner_bundle.OwnerBundleIntakeTests.test_changed_effective_config_is_configuration_mismatch) ... ok
 test_changed_master_bytes_is_configuration_mismatch (test_roundtrip_owner_bundle.OwnerBundleIntakeTests.test_changed_master_bytes_is_configuration_mismatch) ... ok
 test_converter_identity_change_refuses (test_roundtrip_owner_bundle.OwnerBundleIntakeTests.test_converter_identity_change_refuses) ... ok
+test_declared_master_dependency_absent_refuses_even_with_valid_other_files (test_roundtrip_owner_bundle.OwnerBundleIntakeTests.test_declared_master_dependency_absent_refuses_even_with_valid_other_files) ... ok
 test_edited_engine_xml_refuses_stale (test_roundtrip_owner_bundle.OwnerBundleIntakeTests.test_edited_engine_xml_refuses_stale) ... ok
 test_historic_cii_snapshot_does_not_match_current_converter (test_roundtrip_owner_bundle.OwnerBundleIntakeTests.test_historic_cii_snapshot_does_not_match_current_converter) ... ok
 test_historical_sheet_is_preserved_not_silently_changed (test_roundtrip_owner_bundle.OwnerBundleIntakeTests.test_historical_sheet_is_preserved_not_silently_changed) ... ok
 test_missing_archived_original_cii_refuses (test_roundtrip_owner_bundle.OwnerBundleIntakeTests.test_missing_archived_original_cii_refuses) ... ok
+test_missing_dependency_role_manifest_refuses (test_roundtrip_owner_bundle.OwnerBundleIntakeTests.test_missing_dependency_role_manifest_refuses) ... ok
 test_missing_master_files_or_roles_refuse (test_roundtrip_owner_bundle.OwnerBundleIntakeTests.test_missing_master_files_or_roles_refuse) ... ok
 test_modified_original_cii_refuses (test_roundtrip_owner_bundle.OwnerBundleIntakeTests.test_modified_original_cii_refuses) ... ok
+test_only_actual_run_dependencies_required_not_hardcoded_four (test_roundtrip_owner_bundle.OwnerBundleIntakeTests.test_only_actual_run_dependencies_required_not_hardcoded_four) ... ok
 test_outside_bundle_symlink_or_parent_path_refuses (test_roundtrip_owner_bundle.OwnerBundleIntakeTests.test_outside_bundle_symlink_or_parent_path_refuses) ... ok
 test_private_frozen_existing_cii_replay_real_converter (test_roundtrip_owner_bundle.OwnerBundleIntakeTests.test_private_frozen_existing_cii_replay_real_converter) ... ok
 test_staged_flag_without_staged_bytes_refuses (test_roundtrip_owner_bundle.OwnerBundleIntakeTests.test_staged_flag_without_staged_bytes_refuses) ... ok
 
 ----------------------------------------------------------------------
-Ran 50 tests in 6.959s
+Ran 53 tests in 7.323s
 
 OK
 
