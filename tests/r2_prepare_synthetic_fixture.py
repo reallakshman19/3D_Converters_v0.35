@@ -24,8 +24,13 @@ def generate(out: Path):
     assert revised != original, "The test fixture target was not found"
     zero = revised.replace(b"<Weight>2.984</Weight>", b"<Weight>0</Weight>")
     assert zero != revised and zero != original, "Explicit zero fixture failed"
+    original15 = original.replace(
+        b"<ComponentRefNo>/RIGID-40</ComponentRefNo><Position>300 0 0</Position><OutsideDiameter>60.3</OutsideDiameter><WallThickness>3.9</WallThickness><Rigid>2</Rigid><Endpoint>2</Endpoint><Weight>6</Weight>",
+        b"<ComponentRefNo>/RIGID-40</ComponentRefNo><Position>300 0 0</Position><OutsideDiameter>60.3</OutsideDiameter><WallThickness>3.9</WallThickness><Rigid>2</Rigid><Endpoint>2</Endpoint><Weight>15</Weight>")
+    assert original15 != original and original15 != revised, "15 kg Owner example fixture failed"
     out.mkdir(parents=True, exist_ok=True)
-    for label, data in (("original", original), ("approved", revised), ("zero", zero)):
+    for label, data in (("original", original), ("approved", revised), ("zero", zero),
+                        ("original15", original15)):
         snapshot = capture_snapshot(
             engine_input_xml=data, original_cii=b"SYNTHETIC_NOT_OWNER",
             effective_config_json=b"{}", options=OPTIONS, assets={},
