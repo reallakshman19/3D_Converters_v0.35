@@ -24,7 +24,7 @@ rsync -a --delete --exclude='/.git/' --exclude='/.github/' \
   --exclude='/test.xml' --exclude='/test_config.json' \
   --exclude='/test_pyodide.js' --exclude='/test_normalizer.js' \
   --exclude='/node_modules/' --exclude='/__pycache__/' \
-  --exclude='*.pyc' --exclude='*.log' --exclude='*.zip' \
+  --exclude='*.pyc' --exclude='*.log' \
   "$root/" "$target/"
 
 for required in \
