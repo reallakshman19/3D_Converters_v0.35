@@ -303,13 +303,18 @@ def match_original_to_effective(original_inventory, effective_inventory):
                 match = got[0]
                 relation = "BYTE_IDENTICAL_SOURCE_STAGE"
         elif f["nodeOrdinal"] is not None:
-            node = effective_inventory["nodes"][
-                next((i for i, n in enumerate(effective_inventory["nodes"])
-                      if n["branchOrdinal"] == f["branchOrdinal"] and
-                      n["nodeOrdinal"] == f["nodeOrdinal"]), -1)]
-            key = (node["branchName"], node["componentRefNo"], node["nodeNumber"], node["position"])
-            old = original_nodes.get(key, [])
-            new = effective_nodes.get(key, [])
+            nodes_at_ordinal = [
+                n for n in effective_inventory["nodes"]
+                if n["branchOrdinal"] == f["branchOrdinal"] and
+                   n["nodeOrdinal"] == f["nodeOrdinal"]
+            ]
+            # Never fall back to the last unrelated node on an unrecognized
+            # branch/ordinal. Missing and duplicated source identities HOLD.
+            node = nodes_at_ordinal[0] if len(nodes_at_ordinal) == 1 else None
+            key = ((node["branchName"], node["componentRefNo"],
+                    node["nodeNumber"], node["position"]) if node is not None else None)
+            old = original_nodes.get(key, []) if key is not None else []
+            new = effective_nodes.get(key, []) if key is not None else []
             if len(old) == 1 and len(new) == 1:
                 got = indexed[(old[0]["branchOrdinal"], old[0]["nodeOrdinal"],
                                f["sourceFieldPath"], f["sourceFieldOccurrence"])]
