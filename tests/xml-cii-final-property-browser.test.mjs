@@ -429,6 +429,15 @@ try {
       'Approve All must not bypass the review-only opt-in');
     assert.equal(await modal.locator('[data-final-rigid-batch-approve-all-checkbox]').isDisabled(), true);
     assert.equal(await modal.locator('[data-final-rigid-batch-stage]').isDisabled(), true);
+    assert.match(await modal.locator('thead').innerText(), /Element Length \(mm\)/);
+    await modal.locator('[data-final-rigid-batch-show-held]').check();
+    assert.equal(await modal.locator('[data-final-rigid-batch-row="1"] td').nth(3).innerText(), '19.1');
+    await modal.locator('[data-final-rigid-batch-apply-nearest]').click();
+    assert.match(await modal.locator('[data-final-rigid-batch-summary]').innerText(), /nearest suggestions loaded in preview/);
+    assert.equal(await modal.locator('[data-final-rigid-batch-stage]').isDisabled(), true,
+      'nearest preview never implies approval');
+    assert.equal(await modal.locator('[data-final-rigid-batch-row="1"] [data-final-rigid-batch-approve]').isChecked(), false);
+    await modal.locator('[data-final-rigid-batch-show-held]').uncheck();
     assert.equal(await first.locator('[data-final-rigid-edited]').inputValue(), '150');
 
     // The review-only opt-in is available inside this modal; no need to close,
