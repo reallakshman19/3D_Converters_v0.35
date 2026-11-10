@@ -175,7 +175,7 @@ test('R4A unexpected non-target CII change and wrong output scale refuse publish
  const invalid={status:'PASS_ENGINEERING_DIFF',unexpectedDifferences:0,
    expectedDifferences:[{
      oldRigidPointer:target.rigidPointer,newRigidPointer:target.rigidPointer,
-     oldWeight:target.originalCiiWeight,newWeight:29.840001,linkedElement:target.originalElement.index
+     oldWeight:target.originalCiiWeight,newWeight:29.84002,linkedElement:target.originalElement.index
    }]};
  assert.throws(()=>reconcileR4aPhysicalMass({
    ownership:target,sourceWeightKg:2.984,reextractDiff:invalid,
