@@ -1,0 +1,105 @@
+{
+  "baselineIndependence": "NOT_HISTORICAL_INDEPENDENT",
+  "comparison": {
+    "differingBytes": 0,
+    "firstDifference": null,
+    "originalBytes": 23934,
+    "originalSha256": "de2308bf6b473c305203a65cbfd8d0ea8b2fc1113fea0d17291fa148be400f57",
+    "replayBytes": 23934,
+    "replaySha256": "de2308bf6b473c305203a65cbfd8d0ea8b2fc1113fea0d17291fa148be400f57"
+  },
+  "converter": {
+    "actualArguments": [
+      "--input",
+      "<INPUT_XML>",
+      "--output",
+      "<OUTPUT_CII>",
+      "--coords-mode",
+      "first",
+      "--weight-scale",
+      "10",
+      "--split-condensed-valve-flange",
+      "--use-restraint-type-based-on-json",
+      "--support-config-json",
+      "<EFFECTIVE_CONFIG_SHA256:44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a>"
+    ],
+    "entrypoint": "xml_to_cii2019_runtime_custody.py",
+    "stderr": "",
+    "stdout": "Wrote <TEMP_ASSET_DIR>/regenerated.cii with 11 elements and 0 restraints. runtime_custody=1; bend_radius_1_5d=False; use_restraint_type_based_on_json=True; split_condensed_valve_flange=True\n"
+  },
+  "converterRun": {
+    "actualArguments": [
+      "--input",
+      "<INPUT_XML>",
+      "--output",
+      "<OUTPUT_CII>",
+      "--coords-mode",
+      "first",
+      "--weight-scale",
+      "10",
+      "--split-condensed-valve-flange",
+      "--use-restraint-type-based-on-json",
+      "--support-config-json",
+      "<EFFECTIVE_CONFIG_SHA256:44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a>"
+    ],
+    "entrypoint": "xml_to_cii2019_runtime_custody.py",
+    "stderr": "",
+    "stdout": "Wrote <TEMP_ASSET_DIR>/regenerated.cii with 11 elements and 0 restraints. runtime_custody=1; bend_radius_1_5d=False; use_restraint_type_based_on_json=True; split_condensed_valve_flange=True\n"
+  },
+  "evidenceClass": "GENERATED_SYNTHETIC_BASELINE_REAL_PYTHON",
+  "originalCiiSha256": "de2308bf6b473c305203a65cbfd8d0ea8b2fc1113fea0d17291fa148be400f57",
+  "originalStructure": {
+    "allPointersValid": true,
+    "auxiliaryCounts": {
+      "ALLOWBLS": 0,
+      "BEND": 0,
+      "DISPLMNT": 0,
+      "EQUIPMNT": 0,
+      "EXPJT": 0,
+      "FLANGES": 0,
+      "FORCMNT": 0,
+      "NODENAME": 0,
+      "OFFSETS": 0,
+      "REDUCERS": 0,
+      "RESTRANT": 0,
+      "RIGID": 6,
+      "SIF&TEES": 0,
+      "UNIFORM": 0,
+      "WIND": 0
+    },
+    "elementCount": 11,
+    "independentReparse": "PASS",
+    "pointerFieldsValidated": 15,
+    "rigidCount": 6,
+    "status": "PASS"
+  },
+  "snapshotFingerprint": "9c0f80b1ec719bd47c7158c3fed8a757f47c1c3774f695626509888fbb73f135",
+  "sourceXmlBytes": 4418,
+  "sourceXmlSha256": "a8ffcf1b2812379dd526055c27427df15abdc58ef962eba4318a5da840b8c054",
+  "structure": {
+    "allPointersValid": true,
+    "auxiliaryCounts": {
+      "ALLOWBLS": 0,
+      "BEND": 0,
+      "DISPLMNT": 0,
+      "EQUIPMNT": 0,
+      "EXPJT": 0,
+      "FLANGES": 0,
+      "FORCMNT": 0,
+      "NODENAME": 0,
+      "OFFSETS": 0,
+      "REDUCERS": 0,
+      "RESTRANT": 0,
+      "RIGID": 6,
+      "SIF&TEES": 0,
+      "UNIFORM": 0,
+      "WIND": 0
+    },
+    "elementCount": 11,
+    "independentReparse": "PASS",
+    "pointerFieldsValidated": 15,
+    "rigidCount": 6,
+    "status": "PASS"
+  },
+  "verdict": "PASS_EXACT_REPLAY"
+}

@@ -1,0 +1,172 @@
+{
+  "authenticOwnerGlrd433_144": {
+    "datasetAvailable": false,
+    "missingInputs": [
+      "Hydrated Owner final conversion configuration",
+      "Run-pinned actual EnrichedXML and full staged JSON",
+      "Imported effective master dependencies and overrides",
+      "Exact historically emitted 433 ELEMENT / 144 RIGID CII",
+      "Converter/Pyodide engine version custody at that run"
+    ],
+    "status": "NOT_RUN"
+  },
+  "counts": {
+    "elementMappings": {
+      "AMBIGUOUS": 0,
+      "CONFLICT": 0,
+      "EXACT_UNIQUE": 8,
+      "TRANSFORMED_WITH_LINEAGE": 3,
+      "UNMATCHED": 0
+    },
+    "engineInputBranches": 4,
+    "engineInputNodes": 16,
+    "events": {
+      "PYTHON_NODE_RENUMBER": 1,
+      "PYTHON_SHORT_NODE_DROP": 1
+    },
+    "finalCiiElements": 11,
+    "finalCiiRigids": 6,
+    "finalNodes": {
+      "count": 15,
+      "generatedRenumberedWithLineage": 1,
+      "originalIdentityVerified": 14,
+      "unresolved": 0
+    },
+    "originalEnrichedXmlBranches": 4,
+    "originalEnrichedXmlNodes": 16,
+    "otherAuxiliaryRecords": 0,
+    "pythonPreprocessedBranches": 4,
+    "pythonPreprocessedNodes": 16,
+    "rigidOwnership": {
+      "AMBIGUOUS": 1,
+      "CONFLICT": 0,
+      "EXACT_UNIQUE": 3,
+      "TRANSFORMED_WITH_LINEAGE": 2,
+      "UNMATCHED": 0
+    },
+    "sharedRigidPointers": 0,
+    "unreferencedRigidPointers": 0,
+    "unresolvedSourceComponents": 1
+  },
+  "dataClass": "SYNTHETIC_MULTIBRANCH",
+  "physicalMassApproval": "NOT_ATTESTED",
+  "repositoryNativeSmoke": {
+    "baselineIndependence": "CURRENT_WRITER_GENERATED",
+    "coverage": {
+      "elementMappings": {
+        "AMBIGUOUS": 0,
+        "CONFLICT": 0,
+        "EXACT_UNIQUE": 42,
+        "TRANSFORMED_WITH_LINEAGE": 266,
+        "UNMATCHED": 0
+      },
+      "engineInputBranches": 41,
+      "engineInputNodes": 1166,
+      "events": {
+        "PYTHON_NONPOSITIVE_NODE_OMISSION": 777,
+        "PYTHON_SHORT_NODE_DROP": 39
+      },
+      "finalCiiElements": 308,
+      "finalCiiRigids": 65,
+      "finalNodes": {
+        "count": 349,
+        "generatedRenumberedWithLineage": 0,
+        "originalIdentityVerified": 349,
+        "unresolved": 0
+      },
+      "originalEnrichedXmlBranches": 41,
+      "originalEnrichedXmlNodes": 1166,
+      "otherAuxiliaryRecords": 296,
+      "pythonPreprocessedBranches": 41,
+      "pythonPreprocessedNodes": 1166,
+      "rigidOwnership": {
+        "AMBIGUOUS": 65,
+        "CONFLICT": 0,
+        "EXACT_UNIQUE": 0,
+        "TRANSFORMED_WITH_LINEAGE": 0,
+        "UNMATCHED": 0
+      },
+      "sharedRigidPointers": 0,
+      "unreferencedRigidPointers": 0,
+      "unresolvedSourceComponents": 198
+    },
+    "differingBytes": 0,
+    "engineInputSha256": "923a2b493483ecaaebe696f3d08a0b688f3ce3c9f456fb11b8e6a5889eea22ba",
+    "evidenceClass": "REPOSITORY_NATIVE_CURRENT_WRITER_SMOKE",
+    "originalCiiSha256": "e1cd0edf8e8f6864ad1160b3a172f348518b770c6455cb1936fd9086ae54bde7",
+    "readOnly": true,
+    "replayVerdict": "PASS_EXACT_REPLAY",
+    "unmatchedDiagnostics": {
+      "sourceNodesWithoutComponentRef": 0,
+      "unmatchedElementCoreEdgeCandidateCounts": {},
+      "unmatchedElementReasons": {},
+      "unmatchedElementSamples": [],
+      "unmatchedElementsWithMissingSourceEdge": 0,
+      "unmatchedRigidReasons": {
+        "Multiple source nodes carry ComponentRefNo; mass allocation unproved": 65
+      }
+    }
+  },
+  "schema": "xml-cii-lineage-coverage/v1",
+  "synthetic433_144Scale": {
+    "baselineIndependence": "CURRENT_WRITER_GENERATED",
+    "coverage": {
+      "elementMappings": {
+        "AMBIGUOUS": 0,
+        "CONFLICT": 0,
+        "EXACT_UNIQUE": 433,
+        "TRANSFORMED_WITH_LINEAGE": 0,
+        "UNMATCHED": 0
+      },
+      "engineInputBranches": 1,
+      "engineInputNodes": 434,
+      "events": {},
+      "finalCiiElements": 433,
+      "finalCiiRigids": 144,
+      "finalNodes": {
+        "count": 434,
+        "generatedRenumberedWithLineage": 0,
+        "originalIdentityVerified": 434,
+        "unresolved": 0
+      },
+      "originalEnrichedXmlBranches": 1,
+      "originalEnrichedXmlNodes": 434,
+      "otherAuxiliaryRecords": 0,
+      "pythonPreprocessedBranches": 1,
+      "pythonPreprocessedNodes": 434,
+      "rigidOwnership": {
+        "AMBIGUOUS": 0,
+        "CONFLICT": 0,
+        "EXACT_UNIQUE": 144,
+        "TRANSFORMED_WITH_LINEAGE": 0,
+        "UNMATCHED": 0
+      },
+      "sharedRigidPointers": 0,
+      "unreferencedRigidPointers": 0,
+      "unresolvedSourceComponents": 0
+    },
+    "differingBytes": 0,
+    "engineInputSha256": "77323c611a85f58b3c866e00b56fc88454e7a7b0a3395ea4c22ecea4c2ed0e78",
+    "evidenceClass": "SYNTHETIC_433_144_NOT_OWNER",
+    "originalCiiSha256": "90f5ddaeca5912481d2031a51433ed16237235adeed4ae58d7de8283440da7e0",
+    "readOnly": true,
+    "replayVerdict": "PASS_EXACT_REPLAY",
+    "unmatchedDiagnostics": {
+      "sourceNodesWithoutComponentRef": 0,
+      "unmatchedElementCoreEdgeCandidateCounts": {},
+      "unmatchedElementReasons": {},
+      "unmatchedElementSamples": [],
+      "unmatchedElementsWithMissingSourceEdge": 0,
+      "unmatchedRigidReasons": {}
+    }
+  },
+  "verification": {
+    "allAuxiliaryPointerFieldsValidated": 15,
+    "allElementsClassified": 11,
+    "allRigidsClassified": 6,
+    "noInvalidPointers": true,
+    "readOnly": true,
+    "relationshipsValidated": 99,
+    "status": "PASS"
+  }
+}

@@ -1,0 +1,71 @@
+name: XML-CII2019 Roundtrip Foundation R1
+on:
+  push:
+    branches:
+      - 'feature/xml-cii2019-roundtrip-foundation-r1-*'
+    paths:
+      - 'roundtrip_foundation/**'
+      - 'tests/test_roundtrip_foundation.py'
+      - 'tests/test_roundtrip_owner_bundle.py'
+      - 'tests/test_roundtrip_review_fixes.py'
+      - '.github/workflows/xml-cii2019-roundtrip-foundation-r1.yml'
+  pull_request:
+    paths:
+      - 'roundtrip_foundation/**'
+      - 'tests/test_roundtrip_foundation.py'
+      - 'tests/test_roundtrip_owner_bundle.py'
+      - 'tests/test_roundtrip_review_fixes.py'
+      - '.github/workflows/xml-cii2019-roundtrip-foundation-r1.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  replay-lineage:
+    name: Native converter replay and read-only lineage
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Compile foundation and test code
+        run: |
+          python3 -m py_compile roundtrip_foundation/snapshot_replay.py roundtrip_foundation/lineage.py roundtrip_foundation/generate_evidence.py roundtrip_foundation/owner_bundle_replay.py tests/test_roundtrip_foundation.py tests/test_roundtrip_owner_bundle.py
+      - name: Run real-converter replay and lineage tests
+        run: |
+          set -o pipefail
+          python3 -m unittest discover -s tests -p 'test_roundtrip*.py' -v 2>&1 | tee "$RUNNER_TEMP/roundtrip-unittests.txt"
+      - name: Run existing direct-CII and standalone regression suites
+        run: |
+          node --test tests/xml-cii-final-property-transactions.test.mjs
+          node --test tests/xml-cii-final-rigid-source-context.test.mjs
+          node --test tests/xml-cii-standalone-output-run.test.js
+      - name: Generate seven synthetic-only engineering evidence artifacts
+        run: |
+          python3 -m roundtrip_foundation.generate_evidence --out roundtrip-evidence --unittest-log "$RUNNER_TEMP/roundtrip-unittests.txt"
+          for f in architecture-audit.md conversion-stage-map.json snapshot-manifest.json no-edit-replay-report.json source-cii-lineage.json lineage-coverage-report.json test-results.md; do
+            test -s "roundtrip-evidence/$f"
+          done
+      - name: Upload synthetic-only evidence and test receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: xml-cii-roundtrip-foundation-r1-evidence
+          path: |
+            roundtrip-evidence/
+            ${{ runner.temp }}/roundtrip-unittests.txt
+          if-no-files-found: warn
+      - name: Commit synthetic-only evidence after verified push CI
+        if: github.event_name == 'push'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add roundtrip-evidence/architecture-audit.md roundtrip-evidence/conversion-stage-map.json roundtrip-evidence/snapshot-manifest.json roundtrip-evidence/no-edit-replay-report.json roundtrip-evidence/source-cii-lineage.json roundtrip-evidence/lineage-coverage-report.json roundtrip-evidence/test-results.md
+          if ! git diff --cached --quiet; then
+            git commit -m "test(roundtrip): retain synthetic exact replay and lineage evidence after CI PASS"
+            git push origin "HEAD:${{ github.ref_name }}"
+          fi
