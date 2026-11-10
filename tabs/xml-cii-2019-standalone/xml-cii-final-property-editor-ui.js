@@ -247,6 +247,7 @@ export function installFinalCiiPropertyEditor({ overlay, result, inventory, plan
       const scratch = { ...session, edits: new Map(session.edits) };
       const staged = [];
       const unique = new Set();
+      const skippedNoopPointers = [];
       for (const item of proposals) {
         const pointer = item.pointer;
         if (unique.has(pointer)) throw new Error('Duplicate batch pointer ' + pointer);
@@ -254,11 +255,20 @@ export function installFinalCiiPropertyEditor({ overlay, result, inventory, plan
         const row = byPointer.get(pointer);
         if (!row || row.editInput.value.trim() !== row.original.rawWeight.trim())
           throw new Error('RIGID ' + pointer + ' was edited since the batch preview.');
-        if (item.status !== 'ELIGIBLE' || !item.candidate || !Number.isFinite(item.proposedWeight) ||
-          item.proposedWeight <= 0 || Math.abs(item.errorPct) <= thresholdPct)
-          throw new Error('RIGID ' + pointer + ' is not an eligible >±' + thresholdPct + '% correction.');
+        if (!['ELIGIBLE', 'WARNING'].includes(item.status) || !item.candidate ||
+          !Number.isFinite(item.proposedWeight) || item.proposedWeight <= 0 ||
+          (item.status !== 'WARNING' && Math.abs(item.errorPct) <= thresholdPct))
+          throw new Error('RIGID ' + pointer + ' is not a qualified correction or individually reviewable warning.');
+        if (item.status === 'WARNING' && !item.reviewRequired)
+          throw new Error('RIGID ' + pointer + ' warning lost its mandatory review flag.');
         if (item.reviewRequired && !approval)
-          throw new Error('RIGID ' + pointer + ' requires explicit review-only approval.');
+          throw new Error('RIGID ' + pointer + ' requires explicit review acknowledgement.');
+        // A 150 → 150 warning is selectable and reviewable but must not create
+        // a fake CII mutation or abort a mixed batch containing real changes.
+        if (Number(row.original.rawWeight) === item.proposedWeight) {
+          skippedNoopPointers.push(pointer);
+          continue;
+        }
         const comparison = item.candidate;
         const reference = {
           kind: 'batch-nearest-review', value: String(item.proposedWeight),
@@ -272,6 +282,8 @@ export function installFinalCiiPropertyEditor({ overlay, result, inventory, plan
             matchPct: comparison.matchPct ?? null,
             approximate: Boolean(comparison.approximate),
             reviewRequired: item.reviewRequired,
+            warningOnly: item.status === 'WARNING',
+            warningCodes: [...(item.warningCodes || [])],
             individuallyApproved: true, reviewOnlyAccepted: Boolean(item.reviewRequired && approval),
             generatedFromRun: String(result.finalRigidReviewEvidence?.engineInputDigest || ''),
           },
@@ -284,6 +296,8 @@ export function installFinalCiiPropertyEditor({ overlay, result, inventory, plan
         }, { replace: true });
         staged.push({ pointer, row, item, reference });
       }
+      // A no-op warning never writes a mass token or invents a changed record.
+      if (!staged.length) return { stagedCount: 0, skippedNoopPointers };
       // Preflight the COMPLETE transaction before touching live input fields.
       const verified = await verifyCiiPropertyTransaction(scratch, {
         currentCiiText: current()?.ciiText, runIdentity,
@@ -322,6 +336,7 @@ export function installFinalCiiPropertyEditor({ overlay, result, inventory, plan
           ' CII units (' + item.errorPct.toFixed(1) + '%)').join('\n') +
         '\nFull CII reparse PASS; untouched bytes EQUAL.\nOriginal SHA-256: ' +
         verified.audit.originalSha256 + '\nRevised SHA-256: ' + verified.audit.revisedSha256;
+      return { stagedCount: staged.length, skippedNoopPointers };
       return verified;
     },
   });
