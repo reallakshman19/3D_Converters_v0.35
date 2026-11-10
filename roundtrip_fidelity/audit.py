@@ -90,7 +90,8 @@ def audit_frozen_run(*, conversion_snapshot, engine_input_xml:bytes,
                    "weightScale":conversion_snapshot["configuration"]["weightScale"]}
     records=build_field_relations(
         effective_inventory=effective,processed_inventory=post,
-        r1_ledger=r1,cii_inventory=cii_fields,configuration=configuration)
+        r1_ledger=r1,cii_inventory=cii_fields,configuration=configuration,
+        configuration_sha256=conversion_snapshot["configuration"]["effectiveConfigSha256"])
     verification=verify_field_values(records,original_cii)
     reversibility=build_reversibility(
         field_inventory=records,original_inventory=original,
