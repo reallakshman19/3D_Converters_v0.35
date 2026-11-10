@@ -3,7 +3,9 @@
  * Preview is read-only. Per-row selection is mandatory, and provisional
  * catalog suggestions additionally require a review-only opt-in + approval.
  */
-import { planFinalRigidBatchCorrections } from './xml-cii-final-rigid-batch-corrections.js';
+import {
+  planFinalRigidBatchCorrections, prepareNearestFinalRigidBatchPreview,
+} from './xml-cii-final-rigid-batch-corrections.js';
 
 const esc = (v) => String(v ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;')
   .replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
@@ -90,6 +92,9 @@ export function installFinalRigidBatchControls({
       '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px;font-size:12px;">' +
       '<label title="Unlock separately reviewed approximate/unverified suggestions; hard HOLD and below-threshold rows remain blocked">' +
       '<input type="checkbox" data-final-rigid-batch-include-review> Include approximate / unverified nearest</label>' +
+      '<button type="button" data-final-rigid-batch-apply-nearest title="Use the top-ranked suggestion in preview only; no weights approved or staged" ' +
+      'style="cursor:pointer;background:#1e293b;color:#dbeafe;padding:6px 10px;border-radius:5px;' +
+      'border:1px solid #60a5fa;">Apply Nearest suggestion</button>' +
       '<button type="button" data-final-rigid-batch-approve-all disabled style="cursor:pointer;background:#1d4ed8;color:#fff;' +
       'padding:6px 10px;border-radius:5px;border:1px solid #60a5fa;">✓ Approve All Eligible (0)</button>' +
       '<button type="button" data-final-rigid-batch-clear-all disabled style="cursor:pointer;background:#1e293b;color:#e2e8f0;' +
@@ -101,7 +106,7 @@ export function installFinalRigidBatchControls({
       ['<label title="Select/deselect all currently eligible RIGIDs in the selected scope">' +
         '<input type="checkbox" data-final-rigid-batch-approve-all-checkbox disabled ' +
         'aria-label="Approve all eligible RIGID pointers"> All eligible</label>',
-        'RIGID', 'Element / FROM → TO', 'Original CII units', 'Nearest suggestion (kg / score)',
+        'RIGID', 'Element / FROM → TO', 'Element Length (mm)', 'Original CII units', 'Nearest suggestion (kg / score)',
         'Proposed CII units', 'Error %', 'Decision / evidence'].map((s) =>
         '<th style="padding:8px;white-space:nowrap;">' + s + '</th>').join('') +
       '</tr></thead><tbody data-final-rigid-batch-rows></tbody></table></div>' +
@@ -116,6 +121,7 @@ export function installFinalRigidBatchControls({
     const body = dialogLayer.querySelector('[data-final-rigid-batch-rows]');
     const showHeld = dialogLayer.querySelector('[data-final-rigid-batch-show-held]');
     const includeReview = dialogLayer.querySelector('[data-final-rigid-batch-include-review]');
+    const applyNearest = dialogLayer.querySelector('[data-final-rigid-batch-apply-nearest]');
     const approveAll = dialogLayer.querySelector('[data-final-rigid-batch-approve-all]');
     const clearAll = dialogLayer.querySelector('[data-final-rigid-batch-clear-all]');
     const approveAllCheckbox = dialogLayer.querySelector('[data-final-rigid-batch-approve-all-checkbox]');
@@ -160,6 +166,10 @@ export function installFinalRigidBatchControls({
         .map((row) => {
           const item = inventory.rows[row.pointer - 1];
           const element = item?.linkedElements?.[0];
+          const lengthMm = item?.linkedElements?.length === 1 &&
+            element?.lengthMm !== null && element?.lengthMm !== undefined &&
+            Number.isFinite(Number(element.lengthMm)) && Number(element.lengthMm) >= 0
+            ? pretty(element.lengthMm) : '—';
           const available = candidateFor(row);
           const options = available.map((candidate, i) =>
             '<option value="' + i + '"' + (row.candidateIndex === i ? ' selected' : '') + '>' +
@@ -176,6 +186,7 @@ export function installFinalRigidBatchControls({
               ' aria-label="Approve RIGID pointer ' + row.pointer + '">') +
             cell(String(row.pointer)) +
             cell(esc(element ? '#' + element.index + ' · ' + element.fromNode + ' → ' + element.toNode : 'Unreferenced')) +
+            cell(esc(lengthMm)) +
             cell(esc(pretty(row.originalWeight))) +
             cell(available.length ? '<select data-final-rigid-batch-candidate="' + row.pointer +
               '" style="max-width:260px;background:#0b1220;border:1px solid #475569;color:#fff;border-radius:4px;padding:4px;">' +
@@ -189,7 +200,7 @@ export function installFinalRigidBatchControls({
               esc(row.reason) + (row.candidate ? '<div>' +
                 esc(row.candidate.method + ' · ' + (row.candidate.source || 'unidentified master row')) +
                 '</div>' : '') + '</div>') + '</tr>';
-        }).join('') || '<tr><td colspan="8" style="padding:14px;">No qualifying RIGIDs for this scope and threshold.</td></tr>';
+        }).join('') || '<tr><td colspan="9" style="padding:14px;">No qualifying RIGIDs for this scope and threshold.</td></tr>';
       updateStage();
     }
     const selectAllEligible = (checked) => {
@@ -206,6 +217,18 @@ export function installFinalRigidBatchControls({
       selections.clear();
       confirm.checked = false;
       render();
+    });
+    applyNearest.addEventListener('click', () => {
+      const prepared = prepareNearestFinalRigidBatchPreview(inventory, plans, {
+        ...base, selectedIndices: candidateIndices,
+      });
+      candidateIndices.clear();
+      for (const [pointer, index] of prepared.selectedIndices) candidateIndices.set(pointer, index);
+      selections.clear();
+      confirm.checked = false;
+      render();
+      summary.textContent = prepared.preparedCount +
+        ' nearest suggestions loaded in preview · no weights selected or approved';
     });
     approveAll.addEventListener('click', () => selectAllEligible(true));
     clearAll.addEventListener('click', () => selectAllEligible(false));
