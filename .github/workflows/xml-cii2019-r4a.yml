@@ -1,0 +1,76 @@
+name: XML-CII2019 R4A source ownership and browser reextract
+on:
+  push:
+    branches: ['feature/xml-cii2019-r4a-*']
+  pull_request:
+    paths:
+      - 'roundtrip_foundation/browser_r4a_bridge.py'
+      - 'converters/xml-cii-2019-standalone/engine.js'
+      - 'tabs/xml-cii-2019-standalone/**'
+      - 'tests/r4a_prepare_lineage.py'
+      - 'tests/xml-cii-r4a-*.mjs'
+      - '.github/workflows/xml-cii2019-r4a.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  r4a-ownership:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Source syntax gates
+        run: |
+          python3 -m py_compile roundtrip_foundation/browser_r4a_bridge.py
+          node --check converters/xml-cii-2019-standalone/engine.js
+          node --check tabs/xml-cii-2019-standalone/xml-cii-r4a-rigid-ownership.js
+          node --check tabs/xml-cii-2019-standalone/xml-cii-r4a-mass-reconcile.js
+          node --check tabs/xml-cii-2019-standalone/xml-cii-source-weight-reextract.js
+          node --check tests/xml-cii-r4a-ownership.test.mjs
+      - name: Produce authentic current-writer (not Owner) synthetic CII and frozen R1 lineage
+        run: |
+          python3 tests/r2_prepare_synthetic_fixture.py --output "$RUNNER_TEMP/r4a-synthetic"
+          python3 tests/r4a_prepare_lineage.py --dir "$RUNNER_TEMP/r4a-synthetic"
+      - name: R4A mass/ownership and source-edit transaction tests
+        env:
+          R4A_FIXTURE_DIR: ${{ runner.temp }}/r4a-synthetic
+        run: node --test tests/xml-cii-r4a-ownership.test.mjs
+      - name: Merged R2 source-backed and direct-CII JS regression
+        env:
+          R2_SYNTHETIC_DIR: ${{ runner.temp }}/r4a-synthetic
+        run: |
+          node --test tests/xml-cii-source-weight-r2.test.mjs
+          node --test tests/xml-cii-final-property-transactions.test.mjs
+          node --test tests/xml-cii-final-rigid-source-context.test.mjs
+          node --test tests/xml-cii-standalone-output-run.test.js
+      - name: Merged R1/R3 Python source/fidelity regression
+        run: python3 -m unittest discover -s tests -p 'test_roundtrip*.py' -v
+  r4a-real-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Produce actual current-writer synthetic CII
+        run: |
+          python3 tests/r2_prepare_synthetic_fixture.py --output tests/.r2-synthetic-runtime
+          python3 tests/r4a_prepare_lineage.py --dir tests/.r2-synthetic-runtime
+      - name: Install isolated Chromium
+        run: |
+          npm install --no-save --package-lock=false playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Test real Pyodide R1 lineage and approved XML→CII source edit/downloads
+        run: node --test tests/xml-cii-r4a-browser.test.mjs
+      - name: Preserve merged R2 fullscreen modal and direct-CII browser regressions
+        run: node --test tests/xml-cii-final-property-browser.test.mjs
