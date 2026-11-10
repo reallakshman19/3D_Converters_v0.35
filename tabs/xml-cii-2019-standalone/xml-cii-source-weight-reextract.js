@@ -165,6 +165,20 @@ export async function applySourceBackedWeightChange(session,request,{
   const current=typeof getCurrentResult==='function' ? getCurrentResult() : session.originalResult;
   assert(current===session.originalResult,'stale UI conversion run replaced during review');
   await assertCustody(session.custody,current);
+  // Approval flags are user intent only, not ownership evidence. Before
+  // writing a source token, re-derive current owner/impact identities from
+  // the independent Python R1 ledger and immutable original CII bytes.
+  if(session.ownership){
+    const checked=await projectR4aOwnership({
+      result:current,inventory:session.inventory,
+      verifiedLineage:session.verifiedLineage,
+    });
+    const again=checked.rows.find(x=>x.rigidPointer===row.rigidPointer);
+    assert(again?.eligible===true &&
+      JSON.stringify(again)===JSON.stringify(row) &&
+      checked.verification?.noEditByteDifferences===0,
+      'R4A_SOURCE_OWNER_CHANGED: source, dependency set or allocation changed after qualification');
+  }
   if(session.committed){
     assert(session.committed.approvedPointer===row.rigidPointer &&
       session.committed.approvedValue===newValue &&
