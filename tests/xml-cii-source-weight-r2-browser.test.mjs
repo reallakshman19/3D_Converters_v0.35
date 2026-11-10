@@ -64,12 +64,14 @@ try{
       const chosen=session.rows.find(x=>x.sourceNode?.componentRefNo==='/RIGID-40');
       return {status:session.noEditParity.status,valid:session.valueIntegrity,
         allowed:chosen.eligible,ownerStatus:chosen.status,pointer:chosen.rigidPointer,
-        ownersHeld:session.rows.filter(x=>x.reason.includes('shared by multiple source nodes')).length};
+        ownersHeld:session.rows.filter(x=>!x.eligible).length,
+        duplicateComponentRefs:(()=>{const counts=new Map();for(const n of session.verifiedLineage?.sourceNodes||[]) if(n.componentRefNo)counts.set(n.componentRefNo,(counts.get(n.componentRefNo)||0)+1);return [...counts.values()].filter(x=>x>1).length;})()};
     });
     assert.equal(noedit.status,'PASS_EXACT_REPLAY');
     assert.equal(noedit.valid,'SERIALIZED_VALUES_VERIFIED');
     assert.equal(noedit.allowed,true);
     assert.ok(noedit.ownersHeld>=1);
+    assert.ok(noedit.duplicateComponentRefs>=1,'actual R1 Python evidence must retain repeated physical source identity');
     const output=await page.evaluate(async(pointer)=>{
       const {session,result,applySourceBackedWeightChange}=window.__r2;
       const committed=await applySourceBackedWeightChange(session,
