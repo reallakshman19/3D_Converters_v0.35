@@ -159,6 +159,31 @@ class FieldFidelityR3(unittest.TestCase):
         self.assertFalse(any(x["physicalAuthority"]=="VERIFIED" for x in self.rels))
         self.assertFalse(any(x["engineeringEditApproved"] for x in self.rels))
 
+    def test_r3_duplicate_mass_token_not_two_approved_physical_masses(self):
+        # A repeated positive sibling Weight is a source custody concern,
+        # not evidence for multiplying physical component mass.
+        modified=FIXTURE.replace(
+            b"<ComponentRefNo>/SHARED-COMP</ComponentRefNo>"
+            b"<Position>200 0 0</Position><OutsideDiameter>60.3</OutsideDiameter>"
+            b"<WallThickness>3.9</WallThickness><Weight>0</Weight>",
+            b"<ComponentRefNo>/SHARED-COMP</ComponentRefNo>"
+            b"<Position>200 0 0</Position><OutsideDiameter>60.3</OutsideDiameter>"
+            b"<WallThickness>3.9</WallThickness><Weight>15</Weight>")
+        self.assertNotEqual(modified,FIXTURE)
+        case=create_current_writer_case(modified,
+                                        evidence_class="SYNTHETIC_CURRENT_WRITER")
+        report=audit_frozen_run(**case)
+        mass=report["lineage"]["massCustody"]
+        shared=next(x for x in mass["components"]
+                    if x["componentRefNo"]=="/SHARED-COMP")
+        self.assertTrue(shared["duplicateComponentNodeIdentity"])
+        self.assertTrue(shared["possiblePropagationOrDuplicatedWeightTokens"])
+        self.assertEqual(shared["originalPhysicalMassAuthority"],"UNRESOLVED")
+        self.assertIsNone(shared["ownerAuthorizedPhysicalAllocation"])
+        self.assertEqual(mass["statistics"]["physicallyApprovedComponentMasses"],0)
+        self.assertEqual(report["coverage"]["massCustodyStatistics"][
+            "suspectedDuplicatePositiveWeightGroups"],1)
+
     def test_09_annotation_source_only_rating_dtxr_not_reverse_inferred(self):
         modified=FIXTURE.replace(b"<Weight>6</Weight></Node>",
                                   b"<Weight>6</Weight><Rating>300</Rating>"
