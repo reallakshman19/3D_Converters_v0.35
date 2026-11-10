@@ -1,7 +1,8 @@
 /**
  * Explicit two-gate UI for threshold-based FINAL CII weight corrections.
  * Preview is read-only. Per-row selection is mandatory, and provisional
- * catalog suggestions additionally require a review-only opt-in + approval.
+ * catalog suggestions require explicit review; warning rows are selectable
+ * individually, never auto-approved or included in the bulk selection.
  */
 import {
   planFinalRigidBatchCorrections, prepareNearestFinalRigidBatchPreview,
@@ -9,7 +10,8 @@ import {
 
 const esc = (v) => String(v ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;')
   .replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-const pretty = (v) => Number.isFinite(Number(v)) ? Number(v).toFixed(3).replace(/\.?0+$/, '') : '—';
+const pretty = (v) => v === null || v === undefined || String(v).trim() === '' ? '—' :
+  Number.isFinite(Number(v)) ? Number(v).toFixed(3).replace(/\.?0+$/, '') : '—';
 const candidateTitle = (entry) => {
   if (!entry) return 'No qualified suggestion';
   return pretty(entry.masterWeightKg) + ' kg · ' +
@@ -90,7 +92,7 @@ export function installFinalRigidBatchControls({
       '<p style="margin:0;font-size:12px;color:#fbbf24;">A nearest catalog suggestion is not a proven physical mass. Confirm each proposed pointer. Unverified or approximate estimates require explicit approval. No CII output changes at this stage.</p>' +
       '<div data-final-rigid-batch-summary role="status" style="font-size:12px;color:#dbeafe;"></div>' +
       '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px;font-size:12px;">' +
-      '<label title="Unlock separately reviewed approximate/unverified suggestions; hard HOLD and below-threshold rows remain blocked">' +
+      '<label title="Include over-threshold approximate/unverified comparisons; warnings are individually selectable">' +
       '<input type="checkbox" data-final-rigid-batch-include-review> Include approximate / unverified nearest</label>' +
       '<button type="button" data-final-rigid-batch-apply-nearest title="Use the top-ranked suggestion in preview only; no weights approved or staged" ' +
       'style="cursor:pointer;background:#1e293b;color:#dbeafe;padding:6px 10px;border-radius:5px;' +
@@ -99,7 +101,7 @@ export function installFinalRigidBatchControls({
       'padding:6px 10px;border-radius:5px;border:1px solid #60a5fa;">✓ Approve All Eligible (0)</button>' +
       '<button type="button" data-final-rigid-batch-clear-all disabled style="cursor:pointer;background:#1e293b;color:#e2e8f0;' +
       'padding:6px 10px;border-radius:5px;border:1px solid #475569;">Clear Selection</button>' +
-      '</div><label style="font-size:12px;"><input type="checkbox" data-final-rigid-batch-show-held> Show held / below-threshold rows</label>' +
+      '</div><label style="font-size:12px;"><input type="checkbox" data-final-rigid-batch-show-held> Show held / review-only rows</label>' +
       '<div style="overflow:auto;flex:1;border:1px solid #334155;border-radius:5px;">' +
       '<table style="width:100%;border-collapse:collapse;font-size:12px;text-align:left;">' +
       '<thead><tr style="position:sticky;top:0;background:#1e293b;">' +
@@ -111,7 +113,7 @@ export function installFinalRigidBatchControls({
         '<th style="padding:8px;white-space:nowrap;">' + s + '</th>').join('') +
       '</tr></thead><tbody data-final-rigid-batch-rows></tbody></table></div>' +
       '<label style="color:#fbbf24;font-size:12px;"><input type="checkbox" data-final-rigid-batch-confirm-review>' +
-      ' I reviewed the selected approximate / unverified proposals and accept them as explicit weight corrections.</label>' +
+      ' I reviewed selected warning / approximate / unverified suggestions and explicitly approve their proposed CII weight corrections.</label>' +
       '<div style="display:flex;justify-content:flex-end;gap:9px;">' +
       '<button type="button" data-final-rigid-batch-cancel style="padding:8px;border:1px solid #475569;border-radius:5px;background:#1e293b;color:#fff;cursor:pointer;">Cancel</button>' +
       '<button type="button" data-final-rigid-batch-stage disabled style="padding:8px 12px;border:none;border-radius:5px;background:#1d4ed8;color:#fff;cursor:pointer;">Stage & Verify Selected Corrections</button>' +
@@ -132,10 +134,11 @@ export function installFinalRigidBatchControls({
 
     function updateStage() {
       const current = recalc();
-      const eligibleIds = new Set(current.eligible.map((r) => r.pointer));
+      const selectable = [...current.eligible, ...current.warnings];
+      const eligibleIds = new Set(selectable.map((r) => r.pointer));
       // Never retain a prior bulk selection if its candidate/eligibility changed.
       for (const pointer of selections) if (!eligibleIds.has(pointer)) selections.delete(pointer);
-      const chosen = current.eligible.filter((r) => selections.has(r.pointer));
+      const chosen = selectable.filter((r) => selections.has(r.pointer));
       const needsApproval = chosen.some((r) => r.reviewRequired);
       stage.disabled = !chosen.length || (needsApproval && !confirm.checked);
       approveAll.disabled = current.eligible.length === 0;
@@ -150,9 +153,10 @@ export function installFinalRigidBatchControls({
       const hardHoldCount = current.proposals.filter((r) =>
         r.status === 'HOLD' || r.status === 'ALREADY_EDITED').length;
       summary.textContent = current.eligible.length + ' eligible · ' +
+        current.warnings.length + ' warnings (individual selection) · ' +
         reviewOnlyCount + ' review-only (requires Include) · ' +
         hardHoldCount + ' hard-held · ' + current.belowThreshold.length +
-        ' below threshold · ' + chosen.length + ' selected · ' +
+        ' within threshold · ' + chosen.length + ' selected · ' +
         (needsApproval && !confirm.checked ? 'review acknowledgement required' :
           'no exported weights changed');
     }
@@ -160,7 +164,7 @@ export function installFinalRigidBatchControls({
     function render() {
       const current = recalc();
       body.innerHTML = current.proposals
-        .filter((row) => showHeld.checked ||
+        .filter((row) => showHeld.checked || row.status === 'WARNING' ||
           (row.errorPct !== null && Math.abs(row.errorPct) > current.thresholdPct &&
             row.status !== 'OUT_OF_SCOPE'))
         .map((row) => {
@@ -175,11 +179,12 @@ export function installFinalRigidBatchControls({
             '<option value="' + i + '"' + (row.candidateIndex === i ? ' selected' : '') + '>' +
             esc(candidateTitle(candidate)) + (candidate.approximate ? ' · approximate' : '') +
             '</option>').join('');
-          const approved = row.status === 'ELIGIBLE';
+          const approved = row.status === 'ELIGIBLE' || row.status === 'WARNING';
           if (!approved) selections.delete(row.pointer);
           const cell = (s) => '<td style="padding:7px;border-bottom:1px solid #26364b;vertical-align:top;">' + s + '</td>';
           const checked = approved && selections.has(row.pointer);
-          const badge = row.reviewRequired ? 'REVIEW · ' : '';
+          const badge = row.status === 'WARNING' ? '⚠ REVIEW · ' :
+            row.reviewRequired ? 'REVIEW · ' : '';
           return '<tr data-final-rigid-batch-row="' + row.pointer + '">' +
             cell('<input type="checkbox" data-final-rigid-batch-approve="' + row.pointer + '"' +
               (checked ? ' checked' : '') + (approved ? '' : ' disabled') +
@@ -193,7 +198,8 @@ export function installFinalRigidBatchControls({
               options + '</select>' : '—') +
             cell(esc(pretty(row.proposedWeight))) +
             cell(row.errorPct === null ? '—' : esc((row.errorPct >= 0 ? '+' : '') + row.errorPct.toFixed(1) + '%')) +
-            cell('<span style="color:' + (approved ? '#86efac' : '#fbbf24') + ';">' +
+            cell('<span style="color:' + (row.status === 'WARNING' ? '#fbbf24' :
+              approved ? '#86efac' : '#fbbf24') + ';">' +
               esc(badge + row.status) + '</span><div title="' +
               esc(row.candidate?.basis || row.reason) +
               '" style="max-width:240px;white-space:normal;font-size:10px;">' +
@@ -207,8 +213,8 @@ export function installFinalRigidBatchControls({
       const current = recalc();
       selections.clear();
       if (checked) for (const proposal of current.eligible) selections.add(proposal.pointer);
-      // Select-all is only an explicit choice of rows, not a mass approval.
-      // A provisional mass still needs the separate review acknowledgement.
+      // Bulk select only normal ELIGIBLE rows. WARNING is individually checked
+      // and must receive the separate review acknowledgement.
       render();
     };
     includeReview.addEventListener('change', () => {
@@ -255,14 +261,18 @@ export function installFinalRigidBatchControls({
       updateStage();
       if (stage.disabled || !isReady()) return;
       const current = recalc();
-      const chosen = current.eligible.filter((r) => selections.has(r.pointer));
+      const chosen = [...current.eligible, ...current.warnings]
+        .filter((r) => selections.has(r.pointer));
       if (!chosen.length || chosen.some((r) => r.reviewRequired) && !confirm.checked) return;
       stage.disabled = true;
       summary.textContent = 'Verifying exact RIGID pointer edits, full CII reparse and untouched-byte parity…';
       try {
-        await stageAndVerify(chosen, current.thresholdPct, confirm.checked);
-        status.textContent = 'Batch VERIFIED: ' + chosen.length +
-          ' selected corrections staged. Click Apply Changes & Re-extract CII, then Download Revised CII.';
+        const result = await stageAndVerify(chosen, current.thresholdPct, confirm.checked);
+        const count = result?.stagedCount ?? chosen.length;
+        status.textContent = count ? 'Batch VERIFIED: ' + count +
+          ' corrections staged; ' + (result?.skippedNoopPointers?.length || 0) +
+          ' already-matching warning(s) unchanged. Click Apply Changes & Re-extract CII, then Download Revised CII.' :
+          'No CII changes needed: selected warnings already match the original weight.';
         close();
       } catch (error) {
         summary.textContent = 'REFUSED: ' + (error?.message || error) + '. No batch changes were staged.';
