@@ -4,9 +4,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { chromium } from 'playwright';
+import {verifyDeploymentIdentity} from './pages-deployment-identity.mjs';
 
 const SITE='https://reallakshman19.github.io/3D_Converters_v0.35/';
-const EXPECTED_DEPLOYED='9615bd82380b92e714906405f62124cc16687ed8';
+// Pre-merge smoke verifies live functionality only. Post-release smoke must receive
+// PAGES_EXPECTED_SHA and check it against manifest bytes fetched from the live site.
+const EXPECTED_DEPLOYED=process.env.PAGES_EXPECTED_SHA?.trim()||null;
 const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
 const page=await browser.newPage({viewport:{width:1440,height:900}});
 page.setDefaultTimeout(45000);
@@ -91,13 +94,22 @@ try{
       'critical same-origin production network failures');
     assert.deepEqual(pageErrors,[],
       'production browser JS errors');
+    let deployedIdentity={status:'NOT_ATTESTED_PRE_RELEASE',
+      verifiedDeployedCommit:null,expectedDeployedCommit:null,
+      evidence:'NO_PUBLISHED_SHA_VERIFICATION_REQUESTED'};
+    if(EXPECTED_DEPLOYED){
+      const manifestUrl=new URL('release-identity.json',SITE);
+      manifestUrl.searchParams.set('expected',EXPECTED_DEPLOYED);
+      const response=await page.request.get(manifestUrl.toString(),{timeout:30000});
+      assert.equal(response.status(),200,
+        'Live deployment identity manifest missing; release commit cannot be verified');
+      deployedIdentity=verifyDeploymentIdentity(await response.json(),EXPECTED_DEPLOYED);
+    }
     const screenshot=process.env.PAGES_LIVE_SMOKE_SCREENSHOT;
     if(screenshot)await page.screenshot({path:screenshot,fullPage:true});
     console.log('PAGES_LIVE_BROWSER_SMOKE='+JSON.stringify({
       status:'PASS_LIVE_BROWSER_SMOKE',
-      deployedMainCommit:EXPECTED_DEPLOYED,
-      deploymentWorkflowRun:42847303668,
-      sourceOfCommit:'GitHub Pages deployment workflow evidence',
+      deploymentIdentity:deployedIdentity,
       liveSite:SITE,checkedRuntimeResources:checks.length,
       visibleStandalone:true,
       fullGLRDConversion:'NOT_RUN',
