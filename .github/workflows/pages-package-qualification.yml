@@ -1,0 +1,31 @@
+name: Pages runtime package qualification
+on:
+  push:
+    branches: ['fix/pages-deterministic-runtime-package-*']
+  pull_request:
+    paths:
+      - '.github/workflows/deploy-app-on-main.yml'
+      - '.github/workflows/pages-package-qualification.yml'
+      - 'scripts/build-pages-package.sh'
+      - 'tests/pages-deployment-package.test.mjs'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  stage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build minimal complete Pages runtime package
+        run: bash scripts/build-pages-package.sh "$RUNNER_TEMP/pages-site"
+      - name: Verify exact browser runtime import/file closure
+        run: node --test tests/pages-deployment-package.test.mjs -- "$RUNNER_TEMP/pages-site"
+      - name: Record staged package sha and size
+        run: |
+          find "$RUNNER_TEMP/pages-site" -type f | wc -l
+          du -sb "$RUNNER_TEMP/pages-site"
+          sha256sum "$RUNNER_TEMP/pages-site/index.html"
