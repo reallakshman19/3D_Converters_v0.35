@@ -498,5 +498,118 @@ class SR01ExactHeadDiagnostics(unittest.TestCase):
         self.assertTrue(witnesses[3]["inverseMappingUnique"])
 
 
+
+class SR01AdditionalRegressions(unittest.TestCase):
+    """Adversarial process-source controls using the production converter."""
+
+    def _case(self, xml_p1="3", rows=None, include_p1=True, key_position="2",
+              mapped_header="P1", extra_xml=b""):
+        import json
+        from roundtrip_foundation.snapshot_replay import capture_snapshot, run_existing_converter
+        from roundtrip_fidelity.audit import CURRENT_WRITER_OPTIONS
+        if rows is None:
+            rows=[{"lineNo":"001","P1":"9"}]
+        xml_pressure=(b"<Pressure><Pressure1>"+xml_p1.encode()+
+                      b"</Pressure1><HydroPressure>7</HydroPressure></Pressure>"
+                      if include_p1 else
+                      b"<Pressure><HydroPressure>7</HydroPressure></Pressure>")
+        replacement=(b"<Branchname>/PROC-001-B-X</Branchname>"+
+                     xml_pressure+extra_xml)
+        xml=FIXTURE.replace(b"<Branchname>/RT/B1</Branchname>",replacement)
+        self.assertNotEqual(xml,FIXTURE)
+        cfg=json.dumps({"linelist":{"masterRows":rows,
+                         "fieldMap":{"lineSeqNo":"lineNo","p1":mapped_header},
+                         "lineKeyTokenPositions":key_position,
+                         "tokenDelimiter":"-"}},sort_keys=True,separators=(",",":")).encode()
+        def snapshot(cii):
+            return capture_snapshot(
+                engine_input_xml=xml,original_cii=cii,effective_config_json=cfg,
+                options=CURRENT_WRITER_OPTIONS,assets={},
+                run_id="R3-SR01-ADVERSARIAL",original_uploaded_xml=xml,
+                completeness_attestation="COMPLETE_NO_EXTERNAL_MASTERS")
+        output,invocation=run_existing_converter(
+            snapshot(b"BOOTSTRAP_NOT_HISTORICAL_CII"),xml,cfg,{})
+        snap=snapshot(output)
+        call={"conversion_snapshot":snap,"engine_input_xml":xml,
+              "original_cii":output,"effective_config_json":cfg,
+              "configuration_assets":{},"original_input_xml":xml,
+              "evidence_class":"SYNTHETIC_CURRENT_WRITER"}
+        run=audit_frozen_run(**call)
+        fields=inventory_cii_fields(output)["fields"]
+        relations=run["reversibility"]["relationships"]
+        def relation(name="ELEMENT.pressure1",element=1):
+            actual=next(f for f in fields if f["ciiField"]==name and
+                        f["ciiElementIdentity"]==f"ELEMENT:{element}")
+            evidence=next(r for r in relations if r["ciiFieldId"]==actual["ciiFieldId"])
+            return actual,evidence
+        return {"xml":xml,"config":cfg,"cii":output,"run":run,
+                "call":call,"snapshot":snap,"relation":relation,
+                "invocation":invocation}
+
+    def _assert_master(self, scenario, field, expected, index=1):
+        token,record=scenario["relation"](field,index)
+        self.assertAlmostEqual(float(token["emittedValue"]),float(expected),places=8)
+        self.assertEqual(record["valueSourceAuthority"],"CONFIGURATION_MASTER")
+        self.assertEqual(record["reversibility"],"LOSSY")
+        self.assertFalse(record["inverseMappingUnique"])
+        self.assertEqual(record["editTechnicalEligibility"],"HOLD")
+        self.assertFalse(record["engineeringEditApproved"])
+        self.assertEqual(record["processProvenance"]["configurationSha256"],
+                         scenario["snapshot"]["configuration"]["effectiveConfigSha256"])
+        self.assertIsNotNone(record["processProvenance"]["winningMaster"])
+        return record
+
+    def test_sr01_equal_xml_master_still_master_authority(self):
+        case=self._case(xml_p1="9")
+        rel=self._assert_master(case,"ELEMENT.pressure1",9)
+        self.assertEqual(rel["originalSourceToken"],"9")
+        self.assertEqual(rel["processProvenance"]["winningMaster"]["rowOrdinal"],0)
+
+    def test_sr01_duplicate_master_rows_first_numeric_selected(self):
+        case=self._case(rows=[{"lineNo":"001","P1":"8"},
+                              {"lineNo":"001","P1":"9"}])
+        rel=self._assert_master(case,"ELEMENT.pressure1",8)
+        self.assertEqual(rel["processProvenance"]["matchedMasterRowOrdinals"],[0,1])
+        self.assertEqual(rel["processProvenance"]["winningMaster"]["rowOrdinal"],0)
+        self.assertEqual(rel["processProvenance"]["winningMaster"]["selectionRule"],
+                         "FIRST_VALID_NUMERIC")
+
+    def test_sr01_blank_master_falls_back_to_xml(self):
+        case=self._case(rows=[{"lineNo":"001","P1":""}])
+        token,rel=case["relation"]()
+        self.assertEqual(float(token["emittedValue"]),3.0)
+        self.assertEqual(rel["valueSourceAuthority"],"EFFECTIVE_XML")
+        self.assertTrue(rel["inverseMappingUnique"])
+        self.assertIsNone(rel["processProvenance"]["winningMaster"])
+
+    def test_sr01_missing_xml_pressure_master_is_not_invented_xml(self):
+        case=self._case(include_p1=False)
+        rel=self._assert_master(case,"ELEMENT.pressure1",9)
+        self.assertEqual(rel["sourceFieldIds"],[])
+        self.assertIsNone(rel["originalSourceToken"])
+
+    def test_sr01_bad_line_key_has_no_master_match(self):
+        case=self._case(key_position="3")
+        token,rel=case["relation"]()
+        self.assertEqual(float(token["emittedValue"]),3.0)
+        self.assertEqual(rel["valueSourceAuthority"],"EFFECTIVE_XML")
+        self.assertEqual(rel["processProvenance"]["matchedMasterRowOrdinals"],[])
+
+    def test_sr01_header_fallback_is_recorded(self):
+        case=self._case(mapped_header="NONEXISTENT_HEADER")
+        rel=self._assert_master(case,"ELEMENT.pressure1",9)
+        self.assertEqual(rel["processProvenance"]["winningMaster"]["selectedHeader"],"P1")
+
+    def test_sr01_configuration_digest_tamper_rejected(self):
+        import json
+        from roundtrip_foundation.snapshot_replay import Hold
+        case=self._case()
+        wrong=json.loads(case["config"])
+        wrong["linelist"]["masterRows"][0]["P1"]="10"
+        content=json.dumps(wrong,sort_keys=True,separators=(",",":")).encode()
+        with self.assertRaises(Hold):
+            audit_frozen_run(**{**case["call"],"effective_config_json":content})
+
+
 if __name__=="__main__":
     unittest.main()
