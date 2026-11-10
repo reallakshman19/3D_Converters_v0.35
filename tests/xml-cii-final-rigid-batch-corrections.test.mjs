@@ -75,13 +75,16 @@ test('approximate 50% / unverified synthetic-source suggestion remains individua
     method: 'length-extrapolated', source: 'WELDNECK-147', preferred: false,
   })];
   const safeDefault = planFinalRigidBatchCorrections(inventory, plans);
-  assert.equal(safeDefault.proposals[19].status, 'REVIEW_ONLY');
+  assert.equal(safeDefault.proposals[19].status, 'WARNING');
   assert.deepEqual(safeDefault.eligible.map((p) => p.pointer), [21]);
-  const approvedView = planFinalRigidBatchCorrections(inventory, plans, { includeReviewOnly: true });
-  assert.equal(approvedView.proposals[19].status, 'ELIGIBLE');
-  assert.equal(approvedView.proposals[19].reviewRequired, true);
-  assert.equal(approvedView.proposals[19].candidate.matchPct, 50);
-  assert.equal(approvedView.proposals[19].proposedWeight, 29.84);
+  assert.ok(safeDefault.proposals[19].warningCodes.includes('ADVISORY_CATALOG_REFERENCE'));
+  assert.equal(safeDefault.proposals[19].reviewRequired, true);
+  assert.equal(safeDefault.proposals[19].candidate.matchPct, 50);
+  assert.equal(safeDefault.proposals[19].proposedWeight, 29.84);
+  assert.ok(safeDefault.warnings.some((row) => row.pointer === 20),
+    'approximate unmapped owner is selectable only as per-row WARNING');
+  assert.equal(planFinalRigidBatchCorrections(inventory,plans,{includeReviewOnly:true}).proposals[19].status,'WARNING',
+    'legacy include toggle cannot promote advisory source to bulk ELIGIBLE');
   const edited = planFinalRigidBatchCorrections(inventory, plans, {
     includeReviewOnly: true, currentEditedValues: new Map([[20,'160']]),
   });
@@ -114,7 +117,7 @@ test('Apply Nearest suggestion requalifies preview without approving or overwrit
   });
   assert.equal(prepared.selectedIndices.get(20), 0);
   assert.equal(prepared.selectedIndices.get(21), 1, 'manual edit stays untouched');
-  assert.equal(prepared.selectedIndices.get(22), 0, 'review-only stays previewable');
+  assert.equal(prepared.selectedIndices.get(22), 0, 'advisory WARNING stays previewable');
   assert.equal(prepared.selectedIndices.get(23), 0, 'below-threshold stays previewable');
   assert.equal(prepared.preparedCount, 3);
   assert.equal(selectedIndices.get(20), 1, 'caller selection map is not mutated');
@@ -124,7 +127,7 @@ test('Apply Nearest suggestion requalifies preview without approving or overwrit
   });
   assert.equal(check.proposals[19].status, 'ELIGIBLE');
   assert.equal(check.proposals[20].status, 'ALREADY_EDITED');
-  assert.equal(check.proposals[21].status, 'REVIEW_ONLY');
+  assert.equal(check.proposals[21].status, 'WARNING');
   assert.equal(check.proposals[22].status, 'WARNING');
   assert.equal(check.eligible.some((row) => row.pointer === 22), false,
     'a nearest preview never automatically approves comparison-only mass');
@@ -148,6 +151,38 @@ test('alternative choice is requalified against threshold, shared source owner i
   inventory.rows[19].linkedElements.pop();
   inventory.rows[19].status = 'SHARED_POINTER';
   assert.equal(planFinalRigidBatchCorrections(inventory, plans).proposals[19].status, 'HOLD');
+});
+
+test('GLRD-shaped 134/135 approximate candidates are WARNINGS requiring per-row approval, never bulk eligible', () => {
+  const { inventory, plans } = inventoryAndPlans(135);
+  const cases = [
+    { pointer:134, from:'3427', to:'3429', original:560, proposed:756.53, length:371.205 },
+    { pointer:135, from:'3429', to:'10120', original:150, proposed:29.84, length:19.1 },
+  ];
+  for(const item of cases){
+    const row=inventory.rows[item.pointer-1];
+    row.weight=item.original;row.rawWeight=String(item.original);
+    row.linkedElements=[{index:item.pointer===134?383:384,rigidPointer:item.pointer,
+      fromNode:item.from,toNode:item.to,branchName:'/GLRD',lengthMm:item.length}];
+    const plan=plans[item.pointer-1];
+    plan.mapping=null;plan.sourceContext.status='NOT_RESOLVED';
+    plan.nearestSuggestions=[candidate(item.proposed,{
+      approximate:true,comparisonOnly:true,direct:false,sourceVerified:false,
+      source:'',method:'length-extrapolated',matchPct:item.pointer===134?91:50,
+    })];
+  }
+  const reviewed=planFinalRigidBatchCorrections(inventory,plans,{thresholdPct:40});
+  for(const item of cases){
+    const decision=reviewed.proposals[item.pointer-1];
+    assert.equal(decision.status,'WARNING');
+    assert.equal(decision.reviewRequired,true);
+    assert.equal(decision.proposedWeight,item.proposed);
+    assert.ok(decision.warningCodes.includes('ADVISORY_CATALOG_REFERENCE'));
+    assert.equal(reviewed.eligible.some((r)=>r.pointer===item.pointer),false);
+    assert.equal(reviewed.warnings.some((r)=>r.pointer===item.pointer),true);
+  }
+  assert.ok(reviewed.proposals[133].warningCodes.includes('BELOW_THRESHOLD'));
+  assert.ok(!reviewed.proposals[134].warningCodes.includes('BELOW_THRESHOLD'));
 });
 
 test('three real-case shapes become warnings but cannot enter bulk approval', () => {

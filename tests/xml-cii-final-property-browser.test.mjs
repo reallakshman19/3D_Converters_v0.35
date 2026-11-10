@@ -420,13 +420,15 @@ try {
     assert.match(await suggestion.innerText(), /2\.984 kg · 50%/);
     assert.equal(await first.locator('[data-final-rigid-reference]').inputValue(), '');
     assert.equal(await page.locator('[data-final-rigid-batch-threshold]').inputValue(), '40');
+    assert.equal(await page.locator('[data-source-weight-direct-cii]').count(),1,
+      'source-backed panel must provide a direct-CII route when source mapping is unavailable');
     await page.locator('[data-final-rigid-batch-preview]').click();
     let modal = page.locator('[data-final-rigid-batch-dialog]');
     assert.match(await modal.locator('[data-final-rigid-batch-summary]').innerText(), /0 eligible/);
-    assert.match(await modal.locator('[data-final-rigid-batch-summary]').innerText(), /1 review-only/);
+    assert.match(await modal.locator('[data-final-rigid-batch-summary]').innerText(), /1 warnings/);
     assert.match(await modal.locator('[data-final-rigid-batch-summary]').innerText(), /2 hard-held/);
     assert.equal(await modal.locator('[data-final-rigid-batch-approve-all]').isDisabled(), true,
-      'Approve All must not bypass the review-only opt-in');
+      'approximate candidate must never join bulk eligible');
     assert.equal(await modal.locator('[data-final-rigid-batch-approve-all-checkbox]').isDisabled(), true);
     assert.equal(await modal.locator('[data-final-rigid-batch-stage]').isDisabled(), true);
     assert.match(await modal.locator('thead').innerText(), /Element Length \(mm\)/);
@@ -436,35 +438,18 @@ try {
     assert.match(await modal.locator('[data-final-rigid-batch-summary]').innerText(), /nearest suggestions loaded in preview/);
     assert.equal(await modal.locator('[data-final-rigid-batch-stage]').isDisabled(), true,
       'nearest preview never implies approval');
-    assert.equal(await modal.locator('[data-final-rigid-batch-row="1"] [data-final-rigid-batch-approve]').isChecked(), false);
-    await modal.locator('[data-final-rigid-batch-show-held]').uncheck();
-    assert.equal(await first.locator('[data-final-rigid-edited]').inputValue(), '150');
-
-    // The review-only opt-in is available inside this modal; no need to close,
-    // search for the toolbar toggle and restart the preview.
-    await modal.locator('[data-final-rigid-batch-include-review]').check();
-    assert.equal(await page.locator('[data-final-rigid-batch-review-only]').isChecked(), true);
-    assert.match(await modal.locator('[data-final-rigid-batch-summary]').innerText(), /1 eligible/);
-    const proposed = modal.locator('[data-final-rigid-batch-row="1"]');
+    const proposed=modal.locator('[data-final-rigid-batch-row="1"]');
     assert.match(await proposed.innerText(), /29\.84/);
     assert.match(await proposed.innerText(), /\+402\.7%/);
-    assert.match(await proposed.innerText(), /REVIEW/);
+    assert.match(await proposed.innerText(), /WARNING/);
+    assert.equal(await proposed.locator('[data-final-rigid-batch-approve]').isDisabled(), false,
+      'reviewable advisory warning must not have disabled checkbox');
     assert.equal(await proposed.locator('[data-final-rigid-batch-approve]').isChecked(), false);
-
-    // Approve All is selection only: does not edit the CII and cannot stage
-    // a provisional candidate without the separate review attestation.
-    await modal.locator('[data-final-rigid-batch-approve-all]').click();
-    assert.equal(await proposed.locator('[data-final-rigid-batch-approve]').isChecked(), true);
-    assert.equal(await modal.locator('[data-final-rigid-batch-approve-all-checkbox]').isChecked(), true);
-    assert.equal(await modal.locator('[data-final-rigid-batch-stage]').isDisabled(), true);
+    await modal.locator('[data-final-rigid-batch-show-held]').uncheck();
     assert.equal(await first.locator('[data-final-rigid-edited]').inputValue(), '150');
-    await modal.locator('[data-final-rigid-batch-clear-all]').click();
-    assert.equal(await proposed.locator('[data-final-rigid-batch-approve]').isChecked(), false);
-    assert.equal(await modal.locator('[data-final-rigid-batch-approve-all-checkbox]').isChecked(), false);
-    await modal.locator('[data-final-rigid-batch-approve-all-checkbox]').check();
-    assert.equal(await proposed.locator('[data-final-rigid-batch-approve]').isChecked(), true);
+    await proposed.locator('[data-final-rigid-batch-approve]').check();
     assert.equal(await modal.locator('[data-final-rigid-batch-stage]').isDisabled(), true,
-      'bulk selection still requires review acknowledgement');
+      'warning selection alone is not approval');
     await modal.locator('[data-final-rigid-batch-confirm-review]').check();
     assert.equal(await modal.locator('[data-final-rigid-batch-stage]').isDisabled(), false);
     await modal.locator('[data-final-rigid-batch-stage]').click();
@@ -503,6 +488,8 @@ try {
     assert.equal(audit.changes[0].reference.batch.thresholdPct, 40);
     assert.equal(audit.changes[0].reference.batch.approximate, true);
     assert.equal(audit.changes[0].reference.batch.reviewOnlyAccepted, true);
+    assert.equal(audit.changes[0].reference.batch.warningOnly, true);
+    assert.ok(audit.changes[0].reference.batch.warningCodes.includes('ADVISORY_CATALOG_REFERENCE'));
     assert.equal(audit.changes[0].reference.batch.individuallyApproved, true);
     assert.equal(audit.changes[0].reference.sourceContext.mapping, null);
     assert.equal(audit.untouchedBytesEqual, true);
@@ -582,7 +569,7 @@ try {
     }
   });
 
-  await test('Chromium Approve All stages two eligible RIGIDs, excludes hard-held third, then re-imports exact revised CII', async () => {
+  await test('Chromium individually approves two advisory WARNINGS, excludes hard-held third, then re-imports exact revised CII', async () => {
     await page.goto(address + '/tests/fixtures/final-cii-property-ui-host.html');
     const sourceCii = original
       .replace(row([1000, 1001, 19.1, 0, 0, 80]),
@@ -621,26 +608,26 @@ try {
     await page.locator('[data-final-rigid-batch-preview]').click();
     const modal = page.locator('[data-final-rigid-batch-dialog]');
     assert.match(await modal.locator('[data-final-rigid-batch-summary]').innerText(), /0 eligible/);
-    assert.match(await modal.locator('[data-final-rigid-batch-summary]').innerText(), /2 review-only/);
-    assert.equal(await modal.locator('[data-final-rigid-batch-approve-all]').isDisabled(), true);
-
-    await modal.locator('[data-final-rigid-batch-include-review]').check();
-    assert.match(await modal.locator('[data-final-rigid-batch-summary]').innerText(), /2 eligible/);
+    assert.match(await modal.locator('[data-final-rigid-batch-summary]').innerText(), /2 warnings/);
     assert.match(await modal.locator('[data-final-rigid-batch-summary]').innerText(), /1 hard-held/);
-    await modal.locator('[data-final-rigid-batch-approve-all]').click();
-    assert.equal(await modal.locator('[data-final-rigid-batch-approve="1"]').isChecked(), true);
-    assert.equal(await modal.locator('[data-final-rigid-batch-approve="2"]').isChecked(), true);
-    assert.equal(await modal.locator('[data-final-rigid-batch-approve-all-checkbox]').isChecked(), true);
+    assert.equal(await modal.locator('[data-final-rigid-batch-approve-all]').isDisabled(), true,
+      'approximate/unverified warnings are excluded from bulk selection');
+    assert.equal(await modal.locator('[data-final-rigid-batch-approve-all-checkbox]').isDisabled(), true);
+    assert.equal(await modal.locator('[data-final-rigid-batch-stage]').isDisabled(), true);
+    for(const pointer of [1,2]){
+      const choose=modal.locator('[data-final-rigid-batch-approve="'+pointer+'"]');
+      assert.equal(await choose.isDisabled(),false);
+      await choose.check();
+    }
     assert.equal(await modal.locator('[data-final-rigid-batch-stage]').isDisabled(), true,
-      'review-only approval is independent of selecting all eligible pointers');
-    const hardHeldRow = modal.locator('[data-final-rigid-batch-row="3"]');
-    assert.equal(await hardHeldRow.count(), 0,
-      'hard-held row is hidden by default but not eligible for bulk approval');
+      'two selected warnings still require explicit review approval');
+    const hardHeldRow=modal.locator('[data-final-rigid-batch-row="3"]');
+    assert.equal(await hardHeldRow.count(),0,'hard-held source owner excluded');
     await modal.locator('[data-final-rigid-batch-show-held]').check();
-    assert.equal(await modal.locator('[data-final-rigid-batch-row="3"] [data-final-rigid-batch-approve]').isDisabled(), true);
+    assert.equal(await modal.locator('[data-final-rigid-batch-row="3"] [data-final-rigid-batch-approve]').isDisabled(),true);
     assert.match(await modal.locator('[data-final-rigid-batch-summary]').innerText(), /2 selected/);
-
     await modal.locator('[data-final-rigid-batch-confirm-review]').check();
+    assert.equal(await modal.locator('[data-final-rigid-batch-stage]').isDisabled(),false);
     await modal.locator('[data-final-rigid-batch-stage]').click();
     await page.waitForFunction(() => !document.querySelector('[data-final-rigid-batch-dialog]'));
     assert.equal(await page.locator('[data-final-rigid-row][data-pointer="1"] [data-final-rigid-edited]').inputValue(), '29.84');
@@ -660,6 +647,8 @@ try {
     ]);
     const audit = JSON.parse(await readFile(await auditDownload.path(), 'utf8'));
     assert.deepEqual(audit.changes.map((r) => r.recordPointer), [1, 2]);
+    assert.ok(audit.changes.every((r)=>r.reference.batch.warningOnly===true &&
+      r.reference.batch.warningCodes.includes('ADVISORY_CATALOG_REFERENCE')));
     assert.equal(audit.untouchedBytesEqual, true);
     assert.equal(await page.evaluate(() => window.currentResult.ciiText), sourceCii);
   });

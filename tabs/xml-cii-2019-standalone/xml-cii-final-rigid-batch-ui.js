@@ -33,16 +33,13 @@ export function installFinalRigidBatchControls({
     '<label>Absolute error threshold ± <input type="number" data-final-rigid-batch-threshold min="0" max="100000" step="1" value="40" style="width:66px;padding:5px;background:#0b1220;border:1px solid #475569;color:#fff;border-radius:4px;"> %</label>' +
     '<label>Scope <select data-final-rigid-batch-scope style="padding:5px;background:#0b1220;border:1px solid #475569;color:#fff;border-radius:4px;">' +
     '<option value="all">All RIGIDs</option><option value="filtered">Filtered rows</option><option value="selected">Selected rows</option></select></label>' +
-    '<label title="Unverified source owner or approximate catalog estimates require manual approval">' +
-    '<input type="checkbox" data-final-rigid-batch-review-only> Include approximate / unverified nearest</label>' +
     '<button type="button" data-final-rigid-batch-preview style="cursor:pointer;padding:7px 11px;border:1px solid #3b82f6;background:#1d4ed8;color:#fff;border-radius:5px;">Preview Batch Corrections</button>' +
     '</div><div data-final-rigid-batch-status role="status" style="font-size:11px;color:#94a3b8;margin-top:5px;">' +
-    'Preview → choose exact RIGID pointers → verify transaction → re-extract revised CII. No automatic mass approval.</div>';
+    'Preview → individually select advisory WARNING rows → acknowledge review → Stage & Verify → Apply Changes & Re-extract CII → Download Revised CII. XML source edits use a separate ownership gate.</div>';
   tableScroller.insertAdjacentElement('beforebegin', toolbar);
 
   const thresholdInput = toolbar.querySelector('[data-final-rigid-batch-threshold]');
   const scopeInput = toolbar.querySelector('[data-final-rigid-batch-scope]');
-  const includeInput = toolbar.querySelector('[data-final-rigid-batch-review-only]');
   const status = toolbar.querySelector('[data-final-rigid-batch-status]');
   const preview = toolbar.querySelector('[data-final-rigid-batch-preview]');
   let dialogLayer = null;
@@ -50,7 +47,6 @@ export function installFinalRigidBatchControls({
   const snapshot = () => ({
     thresholdPct: thresholdInput.value,
     scope: scopeInput.value,
-    includeReviewOnly: includeInput.checked,
     visiblePointers: [...overlay.querySelectorAll('[data-final-rigid-row]')].filter((r) => !r.hidden).map((r) => Number(r.dataset.pointer)),
     selectedPointers: [...overlay.querySelectorAll('[data-final-rigid-row]')].filter((r) =>
       r.querySelector('[data-final-rigid-select]')?.checked).map((r) => Number(r.dataset.pointer)),
@@ -78,7 +74,7 @@ export function installFinalRigidBatchControls({
     const selections = new Set();
     const candidateIndices = new Map(base.selectedIndices);
     const recalc = () => planFinalRigidBatchCorrections(inventory, plans, {
-      ...base, includeReviewOnly: base.includeReviewOnly, selectedIndices: candidateIndices,
+      ...base, selectedIndices: candidateIndices,
     });
     dialogLayer = document.createElement('div');
     dialogLayer.setAttribute('data-final-rigid-batch-dialog', '');
@@ -89,11 +85,9 @@ export function installFinalRigidBatchControls({
     dialogLayer.innerHTML = '<div style="background:#0f172a;color:#e2e8f0;border:1px solid #64748b;border-radius:8px;' +
       'padding:15px;max-width:1200px;width:97%;max-height:88vh;display:flex;flex-direction:column;gap:10px;">' +
       '<h3 style="margin:0;">Preview Batch Weight Corrections</h3>' +
-      '<p style="margin:0;font-size:12px;color:#fbbf24;">A nearest catalog suggestion is not a proven physical mass. Confirm each proposed pointer. Unverified or approximate estimates require explicit approval. No CII output changes at this stage.</p>' +
+      '<p style="margin:0;font-size:12px;color:#fbbf24;">Advisory/approximate catalog references are selectable WARNINGS: individually select each pointer and acknowledge review before staging. No automatic mass approval; source-backed XML eligibility is separate. No CII output changes at this stage.</p>' +
       '<div data-final-rigid-batch-summary role="status" style="font-size:12px;color:#dbeafe;"></div>' +
       '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px;font-size:12px;">' +
-      '<label title="Include over-threshold approximate/unverified comparisons; warnings are individually selectable">' +
-      '<input type="checkbox" data-final-rigid-batch-include-review> Include approximate / unverified nearest</label>' +
       '<button type="button" data-final-rigid-batch-apply-nearest title="Use the top-ranked suggestion in preview only; no weights approved or staged" ' +
       'style="cursor:pointer;background:#1e293b;color:#dbeafe;padding:6px 10px;border-radius:5px;' +
       'border:1px solid #60a5fa;">Apply Nearest suggestion</button>' +
@@ -122,14 +116,12 @@ export function installFinalRigidBatchControls({
     const summary = dialogLayer.querySelector('[data-final-rigid-batch-summary]');
     const body = dialogLayer.querySelector('[data-final-rigid-batch-rows]');
     const showHeld = dialogLayer.querySelector('[data-final-rigid-batch-show-held]');
-    const includeReview = dialogLayer.querySelector('[data-final-rigid-batch-include-review]');
     const applyNearest = dialogLayer.querySelector('[data-final-rigid-batch-apply-nearest]');
     const approveAll = dialogLayer.querySelector('[data-final-rigid-batch-approve-all]');
     const clearAll = dialogLayer.querySelector('[data-final-rigid-batch-clear-all]');
     const approveAllCheckbox = dialogLayer.querySelector('[data-final-rigid-batch-approve-all-checkbox]');
     const confirm = dialogLayer.querySelector('[data-final-rigid-batch-confirm-review]');
     const stage = dialogLayer.querySelector('[data-final-rigid-batch-stage]');
-    includeReview.checked = base.includeReviewOnly;
     const candidateFor = (row) => plans[row.pointer - 1]?.nearestSuggestions || [];
 
     function updateStage() {
@@ -149,12 +141,10 @@ export function installFinalRigidBatchControls({
       approveAllCheckbox.indeterminate = chosen.length > 0 &&
         chosen.length < current.eligible.length;
       clearAll.disabled = chosen.length === 0;
-      const reviewOnlyCount = current.proposals.filter((r) => r.status === 'REVIEW_ONLY').length;
       const hardHoldCount = current.proposals.filter((r) =>
         r.status === 'HOLD' || r.status === 'ALREADY_EDITED').length;
       summary.textContent = current.eligible.length + ' eligible · ' +
         current.warnings.length + ' warnings (individual selection) · ' +
-        reviewOnlyCount + ' review-only (requires Include) · ' +
         hardHoldCount + ' hard-held · ' + current.belowThreshold.length +
         ' within threshold · ' + chosen.length + ' selected · ' +
         (needsApproval && !confirm.checked ? 'review acknowledgement required' :
@@ -217,13 +207,6 @@ export function installFinalRigidBatchControls({
       // and must receive the separate review acknowledgement.
       render();
     };
-    includeReview.addEventListener('change', () => {
-      base.includeReviewOnly = includeReview.checked;
-      includeInput.checked = includeReview.checked;
-      selections.clear();
-      confirm.checked = false;
-      render();
-    });
     applyNearest.addEventListener('click', () => {
       const prepared = prepareNearestFinalRigidBatchPreview(inventory, plans, {
         ...base, selectedIndices: candidateIndices,

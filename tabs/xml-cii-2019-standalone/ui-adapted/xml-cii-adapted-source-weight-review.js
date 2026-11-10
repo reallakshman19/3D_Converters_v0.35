@@ -42,8 +42,10 @@ export function installSourceBackedWeightReview({
   const bar=add(panel,'div',null,{style:'display:flex;flex-wrap:wrap;align-items:center;gap:10px;'});
   add(bar,'strong','Source-backed XML edit',{style:'color:#93c5fd;font-size:14px;'});
   const open=button(bar,'Open source-backed XML edit mode',{'data-source-weight-open':''});
-  const info=add(bar,'span','Separate from direct-CII editing; no automatic catalog suggestion is approved.',
+  const info=add(bar,'span','Source-backed XML editing requires verified physical ownership. Advisory CII warnings use the separate direct-CII transaction.',
     {style:'font-size:11px;color:#cbd5e1;'});
+  const direct=button(bar,'Go to Direct-CII Weight Review',{'data-source-weight-direct-cii':''});
+  direct.style.cssText='padding:8px 12px;border-radius:5px;border:1px solid #60a5fa;background:#1e293b;color:#dbeafe;cursor:pointer;';
   const content=add(panel,'div',null,{'data-source-weight-content':'',
     style:'display:none;padding-top:12px;'});
   // A compact source status/inspect cell per existing emitted RIGID row.
@@ -109,6 +111,17 @@ export function installSourceBackedWeightReview({
   let pendingPointer=null;
   let version=0;
   const current=()=>typeof getCurrentResult==='function'?getCurrentResult():result;
+  direct.addEventListener('click',()=>{
+    if(content.style.display!=='none'){
+      content.style.display='none';
+      open.textContent='Open source-backed XML edit mode';
+    }
+    const toolbar=overlay.querySelector('[data-final-rigid-batch-toolbar]');
+    if(toolbar){
+      toolbar.scrollIntoView({block:'center'});
+      toolbar.querySelector('[data-final-rigid-batch-preview]')?.focus();
+    }
+  });
   const markDirty=()=>{
     version++;committed=null;previewSignature='';apply.disabled=true;
     for(const key of ['revisedXml','revisedCii','audit'])downloads[key].disabled=true;
@@ -164,10 +177,12 @@ export function installSourceBackedWeightReview({
       const built=await initializeSourceWeightSession(result,{engineRunner});
       if(!overlay.isConnected||current()!==result)throw Error('Stale result/modal during no-edit replay.');
       session=built;ready=true;
+      const qualified=built.rows.filter(r=>r.eligible).length;
       status.textContent='PASS: original CII byte-exact replay ('+built.noEditParity.bytes+
         ' bytes); all 15 auxiliary pointers validated; serialized RIGID/OD values checked. '+
-        built.rows.filter(r=>r.eligible).length+'/'+built.rows.length+
-        ' source owners structurally eligible; physical mass approval is still required.';
+        qualified+'/'+built.rows.length+
+        ' source owners structurally eligible; physical mass approval is still required.'+
+        (qualified===0 ? '\nWARNING: No XML Node/Weight is qualified for a source-backed change. The source inputs and revised XML outputs remain locked. Use Go to Direct-CII Weight Review to stage individually reviewed CII warnings without changing EnrichedXML.' : '');
       resetPicker();
       for(const row of built.rows) {
         const item=rowCells.get(row.rigidPointer);
