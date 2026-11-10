@@ -37,7 +37,7 @@ jobs:
       - name: Build deterministic runtime-only Pages package
         run: |
           bash scripts/build-pages-package.sh "$RUNNER_TEMP/pages-site"
-          node --test tests/pages-deployment-package.test.mjs -- "$RUNNER_TEMP/pages-site"
+          PAGES_SITE_DIR="$RUNNER_TEMP/pages-site" node --test tests/pages-deployment-package.test.mjs
 
       - name: Upload static application
         uses: actions/upload-pages-artifact@v3
