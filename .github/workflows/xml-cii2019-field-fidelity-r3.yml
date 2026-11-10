@@ -1,0 +1,110 @@
+name: XML-CII2019 R3 Field Fidelity and Reversibility
+on:
+  push:
+    branches:
+      - 'feature/xml-cii2019-field-fidelity-r3-*'
+  pull_request:
+    paths:
+      - 'roundtrip_fidelity/**'
+      - 'tests/test_roundtrip_field_fidelity_r3.py'
+      - '.github/workflows/xml-cii2019-field-fidelity-r3.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  r3-synthetic-and-regressions:
+    name: R3 source-field verification + R1/R2 regressions
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Python source syntax gate
+        run: python3 -m compileall -q roundtrip_fidelity tests/test_roundtrip_field_fidelity_r3.py
+      - name: Execute R3 adversarial real-converter cases and retain true counts
+        shell: bash
+        run: |
+          set -o pipefail
+          python3 -m unittest discover -s tests -p 'test_roundtrip_field_fidelity_r3.py' -v 2>&1 | tee "$RUNNER_TEMP/r3-test.log"
+          python3 - <<'PY'
+          import json,os,re,pathlib
+          s=pathlib.Path(os.environ['RUNNER_TEMP'],'r3-test.log').read_text()
+          m=re.search(r'Ran (\d+) tests? in [\d.]+s\s+OK\s*$',s)
+          assert m, 'R3 tests not proven green'
+          r={'status':'PASS_EXECUTED','commands':[{
+             'command':"python3 -m unittest discover -s tests -p 'test_roundtrip_field_fidelity_r3.py' -v",
+             'status':'PASS', 'counts':f"{m.group(1)} PASS, 0 FAIL"}]}
+          pathlib.Path(os.environ['RUNNER_TEMP'],'r3-test-receipt.json').write_text(json.dumps(r))
+          print('QUALIFIED_R3_TEST_COUNT',m.group(1))
+          PY
+      - name: Execute previously merged R1 Python lineage regressions
+        run: python3 -m unittest discover -s tests -p 'test_roundtrip_*.py' -v
+      - name: Generate actual synthetic current-writer fidelity output artifacts
+        run: |
+          python3 -m roundtrip_fidelity --synthetic --output "$RUNNER_TEMP/r3-synthetic" --test-results-json "$RUNNER_TEMP/r3-test-receipt.json"
+          python3 - <<'PY'
+          import json,os,pathlib
+          p=pathlib.Path(os.environ['RUNNER_TEMP'],'r3-synthetic/field-coverage-summary.json')
+          a=json.loads(p.read_text())
+          assert a['evidence']['authenticReplay']=='NOT_RUN'
+          assert a['evidence']['differingBytes']==0
+          assert a['counts']['outputFieldsInventoried']>0
+          print('R3_SYNTHETIC_ACTUAL_FIELDS',a['counts'])
+          PY
+      - name: Generate merged R2 real-converter synthetic fixtures
+        run: python3 tests/r2_prepare_synthetic_fixture.py --output "$RUNNER_TEMP/r2-synthetic"
+      - name: Run merged R2 source-backed transaction and R1 direct-CII regression tests
+        env:
+          R2_SYNTHETIC_DIR: ${{ runner.temp }}/r2-synthetic
+        run: |
+          node --test tests/xml-cii-source-weight-r2.test.mjs
+          node --test tests/xml-cii-final-property-transactions.test.mjs
+          node --test tests/xml-cii-final-rigid-source-context.test.mjs
+          node --test tests/xml-cii-standalone-output-run.test.js
+      - name: Upload R3 synthetic field-by-field machine and readable evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: r3-field-fidelity-synthetic-current-writer
+          path: ${{ runner.temp }}/r3-synthetic/
+          if-no-files-found: warn
+  r3-repository-native:
+    name: Repository-native GLRD real current-writer + source-only audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify repo-native source and report source-only custody
+        run: |
+          sha256sum 'Benchmarks/XML to CII 2019/GLRD-1000-PI-01.xml'
+          python3 -m roundtrip_fidelity --source-only-xml 'Benchmarks/XML to CII 2019/GLRD-1000-PI-01.xml' --output "$RUNNER_TEMP/r3-repo-source-only"
+      - name: Real current-writer repo-native GLRD field audit, NOT Owner archive
+        run: |
+          python3 -m roundtrip_fidelity --repo-native --output "$RUNNER_TEMP/r3-repo-current-writer"
+          python3 - <<'PY'
+          import json,os,pathlib
+          r=json.loads(pathlib.Path(os.environ['RUNNER_TEMP'],'r3-repo-current-writer/field-coverage-summary.json').read_text())
+          assert r['evidenceClass']=='REPOSITORY_NATIVE_CURRENT_WRITER'
+          assert r['evidence']['historicalOwner433_144']=='NOT_RUN'
+          assert r['counts']['outputFieldsInventoried']>0
+          print('REPOSITORY_NATIVE_FIELD_EVIDENCE',json.dumps(r['counts']['classifications']))
+          PY
+      - name: Upload counts/read-only reports (never historical Owner inputs)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: r3-repository-native-current-writer-coverage
+          path: |
+            ${{ runner.temp }}/r3-repo-source-only/field-coverage-summary.json
+            ${{ runner.temp }}/r3-repo-source-only/reversibility-audit.md
+            ${{ runner.temp }}/r3-repo-current-writer/field-coverage-summary.json
+            ${{ runner.temp }}/r3-repo-current-writer/reversibility-audit.md
+          if-no-files-found: warn
