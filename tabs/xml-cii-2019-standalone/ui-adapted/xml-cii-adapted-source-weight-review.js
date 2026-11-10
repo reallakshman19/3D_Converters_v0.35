@@ -106,6 +106,7 @@ export function installSourceBackedWeightReview({
   const downloads={
     originalXml:button(dl,'Original EnrichedXML',{'data-source-weight-original-xml':''}),
     originalCii:button(dl,'Original CII',{'data-source-weight-original-cii':''}),
+    ownershipReport:button(dl,'Download RIGID source/HOLD report',{'data-source-weight-ownership-report':''}),
     revisedXml:button(dl,'Download revised EnrichedXML',{'data-source-weight-revised-xml':''}),
     revisedCii:button(dl,'Download re-extracted CII',{'data-source-weight-revised-cii':''}),
     audit:button(dl,'Download verified change audit',{'data-source-weight-audit':''}),
@@ -227,6 +228,7 @@ export function installSourceBackedWeightReview({
         renderFacts();
       }
       downloads.originalXml.disabled=false;downloads.originalCii.disabled=false;
+      downloads.ownershipReport.disabled=false;
     } catch(e){
       status.textContent='HOLD: '+(e?.message||e);
       report.textContent='No source-backed Apply or revised downloads are available.';
@@ -331,6 +333,46 @@ export function installSourceBackedWeightReview({
   downloads.originalCii.addEventListener('click',()=>{
     if(session&&current()===result)download(result.ciiName||'original.cii',
       session.custody.originalCii,'text/plain;charset=utf-8');
+  });
+  downloads.ownershipReport.addEventListener('click',()=>{
+    if(!session||current()!==result)return;
+    const rows=session.rows.map(row=>({
+      rigidPointer:row.rigidPointer,
+      ownershipStatus:row.status,
+      eligibleForSourceEdit:row.eligible===true,
+      holdCode:row.reasonCode||(row.eligible?'PHYSICAL_MASS_APPROVAL_REQUIRED':'R2_DIRECT_EDGE_HOLD'),
+      reason:row.reason,
+      physicalComponentRefNo:row.physicalComponentRefNo||null,
+      sourceNodeIdentity:row.sourceIdentity||null,
+      transformationHistory:row.transformationHistory||[],
+      originalCiiWeight:row.originalCiiWeight,
+      originalPhysicalMassKg:row.originalPhysicalMassKg??null,
+      dependentPointers:row.dependentPointers||[],
+      allocationRule:row.allocationRule||null,
+      completeAllocation:row.completeAllocation===true,
+    }));
+    const counts=Object.fromEntries(Object.entries(rows.reduce((t,row)=>{
+      if(!row.eligible)t[row.holdCode]=(t[row.holdCode]||0)+1;
+      return t;
+    },{})).sort());
+    const output={
+      schema:'xml-cii-r4a-rigid-source-hold-report/v1',
+      evidenceClass:'CURRENT_BROWSER_CONVERSION_ONLY',
+      status:'READ_ONLY_OWNER_DIAGNOSTIC_NOT_ENGINEERING_APPROVAL',
+      sourceXmlSha256:session.custody.engineSha,
+      originalCiiSha256:session.custody.originalCiiSha,
+      sourceRunId:session.custody.runId,
+      noEditParity:session.noEditParity,
+      r1LineageStatus:session.verifiedLineage?.status||'NOT_VERIFIED',
+      r1SnapshotFingerprint:session.verifiedLineage?.runIdentity?.snapshotFingerprint||null,
+      r4aLineageError:session.r4aReason||null,
+      counts:{total:rows.length,structurallyQualified:rows.filter(x=>x.eligible).length,
+        held:rows.filter(x=>!x.eligible).length,reasons:counts},
+      physicalMassApproval:'NOT_ATTESTED_BEFORE_EXPLICIT_TRANSACTION',
+      rows,
+    };
+    download('final_rigid_source_ownership_hold_report.json',
+      JSON.stringify(output,null,2)+'\n','application/json;charset=utf-8');
   });
   for(const [key,contentKey,mime]of [
     ['revisedXml','revisedXml','application/xml;charset=utf-8'],
