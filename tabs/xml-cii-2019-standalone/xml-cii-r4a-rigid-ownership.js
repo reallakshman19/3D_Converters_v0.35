@@ -67,6 +67,7 @@ export async function projectR4aOwnership({result,inventory,verifiedLineage}) {
      hash[1]!==ledger.runIdentity.originalCiiSha256 ||
      hash[1]!==evidence.originalCiiSha256 ||
      hash[2]!==ledger.runIdentity.configurationSha256 ||
+     ledger.runIdentity.runId !== evidence.engineInputDigest ||
      ledger.noEditComparison?.differingBytes!==0) {
     return globalHold('CONFIGURATION_NOT_FROZEN','R1 source/CII/config digest differs from actual current run.');
   }
