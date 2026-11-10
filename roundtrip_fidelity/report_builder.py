@@ -28,12 +28,19 @@ def write_artifacts(directory, *, fidelity_ledger, classifier, verification,
              "sourceFieldPath","originalSourceToken","ciiFieldId","ciiField",
              "emittedToken","sourceUnit","emittedUnit","reversibility","valueStatus",
              "editTechnicalEligibility","physicalAuthority","inverseMappingUnique",
-             "reasonCodes"]
+             "valueSourceAuthority","masterRowOrdinal","masterFieldHeader",
+             "configurationSha256","reasonCodes"]
     with (out/"field-coverage.csv").open("w",newline="",encoding="utf-8") as stream:
         writer=csv.DictWriter(stream,fieldnames=columns);writer.writeheader()
         for row in classifier["relationships"]:
-            writer.writerow({key:(";".join(map(str,row[key])) if isinstance(row.get(key),list)
-                                  else row.get(key)) for key in columns})
+            provenance=row.get("processProvenance") or {}
+            master=provenance.get("winningMaster") or {}
+            flat={**row,
+                  "masterRowOrdinal":master.get("rowOrdinal"),
+                  "masterFieldHeader":master.get("selectedHeader"),
+                  "configurationSha256":provenance.get("configurationSha256")}
+            writer.writerow({key:(";".join(map(str,flat[key])) if isinstance(flat.get(key),list)
+                                  else flat.get(key)) for key in columns})
     counts=classifier["counts"]
     groups=counts["propertyGroups"]
     details=coverage["evidence"]
@@ -57,7 +64,10 @@ def write_artifacts(directory, *, fidelity_ledger, classifier, verification,
          f"| Output-side field relationships | {counts['outputFieldRelationships']} |",
          f"| Matched source field identities | {counts['sourceFieldsWithEmittedRelationships']} |",
          f"| Source fields without verified output | {counts['unemittedOrUnresolvedSourceFields']} |",
-         f"| All relationship records | {counts['allRelationshipRecords']} |"]
+         f"| All relationship records | {counts['allRelationshipRecords']} |",
+         f"| Master-controlled CII fields | {counts['masterControlledOutputFields']} |",
+         f"| Unresolved process authority fields | {counts['unresolvedProcessAuthorityFields']} |",
+         f"| False unique master inverse claims | {counts['masterControlledUniqueInverseClaims']} |"]
     for name in ("LOSSLESS","LOSSLESS_WITH_PROVENANCE","LOSSY","UNRESOLVED"):
         doc.append(f"| {name} | {counts['classifications'][name]} |")
     doc+=["","## Engineering property groups","",
@@ -74,6 +84,7 @@ def write_artifacts(directory, *, fidelity_ledger, classifier, verification,
           f"- Complete IEL pointer slots: {coverage['ciiPointerValidation']['pointerFieldsValidated']}",
           "","## Engineering release boundary","",
           "- Lineage and technical eligibility do not authorize engineering edits.",
+          "- Master-controlled process fields retain winning row/config custody, not an XML inverse.",
           "- Source-selected mass is not necessarily physical component mass authority.",
           "- Source-only Bore, Rating, DTXR and ComponentRefNo cannot be reverse-inferred from CII.",
           "- Generated CII auxiliary pointer numbers are not stable source identities.",
