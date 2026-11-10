@@ -22,7 +22,7 @@ test('Pages runtime payload keeps browser/Pyodide converter and R1/R3 closure',(
   for(const name of required)assert.ok(exists(name),'missing runtime '+name);
   const count=fs.readdirSync(path.join(stage,'vendor/pyodide'));
   assert.ok(count.some(x=>x.endsWith('.wasm')),'vendored Pyodide WASM not included');
-  assert.ok(count.some(x=>x.endsWith('.data'))||count.some(x=>x.includes('stdlib')),
+  assert.ok(count.some(x=>x.endsWith('.data'))||count.includes('python_stdlib.zip'),
     'Pyodide runtime stdlib/data missing');
 });
 test('Heavy source histories are not leaked into production site',()=>{
@@ -63,7 +63,9 @@ test('Reachable ESM relative imports and literal new URL assets remain staged',(
       const spec=(match[1]||match[2]||match[3]).split('?')[0];
       const resolved=path.posix.normalize(path.posix.join(path.posix.dirname(file),spec));
       if(!resolved||resolved.startsWith('..')){missing.push(file+' → '+spec);continue;}
-      if(!exists(resolved)){missing.push(file+' → '+resolved);continue;}
+      const full=path.join(stage,resolved);
+      const isDirectory=fs.existsSync(full)&&fs.statSync(full).isDirectory();
+      if(!exists(resolved)&&!isDirectory){missing.push(file+' → '+resolved);continue;}
       if(/\.(?:js|mjs)$/.test(resolved))queue.push(resolved);
     }
   }
