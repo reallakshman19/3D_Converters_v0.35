@@ -42,12 +42,12 @@ try{
         return false;
       const display=(content.innerText||'').trim();
       return /XML|CII|CAESAR/i.test(display) &&
-        !/^(?:Loading\\.\\.\\.|Loading…|Loading)$/i.test(display) &&
+        !/^(?:Loading\.\.\.|Loading…|Loading)$/i.test(display) &&
         !/Could not load|startup error/i.test(display);
     },null,{timeout:90000,polling:250});
     const text=await page.locator('.app-content').innerText();
     assert.match(text,/XML|CII|CAESAR/i,'XML/CII standalone panel should render');
-    assert.doesNotMatch(text,/^\\s*Loading(?:\\.\\.\\.|…)?\\s*$|Could not load|startup error/i,
+    assert.doesNotMatch(text,/^\s*Loading(?:\.\.\.|…)?\s*$|Could not load|startup error/i,
       'Live tab must finish loading, not just switch navigation');
     const urls=[
       'converters/xml-cii-2019-standalone/engine.js',
