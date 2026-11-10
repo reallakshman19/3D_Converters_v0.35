@@ -8,6 +8,20 @@ function exists(rel){
   const p=path.resolve(stage,rel);
   return p.startsWith(stage+path.sep) && fs.existsSync(p) && fs.statSync(p).isFile();
 }
+const expectedReleaseSha=process.env.PAGES_EXPECTED_SHA;
+if(expectedReleaseSha){
+  test('Published package includes the exact SHA and run identity of this deployment',()=>{
+    assert.match(expectedReleaseSha,/^[a-f0-9]{40}$/);
+    assert.ok(exists('release-identity.json'),'release manifest omitted from Pages payload');
+    const identity=JSON.parse(fs.readFileSync(path.join(stage,'release-identity.json'),'utf8'));
+    assert.equal(identity.schema,'xml-cii-production-deployment/v1');
+    assert.equal(identity.repository,'reallakshman19/3D_Converters_v0.35');
+    assert.equal(identity.commitSha,expectedReleaseSha);
+    assert.equal(identity.workflowRunId,process.env.GITHUB_RUN_ID);
+    assert.match(identity.workflowRunId,/^\d+$/);
+  });
+}
+
 test('Pages runtime payload keeps browser/Pyodide converter and R1/R3 closure',()=>{
   const required=[
     'index.html','main-rhbg-fitguard.js','site.webmanifest',
