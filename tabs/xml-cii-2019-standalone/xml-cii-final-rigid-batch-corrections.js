@@ -100,3 +100,21 @@ export function planFinalRigidBatchCorrections(inventory, plans, options = {}) {
     belowThreshold: proposals.filter((r) => r.status === 'BELOW_THRESHOLD'),
   };
 }
+
+/**
+ * Choose rank-zero suggestions in the preview only. Return a new index map;
+ * never approve a mass, select a RIGID row, overwrite manual values or stage CII.
+ */
+export function prepareNearestFinalRigidBatchPreview(inventory, plans, options = {}) {
+  const selectedIndices = new Map(options.selectedIndices || []);
+  const nearest = planFinalRigidBatchCorrections(inventory, plans, {
+    ...options, selectedIndices: new Map(),
+  });
+  let preparedCount = 0;
+  for (const row of nearest.proposals) {
+    if (!['ELIGIBLE', 'REVIEW_ONLY', 'BELOW_THRESHOLD'].includes(row.status)) continue;
+    selectedIndices.set(row.pointer, 0);
+    preparedCount += 1;
+  }
+  return { selectedIndices, preparedCount };
+}
