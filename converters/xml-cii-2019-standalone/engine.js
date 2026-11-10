@@ -222,7 +222,6 @@ export async function runXmlCii2019StandaloneEngine(job) {
 // R4A observational bridge reuses R1's actual Python preprocessing and
 // final ELEMENT/RIGID source map. It never invokes a second CII writer.
 const R4A_MODULES = Object.freeze([
-  'roundtrip_foundation/__init__.py',
   'roundtrip_foundation/snapshot_replay.py',
   'roundtrip_foundation/full_pointer_validation.py',
   'roundtrip_foundation/ledger_integrity.py',
