@@ -611,5 +611,94 @@ class SR01AdditionalRegressions(unittest.TestCase):
             audit_frozen_run(**{**case["call"],"effective_config_json":content})
 
 
+    def test_sr01_original_xml_changes_under_frozen_master(self):
+        import hashlib
+        a=self._case(xml_p1="3")
+        b=self._case(xml_p1="4")
+        self._assert_master(a,"ELEMENT.pressure1",9)
+        self._assert_master(b,"ELEMENT.pressure1",9)
+        self.assertNotEqual(hashlib.sha256(a["xml"]).hexdigest(),
+                            hashlib.sha256(b["xml"]).hexdigest())
+        self.assertEqual(hashlib.sha256(a["cii"]).hexdigest(),
+                         hashlib.sha256(b["cii"]).hexdigest())
+
+    def test_sr01_master_changes_under_frozen_original_xml(self):
+        import hashlib
+        a=self._case(rows=[{"lineNo":"001","P1":"9"}])
+        b=self._case(rows=[{"lineNo":"001","P1":"10"}])
+        self._assert_master(a,"ELEMENT.pressure1",9)
+        self._assert_master(b,"ELEMENT.pressure1",10)
+        self.assertEqual(hashlib.sha256(a["xml"]).hexdigest(),
+                         hashlib.sha256(b["xml"]).hexdigest())
+        self.assertNotEqual(hashlib.sha256(a["config"]).hexdigest(),
+                            hashlib.sha256(b["config"]).hexdigest())
+        self.assertNotEqual(hashlib.sha256(a["cii"]).hexdigest(),
+                            hashlib.sha256(b["cii"]).hexdigest())
+
+    def test_sr01_repeated_process_values_have_no_unique_xml_inverse(self):
+        case=self._case()
+        for index in range(1,5):
+            with self.subTest(element=index):
+                self._assert_master(case,"ELEMENT.pressure1",9,index)
+        counts=case["run"]["reversibility"]["counts"]
+        self.assertEqual(counts["masterControlledUniqueInverseClaims"],0)
+        self.assertGreaterEqual(counts["masterControlledOutputFields"],4)
+
+    def test_sr01_hydro_temperature_density_writer_selected_master(self):
+        extra=(b"<Temperature><Temperature1>40</Temperature1>"
+               b"<Temperature2>50</Temperature2>"
+               b"<Temperature3>60</Temperature3></Temperature>"
+               b"<FluidDensity>500</FluidDensity>")
+        row={"lineNo":"001","P1":"9","Temperature Max":"111",
+             "Temperature":"112","Temperature Min":"113",
+             "Hydro Test Pressure":"14","Mixed kg/m3":"900"}
+        case=self._case(rows=[row],extra_xml=extra)
+        for name,expected in (("ELEMENT.temperature1",111),
+                              ("ELEMENT.temperature2",112),
+                              ("ELEMENT.temperature3",113),
+                              ("ELEMENT.hydroPressure",14),
+                              ("ELEMENT.fluidDensity",0.0009)):
+            with self.subTest(name=name):
+                self._assert_master(case,name,expected)
+
+    def test_sr01_master_fallback_nested_raw_header(self):
+        case=self._case(rows=[{"lineNo":"001","_raw":{"P1":"9"}}])
+        record=self._assert_master(case,"ELEMENT.pressure1",9)
+        self.assertEqual(record["processProvenance"]["winningMaster"]["valueContainer"],"_raw")
+
+    def test_sr01_negative_control_refuses_unique_master_xml_provenance(self):
+        from roundtrip_fidelity.reversibility_classifier import classify
+        case=self._case()
+        _,record=case["relation"]()
+        fields=case["run"]["lineage"]["ciiFieldInventory"]["fields"]
+        field=next(f for f in fields if f["ciiFieldId"]==record["ciiFieldId"])
+        source=next(f for f in case["run"]["lineage"]["sourceStages"]["effectiveEnriched"]["fields"]
+                    if f["fieldId"]==record["sourceFieldIds"][0])
+        classified,reasons=classify(field,[source],set())
+        self.assertEqual(classified,"LOSSY")
+        self.assertIn("MASTER_SELECTED_VALUE_XML_INVERSE_NOT_UNIQUE",reasons)
+
+    def test_sr01_seven_artifacts_have_consistent_master_authority(self):
+        import csv,json
+        case=self._case()
+        with tempfile.TemporaryDirectory() as folder:
+            audit_frozen_run(**case["call"],artifact_dir=folder)
+            root=Path(folder)
+            self.assertTrue(all((root/n).is_file() for n in ARTIFACTS))
+            with (root/"field-coverage.csv").open(newline="",encoding="utf-8") as stream:
+                rows=list(csv.DictReader(stream))
+            found=next(x for x in rows if x["ciiFieldId"]=="ELEMENT:1:ROW:4:COL:1")
+            self.assertEqual(found["valueSourceAuthority"],"CONFIGURATION_MASTER")
+            self.assertEqual(found["masterRowOrdinal"],"0")
+            self.assertEqual(found["masterFieldHeader"],"P1")
+            self.assertEqual(found["inverseMappingUnique"],"False")
+            coverage=json.loads((root/"field-coverage-summary.json").read_text())
+            self.assertEqual(coverage["counts"]["masterControlledUniqueInverseClaims"],0)
+            self.assertIn("False unique master inverse claims | 0",
+                          (root/"reversibility-audit.md").read_text())
+            self.assertIn("NOT_RUN",(root/"test-results.md").read_text())
+
+
+
 if __name__=="__main__":
     unittest.main()
