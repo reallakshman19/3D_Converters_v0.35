@@ -199,7 +199,7 @@ class FieldFidelityR3(unittest.TestCase):
             element_index=lines.index("#$ ELEMENTS")
             rigid_index=lines.index("#$ RIGID")
             changed=0
-            for row in range(element_index+1,rigid_index,15):
+            for row in range(element_index+1,element_index+1+index['ciiElementsCount']*15,15):
                 line=lines[row+12]
                 ptr=int(float(line[15:28].strip()))
                 if ptr in (1,2):
