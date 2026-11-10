@@ -48,7 +48,10 @@ test('strict ±40% threshold and original/proposed basis, 144-pointer example', 
   assert.ok(Math.abs(pointer20.errorPct - 402.680965147453) < 1e-5,
     'use proposed as the Error % denominator; not the 150 N original');
   assert.equal(pointer20.reviewRequired, false);
-  assert.equal(result.proposals[0].status, 'BELOW_THRESHOLD');
+  assert.equal(result.proposals[0].status, 'WARNING');
+  assert.ok(result.proposals[0].warningCodes.includes('BELOW_THRESHOLD'));
+  assert.equal(result.warnings.length, 142);
+  assert.equal(result.warnings[0].reviewRequired, true);
   const scope = planFinalRigidBatchCorrections(inventory, plans, {
     scope: 'filtered', visiblePointers: [20],
   });
@@ -84,12 +87,17 @@ test('approximate 50% / unverified synthetic-source suggestion remains individua
   });
   assert.equal(edited.proposals[19].status, 'ALREADY_EDITED');
   plans[19].sourceContext.conflicts = ['RATING_CONFLICT'];
-  assert.equal(planFinalRigidBatchCorrections(inventory, plans, { includeReviewOnly: true })
-    .proposals[19].status, 'HOLD');
+  const conflict = planFinalRigidBatchCorrections(inventory, plans);
+  assert.equal(conflict.proposals[19].status, 'WARNING');
+  assert.ok(conflict.proposals[19].warningCodes.includes('RATING_CONFLICT'));
+  assert.equal(conflict.proposals[19].reviewRequired, true);
+  assert.equal(conflict.eligible.some((row) => row.pointer === 20), false,
+    'metadata warnings must not enter bulk eligible selection');
   plans[19].sourceContext.conflicts = [];
   plans[19].sourceContext.dtxr.suppressed = true;
-  assert.equal(planFinalRigidBatchCorrections(inventory, plans, { includeReviewOnly: true })
-    .proposals[19].status, 'HOLD');
+  const suppressed = planFinalRigidBatchCorrections(inventory, plans);
+  assert.equal(suppressed.proposals[19].status, 'WARNING');
+  assert.ok(suppressed.proposals[19].warningCodes.includes('DTXR_SUPPRESSED'));
 });
 test('Apply Nearest suggestion requalifies preview without approving or overwriting manual/HOLD rows', () => {
   const { inventory, plans } = inventoryAndPlans(23);
@@ -117,7 +125,7 @@ test('Apply Nearest suggestion requalifies preview without approving or overwrit
   assert.equal(check.proposals[19].status, 'ELIGIBLE');
   assert.equal(check.proposals[20].status, 'ALREADY_EDITED');
   assert.equal(check.proposals[21].status, 'REVIEW_ONLY');
-  assert.equal(check.proposals[22].status, 'BELOW_THRESHOLD');
+  assert.equal(check.proposals[22].status, 'WARNING');
   assert.equal(check.eligible.some((row) => row.pointer === 22), false,
     'a nearest preview never automatically approves comparison-only mass');
 });
@@ -129,7 +137,8 @@ test('alternative choice is requalified against threshold, shared source owner i
     selectedIndices: new Map([[20, 1]]), thresholdPct: 40,
   });
   assert.equal(alt.proposals[19].proposedWeight, 120);
-  assert.equal(alt.proposals[19].status, 'BELOW_THRESHOLD');
+  assert.equal(alt.proposals[19].status, 'WARNING');
+  assert.ok(alt.proposals[19].warningCodes.includes('BELOW_THRESHOLD'));
   plans[20].mapping.componentRefNo = plans[19].mapping.componentRefNo;
   const shared = planFinalRigidBatchCorrections(inventory, plans);
   assert.equal(shared.proposals[19].status, 'HOLD');
@@ -141,6 +150,40 @@ test('alternative choice is requalified against threshold, shared source owner i
   assert.equal(planFinalRigidBatchCorrections(inventory, plans).proposals[19].status, 'HOLD');
 });
 
+test('three real-case shapes become warnings but cannot enter bulk approval', () => {
+  const { inventory, plans } = inventoryAndPlans(18);
+  for (const pointer of [16, 17]) {
+    const row = inventory.rows[pointer - 1];
+    row.weight = 150; row.rawWeight = '150';
+    plans[pointer - 1].nearestSuggestions = [candidate(150, { title: 'Weldneck Flange' })];
+    plans[pointer - 1].sourceContext.status = 'CONFLICT_REVIEW';
+    plans[pointer - 1].sourceContext.conflicts = ['RATING_CONFLICT'];
+  }
+  inventory.rows[17].weight = 470; inventory.rows[17].rawWeight = '470';
+  plans[17].nearestSuggestions = [candidate(756.52, {
+    approximate:true, comparisonOnly:true, direct:false, title:'Flanged Swing check Valve',
+  })];
+  const result = planFinalRigidBatchCorrections(inventory, plans);
+  for (const pointer of [16, 17]) {
+    const row = result.warnings.find((entry) => entry.pointer === pointer);
+    assert.ok(row, 'conflicting metadata should be a warning');
+    assert.equal(row.originalWeight, 150);
+    assert.equal(row.proposedWeight, 150);
+    assert.ok(row.warningCodes.includes('RATING_CONFLICT'));
+    assert.ok(row.warningCodes.includes('NO_WEIGHT_CHANGE'));
+    assert.equal(row.reviewRequired, true);
+  }
+  const valve = result.warnings.find((entry) => entry.pointer === 18);
+  assert.ok(valve);
+  assert.ok(valve.warningCodes.includes('BELOW_THRESHOLD'));
+  assert.equal(valve.proposedWeight, 756.52);
+  assert.ok(Math.abs(valve.errorPct + 37.8734) < 0.01);
+  assert.equal(valve.reviewRequired, true);
+  assert.equal(result.eligible.some((row) => [16, 17, 18].includes(row.pointer)), false);
+  plans[16].mapping.componentRefNo = plans[15].mapping.componentRefNo;
+  assert.equal(planFinalRigidBatchCorrections(inventory, plans).proposals[15].status,'HOLD',
+    'a genuinely shared physical owner remains a hard HOLD');
+});
 function row(vals) { return vals.map((v,i) => String(v).padStart(i ? 13 : 15,' ')).join(''); }
 function ciiFixture(count = 144) {
   const entries = [
