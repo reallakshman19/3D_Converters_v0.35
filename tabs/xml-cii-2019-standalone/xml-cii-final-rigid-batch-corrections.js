@@ -94,7 +94,8 @@ export function planFinalRigidBatchCorrections(inventory, plans, options = {}) {
     const noWeightChange = expected === Number(row.weight);
     const warningCodes = [...contextWarnings,
       ...(belowThreshold ? ['BELOW_THRESHOLD'] : []),
-      ...(noWeightChange ? ['NO_WEIGHT_CHANGE'] : [])];
+      ...(noWeightChange ? ['NO_WEIGHT_CHANGE'] : []),
+      ...(full.reviewRequired ? ['ADVISORY_CATALOG_REFERENCE'] : [])];
     if (warningCodes.length) {
       const descriptions = [
         contextWarnings.length ? 'Source metadata: ' + contextWarnings.join(', ') : '',
@@ -103,21 +104,22 @@ export function planFinalRigidBatchCorrections(inventory, plans, options = {}) {
         belowThreshold ? 'Deviation ' + error.toFixed(1) +
           '% is within advisory ±' + threshold + '% threshold' : '',
         noWeightChange ? 'Already matches proposed CII weight; no change required' : '',
+        full.reviewRequired ? 'Catalog/estimated reference is not an approved physical mass' : '',
       ].filter(Boolean);
       return { ...full, status: 'WARNING', reviewRequired: true,
         warningCodes, reason: descriptions.join(' · ') + ' · Explicit per-row review required.' };
     }
-    if (full.reviewRequired && !options.includeReviewOnly)
-      return { ...full, status: 'REVIEW_ONLY', reason: 'Approximate or unverified-owner suggestion requires explicit opt-in and per-row approval.' };
-    return { ...full, status: 'ELIGIBLE', reason: full.reviewRequired
-      ? 'REVIEW: catalog comparison only; not proven physical mass. Explicit row approval required.'
-      : 'Exact candidate available. Confirm this row before staging.' };
+    // Advisory references are individually selectable WARNINGS, not a disabled
+    // review-only row or an ELIGIBLE row that can enter bulk selection. No
+    // separate opt-in toggle is necessary: row approval remains mandatory.
+    return { ...full, status: 'ELIGIBLE',
+      reason: 'Verified direct reference available. Confirm this row before staging.' };
   });
   return {
     thresholdPct: threshold, scope, includeReviewOnly: Boolean(options.includeReviewOnly),
     proposals, eligible: proposals.filter((r) => r.status === 'ELIGIBLE'),
     warnings: proposals.filter((r) => r.status === 'WARNING'),
-    held: proposals.filter((r) => r.status === 'HOLD' || r.status === 'REVIEW_ONLY'),
+    held: proposals.filter((r) => r.status === 'HOLD'),
     belowThreshold: proposals.filter((r) => r.warningCodes.includes('BELOW_THRESHOLD')),
   };
 }
