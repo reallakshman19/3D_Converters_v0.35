@@ -348,5 +348,143 @@ class FieldFidelityR3(unittest.TestCase):
             self.assertEqual(report["noEditReplay"]["comparison"]["differingBytes"],0)
 
 
+
+class SR01ExactHeadDiagnostics(unittest.TestCase):
+    """Test-only four-case reproduction on unchanged production commit 83ff5580."""
+
+    def test_sr01_four_real_converter_cases(self):
+        import hashlib, json, sys
+        import xml.etree.ElementTree as ET
+        scripts = str(ROOT / "converters" / "scripts")
+        if scripts not in sys.path:
+            sys.path.insert(0, scripts)
+        import xml_to_cii2019_patched as patched
+        from roundtrip_foundation.snapshot_replay import capture_snapshot, run_existing_converter
+        from roundtrip_foundation.lineage import observe_python_transformations
+        from roundtrip_fidelity.audit import CURRENT_WRITER_OPTIONS
+        witnesses = []
+        for name, xml_p1, master_p1, row_key, expected in (
+            ("A", "2", "9", "001", "9"),
+            ("B", "3", "9", "001", "9"),
+            ("C", "3", "10", "001", "10"),
+            ("D", "3", "9", "NO-MATCH", "3"),
+        ):
+            source = FIXTURE.replace(
+                b"<Branchname>/RT/B1</Branchname>",
+                (b"<Branchname>/PROC-001-B-X</Branchname><Pressure><Pressure1>"
+                 + xml_p1.encode() + b"</Pressure1></Pressure>"))
+            self.assertNotEqual(source, FIXTURE)
+            master_rows = [{"lineNo":row_key, "P1":master_p1}]
+            support = {
+                "linelist": {
+                    "masterRows": master_rows,
+                    "fieldMap": {"lineSeqNo": "lineNo", "p1": "P1"},
+                    "lineKeyTokenPositions": "2",
+                    "tokenDelimiter": "-",
+                }
+            }
+            config = json.dumps(support, sort_keys=True, separators=(",", ":")).encode()
+            normalized = patched._load_support_config(config.decode())
+            patched._normalize_process_field_map(normalized)
+            line_key = patched._line_key_from_branch("/PROC-001-B-X", normalized)
+            matching = patched._matching_linelist_rows(line_key, normalized)
+            self.assertEqual(line_key, "001")
+            self.assertEqual(len(matching), 0 if name == "D" else 1)
+            if matching:
+                self.assertEqual(patched._mapped_process_value(line_key, normalized, "p1",
+                                 ["P1", "Design Pressure", "Operating Pressure"]), expected)
+            bootstrap = capture_snapshot(
+                engine_input_xml=source,
+                original_cii=b"PRE_CONVERTER_BOOTSTRAP_NOT_CII",
+                effective_config_json=config,
+                options=CURRENT_WRITER_OPTIONS,
+                assets={},
+                run_id="R3-SR01-EXACT-HEAD-"+name,
+                original_uploaded_xml=source,
+                completeness_attestation="COMPLETE_NO_EXTERNAL_MASTERS",
+            )
+            emitted, command = run_existing_converter(bootstrap, source, config, {})
+            snapshot = capture_snapshot(
+                engine_input_xml=source,
+                original_cii=emitted,
+                effective_config_json=config,
+                options=CURRENT_WRITER_OPTIONS,
+                assets={},
+                run_id="R3-SR01-EXACT-HEAD-"+name,
+                original_uploaded_xml=source,
+                completeness_attestation="COMPLETE_NO_EXTERNAL_MASTERS",
+            )
+            call = dict(
+                conversion_snapshot=snapshot,
+                engine_input_xml=source,
+                original_cii=emitted,
+                effective_config_json=config,
+                configuration_assets={},
+                original_input_xml=source,
+                evidence_class="SYNTHETIC_CURRENT_WRITER",
+            )
+            audited = audit_frozen_run(**call)
+            preprocessed, _, _ = observe_python_transformations(
+                source, config, {}, CURRENT_WRITER_OPTIONS)
+            first_branch = next(x for x in ET.fromstring(preprocessed).iter()
+                                if x.tag.split("}")[-1] == "Branch")
+            preprocessed_p1 = first_branch.find("./Pressure/Pressure1").text
+            fields = inventory_cii_fields(emitted)["fields"]
+            raw = next(f for f in fields if f["ciiFieldId"] == "ELEMENT:1:ROW:4:COL:1")
+            rel = next(r for r in audited["reversibility"]["relationships"]
+                       if r["ciiFieldId"] == raw["ciiFieldId"])
+            witness = {
+                "case":name,
+                "xmlP1":xml_p1,
+                "masterP1":master_p1,
+                "expectedCiiP1":expected,
+                "preprocessedP1":preprocessed_p1,
+                "actualSerializedP1":raw["emittedToken"].strip(),
+                "actualNumericP1":raw["emittedValue"],
+                "sourceXmlSha256":hashlib.sha256(source).hexdigest(),
+                "configSha256":hashlib.sha256(config).hexdigest(),
+                "embeddedMasterRowsSha256":hashlib.sha256(
+                    json.dumps(master_rows,sort_keys=True,separators=(",",":")).encode()).hexdigest(),
+                "ciiSha256":hashlib.sha256(emitted).hexdigest(),
+                "matchedLineKey":line_key,
+                "matchedMasterRows":len(matching),
+                "selectedRowOrdinal": 0 if matching else None,
+                "selectedHeader":"P1" if matching else None,
+                "converter":command["entrypoint"],
+                "runInvocation":command["actualArguments"],
+                "sourceCandidateIds":rel["sourceFieldIds"],
+                "originalSourceToken":rel["originalSourceToken"],
+                "postTransformation":rel["transformation"],
+                "reasonCodes":rel["reasonCodes"],
+                "classification":rel["reversibility"],
+                "inverseMappingUnique":rel["inverseMappingUnique"],
+                "editTechnicalEligibility":rel["editTechnicalEligibility"],
+                "engineeringEditApproved":rel["engineeringEditApproved"],
+                "valueStatus":rel["valueStatus"],
+                "noEditReplay":audited["noEditReplay"]["verdict"],
+            }
+            witnesses.append(witness)
+            print("R3_SR01_WITNESS="+json.dumps(witness,sort_keys=True),flush=True)
+            self.assertEqual(float(raw["emittedValue"]), float(expected))
+            self.assertEqual(float(preprocessed_p1), float(expected))
+            self.assertEqual(audited["noEditReplay"]["verdict"],"PASS_EXACT_REPLAY")
+        overridden = witnesses[:3]
+        suspect = [
+            x for x in overridden
+            if x["valueStatus"] == "PASS_EXACT_WRITER_SERIALIZATION"
+            and x["inverseMappingUnique"]
+            and len(x["sourceCandidateIds"]) == 1
+            and x["originalSourceToken"] == x["xmlP1"]
+            and x["classification"] in ("LOSSLESS","LOSSLESS_WITH_PROVENANCE")
+        ]
+        print("R3_SR01_DIAGNOSTIC="+json.dumps({
+            "casesPassedRealCii":len(witnesses),
+            "suspectedFalseUniqueProvenance":len(suspect),
+            "reproduction": "REPRODUCED" if len(suspect)==3 else "NOT_CONFIRMED",
+        },sort_keys=True),flush=True)
+        self.assertEqual(len(suspect), 3,
+            "Exact-head source attribution defect not demonstrated in all override cases")
+
+
 if __name__=="__main__":
     unittest.main()
