@@ -33,10 +33,22 @@ try{
     await page.waitForFunction(()=>document.querySelector('.app-content')
       ?.getAttribute('data-active-tab')==='xml-cii-2019-standalone',
       null,{timeout:40000});
-    await page.waitForTimeout(2000);
+    // The tab activates synchronously but its renderer loads asynchronously.
+    // A fixed 2-second sleep raced the network and saw only "Loading...".
+    // Qualify the actual rendered content, not merely the active tab state.
+    await page.waitForFunction(() => {
+      const content=document.querySelector('.app-content');
+      if(!content || content.getAttribute('data-active-tab')!=='xml-cii-2019-standalone')
+        return false;
+      const display=(content.innerText||'').trim();
+      return /XML|CII|CAESAR/i.test(display) &&
+        !/^(?:Loading\\.\\.\\.|Loading…|Loading)$/i.test(display) &&
+        !/Could not load|startup error/i.test(display);
+    },null,{timeout:90000,polling:250});
     const text=await page.locator('.app-content').innerText();
     assert.match(text,/XML|CII|CAESAR/i,'XML/CII standalone panel should render');
-    assert.doesNotMatch(text,/Could not load|startup error/i);
+    assert.doesNotMatch(text,/^\\s*Loading(?:\\.\\.\\.|…)?\\s*$|Could not load|startup error/i,
+      'Live tab must finish loading, not just switch navigation');
     const urls=[
       'converters/xml-cii-2019-standalone/engine.js',
       'converters/scripts/xml_to_cii2019.py',
@@ -93,5 +105,12 @@ try{
     }));
   });
 }finally{
+  // Preserve diagnostics even on failed smoke runs. Never claim success
+  // merely because the screenshot was created.
+  const screenshot=process.env.PAGES_LIVE_SMOKE_SCREENSHOT;
+  if(screenshot) {
+    try { await page.screenshot({path:screenshot,fullPage:true,timeout:20000}); }
+    catch(error){ console.warn('Live smoke diagnostic screenshot unavailable:',String(error)); }
+  }
   await browser.close();
 }
