@@ -146,6 +146,35 @@ export async function initializeSourceWeightSession(result, { engineRunner,
     valueIntegrity:'SERIALIZED_VALUES_VERIFIED',
     physicalMassAuthority:'USER_APPROVAL_REQUIRED',verifiedAt:Date.now()};
 }
+function securityRelevantR4aOwner(row) {
+  // Source parser field metadata carries a cyclic element→parent DOM tree.
+  // Compare the immutable approval-affecting values, not UI/parser nodes.
+  if(!row)return null;
+  return {
+    rigidPointer:row.rigidPointer,eligible:row.eligible,status:row.status,
+    sourceIdentity:row.sourceIdentity,sourceNode:row.sourceNode,
+    physicalComponentRefNo:row.physicalComponentRefNo,
+    weightScale:row.weightScale,originalCiiWeight:row.originalCiiWeight,
+    sourceInputSha256:row.sourceInputSha256,
+    originalEdgeKey:row.originalEdgeKey,
+    originalElementIndex:row.originalElement?.index,
+    originalPhysicalMassKg:row.originalPhysicalMassKg,
+    originalAllocatedMassKg:row.originalAllocatedMassKg,
+    totalAllocatedMassKg:row.totalAllocatedMassKg,
+    completeAllocation:row.completeAllocation,
+    allocationRule:row.allocationRule,
+    dependentPointers:row.dependentPointers,
+    allocations:row.allocations,
+    expectedImpact:row.expectedImpact,
+    sourceEdgeIdentities:row.sourceEdgeIdentities,
+    pythonTransformedNodeIdentities:row.pythonTransformedNodeIdentities,
+    transformationHistory:row.transformationHistory,
+    evidence:row.evidence,
+    writerFieldToken:row.writerSourceNode?.weightField?.value,
+    writerFieldNode:row.writerSourceNode?.nodeNumber,
+    writerFieldComponent:row.writerSourceNode?.componentRefNo,
+  };
+}
 function stagedRequest(session, request){
   assert(session?.schema==='xml-cii-source-weight-session/r2',
     'source-backed edit session not initialized');
@@ -175,7 +204,8 @@ export async function applySourceBackedWeightChange(session,request,{
     });
     const again=checked.rows.find(x=>x.rigidPointer===row.rigidPointer);
     assert(again?.eligible===true &&
-      JSON.stringify(again)===JSON.stringify(row) &&
+      JSON.stringify(securityRelevantR4aOwner(again))===
+        JSON.stringify(securityRelevantR4aOwner(row)) &&
       checked.verification?.noEditByteDifferences===0,
       'R4A_SOURCE_OWNER_CHANGED: source, dependency set or allocation changed after qualification');
   }
