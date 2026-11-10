@@ -1,0 +1,65 @@
+name: XML-CII2019 R2 Source-backed Browser Weight Edit
+on:
+  push:
+    branches:
+      - 'feature/xml-cii2019-enrichedxml-edit-reextract-r2-*'
+  pull_request:
+    paths:
+      - 'tabs/xml-cii-2019-standalone/**'
+      - 'tests/xml-cii-source-weight-r2.test.mjs'
+      - 'tests/r2_prepare_synthetic_fixture.py'
+      - '.github/workflows/xml-cii2019-source-weight-r2.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-weight-r2:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Generate CURRENT-WRITER synthetic XML and CII pairs
+        run: python3 tests/r2_prepare_synthetic_fixture.py --output "$RUNNER_TEMP/r2-synthetic"
+      - name: Parse R2 test and verifier before executing regressions
+        run: |
+          node --check tests/xml-cii-source-weight-r2.test.mjs
+          node --check tabs/xml-cii-2019-standalone/xml-cii-source-weight-cii-verify.js
+      - name: R2 executable source-backed re-extract/adversarial tests
+        env:
+          R2_SYNTHETIC_DIR: ${{ runner.temp }}/r2-synthetic
+        run: node --test tests/xml-cii-source-weight-r2.test.mjs
+      - name: Existing direct CII + source-context + UI regression
+        run: |
+          node --test tests/xml-cii-final-property-transactions.test.mjs
+          node --test tests/xml-cii-final-rigid-source-context.test.mjs
+          node --test tests/xml-cii-standalone-output-run.test.js
+      - name: R1 source/custody Python regression
+        run: python3 -m unittest discover -s tests -p 'test_roundtrip*.py' -v
+  browser-pyodide-r2:
+    name: Actual Chromium/Pyodide R2 source-edit reextract and UI
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Generate current-writer synthetic XML and original/approved CII
+        run: python3 tests/r2_prepare_synthetic_fixture.py --output tests/.r2-synthetic-runtime
+      - name: Install browser dependency
+        run: |
+          npm install --no-save --package-lock=false playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Run real Chromium/Pyodide weight edit, reextract, UI and downloads
+        run: node --test tests/xml-cii-source-weight-r2-browser.test.mjs
+      - name: Preserve existing final CII fullscreen Chromium regression
+        run: node --test tests/xml-cii-final-property-browser.test.mjs

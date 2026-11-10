@@ -1,4 +1,5 @@
 import { installFinalCiiPropertyEditor } from '../xml-cii-final-property-editor-ui.js';
+import { installSourceBackedWeightReview } from './xml-cii-adapted-source-weight-review.js';
 import { installFinalRigidReviewLayout } from '../xml-cii-final-rigid-layout.js';
 import { buildFinalRigidReferencePlans } from '../xml-cii-final-rigid-master-references.js';
 import { classifyFinalRigidWeightError, configuredFinalRigidErrorThreshold, formatFinalRigidErrorPercent } from '../xml-cii-final-rigid-weight-error.js';
@@ -406,6 +407,8 @@ export function openFinalRigidWeightReview(result, options = {}) {
   search?.addEventListener('input', refresh);
   filter?.addEventListener('change', refresh);
   installFinalCiiPropertyEditor({ overlay, result, inventory, plans, refresh, getCurrentResult: options.getCurrentResult });
+  installSourceBackedWeightReview({ overlay, result, inventory,
+    getCurrentResult: options.getCurrentResult });
   layout = installFinalRigidReviewLayout(overlay);
   refresh();
   search?.focus();

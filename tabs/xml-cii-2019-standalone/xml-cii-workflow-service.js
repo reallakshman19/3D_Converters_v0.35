@@ -3,6 +3,7 @@ import { runXmlCii2019StandaloneEngineJob } from './xml-cii-workflow-engine-clie
 import { createWorkflowDiagnostics, normalizeWorkflowResult } from './xml-cii-workflow-types.js';
 import { applyStandaloneSifFacts } from './xml-cii-standalone-sif-apply.js';
 import { enrichStandaloneXmlForRun } from './xml-cii-standalone-run-parity.js';
+import { ciiSha256 } from './xml-cii-final-property-reader.js';
 
 function parseSupportConfig(raw) {
   try {
@@ -133,6 +134,13 @@ export async function runXmlCii2019WorkflowService(job, runtime = {}) {
       supportConfigJson: factedJob.supportConfigJson,
       weightScale: factedJob.options?.kgToNewton === false ? 1 : 10,
       engineInputDigest: parity.evidence.engineInputDigest,
+      // R2: sealed effective converter-boundary custody. The original
+      // uploaded job options must not be inferred again after this run.
+      engineInputSha256: await ciiSha256(parity.xmlText),
+      originalCiiSha256: await ciiSha256(normalized.ciiText),
+      effectiveSourceName: engineJob.sourceName,
+      effectiveOptions: { ...engineJob.options },
+      originalCiiName: normalized.ciiName,
     };
   }
   if (normalized.diagnostics) {
