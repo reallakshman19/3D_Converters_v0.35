@@ -73,6 +73,12 @@ export function installSourceBackedWeightReview({
   const status=add(content,'pre','Not initialized.',{'data-source-weight-status':'',
     role:'status',style:'white-space:pre-wrap;color:#fbbf24;font-size:12px;'});
   const form=add(content,'div',null,{style:'display:flex;flex-wrap:wrap;gap:12px;align-items:end;'});
+  const searchWrap=add(form,'label','Search RIGID pointer / ComponentRefNo',
+    {style:'font-size:11px;'});
+  const search=add(searchWrap,'input',null,{
+    'data-source-weight-search':'',type:'search',
+    placeholder:'RIGID 56 / ComponentRefNo',
+    style:'display:block;min-width:200px;padding:7px;background:#0b1220;color:#f8fafc;border:1px solid #64748b;'});
   const pickWrap=add(form,'label','RIGID pointer · verified source', {style:'font-size:11px;'});
   const picker=add(pickWrap,'select',null,{'data-source-weight-pointer':'',
     style:'display:block;min-width:180px;background:#0b1220;color:#f8fafc;padding:7px;'});
@@ -142,6 +148,13 @@ export function installSourceBackedWeightReview({
       ['Original XML Weight',src?.originalXmlWeight??'Unresolved'],
       ['Original CII Weight',row.originalCiiWeight??'Unresolved'],
       ['Weight scale',row.weightScale??'Unresolved'],
+      ['Rejection / approval code',row.reasonCode||'R2_DIRECT_EDGE_ONLY'],
+      ['Physical owner',row.physicalComponentRefNo||'UNRESOLVED'],
+      ['Original physical mass (kg)',row.originalPhysicalMassKg??'UNVERIFIED'],
+      ['Original allocated CII mass (kg)',row.totalAllocatedMassKg??'UNVERIFIED'],
+      ['Mass-allocation reason',row.allocationRule||'UNRESOLVED'],
+      ['Dependent RIGID pointers',row.dependentPointers?.join(', ')||'NOT_QUALIFIED'],
+      ['Transformations',row.transformationHistory?.map(x=>x.stage).join(', ')||'None or not qualified'],
       ['Expected CII impact',row.expectedImpact?.map(x=>x.fromNode+' → '+x.toNode).join(', ')||'Unknown'],
     ];
     for(const [title,value]of pieces)valueLabel(facts,title,value);
@@ -160,14 +173,23 @@ export function installSourceBackedWeightReview({
   };
   const resetPicker=()=>{
     const rows=session?.rows||[];
+    const previous=picker.value;
+    const needle=search.value.trim().toLowerCase();
     picker.replaceChildren();
-    for(const row of rows) {
+    const options=rows.filter(row=>!needle||
+      String(row.rigidPointer).includes(needle.replace(/^rigid\s*/,'').trim()) ||
+      String(row.physicalComponentRefNo||row.sourceNode?.componentRefNo||'')
+        .toLowerCase().includes(needle) ||
+      String(row.reasonCode||'').toLowerCase().includes(needle));
+    for(const row of options){
       const opt=el('option',
-        'RIGID '+row.rigidPointer+' · '+(row.eligible?'ELIGIBLE (approval required)':'HOLD'),
+        'RIGID '+row.rigidPointer+' · '+(row.eligible?
+          'SOURCE QUALIFIED · explicit approval':'HOLD · '+(row.reasonCode||row.reason)),
         {value:row.rigidPointer});
       picker.appendChild(opt);
     }
-    if(!rows.length) picker.appendChild(el('option','No RIGID records',{value:''}));
+    if(!options.length)picker.appendChild(el('option','No RIGIDs match search',{value:''}));
+    if(options.some(x=>String(x.rigidPointer)===previous))picker.value=previous;
     renderFacts();
   };
   async function init(){
@@ -178,11 +200,19 @@ export function installSourceBackedWeightReview({
       if(!overlay.isConnected||current()!==result)throw Error('Stale result/modal during no-edit replay.');
       session=built;ready=true;
       const qualified=built.rows.filter(r=>r.eligible).length;
+      const breakdown=built.ownership?.breakdown||Object.fromEntries(
+        Object.entries(built.rows.filter(x=>!x.eligible).reduce((t,x)=>{
+          const name=x.reasonCode||'R2_DIRECT_EDGE_HOLD';t[name]=(t[name]||0)+1;return t;
+        },{})));
+      const reasons=Object.entries(breakdown)
+        .map(([k,v])=>k+': '+v).join(' | ');
       status.textContent='PASS: original CII byte-exact replay ('+built.noEditParity.bytes+
         ' bytes); all 15 auxiliary pointers validated; serialized RIGID/OD values checked. '+
         qualified+'/'+built.rows.length+
         ' source owners structurally eligible; physical mass approval is still required.'+
-        (qualified===0 ? '\nWARNING: No XML Node/Weight is qualified for a source-backed change. The source inputs and revised XML outputs remain locked. Use Go to Direct-CII Weight Review to stage individually reviewed CII warnings without changing EnrichedXML.' : '');
+        '\nR4A ownership HOLD breakdown: '+(reasons||'none')+
+        (built.r4aReason ? '\nR4A independent Python lineage unavailable: '+built.r4aReason : '')+
+        (qualified===0 ? '\nWARNING: No verified XML physical source owner is eligible. Original files remain downloadable. Revised source/CII outputs stay locked.' : '');
       resetPicker();
       for(const row of built.rows) {
         const item=rowCells.get(row.rigidPointer);
@@ -223,6 +253,7 @@ export function installSourceBackedWeightReview({
       }
     });
   }
+  search.addEventListener('input',()=>{resetPicker();proposed.value='';clearApproval();});
   picker.addEventListener('change',()=>{proposed.value='';clearApproval();renderFacts();});
   for(const control of [proposed,approval,owner,zero])
     control.addEventListener(control.type==='checkbox'?'change':'input',markDirty);
@@ -240,10 +271,20 @@ export function installSourceBackedWeightReview({
       if(parsed.number===row.sourceNode.originalXmlWeight)throw Error('No source Weight change.');
       previewSignature=signature();
       apply.disabled=false;
+      const allocationPlan=row.completeAllocation ? (
+        '\nORIGINAL verified component mass: '+row.originalPhysicalMassKg+' kg'+
+        '\nAPPROVED proposed component mass: '+parsed.number+' kg'+
+        '\nComplete allocation rule: '+row.allocationRule+
+        '\nAffected RIGID pointers: '+row.dependentPointers.join(', ')+
+        '\nAllocation (kg): '+row.allocations.map(a=>
+          'RIGID '+a.oldRigidPointer+': '+a.originalAllocatedMassKg+
+          ' → '+(parsed.number*a.fraction)+' (fraction '+a.fraction+')').join('; ')
+      ):'\nR2 direct-edge-only owner; no R4A transformed allocation claim.';
       report.textContent='APPROVED PREVIEW (not applied):\n'+
         'Source '+row.sourceIdentity+' ComponentRefNo '+row.sourceNode.componentRefNo+
         '\nXML Weight '+row.sourceNode.originalXmlWeight+' → '+text+
         '\nExpected CII Weight '+row.originalCiiWeight+' → '+parsed.number*row.weightScale+
+        allocationPlan+
         '\nOnly the source Node/Weight token may change. New CII must reparse and reconcile before download.';
     } catch(e){report.textContent='HOLD: '+(e?.message||e);}
   });
@@ -269,6 +310,13 @@ export function installSourceBackedWeightReview({
           ': '+x.oldWeight+' → '+x.newWeight).join('\n')+
         '\nOriginal files immutable. Unrelated XML bytes changed: 0'+
         '\nUnexpected CII engineering differences: 0'+
+        (output.audit.massReconciliation ?
+          '\nVerified physical component mass (kg): '+
+          output.audit.massReconciliation.originalPhysicalMassKg+' → '+
+          output.audit.massReconciliation.approvedRevisedPhysicalMassKg+
+          '\nOriginal → final RIGID pointer: '+
+          output.audit.massReconciliation.originalRigidPointer+' → '+
+          output.audit.massReconciliation.revisedRigidPointer : '')+
         '\nDownload revised EnrichedXML, regenerated CII and change audit.';
     }catch(e){
       committed=null;
