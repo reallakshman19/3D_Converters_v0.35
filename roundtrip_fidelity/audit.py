@@ -15,6 +15,7 @@ from .field_inventory import inventory_source_fields, match_original_to_effectiv
 from .field_lineage import inventory_cii_fields, build_field_relations
 from .field_value_verifier import verify_field_values
 from .reversibility_classifier import build_reversibility
+from .mass_custody import mass_custody_report
 from .report_builder import write_artifacts
 
 
@@ -96,6 +97,10 @@ def audit_frozen_run(*, conversion_snapshot, engine_input_xml:bytes,
         effective_inventory=effective,source_stage_match=stage_match,
         r1_ledger=r1,value_verification=verification,
         evidence_class=evidence_class)
+    mass_custody = mass_custody_report(
+        original_inventory=original,effective_inventory=effective,
+        source_stage_match=stage_match,r1_ledger=r1,reversibility=reversibility)
+    mass_custody["weightScale"] = conversion_snapshot["configuration"]["weightScale"]
     # Every source field is counted once in source inventory; relationship
     # multiplicity is counted in the output ledger, never deduplicated by name.
     counts=reversibility["counts"]
@@ -160,6 +165,7 @@ def audit_frozen_run(*, conversion_snapshot, engine_input_xml:bytes,
             "ciiAuxiliaryCounts":records["ciiAuxiliaryCounts"],
             "pointerFieldsValidated":records["pointerFieldsValidated"]},
         "fieldRelationships":reversibility["relationships"],
+        "massCustody":mass_custody,
         "evidence":evidence,
     }
     coverage={
@@ -173,6 +179,7 @@ def audit_frozen_run(*, conversion_snapshot, engine_input_xml:bytes,
             "allPointersValid":True,
             "pointerFieldsValidated":records["pointerFieldsValidated"]},
         "r1StructuralValidation":integrity.get("status"),
+        "massCustodyStatistics":mass_custody["statistics"],
         "sourceOnlyAnnotations":dict(Counter(
             r["sourceFieldPath"] for r in reversibility["relationships"]
             if r["relationshipDirection"]=="SOURCE_WITHOUT_VERIFIED_EMISSION"
