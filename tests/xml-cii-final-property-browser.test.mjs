@@ -511,6 +511,77 @@ try {
       'original CII must remain unmodified even after successful re-extraction');
   });
 
+  await test('Chromium warning-only rows permit individual approval, skip 150→150 no-op and preserve CII audit', async () => {
+    for (const scenario of [
+      { kg:15, length:19.1, unchanged:true },
+      { kg:2.984 * 147 / 19.1, length:147, unchanged:false },
+    ]) {
+      await page.goto(address + '/tests/fixtures/final-cii-property-ui-host.html');
+      const sourceCii = original
+        .replace(row([1000,1001,19.1,0,0,80]), row([639,10000,19.1,0,0,60.3]))
+        .replace(row([430,'0.000000']), row([150,'0.000000']));
+      const pinnedXml = '<Root><Branch><Branchname>/B</Branchname><Rating>900</Rating>' +
+        '<Node><NodeNumber>1</NodeNumber><Position>0 0 0</Position>' +
+        '<ComponentType>PIPE</ComponentType></Node></Branch></Root>';
+      const master = { id:'WARN-FLANGE',boreMm:50,rating:'900',lengthMm:scenario.length,
+        weight:scenario.kg,type:'FLANGE',typeDesc:'Weldneck Flange' };
+      await page.evaluate(async ({ciiText,pinnedXml,master}) => {
+        const {openFinalRigidWeightReview} = await import(
+          '/tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-final-rigid-review.js');
+        window.currentResult = { ok:true, ciiText, ciiName:'Warnings-synthetic.cii',
+          finalRigidReviewEvidence: {sourceKind:'xml',engineInputText:pinnedXml,
+            engineInputDigest:'sha256:warning-synthetic',stagedJsonText:'',
+            supportConfigJson:JSON.stringify({weight:{
+              masterRows:[master],valveHintLengthToleranceMm:6}}),weightScale:10} };
+        openFinalRigidWeightReview(window.currentResult, {
+          getCurrentResult:()=>window.currentResult});
+      },{ciiText:sourceCii,pinnedXml,master});
+      await page.waitForFunction(() =>
+        document.querySelector('[data-final-rigid-preview-report]')?.textContent.includes('Ready:'));
+      await page.locator('[data-final-rigid-batch-threshold]').fill('500');
+      await page.locator('[data-final-rigid-batch-preview]').click();
+      const modal = page.locator('[data-final-rigid-batch-dialog]');
+      const warn = modal.locator('[data-final-rigid-batch-row="1"]');
+      assert.match(await warn.innerText(), /WARNING/);
+      assert.match(await warn.innerText(), /within advisory/);
+      assert.equal(await modal.locator('[data-final-rigid-batch-approve-all]').isDisabled(), true,
+        'warning rows do not join bulk approval');
+      const choose = warn.locator('[data-final-rigid-batch-approve]');
+      assert.equal(await choose.isDisabled(), false);
+      assert.equal(await modal.locator('[data-final-rigid-batch-stage]').isDisabled(), true);
+      await choose.check();
+      assert.equal(await modal.locator('[data-final-rigid-batch-stage]').isDisabled(), true,
+        'warning selection alone is not authorization');
+      await modal.locator('[data-final-rigid-batch-confirm-review]').check();
+      assert.equal(await modal.locator('[data-final-rigid-batch-stage]').isDisabled(), false);
+      await modal.locator('[data-final-rigid-batch-stage]').click();
+      await page.waitForFunction(() => !document.querySelector('[data-final-rigid-batch-dialog]'));
+      const first = page.locator('[data-final-rigid-row][data-pointer="1"]');
+      if (scenario.unchanged) {
+        assert.equal(await first.locator('[data-final-rigid-edited]').inputValue(), '150');
+        assert.match(await page.locator('[data-final-rigid-batch-status]').innerText(),
+          /No CII changes needed/);
+        assert.equal(await page.locator('[data-final-rigid-apply]').isDisabled(), true);
+      } else {
+        assert.equal(await first.locator('[data-final-rigid-edited]').inputValue(), '29.84');
+        assert.equal(await page.locator('[data-final-rigid-apply]').isDisabled(), false);
+        await page.locator('[data-final-rigid-apply]').click();
+        await page.waitForFunction(() =>
+          document.querySelector('[data-final-rigid-preview-report]')?.textContent.includes('VERIFIED REVISED CII READY'));
+        const [download] = await Promise.all([
+          page.waitForEvent('download'), page.locator('[data-final-rigid-audit]').click(),
+        ]);
+        const audit = JSON.parse(await readFile(await download.path(),'utf8'));
+        assert.equal(audit.changes.length,1);
+        assert.equal(audit.changes[0].recordPointer,1);
+        assert.equal(audit.changes[0].reference.batch.warningOnly,true);
+        assert.ok(audit.changes[0].reference.batch.warningCodes.includes('BELOW_THRESHOLD'));
+        assert.equal(audit.untouchedBytesEqual,true);
+      }
+      assert.equal(await page.evaluate(()=>window.currentResult.ciiText), sourceCii);
+    }
+  });
+
   await test('Chromium Approve All stages two eligible RIGIDs, excludes hard-held third, then re-imports exact revised CII', async () => {
     await page.goto(address + '/tests/fixtures/final-cii-property-ui-host.html');
     const sourceCii = original
