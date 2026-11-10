@@ -350,7 +350,7 @@ class FieldFidelityR3(unittest.TestCase):
 
 
 class SR01ExactHeadDiagnostics(unittest.TestCase):
-    """Test-only four-case reproduction on unchanged production commit 83ff5580."""
+    """Four real-converter cases: retained pre-fix witness and corrected gate."""
 
     def test_sr01_four_real_converter_cases(self):
         import hashlib, json, sys
@@ -461,6 +461,8 @@ class SR01ExactHeadDiagnostics(unittest.TestCase):
                 "editTechnicalEligibility":rel["editTechnicalEligibility"],
                 "engineeringEditApproved":rel["engineeringEditApproved"],
                 "valueStatus":rel["valueStatus"],
+                "valueSourceAuthority":rel.get("valueSourceAuthority"),
+                "processProvenance":rel.get("processProvenance"),
                 "noEditReplay":audited["noEditReplay"]["verdict"],
             }
             witnesses.append(witness)
@@ -477,13 +479,23 @@ class SR01ExactHeadDiagnostics(unittest.TestCase):
             and x["originalSourceToken"] == x["xmlP1"]
             and x["classification"] in ("LOSSLESS","LOSSLESS_WITH_PROVENANCE")
         ]
-        print("R3_SR01_DIAGNOSTIC="+json.dumps({
+        print("R3_SR01_POST_FIX="+json.dumps({
             "casesPassedRealCii":len(witnesses),
-            "suspectedFalseUniqueProvenance":len(suspect),
-            "reproduction": "REPRODUCED" if len(suspect)==3 else "NOT_CONFIRMED",
+            "falseUniqueInverseClaims":len(suspect),
+            "status":"PASS_CORRECTED" if not suspect else "FAIL_DEFECT_PERSISTS",
         },sort_keys=True),flush=True)
-        self.assertEqual(len(suspect), 3,
-            "Exact-head source attribution defect not demonstrated in all override cases")
+        self.assertEqual(len(suspect), 0, "Master override still claims a unique XML inverse")
+        for observed in overridden:
+            self.assertEqual(observed["valueSourceAuthority"],"CONFIGURATION_MASTER")
+            self.assertEqual(observed["classification"],"LOSSY")
+            self.assertFalse(observed["inverseMappingUnique"])
+            self.assertEqual(observed["editTechnicalEligibility"],"HOLD")
+            self.assertFalse(observed["engineeringEditApproved"])
+            master=observed["processProvenance"]["winningMaster"]
+            self.assertEqual(master["rowOrdinal"],0)
+            self.assertEqual(master["selectedHeader"],"P1")
+        self.assertEqual(witnesses[3]["valueSourceAuthority"],"EFFECTIVE_XML")
+        self.assertTrue(witnesses[3]["inverseMappingUnique"])
 
 
 if __name__=="__main__":
