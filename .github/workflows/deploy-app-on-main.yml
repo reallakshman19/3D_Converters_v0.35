@@ -34,6 +34,24 @@ jobs:
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
+      # The live static artifact—not a test constant—must identify the SHA
+      # deployed. This file is generated only in the Pages publishing job.
+      - name: Stamp exact production artifact identity
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          assert os.environ["GITHUB_REF"] == "refs/heads/main", "Production only accepts main"
+          identity = {
+              "schema": "xml-cii-production-deployment/v1",
+              "repository": os.environ["GITHUB_REPOSITORY"],
+              "commitSha": os.environ["GITHUB_SHA"],
+              "workflowRunId": os.environ["GITHUB_RUN_ID"],
+          }
+          Path("release-identity.json").write_text(
+              json.dumps(identity, sort_keys=True) + "\n", encoding="utf-8")
+          PY
+
       - name: Upload static application
         uses: actions/upload-pages-artifact@v3
         with:
@@ -42,3 +60,32 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Verify exact SHA is served by live GitHub Pages
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          python3 - <<'PY'
+          import json, os, time, urllib.request
+          expected = os.environ["EXPECTED_SHA"]
+          run_id = os.environ["GITHUB_RUN_ID"]
+          url = ("https://reallakshman19.github.io/3D_Converters_v0.35/"
+                 "release-identity.json?run=" + run_id)
+          for attempt in range(24):
+              try:
+                  request = urllib.request.Request(
+                      url, headers={"Cache-Control": "no-cache"})
+                  with urllib.request.urlopen(request, timeout=12) as response:
+                      identity = json.load(response)
+                  assert identity["schema"] == "xml-cii-production-deployment/v1"
+                  assert identity["repository"] == os.environ["GITHUB_REPOSITORY"]
+                  assert identity["commitSha"] == expected
+                  assert identity["workflowRunId"] == run_id
+                  print("PUBLISHED_PAGES_COMMIT_VERIFIED=" + expected)
+                  break
+              except Exception as exc:
+                  if attempt == 23:
+                      raise RuntimeError(
+                          "Live Pages did not serve the exact deployed artifact SHA") from exc
+                  time.sleep(5)
+          PY
