@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { planFinalRigidBatchCorrections } from '../tabs/xml-cii-2019-standalone/xml-cii-final-rigid-batch-corrections.js';
+import {
+  planFinalRigidBatchCorrections, prepareNearestFinalRigidBatchPreview,
+} from '../tabs/xml-cii-2019-standalone/xml-cii-final-rigid-batch-corrections.js';
 import { parseFinalCiiRigidInventory } from '../tabs/xml-cii-2019-standalone/xml-cii-final-rigid-inventory.js';
 import {
   createCiiPropertySession, stageCiiPropertyEdit, verifyCiiPropertyTransaction,
@@ -89,6 +91,37 @@ test('approximate 50% / unverified synthetic-source suggestion remains individua
   assert.equal(planFinalRigidBatchCorrections(inventory, plans, { includeReviewOnly: true })
     .proposals[19].status, 'HOLD');
 });
+test('Apply Nearest suggestion requalifies preview without approving or overwriting manual/HOLD rows', () => {
+  const { inventory, plans } = inventoryAndPlans(23);
+  plans[19].nearestSuggestions.push(candidate(120, { title: 'Alternative' }));
+  plans[21].mapping = null;
+  plans[21].sourceContext.status = 'NOT_RESOLVED';
+  plans[21].nearestSuggestions = [candidate(29.84, {
+    approximate: true, comparisonOnly: true, direct: false,
+  })];
+  const selectedIndices = new Map([[20, 1], [21, 1], [22, 1], [23, 1]]);
+  const prepared = prepareNearestFinalRigidBatchPreview(inventory, plans, {
+    scope: 'selected', selectedPointers: [20, 21, 22, 23],
+    selectedIndices, currentEditedValues: new Map([[21, '160']]),
+  });
+  assert.equal(prepared.selectedIndices.get(20), 0);
+  assert.equal(prepared.selectedIndices.get(21), 1, 'manual edit stays untouched');
+  assert.equal(prepared.selectedIndices.get(22), 0, 'review-only stays previewable');
+  assert.equal(prepared.selectedIndices.get(23), 0, 'below-threshold stays previewable');
+  assert.equal(prepared.preparedCount, 3);
+  assert.equal(selectedIndices.get(20), 1, 'caller selection map is not mutated');
+  const check = planFinalRigidBatchCorrections(inventory, plans, {
+    scope: 'selected', selectedPointers: [20, 21, 22, 23],
+    selectedIndices: prepared.selectedIndices, currentEditedValues: new Map([[21, '160']]),
+  });
+  assert.equal(check.proposals[19].status, 'ELIGIBLE');
+  assert.equal(check.proposals[20].status, 'ALREADY_EDITED');
+  assert.equal(check.proposals[21].status, 'REVIEW_ONLY');
+  assert.equal(check.proposals[22].status, 'BELOW_THRESHOLD');
+  assert.equal(check.eligible.some((row) => row.pointer === 22), false,
+    'a nearest preview never automatically approves comparison-only mass');
+});
+
 test('alternative choice is requalified against threshold, shared source owner is blocked', () => {
   const { inventory, plans } = inventoryAndPlans(22);
   plans[19].nearestSuggestions.push(candidate(120, { title: 'Farther alternative' }));
