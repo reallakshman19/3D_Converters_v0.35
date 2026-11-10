@@ -40,12 +40,12 @@ class FieldFidelityR3(unittest.TestCase):
     def setUpClass(cls):
         cls.call=create_current_writer_case(
             FIXTURE,evidence_class="SYNTHETIC_CURRENT_WRITER")
-        cls.run=audit_frozen_run(**cls.call)
-        cls.rels=cls.run["reversibility"]["relationships"]
-        cls.records=cls.run["lineage"]["ciiFieldInventory"]["fields"]
+        cls.audit_result=audit_frozen_run(**cls.call)
+        cls.rels=cls.audit_result["reversibility"]["relationships"]
+        cls.records=cls.audit_result["lineage"]["ciiFieldInventory"]["fields"]
 
     def test_01_noedit_real_writer_and_original_stage_are_not_historical(self):
-        run=self.run
+        run=self.audit_result
         self.assertEqual(run["noEditReplay"]["verdict"],"PASS_EXACT_REPLAY")
         self.assertEqual(run["noEditReplay"]["comparison"]["differingBytes"],0)
         self.assertEqual(run["coverage"]["evidence"]["authenticReplay"],"NOT_RUN")
@@ -56,7 +56,7 @@ class FieldFidelityR3(unittest.TestCase):
         self.assertEqual(run["lineage"]["sourceStages"]["effectiveEnriched"]["stage"],"ENGINE_INPUT_XML")
 
     def test_02_exact_lexical_weight_token_and_separate_original_identity(self):
-        inv=self.run["lineage"]["sourceStages"]["effectiveEnriched"]
+        inv=self.audit_result["lineage"]["sourceStages"]["effectiveEnriched"]
         hits=[f for f in inv["fields"] if f["sourceFieldPath"]=="Node/Weight"
               and f["originalSourceToken"].strip()=="6"]
         self.assertEqual(len(hits),1)
@@ -66,27 +66,27 @@ class FieldFidelityR3(unittest.TestCase):
         start=field["sourceFieldLocation"]["startByte"]
         end=field["sourceFieldLocation"]["endByte"]
         self.assertEqual(FIXTURE[start:end],b"6")
-        rel=[x for x in self.run["lineage"]["sourceStageRelationships"]["relationships"]
+        rel=[x for x in self.audit_result["lineage"]["sourceStageRelationships"]["relationships"]
              if x["effectiveFieldId"]==field["fieldId"]]
         self.assertEqual(rel[0]["relationship"],"BYTE_IDENTICAL_SOURCE_STAGE")
 
     def test_03_full_output_field_and_source_relationship_count_reconciliation(self):
-        counts=self.run["reversibility"]["counts"]
+        counts=self.audit_result["reversibility"]["counts"]
         self.assertGreater(counts["outputFieldsInventoried"],11*36)
         self.assertEqual(counts["outputFieldRelationships"],counts["outputFieldsInventoried"])
         self.assertEqual(sum(counts["classifications"].values()),counts["allRelationshipRecords"])
         self.assertEqual(counts["sourceFieldsInventoried"],
                          counts["sourceFieldsWithEmittedRelationships"]+
                          counts["unemittedOrUnresolvedSourceFields"])
-        self.assertEqual(self.run["lineage"]["ciiFieldInventory"]["ciiElementsCount"],11)
-        self.assertEqual(self.run["lineage"]["ciiFieldInventory"]["ciiAuxiliaryCounts"]["RIGID"],6)
-        self.assertEqual(self.run["lineage"]["ciiFieldInventory"]["pointerFieldsValidated"],15)
+        self.assertEqual(self.audit_result["lineage"]["ciiFieldInventory"]["ciiElementsCount"],11)
+        self.assertEqual(self.audit_result["lineage"]["ciiFieldInventory"]["ciiAuxiliaryCounts"]["RIGID"],6)
+        self.assertEqual(self.audit_result["lineage"]["ciiFieldInventory"]["pointerFieldsValidated"],15)
         self.assertTrue(all(r["reversibility"] in
                             ("LOSSLESS","LOSSLESS_WITH_PROVENANCE","LOSSY","UNRESOLVED")
                             for r in self.rels))
 
     def test_04_deleted_short_node_never_invents_emitted_field(self):
-        event=[e for e in self.run["lineage"]["r1Transformations"]
+        event=[e for e in self.audit_result["lineage"]["r1Transformations"]
                if e["stage"]=="PYTHON_SHORT_NODE_DROP"]
         self.assertGreaterEqual(len(event),1)
         sid=event[0]["sourceIdentity"]
@@ -97,12 +97,12 @@ class FieldFidelityR3(unittest.TestCase):
         self.assertTrue(all(r["ciiElementIdentity"] is None for r in matches))
 
     def test_05_negative_node_python_renumber_stores_both_original_and_final_ids(self):
-        events=[e for e in self.run["lineage"]["r1Transformations"]
+        events=[e for e in self.audit_result["lineage"]["r1Transformations"]
                 if e["stage"]=="PYTHON_NODE_RENUMBER"]
         self.assertTrue(events)
         self.assertTrue(any(str(e["originalNodeNumber"]).startswith("-") and
                             int(e["generatedNodeNumber"])>0 for e in events))
-        self.assertTrue(self.run["lineage"]["r1NodeIdentityLinks"])
+        self.assertTrue(self.audit_result["lineage"]["r1NodeIdentityLinks"])
 
     def test_06_wall_missing_fallback_is_lossy_and_source_not_fabricated(self):
         rows=[r for r in self.rels if r["ciiField"]=="ELEMENT.wallThicknessMm"
@@ -127,7 +127,7 @@ class FieldFidelityR3(unittest.TestCase):
         self.assertTrue(any(r["fromToSelection"]=="FROM" for r in od))
 
     def test_08_shared_physical_component_is_not_mass_authority(self):
-        shared=[n for n in self.run["lineage"]["sourceStages"]["effectiveEnriched"]["nodes"]
+        shared=[n for n in self.audit_result["lineage"]["sourceStages"]["effectiveEnriched"]["nodes"]
                 if n["componentRefNo"]=="/SHARED-COMP"]
         self.assertGreater(len(shared),1)
         self.assertFalse(any(x["physicalAuthority"]=="VERIFIED" for x in self.rels))
@@ -161,7 +161,7 @@ class FieldFidelityR3(unittest.TestCase):
         self.assertFalse(changed[0]["provesUnchangedBm2Origin"])
 
     def test_11_value_ledger_only_mutation_is_rejected(self):
-        inv=copy.deepcopy(self.run["lineage"]["ciiFieldInventory"])
+        inv=copy.deepcopy(self.audit_result["lineage"]["ciiFieldInventory"])
         target=next(x for x in inv["fields"] if x["ciiField"]=="RIGID.weight")
         target["emittedToken"]=" 999.000000"
         with self.assertRaises(Hold):
@@ -210,7 +210,7 @@ class FieldFidelityR3(unittest.TestCase):
                 lines[rigid_index+2],lines[rigid_index+1])
         changed=_rewrite_cii(content,mutation)
         verified=verify_source_linked_pointer_reindex(
-            content,changed,r1_lineage_ledger=self.run["lineage"] and
+            content,changed,r1_lineage_ledger=self.audit_result["lineage"] and
             self._r1_from_replay())
         self.assertEqual(verified["status"],"PASS_SOURCE_LINKED_AUXILIARY_REINDEX")
         self.assertTrue(verified["pointerChanges"])
@@ -225,7 +225,7 @@ class FieldFidelityR3(unittest.TestCase):
             original_cii=self.call["original_cii"],
             effective_config_json=self.call["effective_config_json"],
             configuration_assets={},
-            replay_report=self.run["noEditReplay"])
+            replay_report=self.audit_result["noEditReplay"])
 
     def test_15_precision_loss_exact_decimal_not_tolerance(self):
         altered=FIXTURE.replace(
@@ -263,21 +263,21 @@ class FieldFidelityR3(unittest.TestCase):
     def test_17_multiple_source_candidates_not_unique_inverse(self):
         # Without making a fabricated ledger appear original, feed a cloned
         # qualified output relation through the stand-alone pure classifier.
-        inv=copy.deepcopy(self.run["lineage"]["ciiFieldInventory"])
+        inv=copy.deepcopy(self.audit_result["lineage"]["ciiFieldInventory"])
         field=next(x for x in inv["fields"] if x["ciiField"]=="ELEMENT.outsideDiameterMm"
                    and len(x["sourceFieldCandidates"])==1 and
                    x["valueStatus"]=="PASS_EXACT_WRITER_SERIALIZATION")
-        fields=self.run["lineage"]["sourceStages"]["effectiveEnriched"]["fields"]
+        fields=self.audit_result["lineage"]["sourceStages"]["effectiveEnriched"]["fields"]
         other=next(x for x in fields if x["fieldId"]!=field["sourceFieldCandidates"][0])
         field["sourceFieldCandidates"].append(other["fieldId"])
         from roundtrip_foundation.lineage import build_lineage_ledger
         r1=self._r1_from_replay()
         classifier=build_reversibility(
             field_inventory=inv,
-            original_inventory=self.run["lineage"]["sourceStages"]["originalInput"],
-            effective_inventory=self.run["lineage"]["sourceStages"]["effectiveEnriched"],
-            source_stage_match=self.run["lineage"]["sourceStageRelationships"],
-            r1_ledger=r1,value_verification=self.run["verification"],
+            original_inventory=self.audit_result["lineage"]["sourceStages"]["originalInput"],
+            effective_inventory=self.audit_result["lineage"]["sourceStages"]["effectiveEnriched"],
+            source_stage_match=self.audit_result["lineage"]["sourceStageRelationships"],
+            r1_ledger=r1,value_verification=self.audit_result["verification"],
             evidence_class="SYNTHETIC_CURRENT_WRITER_MUTATION")
         record=next(x for x in classifier["relationships"]
                     if x["ciiFieldId"]==field["ciiFieldId"])
