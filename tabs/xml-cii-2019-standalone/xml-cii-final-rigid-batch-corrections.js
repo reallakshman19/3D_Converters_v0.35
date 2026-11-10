@@ -44,7 +44,7 @@ export function planFinalRigidBatchCorrections(inventory, plans, options = {}) {
     const base = {
       pointer, originalWeight: Number(row.weight), candidateIndex: -1,
       proposedWeight: null, errorPct: null, status: 'HOLD',
-      reviewRequired: false, candidate: null, reason: '',
+      reviewRequired: false, candidate: null, warningCodes: [], reason: '',
     };
     if (scope === 'filtered' && !visible.has(pointer) ||
       scope === 'selected' && !selected.has(pointer))
@@ -55,10 +55,15 @@ export function planFinalRigidBatchCorrections(inventory, plans, options = {}) {
     if (row.status === 'SHARED_POINTER' || row.status === 'UNREFERENCED')
       return { ...base, reason: 'Shared/unreferenced CII RIGID requires manual ownership review.' };
     const context = plan.sourceContext;
-    if (context?.status === 'CONFLICT_REVIEW' || context?.bore?.conflict ||
-        context?.rating?.conflict || context?.dtxr?.suppressed ||
-        (context?.conflicts || []).length)
-      return { ...base, reason: 'Conflicting or suppressed source metadata.' };
+    // Warnings may be reviewed for a direct FINAL-CII transaction. They do
+    // not establish physical mass ownership or permission to edit source XML.
+    const contextWarnings = [...new Set([
+      ...(context?.conflicts || []),
+      ...(context?.status === 'CONFLICT_REVIEW' ? ['SOURCE_CONTEXT_CONFLICT'] : []),
+      ...(context?.bore?.conflict ? ['BORE_CONFLICT'] : []),
+      ...(context?.rating?.conflict ? ['RATING_CONFLICT'] : []),
+      ...(context?.dtxr?.suppressed ? ['DTXR_SUPPRESSED'] : []),
+    ])];
     if (plan.mapping && (ownerCounts.get(keyOf(plan.mapping)) || 0) > 1)
       return { ...base, reason: 'Multiple final RIGIDs share one physical ComponentRefNo; no bulk allocation.' };
     if (!Number.isFinite(Number(row.weight)) || Number(row.weight) < 0)
@@ -85,8 +90,23 @@ export function planFinalRigidBatchCorrections(inventory, plans, options = {}) {
         candidate.comparisonOnly !== true
       ),
     };
-    if (Math.abs(error) <= threshold)
-      return { ...full, status: 'BELOW_THRESHOLD', reason: 'Absolute error does not exceed ±' + threshold + '%.' };
+    const belowThreshold = Math.abs(error) <= threshold;
+    const noWeightChange = expected === Number(row.weight);
+    const warningCodes = [...contextWarnings,
+      ...(belowThreshold ? ['BELOW_THRESHOLD'] : []),
+      ...(noWeightChange ? ['NO_WEIGHT_CHANGE'] : [])];
+    if (warningCodes.length) {
+      const descriptions = [
+        contextWarnings.length ? 'Source metadata: ' + contextWarnings.join(', ') : '',
+        context?.dtxr?.suppressed && context.dtxr.suppressionReason
+          ? 'DTXR: ' + context.dtxr.suppressionReason : '',
+        belowThreshold ? 'Deviation ' + error.toFixed(1) +
+          '% is within advisory ±' + threshold + '% threshold' : '',
+        noWeightChange ? 'Already matches proposed CII weight; no change required' : '',
+      ].filter(Boolean);
+      return { ...full, status: 'WARNING', reviewRequired: true,
+        warningCodes, reason: descriptions.join(' · ') + ' · Explicit per-row review required.' };
+    }
     if (full.reviewRequired && !options.includeReviewOnly)
       return { ...full, status: 'REVIEW_ONLY', reason: 'Approximate or unverified-owner suggestion requires explicit opt-in and per-row approval.' };
     return { ...full, status: 'ELIGIBLE', reason: full.reviewRequired
@@ -96,8 +116,9 @@ export function planFinalRigidBatchCorrections(inventory, plans, options = {}) {
   return {
     thresholdPct: threshold, scope, includeReviewOnly: Boolean(options.includeReviewOnly),
     proposals, eligible: proposals.filter((r) => r.status === 'ELIGIBLE'),
+    warnings: proposals.filter((r) => r.status === 'WARNING'),
     held: proposals.filter((r) => r.status === 'HOLD' || r.status === 'REVIEW_ONLY'),
-    belowThreshold: proposals.filter((r) => r.status === 'BELOW_THRESHOLD'),
+    belowThreshold: proposals.filter((r) => r.warningCodes.includes('BELOW_THRESHOLD')),
   };
 }
 
@@ -112,7 +133,7 @@ export function prepareNearestFinalRigidBatchPreview(inventory, plans, options =
   });
   let preparedCount = 0;
   for (const row of nearest.proposals) {
-    if (!['ELIGIBLE', 'REVIEW_ONLY', 'BELOW_THRESHOLD'].includes(row.status)) continue;
+    if (!['ELIGIBLE', 'REVIEW_ONLY', 'WARNING'].includes(row.status)) continue;
     selectedIndices.set(row.pointer, 0);
     preparedCount += 1;
   }
