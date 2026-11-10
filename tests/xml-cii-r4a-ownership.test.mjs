@@ -36,7 +36,8 @@ const engineRunner=job=>({ok:true,ciiText:job.sourceText===xml?cii:
   job.sourceText===revisedXml?revisedCii:null,error:'Only converter-generated fixture output permitted'});
 const lineageRunner=async()=>structuredClone(r1);
 
-async function project(lineage=r1,result=await makeResult()){
+async function project(lineage=r1,result){
+ result = result || await makeResult();
  return projectR4aOwnership({result,
   inventory:parseFinalCiiRigidInventory(result.ciiText),
   verifiedLineage:lineage});
