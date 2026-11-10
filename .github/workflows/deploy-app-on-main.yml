@@ -7,20 +7,54 @@ on:
     branches:
       - main
 
+  # Validate the exact release-packaging/stamping code before merge.
+  pull_request:
+    paths:
+      - '.github/workflows/deploy-app-on-main.yml'
+      - 'scripts/stamp-pages-release-identity.py'
+      - 'tests/pages-deployment-package.test.mjs'
   # Manual production redeploy when needed.
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: github-pages-production
+  group: ${{ github.event_name == 'pull_request' && format('github-pages-identity-pr-{0}', github.event.pull_request.number) || 'github-pages-production' }}
   cancel-in-progress: false
 
 jobs:
+  verify-published-identity-package:
+    name: Verify Pages release identity in real staged package (PR only)
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build actual runtime package
+        run: bash scripts/build-pages-package.sh "$RUNNER_TEMP/pages-site"
+      - name: Stamp exact PR test SHA using production code
+        run: |
+          python3 scripts/stamp-pages-release-identity.py \
+            --site-dir "$RUNNER_TEMP/pages-site" \
+            --commit "$GITHUB_SHA" --run-id "$GITHUB_RUN_ID" \
+            --repository "$GITHUB_REPOSITORY"
+      - name: Verify exact SHA and runtime asset closure
+        env:
+          PAGES_SITE_DIR: ${{ runner.temp }}/pages-site
+          PAGES_EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          python3 -m py_compile scripts/stamp-pages-release-identity.py
+          node --test tests/pages-deployment-package.test.mjs
+
   deploy:
+    if: github.event_name != 'pull_request'
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     name: Deploy static app
     runs-on: ubuntu-latest
     environment:
@@ -39,19 +73,10 @@ jobs:
 
       - name: Stamp exact main commit into deployed artifact
         run: |
-          python3 - <<'PY'
-          import json, os
-          from pathlib import Path
-          assert os.environ["GITHUB_REF"] == "refs/heads/main", "Production only accepts main"
-          identity = {
-              "schema": "xml-cii-production-deployment/v1",
-              "repository": os.environ["GITHUB_REPOSITORY"],
-              "commitSha": os.environ["GITHUB_SHA"],
-              "workflowRunId": os.environ["GITHUB_RUN_ID"],
-          }
-          staged = Path(os.environ["RUNNER_TEMP"]) / "pages-site" / "release-identity.json"
-          staged.write_text(json.dumps(identity, sort_keys=True) + "\n", encoding="utf-8")
-          PY
+          python3 scripts/stamp-pages-release-identity.py \
+            --site-dir "$RUNNER_TEMP/pages-site" \
+            --commit "$GITHUB_SHA" --run-id "$GITHUB_RUN_ID" \
+            --repository "$GITHUB_REPOSITORY" --require-main
 
       - name: Verify runtime package and exact release identity
         env:
