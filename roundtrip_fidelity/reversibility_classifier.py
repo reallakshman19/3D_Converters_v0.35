@@ -25,6 +25,12 @@ def classify(field, source_candidates, deleted_source_ids):
     candidates=list(source_candidates)
     if field.get("valueStatus")=="HOLD_VALUE_DISCREPANCY":
         return "UNRESOLVED", ["SERIALIZED_ENGINEERING_VALUE_DISCREPANCY",*reasons]
+    # Master-selected output does not uniquely invert to the overwritten XML.
+    authority=field.get("valueSourceAuthority")
+    if authority == "CONFIGURATION_MASTER":
+        return "LOSSY", ["MASTER_SELECTED_VALUE_XML_INVERSE_NOT_UNIQUE",*reasons]
+    if authority == "UNRESOLVED":
+        return "UNRESOLVED", ["PROCESS_VALUE_AUTHORITY_UNRESOLVED",*reasons]
     if field["propertyGroup"]=="AUXILIARY_IDENTITY":
         return "LOSSY", ["POINTER_INDEX_RENUMBERABLE_SOURCE_LINK_RETAINED",*reasons]
     if field["ciiField"]=="RIGID.type" or field["propertyGroup"]=="DERIVED_CONSTANT":
@@ -140,6 +146,9 @@ def build_reversibility(*, field_inventory, original_inventory,
             "physicalAuthority":physical,
             "engineeringEditApproved":False,
             "evidenceClass":evidence_class,
+            "writerConsumedStage":output.get("writerConsumedStage"),
+            "valueSourceAuthority":output.get("valueSourceAuthority"),
+            "processProvenance":output.get("processProvenance"),
         })
 
     for field in effective_inventory["fields"]:
@@ -216,6 +225,8 @@ def build_reversibility(*, field_inventory, original_inventory,
             "reversibility":relation["reversibility"],
             "inverseMappingUnique":relation["inverseMappingUnique"],
             "editTechnicalEligibility":relation["editTechnicalEligibility"],
+            "valueSourceAuthority":relation.get("valueSourceAuthority"),
+            "processProvenance":relation.get("processProvenance"),
             "physicalAuthority":relation["physicalAuthority"],
             "engineeringEditApproved":False,
             "reasonCodes":relation["reasonCodes"],
@@ -248,6 +259,15 @@ def build_reversibility(*, field_inventory, original_inventory,
                 not x["sourceFieldCandidates"] and x["valueStatus"] not in
                 ("UNVERIFIED_SOURCE_MAPPING","HOLD_VALUE_DISCREPANCY") for x in fields),
             "discrepantOutputFields":value_verification["discrepancyCount"],
+            "masterControlledOutputFields":sum(
+                r.get("valueSourceAuthority")=="CONFIGURATION_MASTER"
+                for r in relationships if r["ciiFieldId"] is not None),
+            "unresolvedProcessAuthorityFields":sum(
+                r.get("valueSourceAuthority")=="UNRESOLVED"
+                for r in relationships if r["ciiFieldId"] is not None),
+            "masterControlledUniqueInverseClaims":sum(
+                r.get("valueSourceAuthority")=="CONFIGURATION_MASTER"
+                and r["inverseMappingUnique"] for r in relationships),
         },
         "lossEvents":[
             {"sourceNodeIdentity":s,"stage":e["stage"],
