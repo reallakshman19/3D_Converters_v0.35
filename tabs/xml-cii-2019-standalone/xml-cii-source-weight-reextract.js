@@ -11,6 +11,8 @@ import { deriveSourceWeightEligibility, verifyFrozenCiiEngineeringValues }
 import { applyXmlSourceEdits } from './xml-cii-source-weight-patch.js';
 import { indexAll15CiiAuxiliaryPointers, verifySourceEditedCii }
   from './xml-cii-source-weight-cii-verify.js';
+import { projectR4aOwnership } from './xml-cii-r4a-rigid-ownership.js';
+import { reconcileR4aPhysicalMass } from './xml-cii-r4a-mass-reconcile.js';
 
 function fail(message){throw Error('Source-backed R2 HOLD: '+message);}
 function assert(condition,message){if(!condition)fail(message);}
@@ -81,21 +83,64 @@ async function assertCustody(custody,current){
   }
 }
 /** The real original CII is the frozen result, not a synthesized baseline. */
-export async function initializeSourceWeightSession(result, { engineRunner }={}) {
+export async function initializeSourceWeightSession(result, { engineRunner,
+  lineageRunner, requireR4aLineage=false }={}) {
   const custody=makeCustody(result);
   await assertCustody(custody,result);
   indexAll15CiiAuxiliaryPointers(custody.originalCii);
   const inventory=parseFinalCiiRigidInventory(custody.originalCii);
-  const rows=await deriveSourceWeightEligibility({result,inventory});
+  const legacy=await deriveSourceWeightEligibility({result,inventory});
   verifyFrozenCiiEngineeringValues({
-    originalCiiText:custody.originalCii,inventory,entries:rows });
+    originalCiiText:custody.originalCii,inventory,entries:legacy });
+  // Independently re-execute exact source with actual original Python converter
+  // before any transformation-lineage claim or source editing is possible.
   const noEdit=await run(exactJob(custody,custody.engineXml),engineRunner);
   assert(noEdit.ciiText===custody.originalCii,
     'no-edit real browser converter output is not byte-identical to original CII');
   assert(await ciiSha256(noEdit.ciiText)===custody.originalCiiSha,
     'no-edit converter digest mismatch');
+  let rows=legacy,verifiedLineage=null,ownership=null,r4aReason=null;
+  try {
+    if(typeof lineageRunner==='function') {
+      verifiedLineage=await lineageRunner({
+        engineInputText:custody.engineXml,
+        originalCiiText:custody.originalCii,
+        noEditCiiText:noEdit.ciiText,
+        supportConfigJson:custody.supportConfigJson,
+        stagedJsonText:custody.stagedJsonText,
+        effectiveOptions:custody.options,
+        runId:custody.runId,
+      });
+    } else if(typeof engineRunner!=='function') {
+      // In production, no mock or client-supplied lineage is admitted.
+      const module=await import('../../converters/xml-cii-2019-standalone/engine.js');
+      verifiedLineage=await module.buildR4aBrowserSourceLineage({
+        engineInputText:custody.engineXml,originalCiiText:custody.originalCii,
+        noEditCiiText:noEdit.ciiText,supportConfigJson:custody.supportConfigJson,
+        stagedJsonText:custody.stagedJsonText,effectiveOptions:custody.options,
+        runId:custody.runId,
+      });
+    } else {
+      r4aReason='R4A lineage not claimed by injected test engineRunner.';
+    }
+    if(verifiedLineage) {
+      ownership=await projectR4aOwnership({result,inventory,verifiedLineage});
+      // A contradictory but qualified R1 projection overrides weaker legacy
+      // direct-edge eligibility. Never use old fallback to bypass R1 conflicts.
+      rows=ownership.rows;
+    }
+  } catch(error) {
+    r4aReason=String(error?.message||error);
+    if(requireR4aLineage) throw Error('R4A_LINEAGE_HOLD: '+r4aReason);
+    // Preserve R2's strictly qualified direct-edge-only behavior if Python
+    // lineage is genuinely unavailable, but never release transformed rows.
+    rows=legacy;
+  }
+  verifyFrozenCiiEngineeringValues({
+    originalCiiText:custody.originalCii,inventory,entries:rows });
   return {schema:'xml-cii-source-weight-session/r2',custody,inventory,
-    rows,engineRunner,committed:null,originalResult:result,
+    rows,verifiedLineage,ownership,r4aReason,
+    engineRunner,committed:null,originalResult:result,
     noEditParity:{status:'PASS_EXACT_REPLAY',sha256:custody.originalCiiSha,
       bytes:new TextEncoder().encode(custody.originalCii).length,differingBytes:0},
     valueIntegrity:'SERIALIZED_VALUES_VERIFIED',
@@ -156,6 +201,9 @@ export async function applySourceBackedWeightChange(session,request,{
   assert(delta.status==='PASS_ENGINEERING_DIFF' &&
     delta.expectedDifferences.length===1 && delta.unexpectedDifferences===0,
     'unexplained engineering difference in regenerated CII');
+  const massReconciliation = row.completeAllocation ?
+    reconcileR4aPhysicalMass({ownership:row,sourceWeightKg:normalizedNew,
+      reextractDiff:delta}) : null;
   const latest=typeof getCurrentResult==='function'?getCurrentResult():current;
   assert(latest===current && latest===session.originalResult,
     'run changed during asynchronous browser re-extraction');
@@ -177,6 +225,13 @@ export async function applySourceBackedWeightChange(session,request,{
       originalRigidPointer:row.rigidPointer},
     sourceXmlByteDiff:patch.edits,unrelatedXmlBytesChanged:0,
     ciiEngineeringDiff:delta,
+    ...(massReconciliation ? {massReconciliation,
+      R1LineageFingerprint:session.verifiedLineage?.runIdentity?.snapshotFingerprint,
+      sourceTransformationHistory:row.transformationHistory,
+      dependentFinalRigidPointers:row.dependentPointers,
+      affectedFinalElements:row.expectedImpact,
+      sourceOwnerQualification:row.evidence,
+      editAllocationApprovedAtTransaction:true} : {}),
     sourceLinkedReconciliation:'PASS',
     noEditParity:session.noEditParity,
   };
