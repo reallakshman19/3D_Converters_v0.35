@@ -35,9 +35,29 @@ jobs:
         uses: actions/configure-pages@v5
 
       - name: Build deterministic runtime-only Pages package
+        run: bash scripts/build-pages-package.sh "$RUNNER_TEMP/pages-site"
+
+      - name: Stamp exact main commit into deployed artifact
         run: |
-          bash scripts/build-pages-package.sh "$RUNNER_TEMP/pages-site"
-          PAGES_SITE_DIR="$RUNNER_TEMP/pages-site" node --test tests/pages-deployment-package.test.mjs
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          assert os.environ["GITHUB_REF"] == "refs/heads/main", "Production only accepts main"
+          identity = {
+              "schema": "xml-cii-production-deployment/v1",
+              "repository": os.environ["GITHUB_REPOSITORY"],
+              "commitSha": os.environ["GITHUB_SHA"],
+              "workflowRunId": os.environ["GITHUB_RUN_ID"],
+          }
+          staged = Path(os.environ["RUNNER_TEMP"]) / "pages-site" / "release-identity.json"
+          staged.write_text(json.dumps(identity, sort_keys=True) + "\n", encoding="utf-8")
+          PY
+
+      - name: Verify runtime package and exact release identity
+        env:
+          PAGES_SITE_DIR: ${{ runner.temp }}/pages-site
+          PAGES_EXPECTED_SHA: ${{ github.sha }}
+        run: node --test tests/pages-deployment-package.test.mjs
 
       - name: Upload static application
         uses: actions/upload-pages-artifact@v3
@@ -47,3 +67,32 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Verify deployed Pages serves exact main commit
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          python3 - <<'PY'
+          import json, os, time, urllib.request
+          sha = os.environ["EXPECTED_SHA"]
+          run_id = os.environ["GITHUB_RUN_ID"]
+          url = ("https://reallakshman19.github.io/3D_Converters_v0.35/"
+                 "release-identity.json?run=" + run_id)
+          for attempt in range(24):
+              try:
+                  request = urllib.request.Request(url,
+                      headers={"Cache-Control": "no-cache"})
+                  with urllib.request.urlopen(request, timeout=12) as response:
+                      identity = json.load(response)
+                  assert identity["schema"] == "xml-cii-production-deployment/v1"
+                  assert identity["repository"] == os.environ["GITHUB_REPOSITORY"]
+                  assert identity["commitSha"] == sha
+                  assert identity["workflowRunId"] == run_id
+                  print("PUBLISHED_PAGES_SHA_VERIFIED=" + sha)
+                  break
+              except Exception as exc:
+                  if attempt == 23:
+                      raise RuntimeError(
+                          "Live GitHub Pages did not serve the exact deployed commit") from exc
+                  time.sleep(5)
+          PY
