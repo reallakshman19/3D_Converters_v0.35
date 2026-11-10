@@ -15,6 +15,7 @@ from roundtrip_foundation.full_pointer_validation import (
 )
 from roundtrip_foundation.lineage import core
 from .field_inventory import numeric
+from .process_provenance import resolve_process_authority
 
 # Actual patched writer: xml_to_cii2019_patched._patched_elements_payload_factory.
 # A row comprises 15 columns for field zero, then 13 columns per additional slot.
@@ -228,7 +229,7 @@ def _set_expected(field, source_records, expected, rule, transformations=(),
 
 def build_field_relations(*, effective_inventory, processed_inventory,
                           r1_ledger: dict, cii_inventory: dict,
-                          configuration: dict):
+                          configuration: dict, configuration_sha256: str):
     """Every emitted field gets an explicit source candidate or reason.
 
     For a source-to-output many-to-many link we retain ALL candidates. A
@@ -307,6 +308,34 @@ def build_field_relations(*, effective_inventory, processed_inventory,
                       source_value=value)
         if len(source)!=1 or len(post)>1:
             field["reasonCodes"].append("SOURCE_FIELD_NOT_UNIQUELY_IDENTIFIED")
+
+    def annotate_process(field, branch_name, field_name, source, post):
+        original = source[0]["parsedValue"] if len(source) == 1 else None
+        processed = post[0]["parsedValue"] if len(post) == 1 else None
+        dependency = resolve_process_authority(
+            configuration=configuration,
+            configuration_sha256=configuration_sha256,
+            branch_name=branch_name,
+            field_name=field_name,
+            effective_xml_token=original,
+            postprocessed_xml_token=processed)
+        field["processProvenance"] = dependency
+        field["valueSourceAuthority"] = dependency["authority"]
+        field["writerConsumedStage"] = dependency["writerConsumedStage"]
+        if dependency["authority"] == "CONFIGURATION_MASTER":
+            field["reasonCodes"].append("MASTER_OVERRIDES_XML_SOURCE_AUTHORITY")
+            field["transformation"].append("CONFIGURED_MASTER_VALUE_SELECTED_BY_WRITER")
+            field["technicalEditImplementation"] = "HOLD"
+        elif dependency["authority"] == "UNRESOLVED":
+            field["reasonCodes"].append(dependency["reasonCode"]
+                                        or "PROCESS_SOURCE_AUTHORITY_UNRESOLVED")
+            field["technicalEditImplementation"] = "HOLD"
+        elif source and not post:
+            field["valueSourceAuthority"] = "UNRESOLVED"
+            field["reasonCodes"].append("POSTPROCESSED_SOURCE_FIELD_NOT_IDENTIFIED")
+            field["technicalEditImplementation"] = "HOLD"
+        if dependency["reasonCode"] and dependency["authority"] == "EFFECTIVE_XML":
+            field["reasonCodes"].append(dependency["reasonCode"])
 
     for idx,e in elements.items():
         prefix=f"ELEMENT:{idx}:"
@@ -393,6 +422,7 @@ def build_field_relations(*, effective_inventory, processed_inventory,
                 _set_expected(x,src,_formatter(val),
                               "PYTHON_PATCHED_BRANCH_"+kind.upper()+"_CASE_"+str(number),
                               transformations,source_value=val)
+                annotate_process(x, fr_node["branchName"], kind+str(number), src, post)
         for col,path,rule in (
             (1,"Branch/InsulationDensity","BRANCH_POST_PROCESS_INSULATION_DENSITY"),
             (2,"Branch/FluidDensity","BRANCH_POST_PROCESS_FLUID_DENSITY")):
@@ -410,6 +440,8 @@ def build_field_relations(*, effective_inventory, processed_inventory,
                           configuration.get("convertDensityKgM3ToKgCm3",True) else [],
                           source_value=val)
             if not src:x["reasonCodes"].append("BRANCH_DENSITY_DERIVED_OR_DEFAULTED")
+            if col == 2:
+                annotate_process(x, fr_node["branchName"], "fluidDensity", src, post)
         hydro=by_output[f"{prefix}ROW:6:COL:6"]
         src=_lookup(source_fields,bi,None,"Branch/Pressure/HydroPressure")
         post=_lookup(processed_fields,bi,None,"Branch/Pressure/HydroPressure")
@@ -419,6 +451,7 @@ def build_field_relations(*, effective_inventory, processed_inventory,
         _set_expected(hydro,src,_formatter(val),"BRANCH_HYDRO_PRESSURE",
                       ["PROCESS_CONFIG_MAY_OVERRIDE"] if post else [],source_value=val)
         if not src:hydro["reasonCodes"].append("SOURCE_ABSENT_OR_ENRICHED")
+        annotate_process(hydro, fr_node["branchName"], "hydroPressure", src, post)
         # RIGID and other aux pointers are index identities, not engineering
         # source fields. Preserve source-edge identity but never reverse-infer.
         for x in cii_inventory["fields"]:
