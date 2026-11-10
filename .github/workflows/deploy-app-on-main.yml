@@ -34,10 +34,15 @@ jobs:
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
+      - name: Build deterministic runtime-only Pages package
+        run: |
+          bash scripts/build-pages-package.sh "$RUNNER_TEMP/pages-site"
+          PAGES_SITE_DIR="$RUNNER_TEMP/pages-site" node --test tests/pages-deployment-package.test.mjs
+
       - name: Upload static application
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: ${{ runner.temp }}/pages-site
 
       - name: Deploy to GitHub Pages
         id: deployment
