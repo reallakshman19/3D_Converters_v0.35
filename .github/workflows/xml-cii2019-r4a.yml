@@ -10,6 +10,9 @@ on:
       - 'tests/r4a_prepare_lineage.py'
       - 'tests/xml-cii-r4a-*.mjs'
       - 'tests/pages-live-smoke.test.mjs'
+      - 'tests/pages-deployment-identity.mjs'
+      - 'tests/pages-deployment-identity.test.mjs'
+      - '.github/workflows/deploy-app-on-main.yml'
       - '.github/workflows/xml-cii2019-r4a.yml'
   workflow_dispatch:
 permissions:
@@ -91,6 +94,8 @@ jobs:
         run: |
           npm install --no-save --package-lock=false playwright@1.56.1
           npx playwright install --with-deps chromium
+      - name: Verify release SHA attestation contract (positive and negative tests)
+        run: node --test tests/pages-deployment-identity.test.mjs
       - name: Run browser against deployed GitHub Pages app and check runtime network
         env:
           PAGES_LIVE_SMOKE_SCREENSHOT: ${{ runner.temp }}/r4a-pages-live.png
