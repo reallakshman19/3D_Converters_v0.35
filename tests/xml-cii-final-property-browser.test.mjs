@@ -431,7 +431,7 @@ try {
       'approximate candidate must never join bulk eligible');
     assert.equal(await modal.locator('[data-final-rigid-batch-approve-all-checkbox]').isDisabled(), true);
     assert.equal(await modal.locator('[data-final-rigid-batch-stage]').isDisabled(), true);
-    assert.match(await modal.locator('thead').innerText(), /Element Length \\(mm\\)/);
+    assert.match(await modal.locator('thead').innerText(), /Element Length \(mm\)/);
     await modal.locator('[data-final-rigid-batch-show-held]').check();
     assert.equal(await modal.locator('[data-final-rigid-batch-row="1"] td').nth(3).innerText(), '19.1');
     await modal.locator('[data-final-rigid-batch-apply-nearest]').click();
@@ -439,8 +439,8 @@ try {
     assert.equal(await modal.locator('[data-final-rigid-batch-stage]').isDisabled(), true,
       'nearest preview never implies approval');
     const proposed=modal.locator('[data-final-rigid-batch-row="1"]');
-    assert.match(await proposed.innerText(), /29\\.84/);
-    assert.match(await proposed.innerText(), /\\+402\\.7%/);
+    assert.match(await proposed.innerText(), /29\.84/);
+    assert.match(await proposed.innerText(), /\+402\.7%/);
     assert.match(await proposed.innerText(), /WARNING/);
     assert.equal(await proposed.locator('[data-final-rigid-batch-approve]').isDisabled(), false,
       'reviewable advisory warning must not have disabled checkbox');
