@@ -456,9 +456,13 @@ def build_field_relations(*, effective_inventory, processed_inventory,
         _set_expected(weight,src,expected,"TO_RIGID_2_OR_RIGID_TO_FLAN_WEIGHT",
                       ["WEIGHT_MULTIPLY_RUN_PINNED_SCALE"],
                       source_value=numeric(token),authority=authority,
-                      technical=("ELIGIBLE" if authority=="OWNER_APPROVAL_REQUIRED"
-                                 and a.get("ownershipStatus")=="EXACT_UNIQUE"
-                                 else "HOLD"))
+                      # R1 structural writer-source uniqueness does not
+                      # prove R2's complete dependent-RIGID allocation guard.
+                      # A future editor must re-run R2 qualification; R3 never
+                      # grants an ELIGIBLE editing action on that evidence.
+                      technical="HOLD")
+        weight["reasonCodes"].append(
+            "R2_COMPLETE_SOURCE_WEIGHT_EDIT_ELIGIBILITY_NOT_CROSS_VERIFIED")
         weight["weightScale"]=scale
         weight["sourceComponentRefNo"]=(
             source_nodes[sid].get("componentRefNo") if sid in source_nodes else None)
