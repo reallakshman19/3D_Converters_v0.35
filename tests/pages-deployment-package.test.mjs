@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 
-const stage=path.resolve(process.argv.at(-1));
+const stage=path.resolve(process.env.PAGES_SITE_DIR || process.argv.at(-1));
 function exists(rel){
   const p=path.resolve(stage,rel);
   return p.startsWith(stage+path.sep) && fs.existsSync(p) && fs.statSync(p).isFile();
