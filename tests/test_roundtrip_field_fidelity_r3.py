@@ -126,6 +126,32 @@ class FieldFidelityR3(unittest.TestCase):
         self.assertTrue(od)
         self.assertTrue(any(r["fromToSelection"]=="FROM" for r in od))
 
+    def test_r3_r1_source_mass_not_automatically_marked_editable(self):
+        weights=[r for r in self.rels if r["ciiField"]=="RIGID.weight"
+                 and r["physicalAuthority"]=="OWNER_APPROVAL_REQUIRED"]
+        self.assertTrue(weights)
+        self.assertTrue(all(r["editTechnicalEligibility"]=="HOLD" for r in weights))
+        self.assertTrue(all(
+            "R2_COMPLETE_SOURCE_WEIGHT_EDIT_ELIGIBILITY_NOT_CROSS_VERIFIED"
+            in r["reasonCodes"] for r in weights))
+        self.assertFalse(any(r["engineeringEditApproved"] for r in weights))
+
+    def test_r3_removed_effective_node_does_not_alias_unrelated_original_source(self):
+        # Even if a caller hands an inconsistent inventory, an absent
+        # ordinal must never silently select Python list[-1].
+        original=inventory_source_fields(FIXTURE,"ORIGINAL_INPUT_XML")
+        effective=inventory_source_fields(FIXTURE.replace(
+            b"<Weight>6</Weight>",b"<Weight>6.5</Weight>"),"ENGINE_INPUT_XML")
+        target=next(f for f in effective["fields"]
+                    if f["sourceFieldPath"]=="Node/Weight"
+                    and f["originalSourceToken"].strip()=="6.5")
+        target["nodeOrdinal"]=99999
+        matched=match_original_to_effective(original,effective)
+        relation=next(r for r in matched["relationships"]
+                      if r["effectiveFieldId"]==target["fieldId"])
+        self.assertEqual(relation["relationship"],"UNRESOLVED")
+        self.assertIsNone(relation["originalFieldId"])
+
     def test_08_shared_physical_component_is_not_mass_authority(self):
         shared=[n for n in self.audit_result["lineage"]["sourceStages"]["effectiveEnriched"]["nodes"]
                 if n["componentRefNo"]=="/SHARED-COMP"]
