@@ -131,10 +131,16 @@ test('R4A stale config, contradictory source and pointer proofs fail closed',asy
  assert.equal(affected.reasonCode,'RIGID_POINTER_MISMATCH');
 });
 
-test('R4A ambiguous duplicate ComponentRefNo cannot become physical ownership',async()=>{
+test('R4A repeated ComponentRefNo: unique writer + zero witness qualifies; invented duplicate remains HOLD',async()=>{
  const result=await makeResult();
  const p=await project();
- assert.equal(p.rows.filter(x=>x.eligible&&x.physicalComponentRefNo==='/SHARED-COMP').length,0);
+ const coherent=p.rows.filter(x=>x.eligible&&x.physicalComponentRefNo==='/SHARED-COMP');
+ assert.equal(coherent.length,1,
+   'one R1 writer with zero-mass non-writer witness is one physical component');
+ assert.equal(coherent[0].sourceWeightFieldsToEdit.length,1,
+   'zero-weight endpoint representation must remain zero');
+ assert.equal(coherent[0].originalPhysicalMassKg,15);
+ assert.equal(coherent[0].dependentPointers.length,1);
  const target=p.rows.find(x=>x.sourceNode?.componentRefNo==='/RIGID-40');
  assert.ok(target);
  const bad=structuredClone(r1);
