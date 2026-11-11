@@ -43,9 +43,10 @@ const raw='<PipeStressExport><Pipe><Branch><Branchname>'+branchName+'</Branchnam
   node('5538','PIPE',0,168.3,2354.8,0,'=1006657947/70')+
   '</Branch></Pipe></PipeStressExport>';
 const document=xml=>new DOMParser().parseFromString(xml,'application/xml');
+const field=(node,name)=>(node?.children||[])
+  .find(child=>child.localName===name)?.textContent;
 const lookup=(xml,no)=>[...document(xml).getElementsByTagName('Node')]
-  .find(x=>x.getElementsByTagName('NodeNumber')[0]?.textContent===String(no));
-const field=(node,name)=>node.getElementsByTagName(name)[0]?.textContent;
+  .find(x=>field(x,'NodeNumber')===String(no));
 const inventory={rows:[{rigidPointer:15,weight:590,rawWeight:'590',
  linkedElements:[{index:234,branchName,fromNode:'5530',toNode:'5536',
    lengthMm:147,outsideDiameterMm:168.3}]}]};
