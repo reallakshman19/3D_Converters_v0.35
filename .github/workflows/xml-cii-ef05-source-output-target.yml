@@ -1,0 +1,68 @@
+name: EF-05 final CII output-unit source Weight correction
+on:
+  push:
+    branches: ['fix/ef05-source-target-output-weight-*']
+  pull_request:
+    paths:
+      - 'tabs/xml-cii-2019-standalone/xml-cii-source-weight-output-target.js'
+      - 'tabs/xml-cii-2019-standalone/xml-cii-source-weight-reextract.js'
+      - 'tabs/xml-cii-2019-standalone/xml-cii-r4b-isolated-source-edit.js'
+      - 'tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-source-weight-review.js'
+      - 'tests/ef05_prepare_output_target_fixture.py'
+      - 'tests/xml-cii-ef05-output-target*.mjs'
+      - '.github/workflows/xml-cii-ef05-source-output-target.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  ef05-native-and-source-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Syntax and source audit contracts
+        run: |
+          python3 -m py_compile tests/ef05_prepare_output_target_fixture.py
+          node --check tabs/xml-cii-2019-standalone/xml-cii-source-weight-output-target.js
+          node --check tabs/xml-cii-2019-standalone/xml-cii-source-weight-reextract.js
+          node --check tabs/xml-cii-2019-standalone/xml-cii-r4b-isolated-source-edit.js
+          node --check tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-source-weight-review.js
+          node --check tests/xml-cii-ef05-output-target.test.mjs
+          node --check tests/xml-cii-ef05-output-target-browser.test.mjs
+      - name: Generate real native Python 1050.70 to 0.001 CII reference
+        run: python3 tests/ef05_prepare_output_target_fixture.py --output "$RUNNER_TEMP/ef05-output-target"
+      - name: Verify approved source, output units, pointers and fail-closed negative cases
+        env:
+          EF05_OUTPUT_FIXTURE_DIR: ${{ runner.temp }}/ef05-output-target
+        run: node --test tests/xml-cii-ef05-output-target.test.mjs
+      - name: Preserve R2/R4A source and R4B isolation regressions
+        run: |
+          python3 tests/r2_prepare_synthetic_fixture.py --output "$RUNNER_TEMP/r4a"
+          python3 tests/r4a_prepare_lineage.py --dir "$RUNNER_TEMP/r4a"
+          R4A_FIXTURE_DIR="$RUNNER_TEMP/r4a" node --test tests/xml-cii-r4a-ownership.test.mjs
+          R2_SYNTHETIC_DIR="$RUNNER_TEMP/r4a" node --test tests/xml-cii-source-weight-r2.test.mjs
+  ef05-real-chromium-pyodide:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Generate real converter-Python synthetic 1050.70 to 0.001 fixture
+        run: python3 tests/ef05_prepare_output_target_fixture.py --output tests/.ef05-output-target-runtime
+      - name: Install Chromium
+        run: |
+          npm install --no-save --package-lock=false playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Complete final Review UI, output target, converter and downloads
+        run: node --test tests/xml-cii-ef05-output-target-browser.test.mjs
