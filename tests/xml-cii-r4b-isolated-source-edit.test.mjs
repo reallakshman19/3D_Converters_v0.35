@@ -67,7 +67,8 @@ test('R4B source commit requires explicit group total, documented basis, owner a
  const preview=await previewR4bIsolatedSourceEdit(s,{
    rigidPointer:pointer,newValue:'2.6'},{getCurrentResult:()=>result});
  const approved={rigidPointer:pointer,newValue:'2.6',approved:true,ownerApproved:true,
-   approvedGroupTotalKg:'17.6',allocationMode:'OWNER_APPROVED_REVISED_GROUP_TOTAL',
+   requestedOutputWeight:'26',approvedGroupTotalKg:'17.6',
+   allocationMode:'OWNER_APPROVED_REVISED_GROUP_TOTAL',
    referenceBasis:'Signed engineering component revision EC-35/36'};
  for(const bad of [
    {...approved,approved:false},
@@ -78,6 +79,10 @@ test('R4B source commit requires explicit group total, documented basis, owner a
  ])await assert.rejects(()=>applyR4bIsolatedSourceEdit(s,preview,bad,
    {getCurrentResult:()=>result}),/R4B_SOURCE_HOLD/);
  assert.equal(s.r4bCommitted,undefined);
+ await assert.rejects(()=>applyR4bIsolatedSourceEdit(s,preview,{
+   ...approved,requestedOutputWeight:'27',
+ },{getCurrentResult:()=>result}),/SOURCE_OUTPUT_WEIGHT_HOLD TARGET_NOT_EMITTED/);
+ assert.equal(s.r4bCommitted,undefined);
  const output=await applyR4bIsolatedSourceEdit(s,preview,approved,
    {getCurrentResult:()=>result});
  assert.equal(output.status,'VERIFIED_REEXTRACT');
@@ -85,6 +90,8 @@ test('R4B source commit requires explicit group total, documented basis, owner a
  assert.equal(output.revisedCii,revisedCii);
  assert.equal(output.originalXml,originalXml);
  assert.equal(output.originalCii,originalCii);
+ assert.equal(output.audit.requestedOutputVerification.requestedCiiOutputWeight,26);
+ assert.equal(output.audit.requestedOutputVerification.actualCiiOutputWeight,26);
  assert.equal(output.audit.unrelatedXmlBytesChanged,0);
  assert.equal(output.audit.ciiEngineeringDiff.unexpectedDifferences,0);
  assert.equal(output.audit.approvedPhysicalGroupTotalKg,17.6);
