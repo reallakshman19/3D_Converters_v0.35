@@ -353,7 +353,8 @@ export function installSourceBackedWeightReview({
         if(ticket!==version||current()!==result||!overlay.isConnected)
           throw Error('Stale R4B trial. Restart after any source/config/input change.');
         r4bPreview=trial;
-        const total=numericalValue(planTotal.value.trim()||'NaN').number;
+        let total=null;
+        try {if(planTotal.value.trim())total=numericalValue(planTotal.value.trim()).number;}catch{}
         const documented=planBasis.value.trim().length>=8;
         const canCommit=owner.checked&&approval.checked&&documented&&
           Math.abs(total-trial.proposedEmittedGroupKg)<=0.00001;
