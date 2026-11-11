@@ -122,6 +122,28 @@ try{
     await page.locator('[data-source-weight-open]').click();
     await page.waitForFunction(()=>document.querySelector('[data-source-weight-status]')?.textContent.includes('PASS:'),
       null,{timeout:220000});
+    // R4B is an additional read-only export, not a replacement for R4A.
+    const legacy=page.locator('[data-source-weight-ownership-report]');
+    const r4bJson=page.locator('[data-source-weight-r4b-json]');
+    const r4bCsv=page.locator('[data-source-weight-ownership-csv]');
+    assert.equal(await legacy.isDisabled(),false);
+    assert.equal(await r4bJson.isDisabled(),false);
+    assert.equal(await r4bCsv.isDisabled(),false);
+    const [oldDownload]=await Promise.all([page.waitForEvent('download'),legacy.click()]);
+    const oldAudit=JSON.parse(await readFile(await oldDownload.path(),'utf8'));
+    assert.equal(oldAudit.schema,'xml-cii-r4a-rigid-source-hold-report/v1');
+    const [jsonDownload]=await Promise.all([page.waitForEvent('download'),r4bJson.click()]);
+    const ownership=JSON.parse(await readFile(await jsonDownload.path(),'utf8'));
+    assert.equal(ownership.schema,'xml-cii-r4b-rigid-ownership-audit/v1');
+    assert.equal(ownership.summary.finalRigidCount,6);
+    assert.equal(ownership.rows.length,6);
+    assert.equal(ownership.summary.qualifiedStructuralOwners+ownership.summary.heldOwners,6);
+    assert.equal(ownership.summary.physicalMassApprovalCount,0);
+    assert.ok(ownership.rows.every(x=>x.physicallyApproved===false));
+    const [csvDownload]=await Promise.all([page.waitForEvent('download'),r4bCsv.click()]);
+    const csv=await readFile(await csvDownload.path(),'utf8');
+    assert.equal(csv.trimEnd().split('\n').length,7);
+    assert.match(csv,/holdReasonCode/);
     await page.locator('[data-source-weight-search]').fill(String(result.owner.pointer));
     await page.locator('[data-source-weight-pointer]').selectOption(String(result.owner.pointer));
     await page.locator('[data-source-weight-value]').fill('2.984');

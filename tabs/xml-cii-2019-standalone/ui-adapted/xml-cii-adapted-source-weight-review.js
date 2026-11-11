@@ -4,6 +4,8 @@
 import { initializeSourceWeightSession, applySourceBackedWeightChange }
   from '../xml-cii-source-weight-reextract.js';
 import { numericalValue } from '../xml-cii-final-property-validation.js';
+import { buildR4bRigidOwnershipReport, r4bOwnershipAuditCsv }
+  from '../xml-cii-r4b-ownership-audit.js';
 
 function el(tag, text, attrs={}){
   const n=document.createElement(tag);
@@ -111,6 +113,8 @@ export function installSourceBackedWeightReview({
     originalXml:button(dl,'Original EnrichedXML',{'data-source-weight-original-xml':''}),
     originalCii:button(dl,'Original CII',{'data-source-weight-original-cii':''}),
     ownershipReport:button(dl,'Download RIGID source/HOLD report',{'data-source-weight-ownership-report':''}),
+    ownershipR4bJson:button(dl,'Download detailed R4B ownership JSON',{'data-source-weight-r4b-json':''}),
+    ownershipCsv:button(dl,'Download detailed R4B ownership CSV',{'data-source-weight-ownership-csv':''}),
     revisedXml:button(dl,'Download revised EnrichedXML',{'data-source-weight-revised-xml':''}),
     revisedCii:button(dl,'Download re-extracted CII',{'data-source-weight-revised-cii':''}),
     audit:button(dl,'Download verified change audit',{'data-source-weight-audit':''}),
@@ -148,6 +152,7 @@ export function installSourceBackedWeightReview({
       valueLabel(facts,'Source status','Not resolved');return;
     }
     const src=row.sourceNode;
+    const diagnostic=session?.r4bAuditByPointer?.get(row.rigidPointer);
     const pieces=[
       ['Status',row.status],['Reason',row.reason],
       ['RIGID pointer',row.rigidPointer],
@@ -170,7 +175,12 @@ export function installSourceBackedWeightReview({
       ['Original physical mass (kg)',row.originalPhysicalMassKg??'UNVERIFIED'],
       ['Original allocated CII mass (kg)',row.totalAllocatedMassKg??'UNVERIFIED'],
       ['Mass-allocation reason',row.allocationRule||'UNRESOLVED'],
-      ['Dependent RIGID pointers',row.dependentPointers?.join(', ')||'NOT_QUALIFIED'],
+      ['Dependent RIGID pointers',diagnostic?.dependentRigidPointers?.join(', ')||row.dependentPointers?.join(', ')||'NOT_QUALIFIED'],
+      ['R4B ELEMENT FROM / TO',diagnostic?.elements?.map(e=>e.fromNode+' → '+e.toNode).join('; ')||'UNVERIFIED'],
+      ['R4B element lengths (mm)',diagnostic?.elements?.map(e=>e.lengthMm).join('; ')||'UNVERIFIED'],
+      ['R1 writer side',diagnostic?.writerSourceSelection||'UNVERIFIED'],
+      ['Dependent allocation status',diagnostic?.dependentSetStatus||'UNVERIFIED'],
+      ['Independent physical reference',diagnostic?.referenceBasis||'UNAVAILABLE'],
       ['Transformations',row.transformationHistory?.map(x=>x.stage).join(', ')||'None or not qualified'],
       ['Expected CII impact',row.expectedImpact?.map(x=>x.fromNode+' → '+x.toNode).join(', ')||'Unknown'],
     ];
@@ -201,7 +211,8 @@ export function installSourceBackedWeightReview({
     picker.replaceChildren();
     const options=rows.filter(row=>!needle||
       String(row.rigidPointer).includes(needle.replace(/^rigid\s*/,'').trim()) ||
-      String(row.physicalComponentRefNo||row.sourceNode?.componentRefNo||'')
+      String(row.physicalComponentRefNo||row.sourceNode?.componentRefNo||
+        session?.r4bAuditByPointer?.get(row.rigidPointer)?.componentRefNo||'')
         .toLowerCase().includes(needle) ||
       String(row.reasonCode||'').toLowerCase().includes(needle));
     for(const row of options){
@@ -221,6 +232,15 @@ export function installSourceBackedWeightReview({
     try {
       const built=await initializeSourceWeightSession(result,{engineRunner});
       if(!overlay.isConnected||current()!==result)throw Error('Stale result/modal during no-edit replay.');
+      // Read-only diagnostics must not prevent verified R4A source edits.
+      try {
+        built.r4bAudit=await buildR4bRigidOwnershipReport(built);
+        built.r4bAuditByPointer=new Map(built.r4bAudit.rows.map(x=>[x.rigidPointer,x]));
+      } catch(error) {
+        built.r4bAuditError=String(error?.message||error);
+        built.r4bAudit=null;
+        built.r4bAuditByPointer=new Map();
+      }
       session=built;ready=true;
       const qualified=built.rows.filter(r=>r.eligible).length;
       const breakdown=built.ownership?.breakdown||Object.fromEntries(
@@ -235,7 +255,8 @@ export function installSourceBackedWeightReview({
         ' source owners structurally eligible; physical mass approval is still required.'+
         '\nR4A ownership HOLD breakdown: '+(reasons||'none')+
         (built.r4aReason ? '\nR4A independent Python lineage unavailable: '+built.r4aReason : '')+
-        (qualified===0 ? '\nWARNING: No verified XML physical source owner is eligible. Original files remain downloadable. Revised source/CII outputs stay locked.' : '');
+        (qualified===0 ? '\nWARNING: No verified XML physical source owner is eligible. Original files remain downloadable. Revised source/CII outputs stay locked.' : '')+
+        (built.r4bAuditError ? '\nR4B diagnostic report unavailable (source editor remains operational): '+built.r4bAuditError : '');
       resetPicker();
       for(const row of built.rows) {
         const item=rowCells.get(row.rigidPointer);
@@ -251,6 +272,8 @@ export function installSourceBackedWeightReview({
       }
       downloads.originalXml.disabled=false;downloads.originalCii.disabled=false;
       downloads.ownershipReport.disabled=false;
+      downloads.ownershipR4bJson.disabled=!built.r4bAudit;
+      downloads.ownershipCsv.disabled=!built.r4bAudit;
     } catch(e){
       status.textContent='HOLD: '+(e?.message||e);
       report.textContent='No source-backed Apply or revised downloads are available.';
@@ -360,6 +383,16 @@ export function installSourceBackedWeightReview({
   downloads.originalCii.addEventListener('click',()=>{
     if(session&&current()===result)download(result.ciiName||'original.cii',
       session.custody.originalCii,'text/plain;charset=utf-8');
+  });
+  downloads.ownershipR4bJson.addEventListener('click',()=>{
+    if(!session?.r4bAudit||current()!==result)return;
+    download('final_rigid_r4b_source_ownership_detailed.json',
+      JSON.stringify(session.r4bAudit,null,2)+'\n','application/json;charset=utf-8');
+  });
+  downloads.ownershipCsv.addEventListener('click',()=>{
+    if(!session?.r4bAudit||current()!==result)return;
+    download('final_rigid_r4b_source_ownership_detailed.csv',
+      r4bOwnershipAuditCsv(session.r4bAudit),'text/csv;charset=utf-8');
   });
   downloads.ownershipReport.addEventListener('click',()=>{
     if(!session||current()!==result)return;
