@@ -216,6 +216,13 @@ try{
     await page.locator('[data-final-rigid-row][data-pointer="135"] [data-source-weight-inspect]').click();
     await page.waitForFunction(()=>document.querySelector('[data-source-weight-status]')?.textContent.includes('PASS:'),
       null,{timeout:220000});
+    // Unqualified sources must remain disabled with the precise reason,
+    // while a verified source for pointer 135 becomes editable.
+    if(imported.held!==null){
+      await page.locator('[data-source-weight-pointer]').selectOption(String(imported.held));
+      assert.equal(await page.locator('[data-source-weight-value]').isDisabled(),true);
+      assert.match(await page.locator('[data-source-weight-eligibility-detail]').innerText(),/HOLD:/);
+    }
     await page.locator('[data-source-weight-pointer]').selectOption('135');
     const input=page.locator('[data-source-weight-value]');
     assert.equal(await input.isDisabled(),false,'A qualified unique 135 source must become editable');
