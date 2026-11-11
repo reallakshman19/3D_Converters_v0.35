@@ -8,6 +8,7 @@
 // contains the Preview and Weight Match facts that were selected.
 
 import { enrichStandaloneDtxrAnnotations } from './xml-cii-standalone-dtxr-enrichment.js';
+import { synchronizeXmlCiiNodeBoreWithOutsideDiameter } from '../../converters/xml-cii2019-core/node-bore-od-authority.js';
 import { createStandaloneRunParityEvidence } from './xml-cii-run-parity-evidence.js';
 
 const PARITY_MODULE_URL = new URL(
@@ -241,7 +242,12 @@ export async function enrichStandaloneXmlForRun(job, extraOptions = {}) {
       text(job.stagedJsonText),
       out.diagnostics,
     );
-    out.xmlText = process.xmlText;
+    // Standalone does not use the parent runner's post-OD authority pass.
+    // Freeze local DN by each effective node OD before CII engine-input custody.
+    const boreAuthority=synchronizeXmlCiiNodeBoreWithOutsideDiameter(process.xmlText);
+    out.xmlText=boreAuthority.xmlText;
+    out.stats={...out.stats,...boreAuthority.stats};
+    out.diagnostics.push(...boreAuthority.diagnostics);
     out.branchRows = process.branchRows;
     out.nodeRows = process.nodeRows;
     out.expectedEntries = process.expectedEntries;
