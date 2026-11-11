@@ -51,10 +51,10 @@ async function assertFrozen(session,current){
   requireCheck(current===session.originalResult&&current?.ciiText===c.originalCii&&
     current?.finalRigidReviewEvidence?.engineInputText===c.engineXml&&
     current?.finalRigidReviewEvidence?.supportConfigJson===c.supportConfigJson&&
-    current?.finalRigidReviewEvidence?.stagedJsonText!==undefined&&
-    current.finalRigidReviewEvidence.stagedJsonText===c.stagedJsonText&&
+    (current?.finalRigidReviewEvidence?.stagedJsonText||'')===c.stagedJsonText&&
     JSON.stringify(current.finalRigidReviewEvidence.effectiveOptions)===JSON.stringify(c.options)&&
-    current.finalRigidReviewEvidence.engineInputDigest===c.runId,
+    (current.finalRigidReviewEvidence.engineInputDigest||
+      current.finalRigidReviewEvidence.engineInputSha256)===c.runId,
     'STALE_RUN','Active original run, source, support config or options changed');
   const [sourceSha,ciiSha,configSha]=await Promise.all([
     ciiSha256(c.engineXml),ciiSha256(c.originalCii),ciiSha256(c.supportConfigJson),
