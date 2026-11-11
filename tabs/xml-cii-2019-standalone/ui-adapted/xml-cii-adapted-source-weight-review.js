@@ -211,7 +211,7 @@ export function installSourceBackedWeightReview({
     proposed.disabled=!(row.eligible||multi);
     approval.disabled=owner.disabled=!(row.eligible||multi);
     eligibility.textContent=row.eligible
-      ? 'Verified one-to-one source owner. Enter an approved XML Weight (kg).'
+      ? 'Verified source owner (one-to-one). Enter an approved XML Weight (kg).'
       : multi
         ? 'R4B: source owner is NOT approved. Enter a proposed kg value, then Preview to run a real-converter isolated-writer trial. Commit requires documented total-group allocation.'
         : 'HOLD: '+(row.reasonCode||'SOURCE_OWNER_UNRESOLVED')+
