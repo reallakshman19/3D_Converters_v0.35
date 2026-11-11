@@ -86,6 +86,10 @@ export function installSourceBackedWeightReview({
   const proposed=add(valueWrap,'input',null,{'data-source-weight-value':'',
     type:'text',inputmode:'decimal',placeholder:'e.g. 2.984',
     style:'display:block;max-width:190px;padding:7px;background:#0b1220;color:#fff;border:1px solid #64748b;'});
+  proposed.disabled=true; // No editable source is presumed before exact run qualification.
+  const eligibility=add(valueWrap,'small','HOLD: Source owner not yet verified.',{
+    'data-source-weight-eligibility-detail':'',
+    style:'display:block;max-width:280px;color:#fbbf24;font-size:10px;white-space:normal;'});
   const approvals=add(content,'div',null,{style:'margin-top:12px;display:flex;flex-wrap:wrap;gap:15px;'});
   const ownerLabel=add(approvals,'label',null,{style:'font-size:11px;color:#fde68a;'});
   const owner=add(ownerLabel,'input',null,{'type':'checkbox','data-source-weight-owner-approved':''});
@@ -137,7 +141,12 @@ export function installSourceBackedWeightReview({
   function renderFacts(){
     facts.replaceChildren();
     const row=selectedRow();
-    if(!row){valueLabel(facts,'Source status','Not resolved');return;}
+    if(!row){
+      proposed.disabled=owner.disabled=approval.disabled=true;
+      eligibility.textContent='HOLD: No verified RIGID/source owner selected.';
+      proposed.title=eligibility.textContent;
+      valueLabel(facts,'Source status','Not resolved');return;
+    }
     const src=row.sourceNode;
     const pieces=[
       ['Status',row.status],['Reason',row.reason],
@@ -161,6 +170,12 @@ export function installSourceBackedWeightReview({
     for(const [title,value]of pieces)valueLabel(facts,title,value);
     proposed.disabled=!row.eligible;
     approval.disabled=owner.disabled=!row.eligible;
+    eligibility.textContent=row.eligible
+      ? 'Verified source owner. Enter an approved XML Weight (kg); XML and CII will be re-extracted.'
+      : 'HOLD: '+(row.reasonCode||'SOURCE_OWNER_UNRESOLVED')+
+        '. '+row.reason+' Use Direct-CII Weight Review for output-only changes.';
+    eligibility.style.color=row.eligible?'#86efac':'#fbbf24';
+    proposed.title=eligibility.textContent;
     if(!row.eligible){report.textContent='HOLD: '+row.reason;}
   }
   const proposal=()=>({
@@ -232,6 +247,9 @@ export function installSourceBackedWeightReview({
     } catch(e){
       status.textContent='HOLD: '+(e?.message||e);
       report.textContent='No source-backed Apply or revised downloads are available.';
+      proposed.disabled=owner.disabled=approval.disabled=true;
+      eligibility.textContent='HOLD: '+String(e?.message||e);
+      proposed.title=eligibility.textContent;
       Object.values(downloads).forEach(b=>b.disabled=true);
     }finally{open.disabled=false;}
   }
