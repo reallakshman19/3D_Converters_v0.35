@@ -164,6 +164,8 @@ function securityRelevantR4aOwner(row) {
     completeAllocation:row.completeAllocation,
     allocationRule:row.allocationRule,
     dependentPointers:row.dependentPointers,
+    sourceNodeCandidates:row.sourceNodeCandidates,
+    sourceWeightFieldsToEdit:row.sourceWeightFieldsToEdit,
     allocations:row.allocations,
     expectedImpact:row.expectedImpact,
     sourceEdgeIdentities:row.sourceEdgeIdentities,
@@ -216,23 +218,38 @@ export async function applySourceBackedWeightChange(session,request,{
       'session already committed a different approved edit; create a new source session');
     return session.committed; // idempotent repeat; no second converter run
   }
+  // Repeated positive XML Weight fields may describe the same physical
+  // component on multiple non-writer source nodes. These are changed together
+  // only after R1 proves one emitted writer and all original tokens agree.
+  // Zero-weight endpoint representations remain zero.
+  const sourceFields=row.sourceWeightFieldsToEdit?.length
+    ? row.sourceWeightFieldsToEdit : [row.sourceIdentity];
+  const candidates=new Map((row.sourceNodeCandidates||[]).map(n=>[n.identity,n]));
+  const editedNodes=sourceFields.map(identity=>{
+    const alias=candidates.get(identity);
+    if(!alias && identity!==row.sourceIdentity)
+      fail('Missing independently verified alias source identity '+identity);
+    return {
+      propertyId:'Node/Weight',approved:true,ownerApproved:true,
+      zeroConfirmed:request.zeroConfirmed===true,
+      branchName:alias?.branchName||row.sourceNode.branchName,
+      branchOrdinal:alias?.branchOrdinal??row.sourceNode.branchOrdinal,
+      nodeOrdinal:alias?.nodeOrdinal??row.sourceNode.nodeOrdinal,
+      nodeNumber:alias?.nodeNumber||row.sourceNode.nodeNumber,
+      componentRefNo:alias?.componentRefNo||row.sourceNode.componentRefNo,
+      originalToken:alias?.weightRaw??row.sourceNode.originalWeightToken,
+      newValue,
+    };
+  });
+  assert(new Set(sourceFields).size===sourceFields.length &&
+    editedNodes.length>=1,'Repeated source-weight edit identity is incomplete.');
   const patch=await applyXmlSourceEdits({
     originalXml:session.custody.engineXml,
     originalSha256:session.custody.engineSha,
-    edits:[{
-      propertyId:'Node/Weight',approved:true,ownerApproved:true,
-      zeroConfirmed:request.zeroConfirmed===true,
-      branchName:row.sourceNode.branchName,
-      branchOrdinal:row.sourceNode.branchOrdinal,
-      nodeOrdinal:row.sourceNode.nodeOrdinal,
-      nodeNumber:row.sourceNode.nodeNumber,
-      componentRefNo:row.sourceNode.componentRefNo,
-      originalToken:row.sourceNode.originalWeightToken,
-      newValue,
-    }],
+    edits:editedNodes,
   });
-  assert(patch.edits.length===1 && patch.unrelatedXmlBytesChanged===0,
-    'XML byte-diff is not exactly one source Weight field');
+  assert(patch.edits.length===editedNodes.length && patch.unrelatedXmlBytesChanged===0,
+    'XML byte-diff does not match exactly the approved same-component Weight fields');
   const normalizedNew=patch.edits[0].revisedValue;
   if(!Number.isFinite(normalizedNew) || normalizedNew<0) fail('invalid approved source mass');
   const revised=await run(exactJob(session.custody,patch.revisedXml),engineRunner);
@@ -268,6 +285,8 @@ export async function applySourceBackedWeightChange(session,request,{
       approvedNewXmlWeight:normalizedNew,weightScale:row.weightScale,
       originalRigidPointer:row.rigidPointer},
     sourceXmlByteDiff:patch.edits,unrelatedXmlBytesChanged:0,
+    sourceWeightFieldCount:patch.edits.length,
+    sourceOwnerRepresentationBasis:row.representationBasis||null,
     ciiEngineeringDiff:delta,
     ...(massReconciliation ? {massReconciliation,
       R1LineageFingerprint:session.verifiedLineage?.runIdentity?.snapshotFingerprint,
