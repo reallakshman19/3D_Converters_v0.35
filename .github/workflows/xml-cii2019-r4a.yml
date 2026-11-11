@@ -35,6 +35,9 @@ jobs:
           node --check converters/xml-cii-2019-standalone/engine.js
           node --check tabs/xml-cii-2019-standalone/xml-cii-r4a-rigid-ownership.js
           node --check tabs/xml-cii-2019-standalone/xml-cii-r4a-mass-reconcile.js
+          node --check tabs/xml-cii-2019-standalone/xml-cii-r4b-ownership-audit.js
+          node --check tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-source-weight-review.js
+          node --check tests/xml-cii-r4b-audit.test.mjs
           node --check tabs/xml-cii-2019-standalone/xml-cii-source-weight-reextract.js
           node --check tests/xml-cii-r4a-ownership.test.mjs
       - name: Produce authentic current-writer (not Owner) synthetic CII and frozen R1 lineage
@@ -45,6 +48,7 @@ jobs:
         env:
           R4A_FIXTURE_DIR: ${{ runner.temp }}/r4a-synthetic
         run: node --test tests/xml-cii-r4a-ownership.test.mjs
+          node --test tests/xml-cii-r4b-audit.test.mjs
       - name: Merged R2 source-backed and direct-CII JS regression
         env:
           R2_SYNTHETIC_DIR: ${{ runner.temp }}/r4a-synthetic
