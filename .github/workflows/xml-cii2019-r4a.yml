@@ -87,6 +87,18 @@ jobs:
           name: r4a-source-rigid135-browser-e2e
           path: ${{ runner.temp }}/r4a-pointer135-source.png
           if-no-files-found: ignore
+      - name: Retain native Python original/revised source XML, CII and browser audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: r4a-pointer135-source-cii-fixture-SYNTHETIC
+          path: |
+            tests/.r2-synthetic-runtime/pointer135-original.xml
+            tests/.r2-synthetic-runtime/pointer135-original.cii
+            tests/.r2-synthetic-runtime/pointer135-approved.xml
+            tests/.r2-synthetic-runtime/pointer135-approved.cii
+            tests/.r2-synthetic-runtime/pointer135-browser-change-audit.json
+          if-no-files-found: warn
       - name: Preserve merged R2 real Chromium/Pyodide source-edit and download regressions
         run: node --test tests/xml-cii-source-weight-r2-browser.test.mjs
       - name: Preserve merged R2 fullscreen modal and direct-CII browser regressions
