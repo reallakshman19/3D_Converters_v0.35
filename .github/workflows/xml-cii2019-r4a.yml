@@ -8,6 +8,7 @@ on:
       - 'converters/xml-cii-2019-standalone/engine.js'
       - 'tabs/xml-cii-2019-standalone/**'
       - 'tests/r4a_prepare_lineage.py'
+      - 'tests/r4a_prepare_pointer135_fixture.py'
       - 'tests/xml-cii-r4a-*.mjs'
       - 'tests/pages-live-smoke.test.mjs'
       - 'tests/pages-deployment-identity.mjs'
@@ -70,12 +71,34 @@ jobs:
         run: |
           python3 tests/r2_prepare_synthetic_fixture.py --output tests/.r2-synthetic-runtime
           python3 tests/r4a_prepare_lineage.py --dir tests/.r2-synthetic-runtime
+          python3 tests/r4a_prepare_pointer135_fixture.py --output tests/.r2-synthetic-runtime
       - name: Install isolated Chromium
         run: |
           npm install --no-save --package-lock=false playwright@1.56.1
           npx playwright install --with-deps chromium
       - name: Test real Pyodide R1 lineage and approved XML→CII source edit/downloads
+        env:
+          R4A_POINTER135_SCREENSHOT: ${{ runner.temp }}/r4a-pointer135-source.png
         run: node --test tests/xml-cii-r4a-browser.test.mjs
+      - name: Preserve Source-backed RIGID 135 UI E2E screenshot (synthetic data)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: r4a-source-rigid135-browser-e2e
+          path: ${{ runner.temp }}/r4a-pointer135-source.png
+          if-no-files-found: ignore
+      - name: Retain native Python original/revised source XML, CII and browser audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: r4a-pointer135-source-cii-fixture-SYNTHETIC
+          path: |
+            tests/.r2-synthetic-runtime/pointer135-original.xml
+            tests/.r2-synthetic-runtime/pointer135-original.cii
+            tests/.r2-synthetic-runtime/pointer135-approved.xml
+            tests/.r2-synthetic-runtime/pointer135-approved.cii
+            tests/.r2-synthetic-runtime/pointer135-browser-change-audit.json
+          if-no-files-found: warn
       - name: Preserve merged R2 real Chromium/Pyodide source-edit and download regressions
         run: node --test tests/xml-cii-source-weight-r2-browser.test.mjs
       - name: Preserve merged R2 fullscreen modal and direct-CII browser regressions
