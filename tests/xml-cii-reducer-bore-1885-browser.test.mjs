@@ -42,6 +42,18 @@ try {
      const {synchronizeXmlCiiNodeBoreWithOutsideDiameter}=await import(
        '/converters/xml-cii2019-core/node-bore-od-authority.js');
      const sync=synchronizeXmlCiiNodeBoreWithOutsideDiameter(original);
+     const {enrichStandaloneXmlForRun}=await import(
+       '/tabs/xml-cii-2019-standalone/xml-cii-standalone-run-parity.js');
+     const standalone=await enrichStandaloneXmlForRun({
+       sourceText:original,stagedJsonText:'',supportConfigJson:'{}',
+       options:{splitCondensedValveFlange:true},
+     });
+     if(!standalone.applied)throw Error('Standalone parity blocked: '+standalone.error);
+     const verifiedDocument=new DOMParser().parseFromString(standalone.xmlText,'application/xml');
+     const observedNodes=[...verifiedDocument.querySelectorAll('Node')].map(node=>({
+       od:Number(node.querySelector('OutsideDiameter')?.textContent),
+       dn:Number(node.querySelector('BoreMm')?.textContent),
+     }));
      const readBore=(xml,no)=>{
        const doc=new DOMParser().parseFromString(xml,'application/xml');
        const nodes=[...doc.querySelectorAll('Node')];
@@ -72,6 +84,9 @@ try {
        correctedBore5536:readBore(sync.xmlText,'5536'),
        upstreamBore:readBore(sync.xmlText,'5460'),
        changes:sync.appliedCount,mixed:sync.mixedBranchCount,
+       standaloneApplied:standalone.applied,standaloneNodeCount:observedNodes.length,
+       standaloneIncorrectBores:observedNodes.filter(node=>
+         (node.od===168.3&&node.dn!==150)||(node.od===323.8&&node.dn!==300)),
      };
    });
    assert.equal(observed.od,168.3);
@@ -83,6 +98,10 @@ try {
    assert.equal(observed.upstreamBore,'300.000');
    assert.equal(observed.changes,6);
    assert.equal(observed.mixed,1);
+   assert.equal(observed.standaloneApplied,true);
+   assert.ok(observed.standaloneNodeCount>=4);
+   assert.deepEqual(observed.standaloneIncorrectBores,[],
+     'Standalone engine input must correct BOTH sides of the reducer before CII');
    const row=page.locator('[data-final-rigid-row][data-pointer="'+observed.pointer+'"]');
    assert.equal(await row.count(),1);
    const bore=row.locator('[data-final-rigid-bore-source]');
