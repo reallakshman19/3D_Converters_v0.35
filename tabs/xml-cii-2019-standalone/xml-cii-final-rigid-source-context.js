@@ -168,7 +168,15 @@ export function buildFinalRigidSourceContexts(inventory, evidence = {}, authorit
     if (!fallback) return context;
     const missingBore = context.bore?.value === null || context.bore?.value === undefined;
     const missingRating = context.rating?.value === null || context.rating?.value === undefined;
-    const bore = missingBore ? fallback.bore : context.bore;
+    // Final exported CII ELEMENT OD is the authoritative size for the
+    // particular emitted edge. It may be downstream of a reducer while source
+    // XML still contains an obsolete branch-wide nominal BoreMm.
+    const ciiBore = fallback.bore?.source === 'cii-od-dn' ? fallback.bore : null;
+    const staleBore = ciiBore && context.bore?.value != null &&
+      Number(context.bore.value) !== Number(ciiBore.value)
+        ? {sourceValue:context.bore.value,ciiNominalBore:ciiBore.value,
+          reason:'Source BoreMm disagrees with emitted CII OD: final edge DN controls review'} : null;
+    const bore = ciiBore || (missingBore ? fallback.bore : context.bore);
     const rating = missingRating ? fallback.rating : context.rating;
     const newConflicts = [
       ...(context.conflicts || []),
@@ -178,12 +186,13 @@ export function buildFinalRigidSourceContexts(inventory, evidence = {}, authorit
     const sourceUnresolved = !context.mapping;
     return {
       ...context, bore, rating,
+      ...(staleBore ? {boreEvidenceMismatch:staleBore} : {}),
       conflicts: [...new Set(newConflicts)],
       status: context.status === 'VERIFIED' && newConflicts.length ? 'CONFLICT_REVIEW' : context.status,
       // The existing mass / catalog authority is never elevated by CII or
       // branch-level metadata alone. Unresolved components remain unresolved.
       eligibleForAutomaticReference: !sourceUnresolved && context.eligibleForAutomaticReference &&
-        newConflicts.length === 0,
+        newConflicts.length === 0 && !staleBore,
       fallbackEvidence: fallback,
     };
   };
