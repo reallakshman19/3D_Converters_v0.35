@@ -5,6 +5,7 @@
  */
 import { runXmlCii2019StandaloneEngineJob } from './xml-cii-workflow-engine-client.js';
 import { ciiSha256 } from './xml-cii-final-property-reader.js';
+import { verifyRequestedCiiOutputWeight } from './xml-cii-source-weight-output-target.js';
 import { parseFinalCiiRigidInventory } from './xml-cii-final-rigid-inventory.js';
 import { deriveSourceWeightEligibility, verifyFrozenCiiEngineeringValues }
   from './xml-cii-source-weight-ownership.js';
@@ -262,6 +263,11 @@ export async function applySourceBackedWeightChange(session,request,{
   assert(delta.status==='PASS_ENGINEERING_DIFF' &&
     delta.expectedDifferences.length===1 && delta.unexpectedDifferences===0,
     'unexplained engineering difference in regenerated CII');
+  const requestedOutputVerification=verifyRequestedCiiOutputWeight({
+    requestedOutputWeight:request.requestedOutputWeight,rigidPointer:row.rigidPointer,
+    ciiEngineeringDiff:delta,
+    ...(requestedOutputVerification?{requestedOutputVerification}:{ }),
+  });
   const massReconciliation = row.completeAllocation ?
     reconcileR4aPhysicalMass({ownership:row,sourceWeightKg:normalizedNew,
       reextractDiff:delta}) : null;
