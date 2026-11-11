@@ -4,6 +4,8 @@
 import { initializeSourceWeightSession, applySourceBackedWeightChange }
   from '../xml-cii-source-weight-reextract.js';
 import { numericalValue } from '../xml-cii-final-property-validation.js';
+import { previewR4bIsolatedSourceEdit,applyR4bIsolatedSourceEdit }
+  from '../xml-cii-r4b-isolated-source-edit.js';
 import { buildR4bRigidOwnershipReport, r4bOwnershipAuditCsv }
   from '../xml-cii-r4b-ownership-audit.js';
 
@@ -99,6 +101,21 @@ export function installSourceBackedWeightReview({
   const approvalLabel=add(approvals,'label',null,{style:'font-size:11px;color:#e2e8f0;'});
   const approval=add(approvalLabel,'input',null,{'type':'checkbox','data-source-weight-approved':''});
   approvalLabel.append(' I explicitly approve this XML Weight change (not a catalog suggestion).');
+  const groupPlan=add(content,'fieldset',null,{
+    'data-source-weight-r4b-plan':'',
+    style:'display:none;border:1px solid #64748b;padding:12px;margin-top:12px;'});
+  add(groupPlan,'legend','R4B multi-RIGID source allocation approval');
+  add(groupPlan,'p','A real-converter read-only trial must prove the target is isolated. Repeated ComponentRefNo is not physical mass approval. Enter a separately approved revised physical group total and its engineering reference before Apply.',
+    {style:'font-size:12px;color:#fde68a;'});
+  const planTotalLabel=add(groupPlan,'label','Approved revised physical group total (kg) ',{style:'font-size:11px;'});
+  const planTotal=add(planTotalLabel,'input',null,{
+    'data-source-weight-r4b-total':'',type:'text',inputmode:'decimal',
+    placeholder:'e.g. 17.6',style:'margin:5px;padding:6px;background:#0b1220;color:#fff;'});
+  const basisLabel=add(groupPlan,'label','Engineering reference / signed allocation basis ',{style:'font-size:11px;'});
+  const planBasis=add(basisLabel,'input',null,{
+    'data-source-weight-r4b-basis':'',type:'text',
+    placeholder:'Approved document, revision and owner',
+    style:'margin:5px;padding:6px;min-width:280px;background:#0b1220;color:#fff;'});
   const zeroLabel=add(approvals,'label',null,{style:'font-size:11px;color:#e2e8f0;'});
   const zero=add(zeroLabel,'input',null,{'type':'checkbox','data-source-weight-zero':''});
   zeroLabel.append(' Confirm approved numeric zero');
@@ -124,7 +141,11 @@ export function installSourceBackedWeightReview({
     'data-source-weight-report':'',style:'white-space:pre-wrap;max-height:210px;overflow:auto;color:#cbd5e1;font-size:11px;'});
   let session=null, committed=null, ready=false, applying=false, previewSignature='';
   let pendingPointer=null;
-  let version=0;
+  let version=0, r4bPreview=null;
+  const r4bCanProbe=row=>Boolean(row&&!row.eligible&&
+    ['SOURCE_OWNER_AMBIGUOUS','SPLIT_ALLOCATION_UNRESOLVED'].includes(row.reasonCode)&&
+    session?.verifiedLineage?.status==='PASS_R1_STRUCTURAL_LINEAGE_WITH_UNATTESTED_MASS'&&
+    (session?.r4bAuditByPointer?.get(row.rigidPointer)?.dependentRigidPointers?.length||0)>=2);
   const current=()=>typeof getCurrentResult==='function'?getCurrentResult():result;
   direct.addEventListener('click',()=>{
     if(content.style.display!=='none'){
@@ -138,7 +159,7 @@ export function installSourceBackedWeightReview({
     }
   });
   const markDirty=()=>{
-    version++;committed=null;previewSignature='';apply.disabled=true;
+    version++;committed=null;previewSignature='';r4bPreview=null;apply.disabled=true;
     for(const key of ['revisedXml','revisedCii','audit'])downloads[key].disabled=true;
   };
   const selectedRow=()=>session?.rows.find(r=>r.rigidPointer===Number(picker.value));
@@ -156,15 +177,15 @@ export function installSourceBackedWeightReview({
     const pieces=[
       ['Status',row.status],['Reason',row.reason],
       ['RIGID pointer',row.rigidPointer],
-      ['Linked ELEMENT',row.originalElement?.index??'Not verified'],
-      ['Source ComponentRefNo',src?.componentRefNo||'Unresolved'],
-      ['Source NodeNumber',src?.nodeNumber||'Unresolved'],
-      ['Writer source node',row.sourceIdentity||'Unresolved'],
-      ['Original XML Weight',src?.originalXmlWeight??'Unresolved'],
+      ['Linked ELEMENT',row.originalElement?.index??(diagnostic?.elementIndex!=null?diagnostic.elementIndex+' (R1 observed, allocation unverified)':'Not verified')],
+      ['Source ComponentRefNo',src?.componentRefNo||diagnostic?.componentRefNo||'Unresolved'],
+      ['Source NodeNumber',src?.nodeNumber||((diagnostic?.sourceNode||'')+' (R1 observed, physical owner unverified)')||'Unresolved'],
+      ['Writer source node',row.sourceIdentity||diagnostic?.writerSourceIdentity||'Unresolved'],
+      ['Original XML Weight',src?.originalXmlWeight??diagnostic?.originalXmlWeightKg??'Unresolved'],
       ['Original CII Weight',row.originalCiiWeight??'Unresolved'],
-      ['Weight scale',row.weightScale??'Unresolved'],
+      ['Weight scale',row.weightScale??diagnostic?.weightScale??'Unresolved'],
       ['Rejection / approval code',row.reasonCode||'R2_DIRECT_EDGE_ONLY'],
-      ['Physical owner',row.physicalComponentRefNo||'UNRESOLVED'],
+      ['Physical owner',row.physicalComponentRefNo||diagnostic?.componentRefNo||'UNRESOLVED'],
       ['Source Node/Weight candidates',row.sourceNodeCandidates?.map(n=>
         n.branchName+' Node '+n.nodeNumber+' (ordinal '+n.nodeOrdinal+
         ', Weight '+(n.weightRaw==null || n.weightRaw===''?'MISSING':n.weightRaw)+
@@ -185,24 +206,30 @@ export function installSourceBackedWeightReview({
       ['Expected CII impact',row.expectedImpact?.map(x=>x.fromNode+' → '+x.toNode).join(', ')||'Unknown'],
     ];
     for(const [title,value]of pieces)valueLabel(facts,title,value);
-    proposed.disabled=!row.eligible;
-    approval.disabled=owner.disabled=!row.eligible;
+    const multi=r4bCanProbe(row);
+    groupPlan.style.display=multi?'block':'none';
+    proposed.disabled=!(row.eligible||multi);
+    approval.disabled=owner.disabled=!(row.eligible||multi);
     eligibility.textContent=row.eligible
-      ? 'Verified source owner. Enter an approved XML Weight (kg); XML and CII will be re-extracted.'
-      : 'HOLD: '+(row.reasonCode||'SOURCE_OWNER_UNRESOLVED')+
-        '. '+row.reason+' Use Direct-CII Weight Review for output-only changes.';
-    eligibility.style.color=row.eligible?'#86efac':'#fbbf24';
+      ? 'Verified one-to-one source owner. Enter an approved XML Weight (kg).'
+      : multi
+        ? 'R4B: source owner is NOT approved. Enter a proposed kg value, then Preview to run a real-converter isolated-writer trial. Commit requires documented total-group allocation.'
+        : 'HOLD: '+(row.reasonCode||'SOURCE_OWNER_UNRESOLVED')+
+          '. '+row.reason+' Use Direct-CII Weight Review for output-only changes.';
+    eligibility.style.color=row.eligible?'#86efac':multi?'#93c5fd':'#fbbf24';
     proposed.title=eligibility.textContent;
-    if(!row.eligible){report.textContent='HOLD: '+row.reason;}
+    if(!row.eligible&&!multi){report.textContent='HOLD: '+row.reason;}
   }
   const proposal=()=>({
     rigidPointer:Number(picker.value),newValue:proposed.value.trim(),
     approved:approval.checked,ownerApproved:owner.checked,zeroConfirmed:zero.checked,
+    allocationMode:'OWNER_APPROVED_REVISED_GROUP_TOTAL',
+    approvedGroupTotalKg:planTotal.value.trim(),referenceBasis:planBasis.value.trim(),
   });
   const signature=()=>JSON.stringify(proposal());
   const clearApproval=()=>{
     owner.checked=false;approval.checked=false;zero.checked=false;
-    markDirty();
+    planTotal.value='';planBasis.value='';markDirty();
   };
   const resetPicker=()=>{
     const rows=session?.rows||[];
@@ -305,19 +332,50 @@ export function installSourceBackedWeightReview({
   }
   search.addEventListener('input',()=>{resetPicker();proposed.value='';clearApproval();});
   picker.addEventListener('change',()=>{proposed.value='';clearApproval();renderFacts();});
-  for(const control of [proposed,approval,owner,zero])
+  for(const control of [proposed,approval,owner,zero,planTotal,planBasis])
     control.addEventListener(control.type==='checkbox'?'change':'input',markDirty);
-  preview.addEventListener('click',()=>{
+  preview.addEventListener('click',async()=>{
     markDirty();
+    const ticket=version;
     try {
       if(!ready||current()!==result)throw Error('Stale or unverified source conversion session.');
       const row=selectedRow();
-      if(!row?.eligible)throw Error(row?.reason||'Source ownership not eligible.');
-      if(!owner.checked||!approval.checked)throw Error('Two explicit engineering approvals required.');
+      if(!row)throw Error('Select a final RIGID.');
       const text=proposed.value.trim();
       const parsed=numericalValue(text);
       if(parsed.number<0||parsed.number>1e12)throw Error('Negative/out-of-range XML Weight.');
       if(parsed.number===0&&!zero.checked)throw Error('Confirm numeric zero explicitly.');
+      if(r4bCanProbe(row)){
+        report.textContent='RUNNING R4B read-only real-converter trial. No source has been saved…';
+        const trial=await previewR4bIsolatedSourceEdit(session,{
+          rigidPointer:row.rigidPointer,newValue:text,
+        },{getCurrentResult:current,engineRunner});
+        if(ticket!==version||current()!==result||!overlay.isConnected)
+          throw Error('Stale R4B trial. Restart after any source/config/input change.');
+        r4bPreview=trial;
+        const total=numericalValue(planTotal.value.trim()||'NaN').number;
+        const documented=planBasis.value.trim().length>=8;
+        const canCommit=owner.checked&&approval.checked&&documented&&
+          Math.abs(total-trial.proposedEmittedGroupKg)<=0.00001;
+        previewSignature=signature();
+        apply.disabled=!canCommit;
+        report.textContent='R4B REAL-CONVERTER ISOLATION TRIAL: PASS (not yet applied)'+
+          '\nComponentRefNo: '+trial.componentRefNo+
+          '\nRIGID '+trial.rigidPointer+': '+trial.originalWeightCii+' → '+trial.proposedWeightCii+' N'+
+          '\nOther RIGID writers: '+trial.memberAllocations.filter(x=>x.rigidPointer!==trial.rigidPointer)
+            .map(x=>'RIGID '+x.rigidPointer+' '+x.oldCiiWeight+' → '+x.proposedCiiWeight+' N').join('; ')+
+          '\nAll dependent pointers: '+trial.dependentRigidPointers.join(', ')+
+          '\nOriginal emitted group: '+trial.originalEmittedGroupKg+' kg'+
+          '\nProposed emitted group: '+trial.proposedEmittedGroupKg+' kg'+
+          '\nOther XML bytes changed: 0; unrelated CII engineering differences: 0.'+
+          '\nPhysical mass remains UNVERIFIED. '+
+            (canCommit?'Owner-backed allocation documented; Apply may be staged.':
+              'For source-backed Apply, approve the source, enter the same revised total kg and a signed engineering reference, then Preview again.')+
+          '\nTrial is not an independently approved physical-mass value.';
+        return;
+      }
+      if(!row.eligible)throw Error(row.reason||'Source ownership not eligible.');
+      if(!owner.checked||!approval.checked)throw Error('Two explicit engineering approvals required.');
       if(parsed.number===row.sourceNode.originalXmlWeight)throw Error('No source Weight change.');
       previewSignature=signature();
       apply.disabled=false;
@@ -349,8 +407,11 @@ export function installSourceBackedWeightReview({
     applying=true;apply.disabled=true;
     report.textContent='RUNNING real browser/Pyodide XML→CII re-extraction; revised downloads locked…';
     try{
-      const output=await applySourceBackedWeightChange(session,proposal(),{
-        getCurrentResult:current,engineRunner });
+      const output=r4bPreview ?
+        await applyR4bIsolatedSourceEdit(session,r4bPreview,proposal(),{
+          getCurrentResult:current,engineRunner }) :
+        await applySourceBackedWeightChange(session,proposal(),{
+          getCurrentResult:current,engineRunner });
       if(ticket!==version||current()!==result||!overlay.isConnected)
         throw Error('Stale UI transaction; discard verified outputs.');
       committed=output;
@@ -369,6 +430,10 @@ export function installSourceBackedWeightReview({
           '\nOriginal → final RIGID pointer: '+
           output.audit.massReconciliation.originalRigidPointer+' → '+
           output.audit.massReconciliation.revisedRigidPointer : '')+
+        (output.audit.memberAllocations?
+          '\nR4B complete dependent set: '+output.audit.dependentRigidPointers.join(', ')+
+          '\nApproved revised total: '+output.audit.approvedPhysicalGroupTotalKg+
+            ' kg (USER ATTESTED, NOT INDEPENDENTLY VERIFIED)':'')+
         '\nDownload revised EnrichedXML, regenerated CII and change audit.';
     }catch(e){
       committed=null;
