@@ -1,0 +1,52 @@
+name: XML-CII2019 reducer per-node OD/Bore authority 1885
+on:
+  push:
+    branches: ['fix/reducer-per-node-od-bore-final-rigid-*']
+  pull_request:
+    paths:
+      - 'converters/xml-cii2019-core/node-bore-od-authority.js'
+      - 'converters/xml-cii2019-core/weight-match-model.js'
+      - 'tabs/model-converters/converters/xmltocii2019_helper/enrichment-core.js'
+      - 'tabs/model-converters/converters/xml-cii-rich-enrichment-fix.js'
+      - 'tabs/model-converters/converters/xmltocii2019_runner.js'
+      - 'tabs/xml-cii-2019-standalone/xml-cii-final-rigid-source-context.js'
+      - 'tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-preview-bore-wall-authority.js'
+      - 'tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-preview-dryrun-core.js'
+      - 'tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-preview-wall-evidence.js'
+      - 'tests/xml-cii-reducer-node-bore-1885.test.mjs'
+      - '.github/workflows/xml-cii-reducer-bore-1885.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  reducer-bore-source-and-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Source syntax and static route verification
+        run: |
+          node --check converters/xml-cii2019-core/node-bore-od-authority.js
+          node --check converters/xml-cii2019-core/weight-match-model.js
+          node --check tabs/model-converters/converters/xmltocii2019_helper/enrichment-core.js
+          node --check tabs/model-converters/converters/xml-cii-rich-enrichment-fix.js
+          node --check tabs/model-converters/converters/xmltocii2019_runner.js
+          node --check tabs/xml-cii-2019-standalone/xml-cii-final-rigid-source-context.js
+          node --check tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-preview-bore-wall-authority.js
+          node --check tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-preview-dryrun-core.js
+          node --check tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-preview-wall-evidence.js
+          node --check tests/xml-cii-reducer-node-bore-1885.test.mjs
+      - name: ASIM-1885 reducer and flange source-to-review bore tests
+        run: node --test tests/xml-cii-reducer-node-bore-1885.test.mjs
+      - name: Preserve source context, mutation, master/reference and preview regressions
+        run: |
+          node --test tests/xml-cii-final-rigid-source-context.test.mjs
+          node --test tests/xml-cii-final-rigid-source-mutations.test.mjs
+          node --test tests/xml-cii-final-rigid-nearest-suggestions.test.mjs
+          node --test tests/xml-cii-bore-wall-authority.test.mjs
+          node --test tests/xml-cii-weight-match-preview-rating-snapshot.test.mjs
+          node --test tests/xml-cii-dtxr-wall-evidence-ledger.test.mjs
+          node --test tests/xml-cii-final-rigid-master-reference.test.mjs
