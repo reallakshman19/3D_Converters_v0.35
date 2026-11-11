@@ -129,8 +129,10 @@ try{
     assert.equal(frozen.currentRun.elementCount,11);
     assert.equal(frozen.currentRun.rigidCount,6);
     assert.equal(frozen.currentRun.weightScale,10);
-    assert.equal(frozen.payloads.engineInputXml,originalXml);
-    assert.equal(frozen.payloads.originalCii,originalCii);
+    assert.equal(frozen.payloads.engineInputXml,
+      await readFile(path.join(fixture,'original.xml'),'utf8'));
+    assert.equal(frozen.payloads.originalCii,
+      await readFile(path.join(fixture,'original.cii'),'utf8'));
     assert.equal(frozen.payloads.supportConfigJson,'{}');
     assert.equal(frozen.payloads.stagedJsonText,'');
     assert.equal(frozen.originalRawUpload,'NOT_CAPTURED_BY_CONVERTER_BOUNDARY');
