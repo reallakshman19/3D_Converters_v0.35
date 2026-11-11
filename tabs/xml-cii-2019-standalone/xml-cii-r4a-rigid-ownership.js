@@ -54,8 +54,9 @@ export function classifyR4aComponentRepresentations({componentNodes,selectedSour
   }));
   const selected=detail.find(n=>n.identity===selectedSourceIdentity);
   if(!selected || detail.some(n=>n.identity!==selectedSourceIdentity &&
-      (numeric(n.weightRaw)!==0 || n.writerPointers.length!==0))) {
-    return {qualified:false,reason:'Repeated ComponentRefNo has another positive/missing mass field or dependent CII writer. Complete component allocation cannot be inferred.',nodes:detail};
+      (n.branchName!==selected.branchName ||
+        numeric(n.weightRaw)!==0 || n.writerPointers.length!==0))) {
+    return {qualified:false,reason:'Repeated ComponentRefNo crosses branches, has another positive/missing mass field, or controls another CII RIGID. Complete component allocation cannot be inferred.',nodes:detail};
   }
   if(nodes.length>1 && !selected.writerPointers.length) {
     return {qualified:false,reason:'Selected source does not control a verified emitted RIGID.',nodes:detail};
