@@ -119,8 +119,14 @@ export async function buildR4bRigidOwnershipReport(session){
       ...(eventsBySource.get(writerId)||[]),
       ...elements.flatMap(e=>e.sourceEdgeIdentities.flatMap(id=>eventsBySource.get(id)||[])),
     ].map(v=>JSON.stringify(v))).map(s=>JSON.parse(s));
-    const code=existing.reasonCode||
-      (structural?'PHYSICAL_MASS_APPROVAL_REQUIRED':'SOURCE_OWNER_AMBIGUOUS');
+    const code=!r1Verified ?
+      (lineage ? 'CONFIGURATION_NOT_FROZEN' : 'R1_LINEAGE_UNAVAILABLE') :
+      (existing.reasonCode||
+        (structural?'PHYSICAL_MASS_APPROVAL_REQUIRED':'SOURCE_OWNER_AMBIGUOUS'));
+    const reason=!r1Verified ?
+      'Independent R1 conversion custody/lineage not established: '+
+        (session.r4aReason||'Frozen R1 fingerprints or no-edit evidence unavailable') :
+      (existing.reason||code);
     output.push({
       rigidPointer:p,elementIndex:elements.length===1?elements[0].elementIndex:null,
       elements,fromNode:elements.length===1?elements[0].fromNode:null,
@@ -147,7 +153,7 @@ export async function buildR4bRigidOwnershipReport(session){
       ownershipStatus:existing.status||'HOLD',
       structurallyQualified:structural,
       sourceEditEligible:structural,
-      holdReasonCode:code,holdExplanation:existing.reason||code,
+      holdReasonCode:code,holdExplanation:reason,
       allocationRule:structural?existing.allocationRule:null,
       physicallyApproved:false,
       evidence:{sourceXmlSha256:sourceSha,originalCiiSha256:ciiSha,
@@ -216,7 +222,7 @@ export async function buildR4bRigidOwnershipReport(session){
       converterCodeIdentity:lineage?.runIdentity?.converterCodeIdentity||null,
       converterRuntimeIdentity:lineage?.runIdentity?.runtimeIdentity||null,
       r1SnapshotFingerprint:r1Verified?lineage.runIdentity.snapshotFingerprint:null},
-    noEditParity:session.noEditParity,r1Verified,summary,
+    noEditParity:session.noEditParity,r1Verified,r4aLineageError:session.r4aReason||null,summary,
     multiRigidCandidateGroups,
     rows:output,
     engineeringNote:'Component groups and observed weights are not mass approval; SPLIT_ALLOCATION_UNRESOLVED stays HOLD until actual allocation proof exists.',
