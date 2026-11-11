@@ -299,8 +299,8 @@ test('145 mixed floating nearest references normalize to the exact CII decimal b
  const fixed=serializableNearestCiiWeight(29.840000000000003);
  assert.equal(fixed.weight,29.84);
  assert.ok(Math.abs(fixed.delta)<1e-10);
- assert.equal(serializableNearestCiiWeight(0.00000001),null,
-   'a small mass must not silently round to zero');
- assert.equal(serializableNearestCiiWeight(1e99),null,
-   'fixed-width CII may not silently truncate very large weights');
+ assert.equal(serializableNearestCiiWeight(0.00000001)?.weight,0.00000001,
+   'a tiny positive mass may use exact exponent notation; never round it to zero');
+ assert.equal(serializableNearestCiiWeight(Infinity),null,
+   'nonfinite values cannot enter the serialized CII');
 });
