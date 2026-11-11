@@ -24,7 +24,7 @@ function ciiFile() {
   parts.push('#$ RIGID', row([430, '0.000000']), row([590, '0.000000']), row([590, '0.000000']));
   return parts.join('\r\n') + '\r\n';
 }
-function ciiFileMany(count = 144, allShort = false) {
+function ciiFileMany(count = 144, allShort = false, withinCount = 0) {
   const parts = ['#$ VERSION', '2019', '#$ CONTROL', row([count, 0, 0, 0, 0, 0]),
     row([0, count, 0, 0, 0, 0]), row([0, 0, 0, 0, 0, 0]), row([0]), '#$ ELEMENTS'];
   for (let i = 0; i < count; i++) {
@@ -34,7 +34,8 @@ function ciiFileMany(count = 144, allShort = false) {
       row([0, i + 1, 0, 0, 0, 0]), row([0, 0, 0, 0, 0, 0]), row([0, 0, 0]));
   }
   parts.push('#$ RIGID',
-    ...Array.from({ length: count }, (_, i) => row([allShort || i === 19 ? 150 : 590, '0.000000'])));
+    ...Array.from({ length: count }, (_, i) => row([allShort
+      ? (i < withinCount ? 35 : 150) : i === 19 ? 150 : 590, '0.000000'])));
   return parts.join('\r\n') + '\r\n';
 }
 function ciiFileGlrdShape() {
@@ -769,7 +770,7 @@ try {
 
   await test('Chromium 145 WARNING bulk-nearest staging: all selected, visible error or verified revised CII (never silent)', async () => {
     await page.goto(address + '/tests/fixtures/final-cii-property-ui-host.html');
-    const sourceCii = ciiFileMany(145, true);
+    const sourceCii = ciiFileMany(145, true, 124);
     const xml = '<Root><Branch><Branchname>/B</Branchname><Rating>900</Rating>' +
       '<Node><NodeNumber>1</NodeNumber><ComponentType>PIPE</ComponentType>' +
       '<Position>0 0 0</Position></Node></Branch></Root>';
@@ -795,6 +796,7 @@ try {
     await modal.locator('[data-final-rigid-batch-approve-all]').click();
     const summary=await modal.locator('[data-final-rigid-batch-summary]').innerText();
     assert.match(summary,/145 selected/,summary);
+    assert.match(summary,/124 within threshold/,summary);
     assert.equal(await modal.locator('[data-final-rigid-batch-stage]').isDisabled(),false);
     await modal.locator('[data-final-rigid-batch-stage]').click();
     const outcome=await Promise.race([
@@ -818,7 +820,8 @@ try {
     assert.equal(after.rows.length,145);
     assert.ok(after.rows.every((r,i)=>r.weight===29.84),
       'all 145 approved original 150-unit RIGIDs must be 29.84, not just pointer 135');
-    assert.ok(before.rows.every(r=>r.weight===150));
+    assert.ok(before.rows.slice(0,124).every(r=>r.weight===35));
+    assert.ok(before.rows.slice(124).every(r=>r.weight===150));
     const [auditFile]=await Promise.all([
       page.waitForEvent('download'),page.locator('[data-final-rigid-audit]').click()]);
     const audit=JSON.parse(await readFile(await auditFile.path(),'utf8'));
