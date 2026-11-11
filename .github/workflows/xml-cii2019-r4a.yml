@@ -11,6 +11,8 @@ on:
       - 'tests/r4a_prepare_pointer135_fixture.py'
       - 'tests/xml-cii-r4a-*.mjs'
       - 'tests/xml-cii-r4b-*.mjs'
+      - 'tests/xml-cii-frozen-run-package.test.mjs'
+      - 'tabs/xml-cii-2019-standalone/xml-cii-frozen-run-package.js'
       - 'tests/test_roundtrip_r4b_fixed_width.py'
       - 'converters/scripts/cii2019_reparse_proof.py'
       - 'tests/pages-live-smoke.test.mjs'
@@ -40,6 +42,8 @@ jobs:
           node --check tabs/xml-cii-2019-standalone/xml-cii-r4a-rigid-ownership.js
           node --check tabs/xml-cii-2019-standalone/xml-cii-r4a-mass-reconcile.js
           node --check tabs/xml-cii-2019-standalone/xml-cii-r4b-ownership-audit.js
+          node --check tabs/xml-cii-2019-standalone/xml-cii-frozen-run-package.js
+          node --check tests/xml-cii-frozen-run-package.test.mjs
           node --check tests/xml-cii-r4b-audit.test.mjs
           python3 -m py_compile converters/scripts/cii2019_reparse_proof.py
           node --check tabs/xml-cii-2019-standalone/xml-cii-source-weight-reextract.js
@@ -54,6 +58,7 @@ jobs:
         run: |
           node --test tests/xml-cii-r4a-ownership.test.mjs
           node --test tests/xml-cii-r4b-audit.test.mjs
+          node --test tests/xml-cii-frozen-run-package.test.mjs
       - name: Merged R2 source-backed and direct-CII JS regression
         env:
           R2_SYNTHETIC_DIR: ${{ runner.temp }}/r4a-synthetic
