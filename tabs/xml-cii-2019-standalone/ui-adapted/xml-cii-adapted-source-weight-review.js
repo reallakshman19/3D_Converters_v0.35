@@ -88,6 +88,10 @@ export function installSourceBackedWeightReview({
   const proposed=add(valueWrap,'input',null,{'data-source-weight-value':'',
     type:'text',inputmode:'decimal',placeholder:'e.g. 2.984',
     style:'display:block;max-width:190px;padding:7px;background:#0b1220;color:#fff;border:1px solid #64748b;'});
+  proposed.disabled=true; // No editable source is presumed before exact run qualification.
+  const eligibility=add(valueWrap,'small','HOLD: Source owner not yet verified.',{
+    'data-source-weight-eligibility-detail':'',
+    style:'display:block;max-width:280px;color:#fbbf24;font-size:10px;white-space:normal;'});
   const approvals=add(content,'div',null,{style:'margin-top:12px;display:flex;flex-wrap:wrap;gap:15px;'});
   const ownerLabel=add(approvals,'label',null,{style:'font-size:11px;color:#fde68a;'});
   const owner=add(ownerLabel,'input',null,{'type':'checkbox','data-source-weight-owner-approved':''});
@@ -109,7 +113,8 @@ export function installSourceBackedWeightReview({
     originalXml:button(dl,'Original EnrichedXML',{'data-source-weight-original-xml':''}),
     originalCii:button(dl,'Original CII',{'data-source-weight-original-cii':''}),
     ownershipReport:button(dl,'Download RIGID source/HOLD report',{'data-source-weight-ownership-report':''}),
-    ownershipCsv:button(dl,'Download RIGID source/HOLD CSV',{'data-source-weight-ownership-csv':''}),
+    ownershipR4bJson:button(dl,'Download detailed R4B ownership JSON',{'data-source-weight-r4b-json':''}),
+    ownershipCsv:button(dl,'Download detailed R4B ownership CSV',{'data-source-weight-ownership-csv':''}),
     revisedXml:button(dl,'Download revised EnrichedXML',{'data-source-weight-revised-xml':''}),
     revisedCii:button(dl,'Download re-extracted CII',{'data-source-weight-revised-cii':''}),
     audit:button(dl,'Download verified change audit',{'data-source-weight-audit':''}),
@@ -140,7 +145,12 @@ export function installSourceBackedWeightReview({
   function renderFacts(){
     facts.replaceChildren();
     const row=selectedRow();
-    if(!row){valueLabel(facts,'Source status','Not resolved');return;}
+    if(!row){
+      proposed.disabled=owner.disabled=approval.disabled=true;
+      eligibility.textContent='HOLD: No verified RIGID/source owner selected.';
+      proposed.title=eligibility.textContent;
+      valueLabel(facts,'Source status','Not resolved');return;
+    }
     const src=row.sourceNode;
     const diagnostic=session?.r4bAuditByPointer?.get(row.rigidPointer);
     const pieces=[
@@ -155,21 +165,34 @@ export function installSourceBackedWeightReview({
       ['Weight scale',row.weightScale??'Unresolved'],
       ['Rejection / approval code',row.reasonCode||'R2_DIRECT_EDGE_ONLY'],
       ['Physical owner',row.physicalComponentRefNo||'UNRESOLVED'],
+      ['Source Node/Weight candidates',row.sourceNodeCandidates?.map(n=>
+        n.branchName+' Node '+n.nodeNumber+' (ordinal '+n.nodeOrdinal+
+        ', Weight '+(n.weightRaw==null || n.weightRaw===''?'MISSING':n.weightRaw)+
+        ' kg, writer RIGIDs '+(n.writerPointers?.join(', ')||'none')+')'
+      ).join('; ')||'Not resolved'],
+      ['Owner representation evidence',row.representationBasis||row.resolutionAdvice||'No verified allocation'],
+      ['Source Weight fields to update together',row.sourceWeightFieldsToEdit?.length??'UNQUALIFIED'],
       ['Original physical mass (kg)',row.originalPhysicalMassKg??'UNVERIFIED'],
       ['Original allocated CII mass (kg)',row.totalAllocatedMassKg??'UNVERIFIED'],
       ['Mass-allocation reason',row.allocationRule||'UNRESOLVED'],
       ['Dependent RIGID pointers',diagnostic?.dependentRigidPointers?.join(', ')||row.dependentPointers?.join(', ')||'NOT_QUALIFIED'],
-       ['FROM / TO',diagnostic?.elements.map(e=>e.fromNode+' → '+e.toNode).join('; ')||'UNVERIFIED'],
-       ['Element lengths (mm)',diagnostic?.elements.map(e=>e.lengthMm).join('; ')||'UNVERIFIED'],
-       ['R1 writer-side selection',diagnostic?.writerSourceSelection||'UNVERIFIED'],
-       ['Allocation dependency status',diagnostic?.dependentSetStatus||'UNVERIFIED'],
-       ['Independent physical reference',diagnostic?.referenceBasis||'UNAVAILABLE'],
+      ['R4B ELEMENT FROM / TO',diagnostic?.elements?.map(e=>e.fromNode+' → '+e.toNode).join('; ')||'UNVERIFIED'],
+      ['R4B element lengths (mm)',diagnostic?.elements?.map(e=>e.lengthMm).join('; ')||'UNVERIFIED'],
+      ['R1 writer side',diagnostic?.writerSourceSelection||'UNVERIFIED'],
+      ['Dependent allocation status',diagnostic?.dependentSetStatus||'UNVERIFIED'],
+      ['Independent physical reference',diagnostic?.referenceBasis||'UNAVAILABLE'],
       ['Transformations',row.transformationHistory?.map(x=>x.stage).join(', ')||'None or not qualified'],
       ['Expected CII impact',row.expectedImpact?.map(x=>x.fromNode+' → '+x.toNode).join(', ')||'Unknown'],
     ];
     for(const [title,value]of pieces)valueLabel(facts,title,value);
     proposed.disabled=!row.eligible;
     approval.disabled=owner.disabled=!row.eligible;
+    eligibility.textContent=row.eligible
+      ? 'Verified source owner. Enter an approved XML Weight (kg); XML and CII will be re-extracted.'
+      : 'HOLD: '+(row.reasonCode||'SOURCE_OWNER_UNRESOLVED')+
+        '. '+row.reason+' Use Direct-CII Weight Review for output-only changes.';
+    eligibility.style.color=row.eligible?'#86efac':'#fbbf24';
+    proposed.title=eligibility.textContent;
     if(!row.eligible){report.textContent='HOLD: '+row.reason;}
   }
   const proposal=()=>({
@@ -209,9 +232,16 @@ export function installSourceBackedWeightReview({
     try {
       const built=await initializeSourceWeightSession(result,{engineRunner});
       if(!overlay.isConnected||current()!==result)throw Error('Stale result/modal during no-edit replay.');
-      built.r4bAudit=await buildR4bRigidOwnershipReport(built);
-       built.r4bAuditByPointer=new Map(built.r4bAudit.rows.map(x=>[x.rigidPointer,x]));
-       session=built;ready=true;
+      // Read-only diagnostics must not prevent verified R4A source edits.
+      try {
+        built.r4bAudit=await buildR4bRigidOwnershipReport(built);
+        built.r4bAuditByPointer=new Map(built.r4bAudit.rows.map(x=>[x.rigidPointer,x]));
+      } catch(error) {
+        built.r4bAuditError=String(error?.message||error);
+        built.r4bAudit=null;
+        built.r4bAuditByPointer=new Map();
+      }
+      session=built;ready=true;
       const qualified=built.rows.filter(r=>r.eligible).length;
       const breakdown=built.ownership?.breakdown||Object.fromEntries(
         Object.entries(built.rows.filter(x=>!x.eligible).reduce((t,x)=>{
@@ -225,7 +255,8 @@ export function installSourceBackedWeightReview({
         ' source owners structurally eligible; physical mass approval is still required.'+
         '\nR4A ownership HOLD breakdown: '+(reasons||'none')+
         (built.r4aReason ? '\nR4A independent Python lineage unavailable: '+built.r4aReason : '')+
-        (qualified===0 ? '\nWARNING: No verified XML physical source owner is eligible. Original files remain downloadable. Revised source/CII outputs stay locked.' : '');
+        (qualified===0 ? '\nWARNING: No verified XML physical source owner is eligible. Original files remain downloadable. Revised source/CII outputs stay locked.' : '')+
+        (built.r4bAuditError ? '\nR4B diagnostic report unavailable (source editor remains operational): '+built.r4bAuditError : '');
       resetPicker();
       for(const row of built.rows) {
         const item=rowCells.get(row.rigidPointer);
@@ -241,10 +272,14 @@ export function installSourceBackedWeightReview({
       }
       downloads.originalXml.disabled=false;downloads.originalCii.disabled=false;
       downloads.ownershipReport.disabled=false;
-       downloads.ownershipCsv.disabled=false;
+      downloads.ownershipR4bJson.disabled=!built.r4bAudit;
+      downloads.ownershipCsv.disabled=!built.r4bAudit;
     } catch(e){
       status.textContent='HOLD: '+(e?.message||e);
       report.textContent='No source-backed Apply or revised downloads are available.';
+      proposed.disabled=owner.disabled=approval.disabled=true;
+      eligibility.textContent='HOLD: '+String(e?.message||e);
+      proposed.title=eligibility.textContent;
       Object.values(downloads).forEach(b=>b.disabled=true);
     }finally{open.disabled=false;}
   }
@@ -298,9 +333,11 @@ export function installSourceBackedWeightReview({
       report.textContent='APPROVED PREVIEW (not applied):\n'+
         'Source '+row.sourceIdentity+' ComponentRefNo '+row.sourceNode.componentRefNo+
         '\nXML Weight '+row.sourceNode.originalXmlWeight+' → '+text+
+        '\nApproved source Node/Weight fields to update atomically: '+
+        (row.sourceWeightFieldsToEdit?.length||1)+
         '\nExpected CII Weight '+row.originalCiiWeight+' → '+parsed.number*row.weightScale+
         allocationPlan+
-        '\nOnly the source Node/Weight token may change. New CII must reparse and reconcile before download.';
+        '\nOnly the verified source Node/Weight token(s) may change. New CII must reparse and reconcile before download.';
     } catch(e){report.textContent='HOLD: '+(e?.message||e);}
   });
   apply.addEventListener('click',async()=>{
@@ -347,15 +384,55 @@ export function installSourceBackedWeightReview({
     if(session&&current()===result)download(result.ciiName||'original.cii',
       session.custody.originalCii,'text/plain;charset=utf-8');
   });
-  downloads.ownershipReport.addEventListener('click',()=>{
+  downloads.ownershipR4bJson.addEventListener('click',()=>{
     if(!session?.r4bAudit||current()!==result)return;
-    download('glrd-r4b-rigid-ownership.json',
+    download('final_rigid_r4b_source_ownership_detailed.json',
       JSON.stringify(session.r4bAudit,null,2)+'\n','application/json;charset=utf-8');
   });
   downloads.ownershipCsv.addEventListener('click',()=>{
     if(!session?.r4bAudit||current()!==result)return;
-    download('glrd-r4b-rigid-ownership.csv',
+    download('final_rigid_r4b_source_ownership_detailed.csv',
       r4bOwnershipAuditCsv(session.r4bAudit),'text/csv;charset=utf-8');
+  });
+  downloads.ownershipReport.addEventListener('click',()=>{
+    if(!session||current()!==result)return;
+    const rows=session.rows.map(row=>({
+      rigidPointer:row.rigidPointer,
+      ownershipStatus:row.status,
+      eligibleForSourceEdit:row.eligible===true,
+      holdCode:row.reasonCode||(row.eligible?'PHYSICAL_MASS_APPROVAL_REQUIRED':'R2_DIRECT_EDGE_HOLD'),
+      reason:row.reason,
+      physicalComponentRefNo:row.physicalComponentRefNo||null,
+      sourceNodeIdentity:row.sourceIdentity||null,
+      transformationHistory:row.transformationHistory||[],
+      originalCiiWeight:row.originalCiiWeight,
+      originalPhysicalMassKg:row.originalPhysicalMassKg??null,
+      dependentPointers:row.dependentPointers||[],
+      allocationRule:row.allocationRule||null,
+      completeAllocation:row.completeAllocation===true,
+    }));
+    const counts=Object.fromEntries(Object.entries(rows.reduce((t,row)=>{
+      if(!row.eligible)t[row.holdCode]=(t[row.holdCode]||0)+1;
+      return t;
+    },{})).sort());
+    const output={
+      schema:'xml-cii-r4a-rigid-source-hold-report/v1',
+      evidenceClass:'CURRENT_BROWSER_CONVERSION_ONLY',
+      status:'READ_ONLY_OWNER_DIAGNOSTIC_NOT_ENGINEERING_APPROVAL',
+      sourceXmlSha256:session.custody.engineSha,
+      originalCiiSha256:session.custody.originalCiiSha,
+      sourceRunId:session.custody.runId,
+      noEditParity:session.noEditParity,
+      r1LineageStatus:session.verifiedLineage?.status||'NOT_VERIFIED',
+      r1SnapshotFingerprint:session.verifiedLineage?.runIdentity?.snapshotFingerprint||null,
+      r4aLineageError:session.r4aReason||null,
+      counts:{total:rows.length,structurallyQualified:rows.filter(x=>x.eligible).length,
+        held:rows.filter(x=>!x.eligible).length,reasons:counts},
+      physicalMassApproval:'NOT_ATTESTED_BEFORE_EXPLICIT_TRANSACTION',
+      rows,
+    };
+    download('final_rigid_source_ownership_hold_report.json',
+      JSON.stringify(output,null,2)+'\n','application/json;charset=utf-8');
   });
   for(const [key,contentKey,mime]of [
     ['revisedXml','revisedXml','application/xml;charset=utf-8'],
