@@ -275,6 +275,86 @@ try{
     assert.deepEqual(errors,[],errors.join('\n'));
   });
 
+
+  await test('R4A repeated same-component positive XML Weight aliases are edited atomically with a unique actual Python writer',async()=>{
+    await page.goto(origin+'/tests/fixtures/r2-source-weight-browser-host.html');
+    const originalXml=await readFile(path.join(fixture,'original15alias.xml'),'utf8');
+    const originalCii=await readFile(path.join(fixture,'original15alias.cii'),'utf8');
+    const expectedXml=await readFile(path.join(fixture,'approved15alias.xml'),'utf8');
+    const expectedCii=await readFile(path.join(fixture,'approved15alias.cii'),'utf8');
+    const result=await page.evaluate(async({xml,cii})=>{
+      const {ciiSha256}=await import('/tabs/xml-cii-2019-standalone/xml-cii-final-property-reader.js');
+      const {initializeSourceWeightSession}=await import(
+        '/tabs/xml-cii-2019-standalone/xml-cii-source-weight-reextract.js');
+      const run={ok:true,ciiText:cii,ciiName:'R4A-SYNTH-DUPLICATE-PHYSICAL-WEIGHT.cii',
+        ciiInputSource:'original',
+        finalRigidReviewEvidence:{sourceKind:'xml',engineInputText:xml,
+          engineInputSha256:await ciiSha256(xml),originalCiiSha256:await ciiSha256(cii),
+          engineInputDigest:'R4A_ALIAS_SYNTHETIC_CURRENT_WRITER',
+          effectiveSourceName:'original15alias.xml',weightScale:10,
+          supportConfigJson:'{}',stagedJsonText:'',
+          effectiveOptions:{coordsMode:'first',kgToNewton:true,
+            splitCondensedValveFlange:true,useRestraintTypeBasedOnJson:true,
+            outputMode:'both',analyzeTopology:false,generateTopoFix:false,useTopoFixForCii:false}}};
+      const session=await initializeSourceWeightSession(run,{requireR4aLineage:true});
+      const owner=session.rows.find(x=>x.sourceNode?.componentRefNo==='/RIGID-40');
+      window.__r4aAlias={run,session};
+      return {owner:{pointer:owner?.rigidPointer,eligible:owner?.eligible,
+          reason:owner?.reason,sourceFields:owner?.sourceWeightFieldsToEdit,
+          candidates:owner?.sourceNodeCandidates,
+          sourceMass:owner?.originalPhysicalMassKg,cii:owner?.originalCiiWeight},
+        status:session.noEditParity.status,bytes:session.noEditParity.differingBytes};
+    },{xml:originalXml,cii:originalCii});
+    assert.equal(result.status,'PASS_EXACT_REPLAY');
+    assert.equal(result.bytes,0);
+    assert.equal(result.owner.eligible,true,JSON.stringify(result.owner));
+    assert.equal(result.owner.sourceMass,15);
+    assert.equal(result.owner.cii,150);
+    assert.equal(result.owner.sourceFields.length,2);
+    assert.equal(result.owner.candidates.filter(c=>c.writerPointers.length).length,1);
+    await page.evaluate(async()=>{
+      const {openFinalRigidWeightReview}=await import(
+        '/tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-final-rigid-review.js');
+      openFinalRigidWeightReview(window.__r4aAlias.run,
+        {getCurrentResult:()=>window.__r4aAlias.run});
+    });
+    await page.locator('[data-source-weight-open]').click();
+    await page.waitForFunction(()=>
+      document.querySelector('[data-source-weight-status]')?.textContent.includes('PASS:'),
+      null,{timeout:220000});
+    await page.locator('[data-source-weight-pointer]').selectOption(String(result.owner.pointer));
+    assert.equal(await page.locator('[data-source-weight-value]').isDisabled(),false);
+    assert.match(await page.locator('[data-source-weight-facts]').innerText(),
+      /one|RIGID-40|15/i);
+    await page.locator('[data-source-weight-value]').fill('2.984');
+    await page.locator('[data-source-weight-owner-approved]').check();
+    await page.locator('[data-source-weight-approved]').check();
+    await page.locator('[data-source-weight-preview]').click();
+    assert.match(await page.locator('[data-source-weight-report]').innerText(),
+      /APPROVED PREVIEW/);
+    await page.locator('[data-source-weight-apply]').click();
+    await page.waitForFunction(()=>
+      document.querySelector('[data-source-weight-report]')?.textContent.includes('VERIFIED SOURCE-BACKED RE-EXTRACTION'),
+      null,{timeout:220000});
+    for(const [label,expected] of [['revised-xml',expectedXml],['revised-cii',expectedCii]]){
+      const [file]=await Promise.all([page.waitForEvent('download'),
+        page.locator('[data-source-weight-'+label+']').click()]);
+      assert.equal(await readFile(await file.path(),'utf8'),expected);
+    }
+    const [auditDownload]=await Promise.all([page.waitForEvent('download'),
+      page.locator('[data-source-weight-audit]').click()]);
+    const audit=JSON.parse(await readFile(await auditDownload.path(),'utf8'));
+    assert.equal(audit.sourceWeightFieldCount,2);
+    assert.equal(audit.sourceXmlByteDiff.length,2);
+    assert.equal(audit.unrelatedXmlBytesChanged,0);
+    assert.equal(audit.ciiEngineeringDiff.unexpectedDifferences,0);
+    assert.equal(audit.massReconciliation.originalPhysicalMassKg,15);
+    assert.equal(audit.massReconciliation.approvedRevisedPhysicalMassKg,2.984);
+    assert.equal(audit.massReconciliation.newEmittedCiiWeight,29.84);
+    assert.equal(await page.evaluate(()=>window.__r4aAlias.run.ciiText),originalCii);
+    assert.deepEqual(errors,[],errors.join('\n'));
+  });
+
 }finally{
   await browser.close();
   await new Promise(resolve=>server.close(resolve));

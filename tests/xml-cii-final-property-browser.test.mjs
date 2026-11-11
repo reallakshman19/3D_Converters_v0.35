@@ -24,17 +24,18 @@ function ciiFile() {
   parts.push('#$ RIGID', row([430, '0.000000']), row([590, '0.000000']), row([590, '0.000000']));
   return parts.join('\r\n') + '\r\n';
 }
-function ciiFileMany(count = 144) {
+function ciiFileMany(count = 144, allShort = false, withinCount = 0) {
   const parts = ['#$ VERSION', '2019', '#$ CONTROL', row([count, 0, 0, 0, 0, 0]),
     row([0, count, 0, 0, 0, 0]), row([0, 0, 0, 0, 0, 0]), row([0]), '#$ ELEMENTS'];
   for (let i = 0; i < count; i++) {
-    parts.push(row([1000 + i, 1001 + i, i === 0 ? 19.1 : 109, 0, 0, 60.3]),
+    parts.push(row([1000 + i, 1001 + i, allShort || i === 0 ? 19.1 : 109, 0, 0, 60.3]),
       ...Array.from({ length: 9 }, () => row([0, 0, 0, 0, 0, 0])),
       branchRow('/B'), row([0, 0, 0, 0, 0, 0]),
       row([0, i + 1, 0, 0, 0, 0]), row([0, 0, 0, 0, 0, 0]), row([0, 0, 0]));
   }
   parts.push('#$ RIGID',
-    ...Array.from({ length: count }, (_, i) => row([i === 19 ? 150 : 590, '0.000000'])));
+    ...Array.from({ length: count }, (_, i) => row([allShort
+      ? (i < withinCount ? 35 : 150) : i === 19 ? 150 : 590, '0.000000'])));
   return parts.join('\r\n') + '\r\n';
 }
 function ciiFileGlrdShape() {
@@ -765,6 +766,105 @@ try {
     assert.equal(audit.changes[0].reference.batch.bulkApproved,true);
     assert.equal(audit.untouchedBytesEqual,true);
     assert.equal(await page.evaluate(()=>window.currentResult.ciiText),sourceCii);
+  });
+
+  await test('Chromium 145 WARNING bulk-nearest staging: all selected, visible error or verified revised CII (never silent)', async () => {
+    await page.goto(address + '/tests/fixtures/final-cii-property-ui-host.html');
+    const sourceCii = ciiFileMany(145, true, 124);
+    const xml = '<Root><Branch><Branchname>/B</Branchname><Rating>900</Rating>' +
+      '<Node><NodeNumber>1</NodeNumber><ComponentType>PIPE</ComponentType>' +
+      '<Position>0 0 0</Position></Node></Branch></Root>';
+    const masters=[{id:'MASTER-145',boreMm:50,rating:'900',lengthMm:147,
+      weight:2.984*147/19.1,type:'FLANGE',typeDesc:'Weldneck Flange'}];
+    await page.evaluate(async({ciiText, xml, masters}) => {
+      const {openFinalRigidWeightReview}=await import(
+        '/tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-final-rigid-review.js');
+      window.currentResult={ok:true,ciiText,ciiName:'BATCH-145-WARNINGS-SYNTHETIC.cii',
+        finalRigidReviewEvidence:{sourceKind:'xml',engineInputText:xml,
+          engineInputDigest:'SYNTHETIC_BATCH145',stagedJsonText:'',weightScale:10,
+          supportConfigJson:JSON.stringify({weight:{masterRows:masters,
+            valveHintLengthToleranceMm:6}})}};
+      openFinalRigidWeightReview(window.currentResult,
+        {getCurrentResult:()=>window.currentResult});
+    },{ciiText:sourceCii,xml,masters});
+    await page.waitForFunction(()=>
+      document.querySelector('[data-final-rigid-preview-report]')?.textContent.includes('Ready:'));
+    assert.equal(await page.locator('[data-final-rigid-row]').count(),145);
+    await page.locator('[data-final-rigid-batch-preview]').click();
+    const modal=page.locator('[data-final-rigid-batch-dialog]');
+    await modal.locator('[data-final-rigid-batch-apply-nearest]').click();
+    await modal.locator('[data-final-rigid-batch-approve-all]').click();
+    const summary=await modal.locator('[data-final-rigid-batch-summary]').innerText();
+    assert.match(summary,/145 selected/,summary);
+    assert.match(summary,/124 within threshold/,summary);
+    assert.equal(await modal.locator('[data-final-rigid-batch-stage]').isDisabled(),false);
+    await modal.locator('[data-final-rigid-batch-stage]').click();
+    const outcome=await Promise.race([
+      page.waitForFunction(()=>!document.querySelector('[data-final-rigid-batch-dialog]'),
+        null,{timeout:45000}).then(()=>({ok:true})),
+      page.waitForFunction(()=>document.querySelector('[data-final-rigid-batch-error]')?.textContent
+          .includes('Batch verification refused:'),
+        null,{timeout:45000}).then(async()=>({
+          ok:false,error:await modal.locator('[data-final-rigid-batch-error]').innerText()})),
+    ]);
+    assert.equal(outcome.ok,true,JSON.stringify(outcome));
+    assert.equal(await page.locator('[data-final-rigid-row][data-pointer="135"] [data-final-rigid-edited]').inputValue(),'29.84');
+    assert.equal(await page.locator('[data-final-rigid-apply]').isDisabled(),false);
+    await page.locator('[data-final-rigid-apply]').click();
+    await page.waitForFunction(()=>document.querySelector('[data-final-rigid-preview-report]')?.textContent.includes('VERIFIED REVISED CII READY'));
+    const [file]=await Promise.all([
+      page.waitForEvent('download'),page.locator('[data-final-rigid-download]').click()]);
+    const revised=await readFile(await file.path(),'utf8');
+    const before=parseFinalCiiRigidInventory(sourceCii);
+    const after=parseFinalCiiRigidInventory(revised);
+    assert.equal(after.rows.length,145);
+    assert.ok(after.rows.every((r,i)=>r.weight===29.84),
+      'all 145 approved original 150-unit RIGIDs must be 29.84, not just pointer 135');
+    assert.ok(before.rows.slice(0,124).every(r=>r.weight===35));
+    assert.ok(before.rows.slice(124).every(r=>r.weight===150));
+    const [auditFile]=await Promise.all([
+      page.waitForEvent('download'),page.locator('[data-final-rigid-audit]').click()]);
+    const audit=JSON.parse(await readFile(await auditFile.path(),'utf8'));
+    assert.equal(audit.changes.length,145);
+    assert.equal(audit.untouchedBytesEqual,true);
+    assert.equal(await page.evaluate(()=>window.currentResult.ciiText),sourceCii);
+  });
+
+  await test('Chromium failed batch Stage & Verify exposes exact error without erasing selected changes',async()=>{
+    await page.goto(address+'/tests/fixtures/final-cii-property-ui-host.html');
+    const sourceCii=original.replace(row([1000,1001,19.1,0,0,80]),
+      row([639,10000,19.1,0,0,60.3]))
+      .replace(row([430,'0.000000']),row([150,'0.000000']));
+    const xml='<Root><Branch><Branchname>/B</Branchname><Rating>900</Rating>'+
+      '<Node><NodeNumber>1</NodeNumber><ComponentType>PIPE</ComponentType>'+
+      '<Position>0 0 0</Position></Node></Branch></Root>';
+    const masters=[{id:'M',boreMm:50,rating:'900',lengthMm:147,
+      weight:2.984*147/19.1,type:'FLANGE',typeDesc:'Weldneck Flange'}];
+    await page.evaluate(async({ciiText,xml,masters})=>{
+      const {openFinalRigidWeightReview}=await import(
+        '/tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-final-rigid-review.js');
+      window.currentResult={ok:true,ciiText,ciiName:'refused-145-stage-synthetic.cii',
+        finalRigidReviewEvidence:{sourceKind:'xml',engineInputText:xml,
+          engineInputDigest:'REFUSED-TEST',stagedJsonText:'',weightScale:10,
+          supportConfigJson:JSON.stringify({weight:{masterRows:masters}})}};
+      openFinalRigidWeightReview(window.currentResult,
+        {getCurrentResult:()=>window.currentResult});
+    },{ciiText:sourceCii,xml,masters});
+    await page.waitForFunction(()=>document.querySelector('[data-final-rigid-preview-report]')?.textContent.includes('Ready:'));
+    await page.locator('[data-final-rigid-batch-preview]').click();
+    const dialog=page.locator('[data-final-rigid-batch-dialog]');
+    await dialog.locator('[data-final-rigid-batch-apply-nearest]').click();
+    await dialog.locator('[data-final-rigid-batch-approve-all]').click();
+    assert.equal(await dialog.locator('[data-final-rigid-batch-stage]').isDisabled(),false);
+    await page.evaluate(()=>{window.currentResult={...window.currentResult};});
+    await dialog.locator('[data-final-rigid-batch-stage]').click();
+    assert.equal(await dialog.isVisible(),true,'failure retains popup so user can inspect and retry');
+    const message=await dialog.locator('[data-final-rigid-batch-error]').innerText();
+    assert.match(message,/Batch verification refused:/);
+    assert.match(message,/not ready|changed/i);
+    assert.match(await page.locator('[data-final-rigid-batch-status]').innerText(),/NOT STAGED/);
+    assert.match(await dialog.locator('[data-final-rigid-batch-summary]').innerText(),/1 selected/);
+    assert.equal(await page.locator('[data-final-rigid-row][data-pointer="1"] [data-final-rigid-edited]').inputValue(),'150');
   });
 
   await test('Chromium compact 144-RIGID review expands fullscreen without losing edits, scroll, filters or CII parity', async () => {

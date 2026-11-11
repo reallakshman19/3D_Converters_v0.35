@@ -284,6 +284,9 @@ export function installFinalCiiPropertyEditor({ overlay, result, inventory, plan
             reviewRequired: item.reviewRequired,
             warningOnly: item.status === 'WARNING',
             warningCodes: [...(item.warningCodes || [])],
+            rawCatalogCiiWeight: item.referenceWeightUnrounded ?? item.proposedWeight,
+            serializedCiiWeight: item.proposedWeight,
+            serializationDeltaCii: item.serializationDelta ?? 0,
             individuallyApproved: !bulkApprovedPointers.has(pointer),
             bulkApproved: bulkApprovedPointers.has(pointer),
             approvalMethod: bulkApprovedPointers.has(pointer)
@@ -292,12 +295,17 @@ export function installFinalCiiPropertyEditor({ overlay, result, inventory, plan
             generatedFromRun: String(result.finalRigidReviewEvidence?.engineInputDigest || ''),
           },
         };
-        stageCiiPropertyEdit(scratch, {
-          propertyId: 'RIGID.weight', recordPointer: pointer,
-          originalToken: row.original.rawWeight,
-          newValue: String(item.proposedWeight), unit: 'CII_OUTPUT_WEIGHT',
-          confirmed: true, zeroConfirmed: false, reference,
-        }, { replace: true });
+        try {
+          stageCiiPropertyEdit(scratch, {
+            propertyId: 'RIGID.weight', recordPointer: pointer,
+            originalToken: row.original.rawWeight,
+            newValue: String(item.proposedWeight), unit: 'CII_OUTPUT_WEIGHT',
+            confirmed: true, zeroConfirmed: false, reference,
+          }, { replace: true });
+        } catch (error) {
+          throw new Error('RIGID pointer ' + pointer + ', proposed ' +
+            item.proposedWeight + ' CII units: ' + (error?.message || error));
+        }
         staged.push({ pointer, row, item, reference });
       }
       // A no-op warning never writes a mass token or invents a changed record.

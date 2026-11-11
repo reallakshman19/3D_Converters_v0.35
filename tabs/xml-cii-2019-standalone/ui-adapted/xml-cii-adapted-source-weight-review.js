@@ -160,6 +160,13 @@ export function installSourceBackedWeightReview({
       ['Weight scale',row.weightScale??'Unresolved'],
       ['Rejection / approval code',row.reasonCode||'R2_DIRECT_EDGE_ONLY'],
       ['Physical owner',row.physicalComponentRefNo||'UNRESOLVED'],
+      ['Source Node/Weight candidates',row.sourceNodeCandidates?.map(n=>
+        n.branchName+' Node '+n.nodeNumber+' (ordinal '+n.nodeOrdinal+
+        ', Weight '+(n.weightRaw==null || n.weightRaw===''?'MISSING':n.weightRaw)+
+        ' kg, writer RIGIDs '+(n.writerPointers?.join(', ')||'none')+')'
+      ).join('; ')||'Not resolved'],
+      ['Owner representation evidence',row.representationBasis||row.resolutionAdvice||'No verified allocation'],
+      ['Source Weight fields to update together',row.sourceWeightFieldsToEdit?.length??'UNQUALIFIED'],
       ['Original physical mass (kg)',row.originalPhysicalMassKg??'UNVERIFIED'],
       ['Original allocated CII mass (kg)',row.totalAllocatedMassKg??'UNVERIFIED'],
       ['Mass-allocation reason',row.allocationRule||'UNRESOLVED'],
@@ -303,9 +310,11 @@ export function installSourceBackedWeightReview({
       report.textContent='APPROVED PREVIEW (not applied):\n'+
         'Source '+row.sourceIdentity+' ComponentRefNo '+row.sourceNode.componentRefNo+
         '\nXML Weight '+row.sourceNode.originalXmlWeight+' → '+text+
+        '\nApproved source Node/Weight fields to update atomically: '+
+        (row.sourceWeightFieldsToEdit?.length||1)+
         '\nExpected CII Weight '+row.originalCiiWeight+' → '+parsed.number*row.weightScale+
         allocationPlan+
-        '\nOnly the source Node/Weight token may change. New CII must reparse and reconcile before download.';
+        '\nOnly the verified source Node/Weight token(s) may change. New CII must reparse and reconcile before download.';
     } catch(e){report.textContent='HOLD: '+(e?.message||e);}
   });
   apply.addEventListener('click',async()=>{
