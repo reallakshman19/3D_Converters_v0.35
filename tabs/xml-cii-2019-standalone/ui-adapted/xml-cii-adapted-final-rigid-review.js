@@ -156,6 +156,10 @@ function modalMarkup(inventory, filename, thresholdPct = 20, plans = []) {
           · ${nonpositiveCount} zero/negative weights</div>
       </div>
       <div data-final-rigid-header-actions>
+        <button type="button" data-final-rigid-frozen-run-download
+          aria-label="Download frozen current run package"
+          title="Download the exact EnrichedXML, staged JSON, support config, converter options and original CII for this CURRENT browser run. Does not approve weights or recreate missing historical inputs."
+          style="padding:5px 7px;background:#1e293b;color:#dbeafe;border:1px solid #64748b;border-radius:5px;cursor:pointer;font-size:11px;white-space:nowrap;">Freeze run</button>
         <button type="button" data-final-rigid-fullscreen aria-pressed="false" aria-label="Enter fullscreen"
           title="Enter fullscreen" style="padding:7px 10px;background:#1e293b;border:1px solid #475569;
           color:#e2e8f0;border-radius:6px;cursor:pointer;font-size:18px;line-height:1;">⛶</button>
@@ -207,13 +211,10 @@ function modalMarkup(inventory, filename, thresholdPct = 20, plans = []) {
         Error limit ±<input type="number" data-final-rigid-limit min="0" step="1" value="${esc(thresholdPct)}"
           aria-label="Weight error limit percent" style="width:65px;padding:6px;background:#0b1220;color:#e2e8f0;border:1px solid #475569;border-radius:5px;">%
       </label>
-        <button type="button" data-final-rigid-frozen-run-download
-          title="Download the exact EnrichedXML, staged JSON, support config, converter options and original CII for this CURRENT browser run. Does not approve weights or recreate missing historical inputs."
-          style="padding:7px 10px;background:#1e293b;color:#dbeafe;border:1px solid #64748b;border-radius:5px;cursor:pointer;">Download frozen run package</button>
       <span data-final-rigid-visible style="color:#94a3b8;font-size:12px;"></span>
     </div>
     <div data-final-rigid-run-package-status role="status" aria-live="polite"
-      style="color:#93c5fd;font-size:11px;margin:0 0 8px;">Export contains CURRENT-run converter input, not historical configuration or separate master binaries.</div>
+      style="display:none;color:#93c5fd;font-size:11px;margin:0 0 8px;"></div>
     <div data-final-rigid-assessment role="status"
       style="margin:0 0 10px;color:#cbd5e1;font-size:12px;">
       Reference-based weight error not assessed until independent weights are supplied.
@@ -282,6 +283,7 @@ export function openFinalRigidWeightReview(result, options = {}) {
   packageButton?.addEventListener('click',async()=>{
     if(packageButton.disabled)return;
     packageButton.disabled=true;
+    packageStatus.style.display='block';
     packageStatus.textContent='Verifying current EnrichedXML, CII and configuration hashes…';
     try{
       if(typeof options.getCurrentResult==='function' &&
