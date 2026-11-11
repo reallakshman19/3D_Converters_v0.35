@@ -65,12 +65,15 @@ try{
       return {status:session.noEditParity.status,valid:session.valueIntegrity,
         allowed:chosen.eligible,ownerStatus:chosen.status,pointer:chosen.rigidPointer,
         ownersHeld:session.rows.filter(x=>!x.eligible).length,
+        ownersQualified:session.rows.filter(x=>x.eligible).length,
+        totalRigids:session.rows.length,
         duplicateComponentRefs:(()=>{const counts=new Map();for(const n of session.verifiedLineage?.sourceNodes||[]) if(n.componentRefNo)counts.set(n.componentRefNo,(counts.get(n.componentRefNo)||0)+1);return [...counts.values()].filter(x=>x>1).length;})()};
     });
     assert.equal(noedit.status,'PASS_EXACT_REPLAY');
     assert.equal(noedit.valid,'SERIALIZED_VALUES_VERIFIED');
     assert.equal(noedit.allowed,true);
-    assert.ok(noedit.ownersHeld>=1);
+    assert.equal(noedit.ownersHeld+noedit.ownersQualified,noedit.totalRigids,
+      'all CII RIGIDs must be accounted for, whether newly requalified or held');
     assert.ok(noedit.duplicateComponentRefs>=1,'actual R1 Python evidence must retain repeated physical source identity');
     const output=await page.evaluate(async(pointer)=>{
       const {session,result,applySourceBackedWeightChange}=window.__r2;

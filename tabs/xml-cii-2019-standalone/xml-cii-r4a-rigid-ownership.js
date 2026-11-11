@@ -35,6 +35,47 @@ const matchingRows=(source,n)=>{
     x.componentRefNo.replace(/^=/,'').toUpperCase()===n.componentRefNo &&
     x.nodeNumber===n.originalNodeNumber);
 };
+/** A repeated ComponentRefNo is common in source endpoint representation.
+ * Only non-writer, explicitly ZERO-mass witnesses may be ignored. A second
+ * writer or a positive/missing duplicate mass keeps the entire owner HOLD.
+ * R1 independently validates source identity and all emitted RIGID pointers.
+ */
+export function classifyR4aComponentRepresentations({componentNodes,selectedSourceIdentity,
+  writerDependents}) {
+  const nodes=Array.isArray(componentNodes)?componentNodes:[];
+  const writers=writerDependents instanceof Map?writerDependents:new Map();
+  const detail=nodes.map(node=>({
+    identity:node.identity,branchName:node.branchName,
+    nodeNumber:node.originalNodeNumber,
+    branchOrdinal:node.branchOrdinal,
+    nodeOrdinal:node.nodeOrdinal,
+    componentRefNo:node.componentRefNo,
+    weightRaw:node.fields?.Weight??null,
+    writerPointers:[...(writers.get(node.identity)||new Set())].sort((a,b)=>a-b),
+  }));
+  const selected=detail.find(n=>n.identity===selectedSourceIdentity);
+  const selectedMass=numeric(selected?.weightRaw);
+  if(!selected || selectedMass===null || detail.some(n=>
+      n.identity!==selectedSourceIdentity &&
+      (n.branchName!==selected.branchName ||
+       n.branchOrdinal!==selected.branchOrdinal ||
+       n.writerPointers.length!==0 ||
+       (numeric(n.weightRaw)!==0 && numeric(n.weightRaw)!==selectedMass)))) {
+    return {qualified:false,reason:'Repeated ComponentRefNo crosses branches, has a different/missing mass field, or controls another CII RIGID. Complete component allocation cannot be inferred.',nodes:detail};
+  }
+  if(nodes.length>1 && !selected.writerPointers.length) {
+    return {qualified:false,reason:'Selected source does not control a verified emitted RIGID.',nodes:detail};
+  }
+  const aliases=detail.filter(n=>n.identity!==selectedSourceIdentity &&
+    numeric(n.weightRaw)===selectedMass && selectedMass>0);
+  return {qualified:true,reason:nodes.length>1
+    ? aliases.length
+      ? 'Unique R1 writer plus identical physical-mass representation on non-writer nodes; all equal positive XML Weight tokens must be edited atomically.'
+      : 'Unique R1 writer plus explicitly zero-weight non-writer endpoint representations.'
+    : 'Single physical source node.',nodes:detail,
+    aliases:aliases.map(n=>n.identity)};
+}
+
 const transformFor=(ledger,sourceId,edges)=>{
   const identities=new Set([sourceId,...edges.flatMap(x=>x.sourceEdgeIdentity||[])]);
   return ledger.transformations.filter(t=>identities.has(t.sourceIdentity));
@@ -127,9 +168,17 @@ export async function projectR4aOwnership({result,inventory,verifiedLineage}) {
       rejected.push(reject(row,'SOURCE_TRANSFORMATION_NOT_VERIFIED',
         'No unique R1 preprocessed-source edge matches final branch/FROM/TO.'));continue;
     }
-    if(!VERIFIED.has(aux.ownershipStatus) ||
+    // R1 is intentionally conservative about *any* repeated ComponentRefNo.
+    // Preserve its raw AMBIGUOUS finding, but independently check the exact
+    // writer + every original source representation below. No other R1
+    // ambiguity may be elevated to a structurally editable candidate.
+    const repeatOnly=aux.ownershipStatus==='AMBIGUOUS' &&
+      aux.reason==='Multiple source nodes carry ComponentRefNo; mass allocation unproved' &&
+      Array.isArray(aux.ownerCandidates) && aux.ownerCandidates.length===1 &&
+      (aux.sourceOwners||[]).length===0;
+    if((!VERIFIED.has(aux.ownershipStatus) && !repeatOnly) ||
        !aux.writerWeightSourceNode ||
-       (aux.sourceOwners||[]).length!==1 ||
+       (!repeatOnly && (aux.sourceOwners||[]).length!==1) ||
        !sourceById.has(aux.writerWeightSourceNode)){
       rejected.push(reject(row,'SOURCE_OWNER_AMBIGUOUS',
         aux.reason||'R1 writer selection or component owner remains ambiguous.'));continue;
@@ -146,9 +195,34 @@ export async function projectR4aOwnership({result,inventory,verifiedLineage}) {
         'No unique editable Node/Weight token at exact R1 original branch/ordinal identity.'));continue;
     }
     const component=node.componentRefNo;
-    if((componentToNodes.get(component)||new Set()).size!==1){
+    if(repeatOnly && aux.ownerCandidates[0]!==component){
       rejected.push(reject(row,'SOURCE_OWNER_AMBIGUOUS',
-        'ComponentRefNo belongs to multiple source nodes; physical allocation unverified.'));continue;
+        'R1 writer source component differs from the repeated owner candidates.'));continue;
+    }
+    const componentGroup=[...(componentToNodes.get(component)||new Set())]
+      .map(id=>sourceById.get(id)).filter(Boolean);
+    const representation=classifyR4aComponentRepresentations({
+      componentNodes:componentGroup,
+      selectedSourceIdentity:node.identity,
+      writerDependents,
+    });
+    // Do not trust the ledger's duplicate nodes without matching their exact
+    // original source identity and mass token in the immutable XML.
+    const sourceGroupMatches=componentGroup.every(n=>{
+      const matches=matchingRows(source,n);
+      return matches.length===1 &&
+        matches[0].weightField?.value===(n.fields?.Weight??'');
+    });
+    if(!representation.qualified || !sourceGroupMatches){
+      rejected.push(reject(row,'SOURCE_OWNER_AMBIGUOUS',
+        sourceGroupMatches?representation.reason:
+          'R1 repeated-source candidates do not match original frozen XML Node/Weight tokens.',{
+          physicalComponentRefNo:component,
+          sourceNodeCandidates:representation.nodes,
+          dependentPointers:[...new Set(representation.nodes.flatMap(n=>n.writerPointers))],
+          resolutionAdvice:'Inspect each ComponentRefNo source Node/Weight and complete final-RIGID dependency set. Only a unique writer with zero-mass non-writer witnesses can autoqualify; true shared physical mass needs verified allocation.',
+        }));
+      continue;
     }
     const candidate=matches[0], originalMass=numeric(candidate.weightField.value);
     if(originalMass===null || !approx(originalMass*scale,row.weight) ||
@@ -189,6 +263,9 @@ export async function projectR4aOwnership({result,inventory,verifiedLineage}) {
       originalAllocatedMassKg:row.weight/scale,
       totalAllocatedMassKg:row.weight/scale,
       dependentPointers:[row.rigidPointer],
+      sourceNodeCandidates:representation.nodes,
+      sourceWeightFieldsToEdit:[node.identity,...representation.aliases],
+      representationBasis:representation.reason,
       completeAllocation:true,
       allocationRule:'ONE_UNIQUE_WRITER_SOURCE_ONE_EMITTED_RIGID',
       allocations:[{oldRigidPointer:row.rigidPointer,

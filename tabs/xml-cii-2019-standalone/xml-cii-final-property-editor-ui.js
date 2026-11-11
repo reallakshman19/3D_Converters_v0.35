@@ -240,7 +240,7 @@ export function installFinalCiiPropertyEditor({ overlay, result, inventory, plan
       [pointer, row.editInput.value])),
     getCurrentResult: () => current() === result ? result : null,
     isReady: () => Boolean(session) && current() === result && invalid.size === 0,
-    stageAndVerify: async (proposals, thresholdPct, approval) => {
+    stageAndVerify: async (proposals, thresholdPct, approval, bulkApprovedPointers = new Set()) => {
       if (!session || invalid.size || current() !== result)
         throw new Error('Stale conversion run or invalid pre-existing weight edits.');
       const snapshotVersion = version;
@@ -284,16 +284,28 @@ export function installFinalCiiPropertyEditor({ overlay, result, inventory, plan
             reviewRequired: item.reviewRequired,
             warningOnly: item.status === 'WARNING',
             warningCodes: [...(item.warningCodes || [])],
-            individuallyApproved: true, reviewOnlyAccepted: Boolean(item.reviewRequired && approval),
+            rawCatalogCiiWeight: item.referenceWeightUnrounded ?? item.proposedWeight,
+            serializedCiiWeight: item.proposedWeight,
+            serializationDeltaCii: item.serializationDelta ?? 0,
+            individuallyApproved: !bulkApprovedPointers.has(pointer),
+            bulkApproved: bulkApprovedPointers.has(pointer),
+            approvalMethod: bulkApprovedPointers.has(pointer)
+              ? 'explicit-approve-all-nearest' : 'explicit-individual-row',
+            reviewOnlyAccepted: Boolean(item.reviewRequired && approval),
             generatedFromRun: String(result.finalRigidReviewEvidence?.engineInputDigest || ''),
           },
         };
-        stageCiiPropertyEdit(scratch, {
-          propertyId: 'RIGID.weight', recordPointer: pointer,
-          originalToken: row.original.rawWeight,
-          newValue: String(item.proposedWeight), unit: 'CII_OUTPUT_WEIGHT',
-          confirmed: true, zeroConfirmed: false, reference,
-        }, { replace: true });
+        try {
+          stageCiiPropertyEdit(scratch, {
+            propertyId: 'RIGID.weight', recordPointer: pointer,
+            originalToken: row.original.rawWeight,
+            newValue: String(item.proposedWeight), unit: 'CII_OUTPUT_WEIGHT',
+            confirmed: true, zeroConfirmed: false, reference,
+          }, { replace: true });
+        } catch (error) {
+          throw new Error('RIGID pointer ' + pointer + ', proposed ' +
+            item.proposedWeight + ' CII units: ' + (error?.message || error));
+        }
         staged.push({ pointer, row, item, reference });
       }
       // A no-op warning never writes a mass token or invents a changed record.

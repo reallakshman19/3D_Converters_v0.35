@@ -28,9 +28,23 @@ def generate(out: Path):
         b"<ComponentRefNo>/RIGID-40</ComponentRefNo><Position>300 0 0</Position><OutsideDiameter>60.3</OutsideDiameter><WallThickness>3.9</WallThickness><Rigid>2</Rigid><Endpoint>2</Endpoint><Weight>6</Weight>",
         b"<ComponentRefNo>/RIGID-40</ComponentRefNo><Position>300 0 0</Position><OutsideDiameter>60.3</OutsideDiameter><WallThickness>3.9</WallThickness><Rigid>2</Rigid><Endpoint>2</Endpoint><Weight>15</Weight>")
     assert original15 != original and original15 != revised, "15 kg Owner example fixture failed"
+    # Synthetic duplicated physical mass: one RIGID writer, one non-writer
+    # endpoint carrying the same ComponentRefNo and original mass.
+    alias_old = (b"<ComponentRefNo>/PIPE-50</ComponentRefNo><Position>400 0 0</Position>"
+                 b"<OutsideDiameter>60.3</OutsideDiameter><WallThickness>3.9</WallThickness><Weight>0</Weight>")
+    alias_new = (b"<ComponentRefNo>/RIGID-40</ComponentRefNo><Position>400 0 0</Position>"
+                 b"<OutsideDiameter>60.3</OutsideDiameter><WallThickness>3.9</WallThickness><Weight>15</Weight>")
+    original15alias = original15.replace(alias_old, alias_new)
+    assert original15alias != original15 and original15alias.count(b"<ComponentRefNo>/RIGID-40</ComponentRefNo>") == 2
+    writer15 = b"<ComponentRefNo>/RIGID-40</ComponentRefNo><Position>300 0 0</Position><OutsideDiameter>60.3</OutsideDiameter><WallThickness>3.9</WallThickness><Rigid>2</Rigid><Endpoint>2</Endpoint><Weight>15</Weight>"
+    writer2984 = writer15.replace(b"<Weight>15</Weight>",b"<Weight>2.984</Weight>")
+    alias2984 = alias_new.replace(b"<Weight>15</Weight>",b"<Weight>2.984</Weight>")
+    approved15alias = original15alias.replace(writer15,writer2984).replace(alias_new,alias2984)
+    assert approved15alias != original15alias
     out.mkdir(parents=True, exist_ok=True)
     for label, data in (("original", original), ("approved", revised), ("zero", zero),
-                        ("original15", original15)):
+                        ("original15", original15),("original15alias",original15alias),
+                        ("approved15alias",approved15alias)):
         snapshot = capture_snapshot(
             engine_input_xml=data, original_cii=b"SYNTHETIC_NOT_OWNER",
             effective_config_json=b"{}", options=OPTIONS, assets={},
