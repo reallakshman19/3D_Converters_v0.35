@@ -64,12 +64,13 @@ function numericMm(value) {
 }
 
 export function nodeBoreMm(node) {
-  const fromOd = dnFromOd(
-    childText(node, 'OutsideDiameter')
-    || childText(node, 'OuterDiameter')
-    || childText(node, 'OD'),
-  );
-  return fromOd || numericMm(childText(node, 'BoreMm') || childText(node, 'Bore'));
+  const odRaw = childText(node, 'OutsideDiameter')
+    || childText(node, 'OuterDiameter') || childText(node, 'OD');
+  if (Number(odRaw) > 0) {
+    // Positive OD can never fall back to a stale branch-derived BoreMm.
+    return dnFromOd(odRaw);
+  }
+  return numericMm(childText(node, 'BoreMm') || childText(node, 'Bore'));
 }
 
 function npsToDnMap(config) {

@@ -3,6 +3,7 @@ import { collectXmlCiiZeroRigidWeightIssues, applyXmlCiiRigidWeightOverrides } f
 import { applyXmlCiiFlangeWeightFallbackToIssues } from '../../../converters/xml-cii2019-core/flange-weight-fallback.js?v=20260620-flange-fallback-1';
 import { applyXmlCiiStagedGeometryAuthority } from '../../../converters/xml-cii2019-core/staged-geometry-authority.js?v=20260625-length-auto-weight-1';
 import { applyXmlCiiOutsideDiameterResolver } from '../../../converters/xml-cii2019-core/outside-diameter-resolver.js?v=20260708-od-resolver-1';
+import { synchronizeXmlCiiNodeBoreWithOutsideDiameter } from '../../../converters/xml-cii2019-core/node-bore-od-authority.js';
 import { applyXmlCiiSplitRigidWeightPropagation } from '../../../converters/xml-cii2019-core/split-rigid-weight-propagation.js?v=20260708-split-weight-1';
 import { buildXmlCiiTopologyDisconnectAudit } from '../../../converters/xml-cii2019-core/topology/xml-cii-topology-disconnect-audit.js?v=20260708-topology-1';
 import { buildXmlCiiNodeResolverIndex } from '../../../converters/xml-cii2019-core/sideload-resolver.js';
@@ -204,6 +205,12 @@ export async function run(context) {
   if (outsideDiameter.appliedCount > 0) enriched.xmlText = outsideDiameter.xmlText;
   enriched.diagnostics = Array.isArray(enriched.diagnostics) ? enriched.diagnostics : [];
   enriched.diagnostics.push(...(outsideDiameter.diagnostics || []));
+  // Resolve nominal DN from EACH effective OutsideDiameter after reducer/OD edits.
+  // Do this before the weight matcher; this changes BoreMm only, never a mass.
+  const boreAuthority = synchronizeXmlCiiNodeBoreWithOutsideDiameter(enriched.xmlText);
+  if (boreAuthority.appliedCount > 0) enriched.xmlText = boreAuthority.xmlText;
+  enriched.stats = { ...(enriched.stats || {}), ...(boreAuthority.stats || {}) };
+  enriched.diagnostics.push(...boreAuthority.diagnostics);
   const rigidReviewLogLines = [];
   const savedRigidWeights = applySavedRigidWeightOverridesToEnriched(enriched);
   rigidReviewLogLines.push(...savedRigidWeights.stdout);

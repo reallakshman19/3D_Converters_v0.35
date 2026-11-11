@@ -470,13 +470,14 @@ function derivePipingClassFromBranchName(branchName, config) {
 
 function branchBoreFromFirstUsefulNode(branch) {
   for (const node of xmlChildrenByName(branch, 'Node')) {
-    let boreMm = xmlCiiNumberText(xmlText(node, 'BoreMm'));
-    if (boreMm !== null) return boreMm;
     const od = xmlCiiNumberText(xmlText(node, 'OutsideDiameter'));
-    if (od !== null) {
-      boreMm = nominalDnFromOd(od);
-      if (boreMm !== null) return boreMm;
+    if (od !== null && od > 0) {
+      const nominal = qualifiedXmlCiiNominalBoreFromOd(od);
+      if (nominal !== null) return nominal;
+      continue; // Unknown positive OD cannot inherit stale BoreMm.
     }
+    const boreMm = xmlCiiNumberText(xmlText(node, 'BoreMm'));
+    if (boreMm !== null) return boreMm;
   }
   return null;
 }
@@ -569,12 +570,14 @@ function collectWeightRows(xmlTextVal, stagedJsonText, config, mode = 'zero-rigi
       if (mode === 'all-review-nodes') {
         if (!reviewNode || !reviewEndpoint || lengthMm === null || lengthMm <= 6) return;
       } else if (!reviewNode || !reviewEndpoint || lengthMm === null || (weight !== null && Math.abs(weight) > 1e-12)) return;
-      let boreMm = xmlCiiNumberText(xmlText(node, 'BoreMm'));
-      if (boreMm === null) {
-        const od = xmlCiiNumberText(xmlText(node, 'OutsideDiameter'));
-        if (od !== null) boreMm = nominalDnFromOd(od);
-      }
-      if (boreMm === null) boreMm = branchContext.boreMm;
+      const od = xmlCiiNumberText(xmlText(node, 'OutsideDiameter'));
+      // Component-specific OD controls nominal DN. Branch token/regex is
+      // disallowed when the node carries a positive, unmapped OD.
+      let boreMm = od !== null && od > 0
+        ? qualifiedXmlCiiNominalBoreFromOd(od)
+        : xmlCiiNumberText(xmlText(node, 'BoreMm'));
+      if (boreMm === null && !(od !== null && od > 0))
+        boreMm = branchContext.boreMm;
       const rating = ratingForRigidWeightIssue(node, branchContext, config);
       const ranking = rankXmlCiiWeightCandidates({ boreMm, rating, lengthMm, nodeName: xmlText(node, 'NodeName'), componentType, componentRefNo: xmlText(node, 'ComponentRefNo'), dtxr: dtxrText }, config, { includeRejected: true });
       // NodeNumber can be the literal "-1" sentinel for FLAN/VALV/RIGID/INST

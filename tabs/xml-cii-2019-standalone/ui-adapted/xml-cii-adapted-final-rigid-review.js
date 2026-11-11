@@ -75,7 +75,10 @@ function rowMarkup(row, plan) {
     }),
     ...(context.conflicts || []).map((conflict) => 'CONFLICT / REVIEW: ' + conflict),
   ].join('\n') : '';
-  const trace = [mapping ? `CII branch ${mapping.branchName} · edge ${mapping.fromNode} → ${mapping.toNode} · ComponentRefNo ${mapping.componentRefNo || '(absent)'} · source span ${Number(mapping.sourceLengthMm).toFixed(3)} mm · CII span ${Number(mapping.ciiLengthMm).toFixed(3)} mm · engine input ${mapping.engineInputDigest || '(digest unavailable)'}` : '', contextTrace, basisReason].filter(Boolean).join('\n');
+  const staleBoreTrace = context?.boreEvidenceMismatch
+    ? `STALE XML BoreMm DN${context.boreEvidenceMismatch.sourceValue} ignored; final CII ELEMENT OD ${context.boreEvidenceMismatch.outsideDiameterMm} mm establishes DN${context.boreEvidenceMismatch.ciiNominalBore}. Source bore correction requires re-enrichment.`
+    : '';
+  const trace = [mapping ? `CII branch ${mapping.branchName} · edge ${mapping.fromNode} → ${mapping.toNode} · ComponentRefNo ${mapping.componentRefNo || '(absent)'} · source span ${Number(mapping.sourceLengthMm).toFixed(3)} mm · CII span ${Number(mapping.ciiLengthMm).toFixed(3)} mm · engine input ${mapping.engineInputDigest || '(digest unavailable)'}` : '', contextTrace, staleBoreTrace, basisReason].filter(Boolean).join('\n');
   const search = [row.rigidPointer, row.weight, row.rawWeight, row.status,
     elementIds, fromNodes, toNodes, lengths, context?.status,
     valueOrStatus(context?.bore), valueOrStatus(context?.rating),
@@ -95,9 +98,13 @@ function rowMarkup(row, plan) {
       branchRating ? (property.source === 'branch-rating-override'
         ? 'Approved branch override' : property.source === 'configured-branch-rating'
           ? 'Branch rating resolver' : 'Enriched XML branch') : '';
+    const stale = kind === 'bore' && context?.boreEvidenceMismatch
+      ? `<div data-final-rigid-bore-stale title="Final CII OD determines DN, not stale EnrichedXML/line regex"
+          style="font-size:10px;color:#fbbf24;">Stale XML DN${esc(context.boreEvidenceMismatch.sourceValue)} ignored</div>`
+      : '';
     return `<td data-final-rigid-${kind}-source="${esc(property?.source || '')}"
       title="${esc(property?.basis || '')}" style="padding:9px;border-bottom:1px solid #26364b;white-space:nowrap;">
-      ${esc(display)}${sourceLabel ? `<div style="font-size:10px;color:#93c5fd;">${esc(sourceLabel)}</div>` : ''}</td>`;
+      ${esc(display)}${sourceLabel ? `<div style="font-size:10px;color:#93c5fd;">${esc(sourceLabel)}</div>` : ''}${stale}</td>`;
   };
   const status = [
     !linked.length ? 'Unreferenced pointer' : (linked.length > 1 ? 'Shared by multiple elements' : 'Linked'),

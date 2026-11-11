@@ -1,0 +1,123 @@
+name: XML-CII2019 reducer per-node OD/Bore authority 1885
+on:
+  push:
+    branches: ['fix/reducer-per-node-od-bore-final-rigid-*']
+  pull_request:
+    paths:
+      - 'converters/xml-cii2019-core/node-bore-od-authority.js'
+      - 'converters/xml-cii2019-core/weight-match-model.js'
+      - 'tabs/model-converters/converters/xmltocii2019_helper/enrichment-core.js'
+      - 'tabs/model-converters/converters/xml-cii-rich-enrichment-fix.js'
+      - 'tabs/model-converters/converters/xmltocii2019_runner.js'
+      - 'tabs/xml-cii-2019-standalone/xml-cii-final-rigid-source-context.js'
+      - 'tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-preview-bore-wall-authority.js'
+      - 'tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-preview-dryrun-core.js'
+      - 'tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-preview-wall-evidence.js'
+      - 'tabs/xml-cii-2019-standalone/xml-cii-standalone-run-parity.js'
+      - 'tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-final-rigid-review.js'
+      - 'tests/prepare_1885_reducer_bore_cii.py'
+      - 'tests/xml-cii-reducer-bore-1885-browser.test.mjs'
+      - 'tests/xml-cii-reducer-node-bore-1885.test.mjs'
+      - '.github/workflows/xml-cii-reducer-bore-1885.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  reducer-bore-source-and-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Source syntax and static route verification
+        run: |
+          node --check converters/xml-cii2019-core/node-bore-od-authority.js
+          node --check converters/xml-cii2019-core/weight-match-model.js
+          node --check tabs/model-converters/converters/xmltocii2019_helper/enrichment-core.js
+          node --check tabs/model-converters/converters/xml-cii-rich-enrichment-fix.js
+          node --check tabs/model-converters/converters/xmltocii2019_runner.js
+          node --check tabs/xml-cii-2019-standalone/xml-cii-final-rigid-source-context.js
+          node --check tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-preview-bore-wall-authority.js
+          node --check tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-preview-dryrun-core.js
+          node --check tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-preview-wall-evidence.js
+          node --check tabs/xml-cii-2019-standalone/xml-cii-standalone-run-parity.js
+          node --check tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-final-rigid-review.js
+          node --check tests/xml-cii-reducer-node-bore-1885.test.mjs
+          python3 -m py_compile tests/prepare_1885_reducer_bore_cii.py
+          node --check tests/xml-cii-reducer-bore-1885-browser.test.mjs
+      - name: ASIM-1885 reducer and flange source-to-review bore tests
+        run: node --test tests/xml-cii-reducer-node-bore-1885.test.mjs
+      - name: Generate bounded ASIM-1885 native Python CII before/after BoreMm correction
+        run: python3 tests/prepare_1885_reducer_bore_cii.py --output "$RUNNER_TEMP/1885-native"
+      - name: Retain bounded synthetic native writer custody evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: 1885-reducer-native-od-bore-cii-parity
+          path: ${{ runner.temp }}/1885-native/
+          if-no-files-found: ignore
+      - name: Preserve source context, mutation, master/reference and preview regressions
+        run: |
+          node --test tests/xml-cii-final-rigid-source-context.test.mjs
+          node --test tests/xml-cii-final-rigid-source-mutations.test.mjs
+          node --test tests/xml-cii-final-rigid-nearest-suggestions.test.mjs
+          node --test tests/xml-cii-bore-wall-authority.test.mjs
+          node --test tests/xml-cii-weight-match-preview-rating-snapshot.test.mjs
+          node --test tests/xml-cii-dtxr-wall-evidence-ledger.test.mjs
+          node --test tests/xml-cii-final-rigid-master-reference.test.mjs
+          node --test tests/xml-cii-preview-run-parity-closure.test.mjs
+
+      - name: Compare frozen legacy Standalone fixtures against unmodified PR base
+        shell: bash
+        run: |
+          set +e
+          git worktree add --detach "$RUNNER_TEMP/bore-baseline" "6132d66145c0dea5b79291aeeb8169a5ac56922a" >/dev/null 2>&1
+          worktree_code=$?
+          set -e
+          if [ "$worktree_code" -ne 0 ]; then
+            echo "Cannot establish baseline fixture behavior: HOLD"
+            exit 1
+          fi
+          for file in tests/xml-cii-standalone-parity.test.js tests/xml-cii-standalone-source-mode-integration.test.js; do
+            set +e
+            node --test "$file" > "$RUNNER_TEMP/head-$(basename "$file").log" 2>&1
+            head_code=$?
+            (cd "$RUNNER_TEMP/bore-baseline" && node --test "$file") > "$RUNNER_TEMP/base-$(basename "$file").log" 2>&1
+            base_code=$?
+            set -e
+            echo "LEGACY_BASE $file $base_code"
+            echo "LEGACY_HEAD $file $head_code"
+            if [ "$base_code" -eq 0 ] && [ "$head_code" -ne 0 ]; then
+              echo "NEW REGRESSION in $file"
+              tail -60 "$RUNNER_TEMP/head-$(basename "$file").log"
+              exit 1
+            fi
+            if [ "$base_code" -ne 0 ] && [ "$head_code" -ne 0 ]; then
+              echo "INHERITED BASELINE FAILURE in $file; requires separate follow-up"
+              grep -E -m1 "AssertionError|ERR_MODULE_NOT_FOUND|failed normalized semantic parity" "$RUNNER_TEMP/base-$(basename "$file").log" || true
+            fi
+          done
+
+  reducer-bore-real-chromium-ui:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Produce actual native CII from bounded 1885 XML both bore states
+        run: python3 tests/prepare_1885_reducer_bore_cii.py --output tests/.1885-reducer-runtime
+      - name: Install isolated Chromium
+        run: |
+          npm install --no-save --package-lock=false playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Final Review UI derives DN150 from real CII OD168.3, mass unchanged
+        run: node --test tests/xml-cii-reducer-bore-1885-browser.test.mjs

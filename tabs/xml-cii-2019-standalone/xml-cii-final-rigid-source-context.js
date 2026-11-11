@@ -61,8 +61,11 @@ function sourceIndex(xmlText, forwardLengths) {
     if (!branchName) continue;
     const nodes = [...(branch.childNodes || [])].filter((n) => n.nodeType === 1 && tag(n) === 'Node');
     const lengths = forwardLengths(nodes);
-    const qualifiedBranchBores = nodes.map((node) => positive(value(node, 'BoreMm')) ??
-      qualifiedXmlCiiNominalBoreFromOd(value(node, 'OutsideDiameter'))).filter((x) => x !== null);
+    const qualifiedBranchBores = nodes.map((node) => {
+      const od = positive(value(node, 'OutsideDiameter'));
+      return od !== null ? qualifiedXmlCiiNominalBoreFromOd(od)
+        : positive(value(node, 'BoreMm'));
+    }).filter((x) => x !== null);
     const uniqueBranchBores = [...new Set(qualifiedBranchBores)];
     const branchBore = uniqueBranchBores.length === 1 ? uniqueBranchBores[0] : null;
     let prev = null;
@@ -111,11 +114,14 @@ function metadataFor(node, issue, config, dtxrContext, branchBore) {
   const explicitBore = positive(node.boreRaw);
   const nominalFromOd = qualifiedXmlCiiNominalBoreFromOd(node.odRaw);
   const branchFallback = !node.odRaw && branchBore !== null && selectedBore === branchBore;
-  const bore = explicitBore !== null
-    ? observed(explicitBore, node.number, 'source BoreMm', { original: node.boreRaw })
-    : nominalFromOd !== null
-      ? observed(nominalFromOd, node.number, 'qualified Weight Match OD-to-DN', {
-        original: node.odRaw, originalField: 'OutsideDiameter' })
+  const bore = nominalFromOd !== null
+    ? observed(nominalFromOd, node.number, 'qualified Weight Match OD-to-DN', {
+      source:'node-outside-diameter',original:node.odRaw,
+      originalField:'OutsideDiameter',
+      staleSourceBoreMm: explicitBore !== null && explicitBore !== nominalFromOd
+        ? explicitBore : null })
+    : (!node.odRaw && explicitBore !== null)
+      ? observed(explicitBore, node.number, 'source BoreMm', { original: node.boreRaw })
       : branchFallback
         ? observed(branchBore, node.number, 'single verified branch Bore / Weight Match context', {
           originalField: 'branch', original: String(branchBore) })
@@ -162,7 +168,20 @@ export function buildFinalRigidSourceContexts(inventory, evidence = {}, authorit
     if (!fallback) return context;
     const missingBore = context.bore?.value === null || context.bore?.value === undefined;
     const missingRating = context.rating?.value === null || context.rating?.value === undefined;
-    const bore = missingBore ? fallback.bore : context.bore;
+    // Final exported CII ELEMENT OD is the authoritative size for the
+    // particular emitted edge. It may be downstream of a reducer while source
+    // XML still contains an obsolete branch-wide nominal BoreMm.
+    const ciiBore = fallback.bore?.source === 'cii-od-dn' ? fallback.bore : null;
+    const sourceBoreValue = context.bore?.staleSourceBoreMm ??
+      (ciiBore && context.bore?.value != null &&
+        Number(context.bore.value) !== Number(ciiBore.value)
+          ? context.bore.value : null);
+    const staleBore = ciiBore && sourceBoreValue !== null &&
+      Number(sourceBoreValue) !== Number(ciiBore.value)
+        ? {sourceValue:sourceBoreValue,ciiNominalBore:ciiBore.value,
+          outsideDiameterMm:ciiBore.original,
+          reason:'Stale XML BoreMm disagrees with emitted CII OD: final edge DN controls review'} : null;
+    const bore = ciiBore || (missingBore ? fallback.bore : context.bore);
     const rating = missingRating ? fallback.rating : context.rating;
     const newConflicts = [
       ...(context.conflicts || []),
@@ -172,12 +191,13 @@ export function buildFinalRigidSourceContexts(inventory, evidence = {}, authorit
     const sourceUnresolved = !context.mapping;
     return {
       ...context, bore, rating,
+      ...(staleBore ? {boreEvidenceMismatch:staleBore} : {}),
       conflicts: [...new Set(newConflicts)],
       status: context.status === 'VERIFIED' && newConflicts.length ? 'CONFLICT_REVIEW' : context.status,
       // The existing mass / catalog authority is never elevated by CII or
       // branch-level metadata alone. Unresolved components remain unresolved.
       eligibleForAutomaticReference: !sourceUnresolved && context.eligibleForAutomaticReference &&
-        newConflicts.length === 0,
+        newConflicts.length === 0 && !staleBore,
       fallbackEvidence: fallback,
     };
   };
