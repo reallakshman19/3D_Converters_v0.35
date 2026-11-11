@@ -35,6 +35,36 @@ const matchingRows=(source,n)=>{
     x.componentRefNo.replace(/^=/,'').toUpperCase()===n.componentRefNo &&
     x.nodeNumber===n.originalNodeNumber);
 };
+/** A repeated ComponentRefNo is common in source endpoint representation.
+ * Only non-writer, explicitly ZERO-mass witnesses may be ignored. A second
+ * writer or a positive/missing duplicate mass keeps the entire owner HOLD.
+ * R1 independently validates source identity and all emitted RIGID pointers.
+ */
+export function classifyR4aComponentRepresentations({componentNodes,selectedSourceIdentity,
+  writerDependents}) {
+  const nodes=Array.isArray(componentNodes)?componentNodes:[];
+  const writers=writerDependents instanceof Map?writerDependents:new Map();
+  const detail=nodes.map(node=>({
+    identity:node.identity,branchName:node.branchName,
+    nodeNumber:node.originalNodeNumber,
+    nodeOrdinal:node.nodeOrdinal,
+    componentRefNo:node.componentRefNo,
+    weightRaw:node.fields?.Weight??null,
+    writerPointers:[...(writers.get(node.identity)||new Set())].sort((a,b)=>a-b),
+  }));
+  const selected=detail.find(n=>n.identity===selectedSourceIdentity);
+  if(!selected || detail.some(n=>n.identity!==selectedSourceIdentity &&
+      (numeric(n.weightRaw)!==0 || n.writerPointers.length!==0))) {
+    return {qualified:false,reason:'Repeated ComponentRefNo has another positive/missing mass field or dependent CII writer. Complete component allocation cannot be inferred.',nodes:detail};
+  }
+  if(nodes.length>1 && !selected.writerPointers.length) {
+    return {qualified:false,reason:'Selected source does not control a verified emitted RIGID.',nodes:detail};
+  }
+  return {qualified:true,reason:nodes.length>1
+    ? 'Unique R1 writer plus explicitly zero-weight non-writer endpoint representations.'
+    : 'Single physical source node.',nodes:detail};
+}
+
 const transformFor=(ledger,sourceId,edges)=>{
   const identities=new Set([sourceId,...edges.flatMap(x=>x.sourceEdgeIdentity||[])]);
   return ledger.transformations.filter(t=>identities.has(t.sourceIdentity));
@@ -146,9 +176,22 @@ export async function projectR4aOwnership({result,inventory,verifiedLineage}) {
         'No unique editable Node/Weight token at exact R1 original branch/ordinal identity.'));continue;
     }
     const component=node.componentRefNo;
-    if((componentToNodes.get(component)||new Set()).size!==1){
+    const componentGroup=[...(componentToNodes.get(component)||new Set())]
+      .map(id=>sourceById.get(id)).filter(Boolean);
+    const representation=classifyR4aComponentRepresentations({
+      componentNodes:componentGroup,
+      selectedSourceIdentity:node.identity,
+      writerDependents,
+    });
+    if(!representation.qualified){
       rejected.push(reject(row,'SOURCE_OWNER_AMBIGUOUS',
-        'ComponentRefNo belongs to multiple source nodes; physical allocation unverified.'));continue;
+        representation.reason,{
+          physicalComponentRefNo:component,
+          sourceNodeCandidates:representation.nodes,
+          dependentPointers:[...new Set(representation.nodes.flatMap(n=>n.writerPointers))],
+          resolutionAdvice:'Inspect each ComponentRefNo source Node/Weight and complete final-RIGID dependency set. Only a unique writer with zero-mass non-writer witnesses can autoqualify; true shared physical mass needs verified allocation.',
+        }));
+      continue;
     }
     const candidate=matches[0], originalMass=numeric(candidate.weightField.value);
     if(originalMass===null || !approx(originalMass*scale,row.weight) ||
@@ -189,6 +232,8 @@ export async function projectR4aOwnership({result,inventory,verifiedLineage}) {
       originalAllocatedMassKg:row.weight/scale,
       totalAllocatedMassKg:row.weight/scale,
       dependentPointers:[row.rigidPointer],
+      sourceNodeCandidates:representation.nodes,
+      representationBasis:representation.reason,
       completeAllocation:true,
       allocationRule:'ONE_UNIQUE_WRITER_SOURCE_ONE_EMITTED_RIGID',
       allocations:[{oldRigidPointer:row.rigidPointer,
