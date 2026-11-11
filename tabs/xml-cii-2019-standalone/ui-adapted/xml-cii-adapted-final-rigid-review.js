@@ -4,6 +4,8 @@ import { installFinalRigidReviewLayout } from '../xml-cii-final-rigid-layout.js'
 import { buildFinalRigidReferencePlans } from '../xml-cii-final-rigid-master-references.js';
 import { classifyFinalRigidWeightError, configuredFinalRigidErrorThreshold, formatFinalRigidErrorPercent } from '../xml-cii-final-rigid-weight-error.js';
 import { parseFinalCiiRigidInventory } from '../xml-cii-final-rigid-inventory.js';
+import { buildFrozenCiiRunPackage, verifyFrozenCiiRunPackage }
+  from '../xml-cii-frozen-run-package.js';
 
 const esc = (value) => String(value ?? '').replace(/&/g, '&amp;')
   .replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -154,6 +156,9 @@ function modalMarkup(inventory, filename, thresholdPct = 20, plans = []) {
           · ${nonpositiveCount} zero/negative weights</div>
       </div>
       <div data-final-rigid-header-actions>
+        <button type="button" data-final-rigid-frozen-run-download
+          title="Download the exact EnrichedXML, staged JSON, support config, converter options and original CII for this CURRENT browser run. Does not approve weights or recreate missing historical inputs."
+          style="padding:7px 10px;background:#1e293b;color:#dbeafe;border:1px solid #64748b;border-radius:5px;cursor:pointer;">Download frozen run package</button>
         <button type="button" data-final-rigid-fullscreen aria-pressed="false" aria-label="Enter fullscreen"
           title="Enter fullscreen" style="padding:7px 10px;background:#1e293b;border:1px solid #475569;
           color:#e2e8f0;border-radius:6px;cursor:pointer;font-size:18px;line-height:1;">⛶</button>
@@ -207,6 +212,8 @@ function modalMarkup(inventory, filename, thresholdPct = 20, plans = []) {
       </label>
       <span data-final-rigid-visible style="color:#94a3b8;font-size:12px;"></span>
     </div>
+    <div data-final-rigid-run-package-status role="status" aria-live="polite"
+      style="color:#93c5fd;font-size:11px;margin:0 0 8px;">Export contains CURRENT-run converter input, not historical configuration or separate master binaries.</div>
     <div data-final-rigid-assessment role="status"
       style="margin:0 0 10px;color:#cbd5e1;font-size:12px;">
       Reference-based weight error not assessed until independent weights are supplied.
@@ -270,6 +277,36 @@ export function openFinalRigidWeightReview(result, options = {}) {
   const visible = overlay.querySelector('[data-final-rigid-visible]');
   const assessment = overlay.querySelector('[data-final-rigid-assessment]');
   const limitInput = overlay.querySelector('[data-final-rigid-limit]');
+  const packageButton=overlay.querySelector('[data-final-rigid-frozen-run-download]');
+  const packageStatus=overlay.querySelector('[data-final-rigid-run-package-status]');
+  packageButton?.addEventListener('click',async()=>{
+    if(packageButton.disabled)return;
+    packageButton.disabled=true;
+    packageStatus.textContent='Verifying current EnrichedXML, CII and configuration hashes…';
+    try{
+      if(typeof options.getCurrentResult==='function' &&
+        options.getCurrentResult()!==result)
+        throw Error('Run changed after the Final Weight Review opened.');
+      const bundle=await buildFrozenCiiRunPackage(result,inventory);
+      await verifyFrozenCiiRunPackage(bundle);
+      if(!overlay.isConnected ||
+        (typeof options.getCurrentResult==='function' &&
+          options.getCurrentResult()!==result))
+        throw Error('Run changed during export.');
+      const blob=new Blob([JSON.stringify(bundle,null,2)+'\n'],
+        {type:'application/json;charset=utf-8'});
+      const url=URL.createObjectURL(blob);
+      const anchor=document.createElement('a');
+      anchor.href=url;anchor.download='xml-cii2019-current-frozen-run.json';
+      document.body.appendChild(anchor);anchor.click();anchor.remove();
+      setTimeout(()=>URL.revokeObjectURL(url),0);
+      packageStatus.textContent='VERIFIED CURRENT RUN EXPORTED: '+bundle.currentRun.elementCount+
+        ' ELEMENTs / '+bundle.currentRun.rigidCount+' RIGIDs. Original raw upload and external master binaries are NOT in this package.';
+    }catch(error){
+      packageStatus.textContent='FROZEN RUN EXPORT REFUSED: '+(error?.message||error)+
+        '. Original CII and source review remain unchanged.';
+    }finally{packageButton.disabled=false;}
+  });
   const refresh = () => {
     const q = String(search?.value || '').trim().toLowerCase();
     const choice = filter?.value || 'all';
