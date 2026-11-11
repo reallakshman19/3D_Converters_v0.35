@@ -122,6 +122,23 @@ try{
     await page.locator('[data-source-weight-open]').click();
     await page.waitForFunction(()=>document.querySelector('[data-source-weight-status]')?.textContent.includes('PASS:'),
       null,{timeout:220000});
+    // R4B audit is downloaded from the same current-run source-backed panel.
+    const jsonButton=page.locator('[data-source-weight-ownership-report]');
+    const csvButton=page.locator('[data-source-weight-ownership-csv]');
+    assert.equal(await jsonButton.isDisabled(),false);
+    assert.equal(await csvButton.isDisabled(),false);
+    const [jsonDownload]=await Promise.all([page.waitForEvent('download'),jsonButton.click()]);
+    const ownership=JSON.parse(await readFile(await jsonDownload.path(),'utf8'));
+    assert.equal(ownership.schema,'xml-cii-r4b-rigid-ownership-audit/v1');
+    assert.equal(ownership.summary.finalRigidCount,6);
+    assert.equal(ownership.rows.length,6);
+    assert.equal(ownership.summary.qualifiedStructuralOwners+ownership.summary.heldOwners,6);
+    assert.equal(ownership.summary.physicalMassApprovalCount,0);
+    assert.ok(ownership.rows.every(x=>x.physicallyApproved===false));
+    const [csvDownload]=await Promise.all([page.waitForEvent('download'),csvButton.click()]);
+    const csv=await readFile(await csvDownload.path(),'utf8');
+    assert.equal(csv.trimEnd().split('\\n').length,7);
+    assert.match(csv,/holdReasonCode/);
     await page.locator('[data-source-weight-search]').fill(String(result.owner.pointer));
     await page.locator('[data-source-weight-pointer]').selectOption(String(result.owner.pointer));
     await page.locator('[data-source-weight-value]').fill('2.984');
