@@ -42,6 +42,22 @@ def generate(out:Path)->None:
     (out/"r4c-approved.xml").write_bytes(revised)
     (out/"r4c-approved.cii").write_bytes(revised_cii)
     generate_r1(out)
+    # A valid second fixture exercises the *real* 3 kg non-writer conflict.
+    witness=(b"<ComponentRefNo>/SHARED-COMP</ComponentRefNo>"
+             b"<Position>200 0 0</Position><OutsideDiameter>60.3</OutsideDiameter>"
+             b"<WallThickness>3.9</WallThickness><Weight>0</Weight>")
+    assert original.count(witness)==1
+    conflict=original.replace(witness,witness.replace(b"<Weight>0</Weight>",
+                                                     b"<Weight>3</Weight>"))
+    before=capture_snapshot(engine_input_xml=conflict,
+      original_cii=b"R4C_CONFLICT_SYNTHETIC",effective_config_json=b"{}",
+      options=OPTIONS,assets={},run_id="R4C_CONFLICT_WITNESS",
+      completeness_attestation="COMPLETE_NO_EXTERNAL_MASTERS")
+    conflict_cii,_=run_existing_converter(before,conflict,b"{}",{})
+    separate=out/"conflict";separate.mkdir(exist_ok=True)
+    (separate/"original.xml").write_bytes(conflict)
+    (separate/"original.cii").write_bytes(conflict_cii)
+    generate_r1(separate)
     print("R4C_ONE_WRITER_ZERO_WITNESS_REAL_CONVERTER_READY")
 
 if __name__=="__main__":
