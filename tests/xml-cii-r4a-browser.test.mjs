@@ -119,6 +119,26 @@ try{
     assert.equal(await page.locator('[data-final-rigid-row]').count(),6);
     assert.equal(await page.locator('[data-final-rigid-apply]').count(),1,
       'legacy direct-CII editor must remain present');
+    // Explicit current-run custody export must work without mass approvals.
+    const frozenButton=page.locator('[data-final-rigid-frozen-run-download]');
+    assert.equal(await frozenButton.isDisabled(),false);
+    const [frozenDownload]=await Promise.all([
+      page.waitForEvent('download'), frozenButton.click()]);
+    const frozen=JSON.parse(await readFile(await frozenDownload.path(),'utf8'));
+    assert.equal(frozen.schema,'xml-cii2019-current-converter-run/v1');
+    assert.equal(frozen.currentRun.elementCount,11);
+    assert.equal(frozen.currentRun.rigidCount,6);
+    assert.equal(frozen.currentRun.weightScale,10);
+    assert.equal(frozen.payloads.engineInputXml,
+      await readFile(path.join(fixture,'original.xml'),'utf8'));
+    assert.equal(frozen.payloads.originalCii,
+      await readFile(path.join(fixture,'original.cii'),'utf8'));
+    assert.equal(frozen.payloads.supportConfigJson,'{}');
+    assert.equal(frozen.payloads.stagedJsonText,'');
+    assert.equal(frozen.originalRawUpload,'NOT_CAPTURED_BY_CONVERTER_BOUNDARY');
+    assert.match(await page.locator('[data-final-rigid-run-package-status]').innerText(),
+      /VERIFIED CURRENT RUN EXPORTED/);
+    // Source editing still retains its existing separately approved transaction.
     await page.locator('[data-source-weight-open]').click();
     await page.waitForFunction(()=>document.querySelector('[data-source-weight-status]')?.textContent.includes('PASS:'),
       null,{timeout:220000});
