@@ -39,8 +39,19 @@ jobs:
           node --check tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-preview-dryrun-core.js
           node --check tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-preview-wall-evidence.js
           node --check tests/xml-cii-reducer-node-bore-1885.test.mjs
+          python3 -m py_compile tests/prepare_1885_reducer_bore_cii.py
+          node --check tests/xml-cii-reducer-bore-1885-browser.test.mjs
       - name: ASIM-1885 reducer and flange source-to-review bore tests
         run: node --test tests/xml-cii-reducer-node-bore-1885.test.mjs
+      - name: Generate bounded ASIM-1885 native Python CII before/after BoreMm correction
+        run: python3 tests/prepare_1885_reducer_bore_cii.py --output "$RUNNER_TEMP/1885-native"
+      - name: Retain bounded synthetic native writer custody evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: 1885-reducer-native-od-bore-cii-parity
+          path: ${{ runner.temp }}/1885-native/
+          if-no-files-found: ignore
       - name: Preserve source context, mutation, master/reference and preview regressions
         run: |
           node --test tests/xml-cii-final-rigid-source-context.test.mjs
@@ -50,3 +61,23 @@ jobs:
           node --test tests/xml-cii-weight-match-preview-rating-snapshot.test.mjs
           node --test tests/xml-cii-dtxr-wall-evidence-ledger.test.mjs
           node --test tests/xml-cii-final-rigid-master-reference.test.mjs
+
+  reducer-bore-real-chromium-ui:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Produce actual native CII from bounded 1885 XML both bore states
+        run: python3 tests/prepare_1885_reducer_bore_cii.py --output tests/.1885-reducer-runtime
+      - name: Install isolated Chromium
+        run: |
+          npm install --no-save --package-lock=false playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Final Review UI derives DN150 from real CII OD168.3, mass unchanged
+        run: node --test tests/xml-cii-reducer-bore-1885-browser.test.mjs
