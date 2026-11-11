@@ -4,6 +4,8 @@
 import { initializeSourceWeightSession, applySourceBackedWeightChange }
   from '../xml-cii-source-weight-reextract.js';
 import { numericalValue } from '../xml-cii-final-property-validation.js';
+import { sourceWeightFromCiiTarget,ciiTargetFromSourceWeight }
+  from '../xml-cii-source-weight-output-target.js';
 import { previewR4bIsolatedSourceEdit,applyR4bIsolatedSourceEdit }
   from '../xml-cii-r4b-isolated-source-edit.js';
 import { buildR4bRigidOwnershipReport, r4bOwnershipAuditCsv }
@@ -91,6 +93,16 @@ export function installSourceBackedWeightReview({
     type:'text',inputmode:'decimal',placeholder:'e.g. 2.984',
     style:'display:block;max-width:190px;padding:7px;background:#0b1220;color:#fff;border:1px solid #64748b;'});
   proposed.disabled=true; // No editable source is presumed before exact run qualification.
+  const outputWrap=add(form,'label','Desired final CII RIGID weight (output units)',{
+    style:'font-size:11px;'});
+  const outputTarget=add(outputWrap,'input',null,{
+    'data-source-weight-output-target':'',type:'text',inputmode:'decimal',
+    placeholder:'e.g. 0.001',title:'Edits exported CII weight via verified XML source; not the reference used for Error %.',
+    style:'display:block;max-width:190px;padding:7px;background:#0b1220;color:#fff;border:1px solid #64748b;'});
+  outputTarget.disabled=true;
+  const outputHint=add(outputWrap,'small','Output units are N only when the frozen run has the ×10 conversion.',{
+    'data-source-weight-output-hint':'',
+    style:'display:block;max-width:230px;color:#93c5fd;font-size:10px;white-space:normal;'});
   const eligibility=add(valueWrap,'small','HOLD: Source owner not yet verified.',{
     'data-source-weight-eligibility-detail':'',
     style:'display:block;max-width:280px;color:#fbbf24;font-size:10px;white-space:normal;'});
@@ -167,7 +179,7 @@ export function installSourceBackedWeightReview({
     facts.replaceChildren();
     const row=selectedRow();
     if(!row){
-      proposed.disabled=owner.disabled=approval.disabled=true;
+      proposed.disabled=outputTarget.disabled=owner.disabled=approval.disabled=true;
       eligibility.textContent='HOLD: No verified RIGID/source owner selected.';
       proposed.title=eligibility.textContent;
       valueLabel(facts,'Source status','Not resolved');return;
@@ -208,8 +220,14 @@ export function installSourceBackedWeightReview({
     for(const [title,value]of pieces)valueLabel(facts,title,value);
     const multi=r4bCanProbe(row);
     groupPlan.style.display=multi?'block':'none';
-    proposed.disabled=!(row.eligible||multi);
+    proposed.disabled=outputTarget.disabled=!(row.eligible||multi);
     approval.disabled=owner.disabled=!(row.eligible||multi);
+    const scale=row.weightScale??diagnostic?.weightScale??session?.custody?.weightScale;
+    outputHint.textContent=Number(scale)===10
+      ? 'Frozen scale ×10: 0.001 N becomes 0.0001 kg in EnrichedXML. This is NOT the Error % reference.'
+      : Number(scale)===1
+        ? 'Frozen scale ×1: output weight equals source kg numerically. Do not assume N.'
+        : 'HOLD: frozen kg-to-output scale not available.';
     eligibility.textContent=row.eligible
       ? 'Verified source owner (one-to-one). Enter an approved XML Weight (kg).'
       : multi
@@ -222,6 +240,7 @@ export function installSourceBackedWeightReview({
   }
   const proposal=()=>({
     rigidPointer:Number(picker.value),newValue:proposed.value.trim(),
+    requestedOutputWeight:outputTarget.value.trim(),
     approved:approval.checked,ownerApproved:owner.checked,zeroConfirmed:zero.checked,
     allocationMode:'OWNER_APPROVED_REVISED_GROUP_TOTAL',
     approvedGroupTotalKg:planTotal.value.trim(),referenceBasis:planBasis.value.trim(),
@@ -323,17 +342,37 @@ export function installSourceBackedWeightReview({
       if(ready){
         picker.value=String(pointer);
         pendingPointer=null;
-        proposed.value='';
+        proposed.value='';outputTarget.value='';
         clearApproval();
         renderFacts();
         panel.scrollIntoView({block:'nearest'});
       }
     });
   }
-  search.addEventListener('input',()=>{resetPicker();proposed.value='';clearApproval();});
-  picker.addEventListener('change',()=>{proposed.value='';clearApproval();renderFacts();});
-  for(const control of [proposed,approval,owner,zero,planTotal,planBasis])
-    control.addEventListener(control.type==='checkbox'?'change':'input',markDirty);
+  search.addEventListener('input',()=>{resetPicker();proposed.value='';outputTarget.value='';clearApproval();});
+  picker.addEventListener('change',()=>{proposed.value='';outputTarget.value='';clearApproval();renderFacts();});
+  const selectedScale=()=>Number(selectedRow()?.weightScale??
+    session?.r4bAuditByPointer?.get(Number(picker.value))?.weightScale??
+    session?.custody?.weightScale);
+  proposed.addEventListener('input',()=>{
+    try{
+      outputTarget.value=proposed.value.trim()
+        ? String(ciiTargetFromSourceWeight(proposed.value,selectedScale()).targetOutputWeight)
+        : '';
+    }catch{outputTarget.value='';}
+    markDirty();
+  });
+  outputTarget.addEventListener('input',()=>{
+    try{
+      proposed.value=outputTarget.value.trim()
+        ? sourceWeightFromCiiTarget(outputTarget.value,selectedScale()).sourceToken
+        : '';
+    }catch{proposed.value='';}
+    markDirty();
+  });
+  for(const control of [approval,owner,zero,planTotal,planBasis])
+    control.addEventListener('change',markDirty);
+  for(const control of [planTotal,planBasis])control.addEventListener('input',markDirty);
   preview.addEventListener('click',async()=>{
     markDirty();
     const ticket=version;
@@ -344,6 +383,12 @@ export function installSourceBackedWeightReview({
       const text=proposed.value.trim();
       const parsed=numericalValue(text);
       if(parsed.number<0||parsed.number>1e12)throw Error('Negative/out-of-range XML Weight.');
+      if(outputTarget.value.trim()){
+        const conversion=sourceWeightFromCiiTarget(outputTarget.value,selectedScale());
+        if(Math.abs(parsed.number-conversion.sourceWeightKg)>
+            Math.max(1e-10,conversion.sourceWeightKg*1e-12))
+          throw Error('Source kg field and desired emitted CII weight disagree.');
+      }
       if(parsed.number===0&&!zero.checked)throw Error('Confirm numeric zero explicitly.');
       if(r4bCanProbe(row)){
         report.textContent='RUNNING R4B read-only real-converter trial. No source has been saved…';
@@ -395,6 +440,7 @@ export function installSourceBackedWeightReview({
         '\nApproved source Node/Weight fields to update atomically: '+
         (row.sourceWeightFieldsToEdit?.length||1)+
         '\nExpected CII Weight '+row.originalCiiWeight+' → '+parsed.number*row.weightScale+
+        (outputTarget.value.trim()? ' (explicit output target '+outputTarget.value.trim()+')':'')+
         allocationPlan+
         '\nOnly the verified source Node/Weight token(s) may change. New CII must reparse and reconcile before download.';
     } catch(e){report.textContent='HOLD: '+(e?.message||e);}
@@ -422,6 +468,9 @@ export function installSourceBackedWeightReview({
         output.audit.ciiEngineeringDiff.expectedDifferences.map(x=>
           'RIGID '+x.oldRigidPointer+' → '+x.newRigidPointer+
           ': '+x.oldWeight+' → '+x.newWeight).join('\n')+
+        (output.audit.requestedOutputVerification
+          ? '\nEXPLICIT CII OUTPUT TARGET VERIFIED: '+
+            output.audit.requestedOutputVerification.actualCiiOutputWeight:'')+
         '\nOriginal files immutable. Unrelated XML bytes changed: 0'+
         '\nUnexpected CII engineering differences: 0'+
         (output.audit.massReconciliation ?
