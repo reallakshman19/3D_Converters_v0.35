@@ -47,33 +47,53 @@ export function classifyR4aComponentRepresentations({componentNodes,selectedSour
   const detail=nodes.map(node=>({
     identity:node.identity,branchName:node.branchName,
     nodeNumber:node.originalNodeNumber,
-    branchOrdinal:node.branchOrdinal,
-    nodeOrdinal:node.nodeOrdinal,
-    componentRefNo:node.componentRefNo,
-    weightRaw:node.fields?.Weight??null,
+    branchOrdinal:node.branchOrdinal,nodeOrdinal:node.nodeOrdinal,
+    componentRefNo:node.componentRefNo,componentType:node.componentType,
+    endpoint:node.fields?.Endpoint??null,rigidFlag:node.fields?.Rigid??null,
+    position:node.fields?.Position??null,weightRaw:node.fields?.Weight??null,
     writerPointers:[...(writers.get(node.identity)||new Set())].sort((a,b)=>a-b),
   }));
   const selected=detail.find(n=>n.identity===selectedSourceIdentity);
-  const selectedMass=numeric(selected?.weightRaw);
-  if(!selected || selectedMass===null || detail.some(n=>
-      n.identity!==selectedSourceIdentity &&
-      (n.branchName!==selected.branchName ||
-       n.branchOrdinal!==selected.branchOrdinal ||
-       n.writerPointers.length!==0 ||
-       (numeric(n.weightRaw)!==0 && numeric(n.weightRaw)!==selectedMass)))) {
-    return {qualified:false,reason:'Repeated ComponentRefNo crosses branches, has a different/missing mass field, or controls another CII RIGID. Complete component allocation cannot be inferred.',nodes:detail};
+  const selectedMass=numeric(selected?.weightRaw),issues=[];
+  const issue=(code,node,detail)=>issues.push({
+    code,sourceIdentity:node?.identity??null,
+    sourceNodeNumber:node?.nodeNumber??null,
+    branchName:node?.branchName??null,detail,
+  });
+  if(!selected)issue('WRITER_IDENTITY_NOT_FOUND',null,
+    'No selected R1 writer matches a source node in this component');
+  else if(selectedMass===null)issue('WRITER_WEIGHT_MISSING_OR_INVALID',selected,
+    'Selected R1 writer lacks a finite nonnegative source Weight');
+  for(const n of detail){
+    if(!selected||n.identity===selectedSourceIdentity)continue;
+    if(n.branchOrdinal!==selected.branchOrdinal||n.branchName!==selected.branchName)
+      issue('CROSS_BRANCH_COMPONENT_REF',n,
+        'Same ComponentRefNo appears in another branch; shared physical ownership is unproven');
+    if(n.writerPointers.length)
+      issue('ADDITIONAL_RIGID_WRITER',n,
+        'Another source representation writes RIGID '+n.writerPointers.join(', '));
+    const otherMass=numeric(n.weightRaw);
+    if(otherMass===null)
+      issue('NON_WRITER_WEIGHT_MISSING_OR_INVALID',n,'Additional source Weight is not numeric');
+    else if(selectedMass!==null&&otherMass!==0&&otherMass!==selectedMass)
+      issue('NON_WRITER_WEIGHT_CONFLICT',n,
+        'Additional nonzero source Weight differs from selected writer');
   }
-  if(nodes.length>1 && !selected.writerPointers.length) {
-    return {qualified:false,reason:'Selected source does not control a verified emitted RIGID.',nodes:detail};
-  }
+  if(selected&&nodes.length>1&&!selected.writerPointers.length)
+    issue('SELECTED_SOURCE_NOT_A_WRITER',selected,
+      'Selected source has no final RIGID writer dependency');
+  const failureCodes=[...new Set(issues.map(x=>x.code))];
+  if(issues.length)return {qualified:false,reason:issues.map(x=>
+    x.code+(x.sourceNodeNumber?' (Node '+x.sourceNodeNumber+')':'')).join('; '),
+    failureCodes,issues,nodes:detail,aliases:[]};
   const aliases=detail.filter(n=>n.identity!==selectedSourceIdentity &&
     numeric(n.weightRaw)===selectedMass && selectedMass>0);
   return {qualified:true,reason:nodes.length>1
     ? aliases.length
-      ? 'Unique R1 writer plus identical physical-mass representation on non-writer nodes; all equal positive XML Weight tokens must be edited atomically.'
-      : 'Unique R1 writer plus explicitly zero-weight non-writer endpoint representations.'
-    : 'Single physical source node.',nodes:detail,
-    aliases:aliases.map(n=>n.identity)};
+      ? 'Unique R1 writer plus identical positive non-writer aliases; update all matching XML tokens atomically.'
+      : 'Unique R1 writer plus explicitly zero-weight non-writer endpoint witnesses.'
+    : 'Single physical source node.',
+    failureCodes:[],issues:[],nodes:detail,aliases:aliases.map(n=>n.identity)};
 }
 
 const transformFor=(ledger,sourceId,edges)=>{
@@ -219,8 +239,11 @@ export async function projectR4aOwnership({result,inventory,verifiedLineage}) {
           'R1 repeated-source candidates do not match original frozen XML Node/Weight tokens.',{
           physicalComponentRefNo:component,
           sourceNodeCandidates:representation.nodes,
+          ambiguityReasons:representation.failureCodes?.length?
+            representation.failureCodes:['SOURCE_XML_REPRESENTATION_MISMATCH'],
+          ambiguityIssues:representation.issues||[],
           dependentPointers:[...new Set(representation.nodes.flatMap(n=>n.writerPointers))],
-          resolutionAdvice:'Inspect each ComponentRefNo source Node/Weight and complete final-RIGID dependency set. Only a unique writer with zero-mass non-writer witnesses can autoqualify; true shared physical mass needs verified allocation.',
+          resolutionAdvice:'Inspect every XML representation and writer dependency. A single writer with zero-mass non-writer witnesses may use an isolated converter trial; extra writers, conflicting masses or cross-branch reuse need approved allocation.',
         }));
       continue;
     }
