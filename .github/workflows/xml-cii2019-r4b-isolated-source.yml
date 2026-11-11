@@ -1,0 +1,72 @@
+name: XML-CII2019 R4B isolated two-writer source edits
+on:
+  push:
+    branches: ['feature/xml-cii2019-r4b-multi-rigid-isolated-source-edit-*']
+  pull_request:
+    paths:
+      - 'tabs/xml-cii-2019-standalone/xml-cii-r4b-isolated-source-edit.js'
+      - 'tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-source-weight-review.js'
+      - 'tests/r4b_prepare_two_writer_fixture.py'
+      - 'tests/xml-cii-r4b-isolated-*.mjs'
+      - '.github/workflows/xml-cii2019-r4b-isolated-source.yml'
+permissions:
+  contents: read
+jobs:
+  r4b-isolated-source-unit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: JS and Python source syntax
+        run: |
+          python3 -m py_compile tests/r4b_prepare_two_writer_fixture.py
+          node --check tabs/xml-cii-2019-standalone/xml-cii-r4b-isolated-source-edit.js
+          node --check tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-source-weight-review.js
+          node --check tests/xml-cii-r4b-isolated-source-edit.test.mjs
+          node --check tests/xml-cii-r4b-isolated-browser.test.mjs
+      - name: Generate actual native Python converter two-writer CII and R1 independent lineage
+        run: python3 tests/r4b_prepare_two_writer_fixture.py --output "$RUNNER_TEMP/r4b-two-writer"
+      - name: R4B exact writer isolation positive and adverse tests
+        env:
+          R4B_FIXTURE_DIR: ${{ runner.temp }}/r4b-two-writer
+        run: node --test tests/xml-cii-r4b-isolated-source-edit.test.mjs
+      - name: R4A source-weight and R4B diagnostic regressions
+        run: |
+          python3 tests/r2_prepare_synthetic_fixture.py --output "$RUNNER_TEMP/r4a"
+          python3 tests/r4a_prepare_lineage.py --dir "$RUNNER_TEMP/r4a"
+          R4A_FIXTURE_DIR="$RUNNER_TEMP/r4a" node --test tests/xml-cii-r4a-ownership.test.mjs
+          R4A_FIXTURE_DIR="$RUNNER_TEMP/r4a" node --test tests/xml-cii-r4b-audit.test.mjs
+      - name: Retain only synthetic test receipts (never user GLRD source)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: r4b-isolated-two-writer-synthetic-evidence
+          path: |
+            ${{ runner.temp }}/r4b-two-writer/*.cii
+            ${{ runner.temp }}/r4b-two-writer/*.xml
+          if-no-files-found: ignore
+  r4b-actual-chromium-pyodide:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Generate converter-produced, source-pinned, two-writer synthetic fixture
+        run: python3 tests/r4b_prepare_two_writer_fixture.py --output tests/.r4b-two-writer-runtime
+      - name: Install isolated Chromium
+        run: |
+          npm install --no-save --package-lock=false playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Actual Chromium/Pyodide R4B source edit and revised XML/CII download
+        run: node --test tests/xml-cii-r4b-isolated-browser.test.mjs
