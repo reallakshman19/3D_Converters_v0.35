@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { ciiSha256 } from '../tabs/xml-cii-2019-standalone/xml-cii-final-property-reader.js';
 import { parseFinalCiiRigidInventory } from '../tabs/xml-cii-2019-standalone/xml-cii-final-rigid-inventory.js';
-import { projectR4aOwnership, summarizeR4aOwnership } from '../tabs/xml-cii-2019-standalone/xml-cii-r4a-rigid-ownership.js';
+import { projectR4aOwnership, summarizeR4aOwnership, classifyR4aComponentRepresentations } from '../tabs/xml-cii-2019-standalone/xml-cii-r4a-rigid-ownership.js';
 import { reconcileR4aPhysicalMass } from '../tabs/xml-cii-2019-standalone/xml-cii-r4a-mass-reconcile.js';
 import { initializeSourceWeightSession, applySourceBackedWeightChange }
  from '../tabs/xml-cii-2019-standalone/xml-cii-source-weight-reextract.js';
@@ -193,3 +193,33 @@ test('R4A missing independent bridge is HOLD without claiming newly transformed 
   requireR4aLineage:true,
  }),/R4A_LINEAGE_HOLD/);
 });
+
+test('Repeated ComponentRefNo: only unique verified writer plus zero-mass non-writer same-branch witnesses qualifies',()=>{
+ const writer={identity:'W',branchName:'/B',originalNodeNumber:'3429',
+   nodeOrdinal:20,componentRefNo:'/COMP135',fields:{Weight:'15'}};
+ const witness={identity:'Z',branchName:'/B',originalNodeNumber:'10120',
+   nodeOrdinal:21,componentRefNo:'/COMP135',fields:{Weight:'0'}};
+ const same=new Map([['W',new Set([135])]]);
+ const verified=classifyR4aComponentRepresentations({
+   componentNodes:[writer,witness],selectedSourceIdentity:'W',writerDependents:same});
+ assert.equal(verified.qualified,true);
+ assert.equal(verified.nodes.length,2);
+ assert.deepEqual(verified.nodes.find(n=>n.identity==='Z').writerPointers,[]);
+ for(const bad of [
+   {...witness,fields:{Weight:'15'}},
+   {...witness,fields:{Weight:''}},
+   {...witness,branchName:'/OTHER'},
+ ]) {
+   const result=classifyR4aComponentRepresentations({
+     componentNodes:[writer,bad],selectedSourceIdentity:'W',writerDependents:same});
+   assert.equal(result.qualified,false,JSON.stringify(bad));
+ }
+ const secondWriter=new Map([['W',new Set([135])],['Z',new Set([136])]]);
+ assert.equal(classifyR4aComponentRepresentations({
+   componentNodes:[writer,witness],selectedSourceIdentity:'W',
+   writerDependents:secondWriter}).qualified,false);
+ assert.equal(classifyR4aComponentRepresentations({
+   componentNodes:[writer,witness],selectedSourceIdentity:'NONEXISTENT',
+   writerDependents:same}).qualified,false);
+});
+
