@@ -66,6 +66,28 @@ def _canonical_number(token: str) -> str:
     return format(value, ".12g")
 
 
+def _element_first_row_numbers(line: str, label: str) -> list[str]:
+    """Decode the six writer-defined ELEMENT geometry fields without whitespace
+    assumptions. A 15-character first real followed by five 13-character
+    reals can validly contain `730.000-1.000000E-02` with no separator.
+
+    Preserve the legacy whitespace fixture format for short synthetic rows.
+    Do not strip the sign from a touching negative field or guess a width.
+    """
+    if len(line) >= 80:
+        fields = [line[:15].strip()] + [
+            line[15 + 13 * i:28 + 13 * i].strip() for i in range(5)
+        ]
+        if all(re.fullmatch(r"[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[EeDd][+-]?\d+)?", field)
+               for field in fields):
+            return fields
+        raise ReparseError(f"{label}: invalid writer fixed-width geometry fields")
+    fields = line.split()
+    if len(fields) < 6:
+        raise ReparseError(f"{label}: requires 6 geometry numbers, got {len(fields)}")
+    return fields[:6]
+
+
 def _int_tokens(line: str, count: int, label: str) -> list[int]:
     tokens = line.split()
     if len(tokens) < count:
@@ -149,9 +171,8 @@ def parse_cii2019(cii_text: str) -> dict[str, Any]:
     elements: list[dict[str, Any]] = []
     for offset in range(0, len(elements_payload), ELEMENT_BLOCK_LINES):
         block = elements_payload[offset : offset + ELEMENT_BLOCK_LINES]
-        first = block[0].split()
-        if len(first) < 2:
-            raise ReparseError(f"ELEMENTS record {offset // ELEMENT_BLOCK_LINES + 1} lacks node pair.")
+        first = _element_first_row_numbers(
+            block[0], f"ELEMENTS record {offset // ELEMENT_BLOCK_LINES + 1}")
         row12 = _int_tokens(block[12], 6, "ELEMENTS row12")
         row13 = _int_tokens(block[13], 6, "ELEMENTS row13")
         row14 = _int_tokens(block[14], 3, "ELEMENTS row14")
