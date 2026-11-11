@@ -56,7 +56,7 @@ function ciiFileGlrdShape() {
   }
   parts.push('#$ RIGID', ...Array.from({length: rigidCount}, (_, i) =>
     row([i === 134 ? 150 : 590, '0.000000'])));
-  return parts.join('\\r\\n') + '\\r\\n';
+  return parts.join('\r\n') + '\r\n';
 }
 const original = ciiFile();
 const out = await mkdtemp(join(tmpdir(), 'cii-final-ui-'));
@@ -716,17 +716,17 @@ try {
     const rigid135=page.locator('[data-final-rigid-row][data-pointer="135"]');
     assert.equal(await rigid135.locator('[data-final-rigid-edited]').inputValue(),'150');
     assert.match(await rigid135.locator('[data-final-rigid-nearest-candidate]').first().innerText(),
-      /2\\.984 kg · 50%/);
+      /2\.984 kg · 50%/);
     await page.locator('[data-final-rigid-batch-preview]').click();
     const modal=page.locator('[data-final-rigid-batch-dialog]');
     await modal.locator('[data-final-rigid-batch-apply-nearest]').click();
     const target=modal.locator('[data-final-rigid-batch-row="135"]');
     assert.match(await target.innerText(), /#384 · 3429 → 10120/);
-    assert.match(await target.innerText(), /19\\.1/);
-    assert.match(await target.innerText(), /29\\.84/);
+    assert.match(await target.innerText(), /19\.1/);
+    assert.match(await target.innerText(), /29\.84/);
     assert.match(await target.innerText(), /WARNING/);
     assert.match(await modal.locator('[data-final-rigid-batch-approve-all]').innerText(),
-      /Approve All Eligible \\(1\\)/);
+      /Approve All Eligible \(1\)/);
     assert.equal(await modal.locator('[data-final-rigid-batch-stage]').isDisabled(),true);
     await modal.locator('[data-final-rigid-batch-approve-all]').click();
     assert.equal(await target.locator('[data-final-rigid-batch-approve]').isChecked(),true);
