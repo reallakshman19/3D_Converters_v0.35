@@ -80,9 +80,9 @@ test('EF-05 fail closed: wrong requested output cannot authorize revised output 
    ...target,requestedOutputWeight:'0.002'},{getCurrentResult:()=>result}),
    /SOURCE_OUTPUT_WEIGHT_HOLD TARGET_NOT_EMITTED/);
  assert.equal(session.committed,null);
- const changed=verifyRequestedCiiOutputWeight({
+ assert.throws(()=>verifyRequestedCiiOutputWeight({
    requestedOutputWeight:'0.001',rigidPointer:row.rigidPointer,
    ciiEngineeringDiff:{status:'PASS_ENGINEERING_DIFF',unexpectedDifferences:0,
-     expectedDifferences:[{oldRigidPointer:row.rigidPointer+1,newWeight:0.001}]}});
- assert.equal(changed, null);
+     expectedDifferences:[{oldRigidPointer:row.rigidPointer+1,newWeight:0.001}]}}),
+   /SOURCE_OUTPUT_WEIGHT_HOLD TARGET_NOT_EMITTED/);
 });
