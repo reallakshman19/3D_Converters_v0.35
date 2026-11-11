@@ -205,8 +205,13 @@ test('Repeated ComponentRefNo: only unique verified writer plus zero-mass non-wr
  assert.equal(verified.qualified,true);
  assert.equal(verified.nodes.length,2);
  assert.deepEqual(verified.nodes.find(n=>n.identity==='Z').writerPointers,[]);
+ const sameMass=classifyR4aComponentRepresentations({
+   componentNodes:[writer,{...witness,fields:{Weight:'15'}}],
+   selectedSourceIdentity:'W',writerDependents:same});
+ assert.equal(sameMass.qualified,true);
+ assert.deepEqual(sameMass.aliases,['Z']);
  for(const bad of [
-   {...witness,fields:{Weight:'15'}},
+   {...witness,fields:{Weight:'12'}},
    {...witness,fields:{Weight:''}},
    {...witness,branchName:'/OTHER'},
  ]) {
