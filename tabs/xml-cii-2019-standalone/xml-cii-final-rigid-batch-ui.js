@@ -90,6 +90,7 @@ export function installFinalRigidBatchControls({
       '<h3 style="margin:0;">Preview Batch Weight Corrections</h3>' +
       '<p style="margin:0;font-size:12px;color:#fbbf24;">Apply Nearest prepares candidates without editing CII. Approve All Eligible explicitly accepts the proposed FINAL-CII weights, including WARNING/approximate suggestions; hard HOLD and pre-edited rows remain excluded. Source XML is not changed.</p>' +
       '<div data-final-rigid-batch-summary role="status" style="font-size:12px;color:#dbeafe;"></div>' +
+       '<div data-final-rigid-batch-error role="alert" aria-live="assertive" style="display:none;white-space:pre-wrap;font-size:12px;color:#fecaca;background:#451a1a;border:1px solid #ef4444;padding:9px;border-radius:5px;"></div>' +
       '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px;font-size:12px;">' +
       '<button type="button" data-final-rigid-batch-apply-nearest title="Use the top-ranked suggestion in preview only; no weights approved or staged" ' +
       'style="cursor:pointer;background:#1e293b;color:#dbeafe;padding:6px 10px;border-radius:5px;' +
@@ -117,6 +118,19 @@ export function installFinalRigidBatchControls({
       '</div></div>';
     overlay.append(dialogLayer);
     const summary = dialogLayer.querySelector('[data-final-rigid-batch-summary]');
+    const errorMessage = dialogLayer.querySelector('[data-final-rigid-batch-error]');
+    const clearError = () => {
+      errorMessage.style.display = 'none';
+      errorMessage.textContent = '';
+    };
+    const showError = (error) => {
+      const detail = String(error?.message || error || 'Unknown verification error');
+      errorMessage.textContent = 'Batch verification refused: ' + detail +
+        '\nNo weights were changed. Keep or adjust your selected rows, then retry.' +
+        '\nFor diagnosis, choose a smaller batch scope or export the change report.';
+      errorMessage.style.display = 'block';
+      status.textContent = 'Batch NOT STAGED: ' + detail;
+    };
     const body = dialogLayer.querySelector('[data-final-rigid-batch-rows]');
     const showHeld = dialogLayer.querySelector('[data-final-rigid-batch-show-held]');
     const applyNearest = dialogLayer.querySelector('[data-final-rigid-batch-apply-nearest]');
@@ -210,6 +224,7 @@ export function installFinalRigidBatchControls({
       updateStage();
     }
     const selectAllEligible = (checked) => {
+      clearError();
       const current = recalc();
       const bulkSelectable = nearestPrepared
         ? [...current.eligible, ...current.warnings] : current.eligible;
@@ -225,6 +240,7 @@ export function installFinalRigidBatchControls({
       render();
     };
     applyNearest.addEventListener('click', () => {
+      clearError();
       const prepared = prepareNearestFinalRigidBatchPreview(inventory, plans, {
         ...base, selectedIndices: candidateIndices,
       });
@@ -244,15 +260,17 @@ export function installFinalRigidBatchControls({
       selectAllEligible(approveAllCheckbox.checked));
     showHeld.addEventListener('change', render);
     dialogLayer.querySelector('[data-final-rigid-batch-cancel]').addEventListener('click', close);
-    confirm.addEventListener('change', updateStage);
+    confirm.addEventListener('change', () => { clearError(); updateStage(); });
     body.addEventListener('change', (event) => {
       const target = event.target;
       if (target.matches('[data-final-rigid-batch-approve]')) {
+        clearError();
         const pointer = Number(target.getAttribute('data-final-rigid-batch-approve'));
         if (target.checked) selections.add(pointer); else selections.delete(pointer);
         bulkApprovedPointers.delete(pointer);
         updateStage();
       } else if (target.matches('[data-final-rigid-batch-candidate]')) {
+        clearError();
         const pointer = Number(target.getAttribute('data-final-rigid-batch-candidate'));
         candidateIndices.set(pointer, Number(target.value));
         selections.delete(pointer);
@@ -262,14 +280,23 @@ export function installFinalRigidBatchControls({
       }
     });
     stage.addEventListener('click', async () => {
+      clearError();
       updateStage();
-      if (stage.disabled || !isReady()) return;
+      if (stage.disabled || !isReady()) {
+        showError(new Error(!isReady()
+          ? 'Original converter/editor session is not ready or has changed.'
+          : 'No valid selection or review approval remains.')); return;
+      }
       const current = recalc();
       const chosen = [...current.eligible, ...current.warnings]
         .filter((r) => selections.has(r.pointer));
-      if (!chosen.length || chosen.some((r) => r.reviewRequired) && !confirm.checked) return;
+      if (!chosen.length || (chosen.some((r) => r.reviewRequired) && !confirm.checked)) {
+        showError(new Error('No approved rows are available in the current scope.')); return;
+      }
       stage.disabled = true;
-      summary.textContent = 'Verifying exact RIGID pointer edits, full CII reparse and untouched-byte parity…';
+      stage.textContent = 'Verifying ' + chosen.length + ' selected RIGIDs…';
+      summary.textContent = 'Verifying ' + chosen.length +
+        ' selected RIGIDs: exact pointers, complete CII reparse and untouched-byte parity…';
       try {
         const result = await stageAndVerify(chosen, current.thresholdPct, confirm.checked,
           new Set(bulkApprovedPointers));
@@ -280,7 +307,10 @@ export function installFinalRigidBatchControls({
           'No CII changes needed: selected warnings already match the original weight.';
         close();
       } catch (error) {
-        summary.textContent = 'REFUSED: ' + (error?.message || error) + '. No batch changes were staged.';
+        updateStage();
+        showError(error);
+      } finally {
+        stage.textContent = 'Stage & Verify Selected Corrections';
         updateStage();
       }
     });
