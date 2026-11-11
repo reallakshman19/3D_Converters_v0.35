@@ -111,6 +111,11 @@ test('Final ELEMENT 234 / RIGID 15: emitted 168.3 OD always displays DN150, mass
  assert.equal(final.bore.value,150);
  assert.equal(final.bore.source,'cii-od-dn');
  assert.equal(final.bore.original,'168.3');
+ assert.equal(final.boreEvidenceMismatch?.sourceValue,300,
+   'Stale DN300 must be retained in review evidence, not applied');
+ assert.equal(final.boreEvidenceMismatch?.ciiNominalBore,150);
+ assert.equal(final.eligibleForAutomaticReference,false,
+   'Stale source bore requires review even when CII OD establishes correct DN');
  assert.equal(inventory.rows[0].weight,590);
  // Ranker may return catalog comparisons only for DN150; DN300 must never
  // reach the weight ranker even if raw XML BoreMm is stale.
