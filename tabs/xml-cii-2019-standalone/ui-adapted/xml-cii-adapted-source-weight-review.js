@@ -116,8 +116,8 @@ export function installSourceBackedWeightReview({
   const groupPlan=add(content,'fieldset',null,{
     'data-source-weight-r4b-plan':'',
     style:'display:none;border:1px solid #64748b;padding:12px;margin-top:12px;'});
-  add(groupPlan,'legend','R4B multi-RIGID source allocation approval');
-  add(groupPlan,'p','A real-converter read-only trial must prove the target is isolated. Repeated ComponentRefNo is not physical mass approval. Enter a separately approved revised physical group total and its engineering reference before Apply.',
+  add(groupPlan,'legend','R4B/R4C verified source-writer allocation approval');
+  add(groupPlan,'p','A real-converter trial must prove exact isolation for one or more RIGID writers. Repeated ComponentRefNo is not physical mass approval. Enter a separately approved revised physical group total and its engineering reference before Apply.',
     {style:'font-size:12px;color:#fde68a;'});
   const planTotalLabel=add(groupPlan,'label','Approved revised physical group total (kg) ',{style:'font-size:11px;'});
   const planTotal=add(planTotalLabel,'input',null,{
@@ -157,7 +157,7 @@ export function installSourceBackedWeightReview({
   const r4bCanProbe=row=>Boolean(row&&!row.eligible&&
     ['SOURCE_OWNER_AMBIGUOUS','SPLIT_ALLOCATION_UNRESOLVED'].includes(row.reasonCode)&&
     session?.verifiedLineage?.status==='PASS_R1_STRUCTURAL_LINEAGE_WITH_UNATTESTED_MASS'&&
-    (session?.r4bAuditByPointer?.get(row.rigidPointer)?.dependentRigidPointers?.length||0)>=2);
+    session?.r4bAuditByPointer?.get(row.rigidPointer)?.probeCandidate===true);
   const current=()=>typeof getCurrentResult==='function'?getCurrentResult():result;
   direct.addEventListener('click',()=>{
     if(content.style.display!=='none'){
@@ -198,11 +198,19 @@ export function installSourceBackedWeightReview({
       ['Weight scale',row.weightScale??diagnostic?.weightScale??'Unresolved'],
       ['Rejection / approval code',row.reasonCode||'R2_DIRECT_EDGE_ONLY'],
       ['Physical owner',row.physicalComponentRefNo||diagnostic?.componentRefNo||'UNRESOLVED'],
-      ['Source Node/Weight candidates',row.sourceNodeCandidates?.map(n=>
+      ['Source Node/Weight candidates',(row.sourceNodeCandidates||
+        diagnostic?.sourceNodeCandidates||[]).map(n=>
         n.branchName+' Node '+n.nodeNumber+' (ordinal '+n.nodeOrdinal+
+        ', Endpoint '+(n.endpoint||'none')+', Rigid '+(n.rigidFlag||'none')+
         ', Weight '+(n.weightRaw==null || n.weightRaw===''?'MISSING':n.weightRaw)+
         ' kg, writer RIGIDs '+(n.writerPointers?.join(', ')||'none')+')'
       ).join('; ')||'Not resolved'],
+      ['Specific ownership conflicts',(row.ambiguityReasons||
+        diagnostic?.ambiguityReasons||[]).join(', ')||'No granular conflict recorded'],
+      ['Conflict evidence',(row.ambiguityIssues||diagnostic?.ambiguityIssues||[])
+        .map(x=>x.code+' · Node '+(x.sourceNodeNumber||'?')+
+          ' · '+(x.branchName||'?')+' · '+x.detail).join('; ')||
+          'No granular conflict details available'],
       ['Owner representation evidence',row.representationBasis||row.resolutionAdvice||'No verified allocation'],
       ['Source Weight fields to update together',row.sourceWeightFieldsToEdit?.length??'UNQUALIFIED'],
       ['Original physical mass (kg)',row.originalPhysicalMassKg??'UNVERIFIED'],
@@ -231,7 +239,7 @@ export function installSourceBackedWeightReview({
     eligibility.textContent=row.eligible
       ? 'Verified source owner (one-to-one). Enter an approved XML Weight (kg).'
       : multi
-        ? 'R4B: source owner is NOT approved. Enter a proposed kg value, then Preview to run a real-converter isolated-writer trial. Commit requires documented total-group allocation.'
+        ? 'R4B/R4C: physical owner remains unapproved. Enter proposed kg or desired CII weight, then Preview to prove isolated writer impact. Apply still requires approved group mass and reference.'
         : 'HOLD: '+(row.reasonCode||'SOURCE_OWNER_UNRESOLVED')+
           '. '+row.reason+' Use Direct-CII Weight Review for output-only changes.';
     eligibility.style.color=row.eligible?'#86efac':multi?'#93c5fd':'#fbbf24';
@@ -391,7 +399,7 @@ export function installSourceBackedWeightReview({
       }
       if(parsed.number===0&&!zero.checked)throw Error('Confirm numeric zero explicitly.');
       if(r4bCanProbe(row)){
-        report.textContent='RUNNING R4B read-only real-converter trial. No source has been saved…';
+        report.textContent='RUNNING source ownership resolution trial through the real converter. No source has been saved…';
         const trial=await previewR4bIsolatedSourceEdit(session,{
           rigidPointer:row.rigidPointer,newValue:text,
         },{getCurrentResult:current,engineRunner});
@@ -405,7 +413,10 @@ export function installSourceBackedWeightReview({
           Math.abs(total-trial.proposedEmittedGroupKg)<=0.00001;
         previewSignature=signature();
         apply.disabled=!canCommit;
-        report.textContent='R4B REAL-CONVERTER ISOLATION TRIAL: PASS (not yet applied)'+
+        report.textContent='R4B/R4C REAL-CONVERTER ISOLATION TRIAL: PASS (not yet applied)'+
+          '\nOwner topology: '+trial.ownershipTopology+
+          '\nZero-mass source witnesses: '+trial.zeroMassSourceWitnesses
+            .map(x=>'Node '+x.nodeNumber+' ('+x.originalToken+' kg)').join(', ')+
           '\nComponentRefNo: '+trial.componentRefNo+
           '\nRIGID '+trial.rigidPointer+': '+trial.originalWeightCii+' → '+trial.proposedWeightCii+' N'+
           '\nOther RIGID writers: '+trial.memberAllocations.filter(x=>x.rigidPointer!==trial.rigidPointer)
