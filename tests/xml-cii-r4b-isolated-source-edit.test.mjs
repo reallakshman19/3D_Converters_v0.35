@@ -104,7 +104,7 @@ test('R4B stale conversion, changed plan, cross-branch duplication, and wrong wr
    {...approved,newValue:'2.7'},{getCurrentResult:()=>result}),/STALE_PLAN/);
  await assert.rejects(()=>applyR4bIsolatedSourceEdit(s,preview,
    approved,{getCurrentResult:()=>structuredClone(result)}),/STALE_RUN/);
- const broken=structuredClone(s);
+ const broken={...s,verifiedLineage:structuredClone(s.verifiedLineage)};
  broken.verifiedLineage.sourceNodes.push({
    ...broken.verifiedLineage.sourceNodes.find(x=>x.componentRefNo==='/SHARED-COMP'),
    identity:'CROSS-BRANCH',branchName:'/ELSEWHERE',branchOrdinal:8,
