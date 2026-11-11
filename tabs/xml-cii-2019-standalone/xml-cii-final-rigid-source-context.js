@@ -172,10 +172,15 @@ export function buildFinalRigidSourceContexts(inventory, evidence = {}, authorit
     // particular emitted edge. It may be downstream of a reducer while source
     // XML still contains an obsolete branch-wide nominal BoreMm.
     const ciiBore = fallback.bore?.source === 'cii-od-dn' ? fallback.bore : null;
-    const staleBore = ciiBore && context.bore?.value != null &&
-      Number(context.bore.value) !== Number(ciiBore.value)
-        ? {sourceValue:context.bore.value,ciiNominalBore:ciiBore.value,
-          reason:'Source BoreMm disagrees with emitted CII OD: final edge DN controls review'} : null;
+    const sourceBoreValue = context.bore?.staleSourceBoreMm ??
+      (ciiBore && context.bore?.value != null &&
+        Number(context.bore.value) !== Number(ciiBore.value)
+          ? context.bore.value : null);
+    const staleBore = ciiBore && sourceBoreValue !== null &&
+      Number(sourceBoreValue) !== Number(ciiBore.value)
+        ? {sourceValue:sourceBoreValue,ciiNominalBore:ciiBore.value,
+          outsideDiameterMm:ciiBore.original,
+          reason:'Stale XML BoreMm disagrees with emitted CII OD: final edge DN controls review'} : null;
     const bore = ciiBore || (missingBore ? fallback.bore : context.bore);
     const rating = missingRating ? fallback.rating : context.rating;
     const newConflicts = [
