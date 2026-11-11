@@ -126,7 +126,7 @@ try{
       page.waitForEvent('download'), frozenButton.click()]);
     const frozen=JSON.parse(await readFile(await frozenDownload.path(),'utf8'));
     assert.equal(frozen.schema,'xml-cii2019-current-converter-run/v1');
-    assert.equal(frozen.currentRun.elementCount,6);
+    assert.equal(frozen.currentRun.elementCount,11);
     assert.equal(frozen.currentRun.rigidCount,6);
     assert.equal(frozen.currentRun.weightScale,10);
     assert.equal(frozen.payloads.engineInputXml,originalXml);
