@@ -413,7 +413,7 @@ export function installSourceBackedWeightReview({
           Math.abs(total-trial.proposedEmittedGroupKg)<=0.00001;
         previewSignature=signature();
         apply.disabled=!canCommit;
-        report.textContent='R4B/R4C REAL-CONVERTER ISOLATION TRIAL: PASS (not yet applied)'+
+        report.textContent='R4B REAL-CONVERTER ISOLATION TRIAL: PASS (R4C one-writer alias supported; not yet applied)'+
           '\nOwner topology: '+trial.ownershipTopology+
           '\nZero-mass source witnesses: '+trial.zeroMassSourceWitnesses
             .map(x=>'Node '+x.nodeNumber+' ('+x.originalToken+' kg)').join(', ')+
