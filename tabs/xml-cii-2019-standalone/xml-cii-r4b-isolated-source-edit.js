@@ -5,6 +5,7 @@
  * before a source-backed commit; R4A's one-to-one rules are not weakened.
  */
 import { ciiSha256 } from './xml-cii-final-property-reader.js';
+import { verifyRequestedCiiOutputWeight } from './xml-cii-source-weight-output-target.js';
 import { applyXmlSourceEdits, inspectXmlWeightSources } from './xml-cii-source-weight-patch.js';
 import { verifySourceEditedCii, indexAll15CiiAuxiliaryPointers }
   from './xml-cii-source-weight-cii-verify.js';
@@ -231,7 +232,7 @@ export async function previewR4bIsolatedSourceEdit(session,{
 }
 export async function applyR4bIsolatedSourceEdit(session,preview,{
   rigidPointer,newValue,approved,ownerApproved,approvedGroupTotalKg,
-  allocationMode,referenceBasis,
+  allocationMode,referenceBasis,requestedOutputWeight,
 },{getCurrentResult,engineRunner=session?.engineRunner}={}){
   const current=typeof getCurrentResult==='function'?getCurrentResult():session?.originalResult;
   await assertFrozen(session,current);
@@ -290,6 +291,10 @@ export async function applyR4bIsolatedSourceEdit(session,preview,{
   requireCheck(result.delta.revisedCiiSha256===preview.trialCiiSha256&&
     result.patch.revisedSha256===preview.trialXmlSha256,
     'NONDETERMINISTIC_TRIAL','Approved re-extraction diverged from preview');
+  const requestedOutputVerification=verifyRequestedCiiOutputWeight({
+    requestedOutputWeight,rigidPointer:preview.rigidPointer,
+    ciiEngineeringDiff:result.delta,
+  });
   await assertFrozen(session,current);
   const stem=session.custody.sourceName.replace(/\.[^.]*$/,'').replace(/[\\/:*?"|]/g,'_');
   const audit={
@@ -315,6 +320,7 @@ export async function applyR4bIsolatedSourceEdit(session,preview,{
     sourceXmlByteDiff:result.patch.edits,
     unrelatedXmlBytesChanged:result.patch.unrelatedXmlBytesChanged,
     ciiEngineeringDiff:result.delta, noEditParity:session.noEditParity,
+    ...(requestedOutputVerification?{requestedOutputVerification}:{}),
     unrelatedCiiEngineeringDifferences:0,
     sourceLinkedReconciliation:'PASS_SINGLE_WRITER_ISOLATED_AND_ALL_OTHER_RIGIDS_UNCHANGED',
   };
