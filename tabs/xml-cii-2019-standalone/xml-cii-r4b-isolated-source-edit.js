@@ -1,4 +1,4 @@
-/** R4B Phase B/C: bounded one-writer edit within a complete multi-RIGID group.
+/** R4B/R4C: bounded, exact-run source edit for a repeated component identity.
  * Read-only what-if must prove isolation through the EXISTING real converter.
  * Neither ComponentRefNo nor this code asserts physical ownership or mass
  * approval. An independently supported owner-entered group total is required
@@ -106,9 +106,9 @@ function componentGroup(session,pointer){
   const memberRecords=auxiliary.filter(a=>(a.ownerCandidates||[])
     .some(x=>component(x)===token)||family.some(n=>n.identity===a.writerWeightSourceNode));
   const pointers=memberRecords.map(x=>x.recordPointer).sort((a,b)=>a-b);
-  requireCheck(pointers.length>=2&&pointers.includes(pointer)&&
+  requireCheck(pointers.length>=1&&pointers.includes(pointer)&&
     new Set(pointers).size===pointers.length,
-    'DEPENDENCY_INCOMPLETE','Not an independently enumerated multi-RIGID group');
+    'DEPENDENCY_INCOMPLETE','Cannot enumerate the complete component RIGID dependency set');
   const parsed=inspectXmlWeightSources(c.engineXml);
   // Every representation and writer is checked against frozen original XML.
   for(const node of family)sourceMatch(parsed,node);
@@ -148,9 +148,23 @@ function componentGroup(session,pointer){
     family.every(n=>!auxiliary.some(a=>a.writerWeightSourceNode===n.identity)||
       writers.has(n.identity)),
     'DEPENDENCY_INCOMPLETE','Unaccounted writer source or RIGID allocation');
+  // One physical ComponentRefNo may have one or several XML endpoint records.
+  // Any representation which does NOT write a final RIGID must be a verified
+  // zero-mass witness. A non-writer with a positive/missing mass is not silently
+  // treated as an alias or included in the approved physical group total.
+  const witnesses=family.filter(n=>!writers.has(n.identity));
+  for(const witness of witnesses){
+    const field=sourceMatch(parsed,witness).weightField.value;
+    requireCheck(number(field)===0,
+      'NON_WRITER_MASS_CONFLICT',
+      'ComponentRefNo '+token+' has non-writer source Node '+
+      witness.originalNodeNumber+' with '+String(field||'MISSING')+
+      ' kg; isolated writer cannot prove that physical-mass representation');
+  }
   return {token,pointers,writer,originalElement:out.linkedElements[0],
     memberRecords:members,parsed,sourceMatch:sourceMatch(parsed,writer),
     sourceCandidates:family.map(simpleSource),
+    sourceWitnesses:witnesses.map(simpleSource),
     originalEmittedTotalKg:members.reduce((n,m)=>n+m.oldCiiWeight/c.weightScale,0)};
 }
 async function probe(session,group,pointer,newMass,runner){
@@ -214,6 +228,9 @@ export async function previewR4bIsolatedSourceEdit(session,{
     originalWeightCii:old.oldCiiWeight,proposedWeightCii:mass*c.weightScale,
     proposedWeightKg:mass,weightScale:c.weightScale,
     sourceCandidates:group.sourceCandidates,sourceWriter:old.sourceNode,
+    zeroMassSourceWitnesses:group.sourceWitnesses,
+    ownershipTopology:group.pointers.length===1?'ONE_WRITER_MULTIPLE_ZERO_MASS_ENDPOINTS':
+      'MULTI_WRITER_EXPLICIT_GROUP_ALLOCATION',
     dependentRigidPointers:group.pointers,originalEmittedGroupKg:originalTotal,
     proposedEmittedGroupKg:revisedTotal,memberAllocations:updated,
     sourceRunId:c.runId,sourceXmlSha256:c.engineSha,
@@ -284,6 +301,9 @@ export async function applyR4bIsolatedSourceEdit(session,preview,{
     approx(total,revisedTotal)&&
     JSON.stringify(preview.memberAllocations)===JSON.stringify(expected)&&
     JSON.stringify(preview.sourceCandidates)===JSON.stringify(group.sourceCandidates)&&
+    JSON.stringify(preview.zeroMassSourceWitnesses)===JSON.stringify(group.sourceWitnesses)&&
+    preview.ownershipTopology===(group.pointers.length===1?
+      'ONE_WRITER_MULTIPLE_ZERO_MASS_ENDPOINTS':'MULTI_WRITER_EXPLICIT_GROUP_ALLOCATION')&&
     JSON.stringify(preview.sourceWriter)===JSON.stringify(target.sourceNode),
     'PREVIEW_ALLOCATION_TAMPERED','Source, related writer or group total differs from immutable R1 evidence');
   const result=await probe(session,group,preview.rigidPointer,
@@ -309,6 +329,8 @@ export async function applyR4bIsolatedSourceEdit(session,preview,{
     originalWeightCii:preview.originalWeightCii,
     proposedWeightCii:preview.proposedWeightCii,
     dependentRigidPointers:preview.dependentRigidPointers,
+    zeroMassSourceWitnesses:preview.zeroMassSourceWitnesses,
+    ownershipTopology:preview.ownershipTopology,
     memberAllocations:preview.memberAllocations,
     originalEmittedGroupKg:preview.originalEmittedGroupKg,
     revisedEmittedGroupKg:preview.proposedEmittedGroupKg,

@@ -1,0 +1,83 @@
+name: R4C source ownership single-writer aliases and mass conflict
+on:
+  push:
+    branches: ['fix/r4c-ambiguous-single-writer-ownership-*']
+  pull_request:
+    paths:
+      - 'tabs/xml-cii-2019-standalone/xml-cii-r4a-rigid-ownership.js'
+      - 'tabs/xml-cii-2019-standalone/xml-cii-r4b-ownership-audit.js'
+      - 'tabs/xml-cii-2019-standalone/xml-cii-r4b-isolated-source-edit.js'
+      - 'tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-source-weight-review.js'
+      - 'tests/r4c_prepare_single_writer_fixture.py'
+      - 'tests/xml-cii-r4c-single-writer-*.mjs'
+      - '.github/workflows/xml-cii2019-r4c-source-owner.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  r4c-exact-native-writer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Syntax
+        run: |
+          python3 -m py_compile tests/r4c_prepare_single_writer_fixture.py
+          node --check tabs/xml-cii-2019-standalone/xml-cii-r4a-rigid-ownership.js
+          node --check tabs/xml-cii-2019-standalone/xml-cii-r4b-ownership-audit.js
+          node --check tabs/xml-cii-2019-standalone/xml-cii-r4b-isolated-source-edit.js
+          node --check tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-source-weight-review.js
+          node --check tests/xml-cii-r4c-single-writer-ownership.test.mjs
+      - name: Generate verified real Python converter CII and independent R1 lineage
+        run: python3 tests/r4c_prepare_single_writer_fixture.py --output "$RUNNER_TEMP/r4c"
+      - name: One writer + zero source witness, exact output target, safe approval, conflict negatives
+        env:
+          R4C_FIXTURE_DIR: ${{ runner.temp }}/r4c
+        run: node --test tests/xml-cii-r4c-single-writer-ownership.test.mjs
+      - name: Preserve R4A single writer and R4B multi writer contracts
+        run: |
+          python3 tests/r2_prepare_synthetic_fixture.py --output "$RUNNER_TEMP/r4a"
+          python3 tests/r4a_prepare_lineage.py --dir "$RUNNER_TEMP/r4a"
+          R4A_FIXTURE_DIR="$RUNNER_TEMP/r4a" node --test tests/xml-cii-r4a-ownership.test.mjs
+          python3 tests/r4b_prepare_two_writer_fixture.py --output "$RUNNER_TEMP/r4b"
+          R4B_FIXTURE_DIR="$RUNNER_TEMP/r4b" node --test tests/xml-cii-r4b-isolated-source-edit.test.mjs
+          R4A_FIXTURE_DIR="$RUNNER_TEMP/r4a" node --test tests/xml-cii-r4b-audit.test.mjs
+      - name: Preserve only synthetic artifact evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: r4c-one-writer-synthetic-ownership-evidence
+          path: |
+            ${{ runner.temp }}/r4c/r4c-approved.cii
+            ${{ runner.temp }}/r4c/r4c-approved.xml
+          if-no-files-found: ignore
+  r4c-real-browser-converter:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Generate frozen converter-produced single- and multi-writer fixtures
+        run: |
+          python3 tests/r4c_prepare_single_writer_fixture.py --output tests/.r4c-single-runtime
+          python3 tests/r4b_prepare_two_writer_fixture.py --output tests/.r4b-two-writer-runtime
+      - name: Install Chromium
+        run: |
+          npm install --no-save --package-lock=false playwright@1.56.1
+          # Ubuntu hosted image already has browser libraries; apt mirrors can be unavailable.
+          npx playwright install chromium
+      - name: R4C actual Chromium Pyodide one-writer isolation and downloads
+        run: node --test tests/xml-cii-r4c-single-writer-browser.test.mjs
+      - name: R4B existing Chromium Pyodide two-writer UI regression
+        run: node --test tests/xml-cii-r4b-isolated-browser.test.mjs
