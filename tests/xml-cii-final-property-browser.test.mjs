@@ -830,6 +830,43 @@ try {
     assert.equal(await page.evaluate(()=>window.currentResult.ciiText),sourceCii);
   });
 
+  await test('Chromium failed batch Stage & Verify exposes exact error without erasing selected changes',async()=>{
+    await page.goto(address+'/tests/fixtures/final-cii-property-ui-host.html');
+    const sourceCii=original.replace(row([1000,1001,19.1,0,0,80]),
+      row([639,10000,19.1,0,0,60.3]))
+      .replace(row([430,'0.000000']),row([150,'0.000000']));
+    const xml='<Root><Branch><Branchname>/B</Branchname><Rating>900</Rating>'+
+      '<Node><NodeNumber>1</NodeNumber><ComponentType>PIPE</ComponentType>'+
+      '<Position>0 0 0</Position></Node></Branch></Root>';
+    const masters=[{id:'M',boreMm:50,rating:'900',lengthMm:147,
+      weight:2.984*147/19.1,type:'FLANGE',typeDesc:'Weldneck Flange'}];
+    await page.evaluate(async({ciiText,xml,masters})=>{
+      const {openFinalRigidWeightReview}=await import(
+        '/tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-final-rigid-review.js');
+      window.currentResult={ok:true,ciiText,ciiName:'refused-145-stage-synthetic.cii',
+        finalRigidReviewEvidence:{sourceKind:'xml',engineInputText:xml,
+          engineInputDigest:'REFUSED-TEST',stagedJsonText:'',weightScale:10,
+          supportConfigJson:JSON.stringify({weight:{masterRows:masters}})}};
+      openFinalRigidWeightReview(window.currentResult,
+        {getCurrentResult:()=>window.currentResult});
+    },{ciiText:sourceCii,xml,masters});
+    await page.waitForFunction(()=>document.querySelector('[data-final-rigid-preview-report]')?.textContent.includes('Ready:'));
+    await page.locator('[data-final-rigid-batch-preview]').click();
+    const dialog=page.locator('[data-final-rigid-batch-dialog]');
+    await dialog.locator('[data-final-rigid-batch-apply-nearest]').click();
+    await dialog.locator('[data-final-rigid-batch-approve-all]').click();
+    assert.equal(await dialog.locator('[data-final-rigid-batch-stage]').isDisabled(),false);
+    await page.evaluate(()=>{window.currentResult={...window.currentResult};});
+    await dialog.locator('[data-final-rigid-batch-stage]').click();
+    assert.equal(await dialog.isVisible(),true,'failure retains popup so user can inspect and retry');
+    const message=await dialog.locator('[data-final-rigid-batch-error]').innerText();
+    assert.match(message,/Batch verification refused:/);
+    assert.match(message,/not ready|changed/i);
+    assert.match(await page.locator('[data-final-rigid-batch-status]').innerText(),/NOT STAGED/);
+    assert.match(await dialog.locator('[data-final-rigid-batch-summary]').innerText(),/1 selected/);
+    assert.equal(await page.locator('[data-final-rigid-row][data-pointer="1"] [data-final-rigid-edited]').inputValue(),'150');
+  });
+
   await test('Chromium compact 144-RIGID review expands fullscreen without losing edits, scroll, filters or CII parity', async () => {
     await page.setViewportSize({ width: 1600, height: 900 });
     await page.goto(address + '/tests/fixtures/final-cii-property-ui-host.html');
