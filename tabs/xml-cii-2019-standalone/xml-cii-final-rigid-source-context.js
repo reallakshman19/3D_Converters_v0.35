@@ -121,7 +121,7 @@ function metadataFor(node, issue, config, dtxrContext, branchBore) {
       staleSourceBoreMm: explicitBore !== null && explicitBore !== nominalFromOd
         ? explicitBore : null })
     : (!node.odRaw && explicitBore !== null)
-      ? observed(explicitBore, node.number, 'source BoreMm (no OD)', { original: node.boreRaw })
+      ? observed(explicitBore, node.number, 'source BoreMm', { original: node.boreRaw })
       : branchFallback
         ? observed(branchBore, node.number, 'single verified branch Bore / Weight Match context', {
           originalField: 'branch', original: String(branchBore) })
