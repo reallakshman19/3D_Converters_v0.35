@@ -263,6 +263,28 @@ export async function applyR4bIsolatedSourceEdit(session,preview,{
       JSON.stringify(preview.dependentRigidPointers)&&
       component(group.token)===component(preview.componentRefNo),
     'SOURCE_OWNER_CHANGED','Dependency graph differs from approved preview');
+  // An approver can only attest an independently recomputed emitted group.
+  // Never trust mutable UI preview totals/fractions when authorizing the edit.
+  const target=group.memberRecords.find(x=>x.rigidPointer===preview.rigidPointer);
+  const mass=number(newValue);
+  const expected=group.memberRecords.map(x=>({
+    ...x,proposedCiiWeight:x.rigidPointer===preview.rigidPointer?
+      mass*session.custody.weightScale:x.oldCiiWeight,
+    proposedXmlWeightKg:x.rigidPointer===preview.rigidPointer?
+      mass:x.oldXmlWeightKg,
+  }));
+  const revisedTotal=expected.reduce((sum,x)=>
+    sum+x.proposedCiiWeight/session.custody.weightScale,0);
+  requireCheck(target&&mass!==null&&
+    approx(preview.originalWeightCii,target.oldCiiWeight)&&
+    approx(preview.proposedWeightCii,mass*session.custody.weightScale)&&
+    approx(preview.originalEmittedGroupKg,group.originalEmittedTotalKg)&&
+    approx(preview.proposedEmittedGroupKg,revisedTotal)&&
+    approx(total,revisedTotal)&&
+    JSON.stringify(preview.memberAllocations)===JSON.stringify(expected)&&
+    JSON.stringify(preview.sourceCandidates)===JSON.stringify(group.sourceCandidates)&&
+    JSON.stringify(preview.sourceWriter)===JSON.stringify(target.sourceNode),
+    'PREVIEW_ALLOCATION_TAMPERED','Source, related writer or group total differs from immutable R1 evidence');
   const result=await probe(session,group,preview.rigidPointer,
     preview.proposedWeightKg,engineRunner);
   requireCheck(result.delta.revisedCiiSha256===preview.trialCiiSha256&&
