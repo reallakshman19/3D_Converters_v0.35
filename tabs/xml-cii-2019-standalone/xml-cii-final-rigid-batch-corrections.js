@@ -1,6 +1,6 @@
 /**
  * Read-only batch planning. Never writes a RIGID mass. Selection is an
- * explicit, per-pointer user decision. The output is consumed by the existing
+ * explicit user approval decision (individual or bulk after Apply Nearest). The output is consumed by the existing
  * RIGID.weight transaction/preview/reparse/byte-parity verifier.
  */
 import { finalRigidWeightErrorPercent } from './xml-cii-final-rigid-weight-error.js';
@@ -107,11 +107,12 @@ export function planFinalRigidBatchCorrections(inventory, plans, options = {}) {
         full.reviewRequired ? 'Catalog/estimated reference is not an approved physical mass' : '',
       ].filter(Boolean);
       return { ...full, status: 'WARNING', reviewRequired: true,
-        warningCodes, reason: descriptions.join(' · ') + ' · Explicit per-row review required.' };
+        warningCodes, reason: descriptions.join(' · ') +
+          ' · Explicit FINAL-CII approval required (individual or Apply Nearest → Approve All Eligible).' };
     }
-    // Advisory references are individually selectable WARNINGS, not a disabled
-    // review-only row or an ELIGIBLE row that can enter bulk selection. No
-    // separate opt-in toggle is necessary: row approval remains mandatory.
+    // Advisory references stay WARNINGS (never physical-mass authority).
+    // The UI can explicitly bulk-approve prepared nearest WARNINGs for direct
+    // CII edits; source-backed XML editing remains separately qualified.
     return { ...full, status: 'ELIGIBLE',
       reason: 'Verified direct reference available. Confirm this row before staging.' };
   });
