@@ -168,9 +168,17 @@ export async function projectR4aOwnership({result,inventory,verifiedLineage}) {
       rejected.push(reject(row,'SOURCE_TRANSFORMATION_NOT_VERIFIED',
         'No unique R1 preprocessed-source edge matches final branch/FROM/TO.'));continue;
     }
-    if(!VERIFIED.has(aux.ownershipStatus) ||
+    // R1 is intentionally conservative about *any* repeated ComponentRefNo.
+    // Preserve its raw AMBIGUOUS finding, but independently check the exact
+    // writer + every original source representation below. No other R1
+    // ambiguity may be elevated to a structurally editable candidate.
+    const repeatOnly=aux.ownershipStatus==='AMBIGUOUS' &&
+      aux.reason==='Multiple source nodes carry ComponentRefNo; mass allocation unproved' &&
+      Array.isArray(aux.ownerCandidates) && aux.ownerCandidates.length===1 &&
+      (aux.sourceOwners||[]).length===0;
+    if((!VERIFIED.has(aux.ownershipStatus) && !repeatOnly) ||
        !aux.writerWeightSourceNode ||
-       (aux.sourceOwners||[]).length!==1 ||
+       (!repeatOnly && (aux.sourceOwners||[]).length!==1) ||
        !sourceById.has(aux.writerWeightSourceNode)){
       rejected.push(reject(row,'SOURCE_OWNER_AMBIGUOUS',
         aux.reason||'R1 writer selection or component owner remains ambiguous.'));continue;
@@ -187,6 +195,10 @@ export async function projectR4aOwnership({result,inventory,verifiedLineage}) {
         'No unique editable Node/Weight token at exact R1 original branch/ordinal identity.'));continue;
     }
     const component=node.componentRefNo;
+    if(repeatOnly && aux.ownerCandidates[0]!==component){
+      rejected.push(reject(row,'SOURCE_OWNER_AMBIGUOUS',
+        'R1 writer source component differs from the repeated owner candidates.'));continue;
+    }
     const componentGroup=[...(componentToNodes.get(component)||new Set())]
       .map(id=>sourceById.get(id)).filter(Boolean);
     const representation=classifyR4aComponentRepresentations({
