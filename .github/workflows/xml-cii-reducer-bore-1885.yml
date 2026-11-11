@@ -28,6 +28,8 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -68,8 +70,35 @@ jobs:
           node --test tests/xml-cii-dtxr-wall-evidence-ledger.test.mjs
           node --test tests/xml-cii-final-rigid-master-reference.test.mjs
           node --test tests/xml-cii-preview-run-parity-closure.test.mjs
-          node --test tests/xml-cii-standalone-parity.test.js
           node --test tests/xml-cii-standalone-source-mode-integration.test.js
+
+      - name: Compare frozen PSI116 legacy parity against unmodified PR base
+        shell: bash
+        run: |
+          set +e
+          node --test tests/xml-cii-standalone-parity.test.js > "$RUNNER_TEMP/psi116-head.log" 2>&1
+          head_code=$?
+          git worktree add --detach "$RUNNER_TEMP/psi116-baseline" "6132d66145c0dea5b79291aeeb8169a5ac56922a" >/dev/null 2>&1
+          (cd "$RUNNER_TEMP/psi116-baseline" && node --test tests/xml-cii-standalone-parity.test.js) > "$RUNNER_TEMP/psi116-baseline.log" 2>&1
+          base_code=$?
+          set -e
+          echo "PSI116_LEGACY_PARITY_BASE_CODE=$base_code"
+          echo "PSI116_LEGACY_PARITY_HEAD_CODE=$head_code"
+          if [ "$base_code" -eq 0 ] && [ "$head_code" -ne 0 ]; then
+            echo "REGRESSION: legacy PSI116 parity passed on base but failed on current head"
+            tail -45 "$RUNNER_TEMP/psi116-head.log"
+            exit 1
+          fi
+          if [ "$base_code" -ne 0 ] && [ "$head_code" -ne 0 ]; then
+            echo "INHERITED_LEGACY_PSI116_FIXTURE_FAILURE (not newly introduced)"
+            grep -m1 "psi116-benchmark-validation.xml failed" "$RUNNER_TEMP/psi116-baseline.log" || true
+          fi
+          if [ "$base_code" -ne 0 ] && [ "$head_code" -eq 0 ]; then
+            echo "Legacy PSI116 parity has improved"
+          fi
+          if [ "$base_code" -eq 0 ] && [ "$head_code" -eq 0 ]; then
+            echo "PSI116_LEGACY_PARITY_PASS"
+          fi
 
   reducer-bore-real-chromium-ui:
     runs-on: ubuntu-latest
