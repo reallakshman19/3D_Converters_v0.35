@@ -142,7 +142,7 @@ export function installSourceBackedWeightReview({
     const row=selectedRow();
     if(!row){valueLabel(facts,'Source status','Not resolved');return;}
     const src=row.sourceNode;
-    const diagnostic=session?.r4bAudit?.rows.find(x=>x.rigidPointer===row.rigidPointer);
+    const diagnostic=session?.r4bAuditByPointer?.get(row.rigidPointer);
     const pieces=[
       ['Status',row.status],['Reason',row.reason],
       ['RIGID pointer',row.rigidPointer],
@@ -189,7 +189,7 @@ export function installSourceBackedWeightReview({
     const options=rows.filter(row=>!needle||
       String(row.rigidPointer).includes(needle.replace(/^rigid\s*/,'').trim()) ||
       String(row.physicalComponentRefNo||row.sourceNode?.componentRefNo||
-        session?.r4bAudit?.rows.find(x=>x.rigidPointer===row.rigidPointer)?.componentRefNo||'')
+        session?.r4bAuditByPointer?.get(row.rigidPointer)?.componentRefNo||'')
         .toLowerCase().includes(needle) ||
       String(row.reasonCode||'').toLowerCase().includes(needle));
     for(const row of options){
@@ -210,6 +210,7 @@ export function installSourceBackedWeightReview({
       const built=await initializeSourceWeightSession(result,{engineRunner});
       if(!overlay.isConnected||current()!==result)throw Error('Stale result/modal during no-edit replay.');
       built.r4bAudit=await buildR4bRigidOwnershipReport(built);
+       built.r4bAuditByPointer=new Map(built.r4bAudit.rows.map(x=>[x.rigidPointer,x]));
        session=built;ready=true;
       const qualified=built.rows.filter(r=>r.eligible).length;
       const breakdown=built.ownership?.breakdown||Object.fromEntries(
