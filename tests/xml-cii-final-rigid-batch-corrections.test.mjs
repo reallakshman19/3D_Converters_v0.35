@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import {
   planFinalRigidBatchCorrections, prepareNearestFinalRigidBatchPreview,
+  serializableNearestCiiWeight,
 } from '../tabs/xml-cii-2019-standalone/xml-cii-final-rigid-batch-corrections.js';
 import { parseFinalCiiRigidInventory } from '../tabs/xml-cii-2019-standalone/xml-cii-final-rigid-inventory.js';
 import {
@@ -271,4 +272,35 @@ test('EXACT pointer 20: verified batch re-extraction writes 29.84 instead of 150
   await assert.rejects(()=>verifyCiiPropertyTransaction(session,{
     currentCiiText: original.replace('150','151'),runIdentity:'BATCH-R1',
   }),/source CII content changed/);
+});
+
+
+test('145 mixed floating nearest references normalize to the exact CII decimal before approval', () => {
+ const { inventory, plans }=inventoryAndPlans(145);
+ for(let i=0;i<145;i++){
+   inventory.rows[i].weight=150;
+   inventory.rows[i].rawWeight='150';
+   plans[i].mapping=null;
+   plans[i].sourceContext.status='NOT_RESOLVED';
+   plans[i].nearestSuggestions=[candidate(i===134?29.840000000000003:
+     29.83999999999+(i%11)/1000000000,{
+       approximate:true,comparisonOnly:true,sourceVerified:false,
+       direct:false,method:'length-extrapolated',matchPct:50,
+   })];
+ }
+ const p=planFinalRigidBatchCorrections(inventory,plans);
+ assert.equal(p.warnings.length,145);
+ assert.equal(p.held.length,0);
+ assert.equal(p.proposals[134].proposedWeight,29.84);
+ assert.ok(p.proposals.every(x=>x.status==='WARNING'));
+ assert.ok(p.proposals.every(x=>String(x.proposedWeight).length<=15));
+ assert.ok(p.proposals.every(x=>Number.isFinite(x.serializationDelta)));
+ assert.ok(p.proposals.some(x=>x.warningCodes.includes('CII_PREVIEW_SERIALIZATION_ROUNDED')));
+ const fixed=serializableNearestCiiWeight(29.840000000000003);
+ assert.equal(fixed.weight,29.84);
+ assert.ok(Math.abs(fixed.delta)<1e-10);
+ assert.equal(serializableNearestCiiWeight(0.00000001),null,
+   'a small mass must not silently round to zero');
+ assert.equal(serializableNearestCiiWeight(1e99),null,
+   'fixed-width CII may not silently truncate very large weights');
 });
