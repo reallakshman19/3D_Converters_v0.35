@@ -4,6 +4,8 @@
 import { initializeSourceWeightSession, applySourceBackedWeightChange }
   from '../xml-cii-source-weight-reextract.js';
 import { numericalValue } from '../xml-cii-final-property-validation.js';
+import { buildR4bRigidOwnershipReport, r4bOwnershipAuditCsv }
+  from '../xml-cii-r4b-ownership-audit.js';
 
 function el(tag, text, attrs={}){
   const n=document.createElement(tag);
@@ -107,6 +109,7 @@ export function installSourceBackedWeightReview({
     originalXml:button(dl,'Original EnrichedXML',{'data-source-weight-original-xml':''}),
     originalCii:button(dl,'Original CII',{'data-source-weight-original-cii':''}),
     ownershipReport:button(dl,'Download RIGID source/HOLD report',{'data-source-weight-ownership-report':''}),
+    ownershipCsv:button(dl,'Download RIGID source/HOLD CSV',{'data-source-weight-ownership-csv':''}),
     revisedXml:button(dl,'Download revised EnrichedXML',{'data-source-weight-revised-xml':''}),
     revisedCii:button(dl,'Download re-extracted CII',{'data-source-weight-revised-cii':''}),
     audit:button(dl,'Download verified change audit',{'data-source-weight-audit':''}),
@@ -139,6 +142,7 @@ export function installSourceBackedWeightReview({
     const row=selectedRow();
     if(!row){valueLabel(facts,'Source status','Not resolved');return;}
     const src=row.sourceNode;
+    const diagnostic=session?.r4bAudit?.rows.find(x=>x.rigidPointer===row.rigidPointer);
     const pieces=[
       ['Status',row.status],['Reason',row.reason],
       ['RIGID pointer',row.rigidPointer],
@@ -154,7 +158,12 @@ export function installSourceBackedWeightReview({
       ['Original physical mass (kg)',row.originalPhysicalMassKg??'UNVERIFIED'],
       ['Original allocated CII mass (kg)',row.totalAllocatedMassKg??'UNVERIFIED'],
       ['Mass-allocation reason',row.allocationRule||'UNRESOLVED'],
-      ['Dependent RIGID pointers',row.dependentPointers?.join(', ')||'NOT_QUALIFIED'],
+      ['Dependent RIGID pointers',diagnostic?.dependentRigidPointers?.join(', ')||row.dependentPointers?.join(', ')||'NOT_QUALIFIED'],
+       ['FROM / TO',diagnostic?.elements.map(e=>e.fromNode+' → '+e.toNode).join('; ')||'UNVERIFIED'],
+       ['Element lengths (mm)',diagnostic?.elements.map(e=>e.lengthMm).join('; ')||'UNVERIFIED'],
+       ['R1 writer-side selection',diagnostic?.writerSourceSelection||'UNVERIFIED'],
+       ['Allocation dependency status',diagnostic?.dependentSetStatus||'UNVERIFIED'],
+       ['Independent physical reference',diagnostic?.referenceBasis||'UNAVAILABLE'],
       ['Transformations',row.transformationHistory?.map(x=>x.stage).join(', ')||'None or not qualified'],
       ['Expected CII impact',row.expectedImpact?.map(x=>x.fromNode+' → '+x.toNode).join(', ')||'Unknown'],
     ];
@@ -179,7 +188,8 @@ export function installSourceBackedWeightReview({
     picker.replaceChildren();
     const options=rows.filter(row=>!needle||
       String(row.rigidPointer).includes(needle.replace(/^rigid\s*/,'').trim()) ||
-      String(row.physicalComponentRefNo||row.sourceNode?.componentRefNo||'')
+      String(row.physicalComponentRefNo||row.sourceNode?.componentRefNo||
+        session?.r4bAudit?.rows.find(x=>x.rigidPointer===row.rigidPointer)?.componentRefNo||'')
         .toLowerCase().includes(needle) ||
       String(row.reasonCode||'').toLowerCase().includes(needle));
     for(const row of options){
@@ -199,7 +209,8 @@ export function installSourceBackedWeightReview({
     try {
       const built=await initializeSourceWeightSession(result,{engineRunner});
       if(!overlay.isConnected||current()!==result)throw Error('Stale result/modal during no-edit replay.');
-      session=built;ready=true;
+      built.r4bAudit=await buildR4bRigidOwnershipReport(built);
+       session=built;ready=true;
       const qualified=built.rows.filter(r=>r.eligible).length;
       const breakdown=built.ownership?.breakdown||Object.fromEntries(
         Object.entries(built.rows.filter(x=>!x.eligible).reduce((t,x)=>{
@@ -229,6 +240,7 @@ export function installSourceBackedWeightReview({
       }
       downloads.originalXml.disabled=false;downloads.originalCii.disabled=false;
       downloads.ownershipReport.disabled=false;
+       downloads.ownershipCsv.disabled=false;
     } catch(e){
       status.textContent='HOLD: '+(e?.message||e);
       report.textContent='No source-backed Apply or revised downloads are available.';
@@ -335,44 +347,14 @@ export function installSourceBackedWeightReview({
       session.custody.originalCii,'text/plain;charset=utf-8');
   });
   downloads.ownershipReport.addEventListener('click',()=>{
-    if(!session||current()!==result)return;
-    const rows=session.rows.map(row=>({
-      rigidPointer:row.rigidPointer,
-      ownershipStatus:row.status,
-      eligibleForSourceEdit:row.eligible===true,
-      holdCode:row.reasonCode||(row.eligible?'PHYSICAL_MASS_APPROVAL_REQUIRED':'R2_DIRECT_EDGE_HOLD'),
-      reason:row.reason,
-      physicalComponentRefNo:row.physicalComponentRefNo||null,
-      sourceNodeIdentity:row.sourceIdentity||null,
-      transformationHistory:row.transformationHistory||[],
-      originalCiiWeight:row.originalCiiWeight,
-      originalPhysicalMassKg:row.originalPhysicalMassKg??null,
-      dependentPointers:row.dependentPointers||[],
-      allocationRule:row.allocationRule||null,
-      completeAllocation:row.completeAllocation===true,
-    }));
-    const counts=Object.fromEntries(Object.entries(rows.reduce((t,row)=>{
-      if(!row.eligible)t[row.holdCode]=(t[row.holdCode]||0)+1;
-      return t;
-    },{})).sort());
-    const output={
-      schema:'xml-cii-r4a-rigid-source-hold-report/v1',
-      evidenceClass:'CURRENT_BROWSER_CONVERSION_ONLY',
-      status:'READ_ONLY_OWNER_DIAGNOSTIC_NOT_ENGINEERING_APPROVAL',
-      sourceXmlSha256:session.custody.engineSha,
-      originalCiiSha256:session.custody.originalCiiSha,
-      sourceRunId:session.custody.runId,
-      noEditParity:session.noEditParity,
-      r1LineageStatus:session.verifiedLineage?.status||'NOT_VERIFIED',
-      r1SnapshotFingerprint:session.verifiedLineage?.runIdentity?.snapshotFingerprint||null,
-      r4aLineageError:session.r4aReason||null,
-      counts:{total:rows.length,structurallyQualified:rows.filter(x=>x.eligible).length,
-        held:rows.filter(x=>!x.eligible).length,reasons:counts},
-      physicalMassApproval:'NOT_ATTESTED_BEFORE_EXPLICIT_TRANSACTION',
-      rows,
-    };
-    download('final_rigid_source_ownership_hold_report.json',
-      JSON.stringify(output,null,2)+'\n','application/json;charset=utf-8');
+    if(!session?.r4bAudit||current()!==result)return;
+    download('glrd-r4b-rigid-ownership.json',
+      JSON.stringify(session.r4bAudit,null,2)+'\n','application/json;charset=utf-8');
+  });
+  downloads.ownershipCsv.addEventListener('click',()=>{
+    if(!session?.r4bAudit||current()!==result)return;
+    download('glrd-r4b-rigid-ownership.csv',
+      r4bOwnershipAuditCsv(session.r4bAudit),'text/csv;charset=utf-8');
   });
   for(const [key,contentKey,mime]of [
     ['revisedXml','revisedXml','application/xml;charset=utf-8'],
