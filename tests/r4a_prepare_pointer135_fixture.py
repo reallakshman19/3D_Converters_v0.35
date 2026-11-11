@@ -92,7 +92,7 @@ def target_identity(cii: bytes) -> tuple[int, int, int, int, float, float]:
     assert len(matched) == 1, f"135 must link exactly one ELEMENT, got {matched}"
     sections = parse_section_map(cii.decode("utf-8"))
     element = sections["ELEMENTS"][15 * (matched[0] - 1)].split()
-    weight = float(sections["RIGID"][(135 - 1) * 2].split()[0])
+    weight = float(sections["RIGID"][135 - 1].split()[0])
     return (
         checked["recordCounts"]["RIGID"],
         matched[0],
