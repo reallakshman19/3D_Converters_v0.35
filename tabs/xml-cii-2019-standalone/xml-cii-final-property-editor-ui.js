@@ -240,7 +240,7 @@ export function installFinalCiiPropertyEditor({ overlay, result, inventory, plan
       [pointer, row.editInput.value])),
     getCurrentResult: () => current() === result ? result : null,
     isReady: () => Boolean(session) && current() === result && invalid.size === 0,
-    stageAndVerify: async (proposals, thresholdPct, approval) => {
+    stageAndVerify: async (proposals, thresholdPct, approval, bulkApprovedPointers = new Set()) => {
       if (!session || invalid.size || current() !== result)
         throw new Error('Stale conversion run or invalid pre-existing weight edits.');
       const snapshotVersion = version;
@@ -284,7 +284,11 @@ export function installFinalCiiPropertyEditor({ overlay, result, inventory, plan
             reviewRequired: item.reviewRequired,
             warningOnly: item.status === 'WARNING',
             warningCodes: [...(item.warningCodes || [])],
-            individuallyApproved: true, reviewOnlyAccepted: Boolean(item.reviewRequired && approval),
+            individuallyApproved: !bulkApprovedPointers.has(pointer),
+            bulkApproved: bulkApprovedPointers.has(pointer),
+            approvalMethod: bulkApprovedPointers.has(pointer)
+              ? 'explicit-approve-all-nearest' : 'explicit-individual-row',
+            reviewOnlyAccepted: Boolean(item.reviewRequired && approval),
             generatedFromRun: String(result.finalRigidReviewEvidence?.engineInputDigest || ''),
           },
         };

@@ -1,8 +1,9 @@
 /**
  * Explicit two-gate UI for threshold-based FINAL CII weight corrections.
- * Preview is read-only. Per-row selection is mandatory, and provisional
- * catalog suggestions require explicit review; warning rows are selectable
- * individually, never auto-approved or included in the bulk selection.
+ * Preview is read-only. Apply Nearest only prepares candidates; an explicit
+ * Approve All Eligible click may authorize both ELIGIBLE and reviewable WARNING
+ * rows as FINAL-CII edits. Structural HOLD/ALREADY_EDITED rows stay excluded.
+ * Source XML ownership authority is a separate transaction.
  */
 import {
   planFinalRigidBatchCorrections, prepareNearestFinalRigidBatchPreview,
@@ -35,7 +36,7 @@ export function installFinalRigidBatchControls({
     '<option value="all">All RIGIDs</option><option value="filtered">Filtered rows</option><option value="selected">Selected rows</option></select></label>' +
     '<button type="button" data-final-rigid-batch-preview style="cursor:pointer;padding:7px 11px;border:1px solid #3b82f6;background:#1d4ed8;color:#fff;border-radius:5px;">Preview Batch Corrections</button>' +
     '</div><div data-final-rigid-batch-status role="status" style="font-size:11px;color:#94a3b8;margin-top:5px;">' +
-    'Preview → individually select advisory WARNING rows → acknowledge review → Stage & Verify → Apply Changes & Re-extract CII → Download Revised CII. XML source edits use a separate ownership gate.</div>';
+    'Preview → Apply Nearest suggestion → Approve All Eligible (including reviewable WARNINGS) → Stage & Verify → Apply Changes & Re-extract CII → Download Revised CII. Source XML edits are separate.</div>';
   tableScroller.insertAdjacentElement('beforebegin', toolbar);
 
   const thresholdInput = toolbar.querySelector('[data-final-rigid-batch-threshold]');
@@ -72,6 +73,8 @@ export function installFinalRigidBatchControls({
 
     // A fresh review must never inherit stale decisions from a prior preview.
     const selections = new Set();
+    const bulkApprovedPointers = new Set();
+    let nearestPrepared = false;
     const candidateIndices = new Map(base.selectedIndices);
     const recalc = () => planFinalRigidBatchCorrections(inventory, plans, {
       ...base, selectedIndices: candidateIndices,
@@ -85,7 +88,7 @@ export function installFinalRigidBatchControls({
     dialogLayer.innerHTML = '<div style="background:#0f172a;color:#e2e8f0;border:1px solid #64748b;border-radius:8px;' +
       'padding:15px;max-width:1200px;width:97%;max-height:88vh;display:flex;flex-direction:column;gap:10px;">' +
       '<h3 style="margin:0;">Preview Batch Weight Corrections</h3>' +
-      '<p style="margin:0;font-size:12px;color:#fbbf24;">Advisory/approximate catalog references are selectable WARNINGS: individually select each pointer and acknowledge review before staging. No automatic mass approval; source-backed XML eligibility is separate. No CII output changes at this stage.</p>' +
+      '<p style="margin:0;font-size:12px;color:#fbbf24;">Apply Nearest prepares candidates without editing CII. Approve All Eligible explicitly accepts the proposed FINAL-CII weights, including WARNING/approximate suggestions; hard HOLD and pre-edited rows remain excluded. Source XML is not changed.</p>' +
       '<div data-final-rigid-batch-summary role="status" style="font-size:12px;color:#dbeafe;"></div>' +
       '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px;font-size:12px;">' +
       '<button type="button" data-final-rigid-batch-apply-nearest title="Use the top-ranked suggestion in preview only; no weights approved or staged" ' +
@@ -99,7 +102,7 @@ export function installFinalRigidBatchControls({
       '<div style="overflow:auto;flex:1;border:1px solid #334155;border-radius:5px;">' +
       '<table style="width:100%;border-collapse:collapse;font-size:12px;text-align:left;">' +
       '<thead><tr style="position:sticky;top:0;background:#1e293b;">' +
-      ['<label title="Select/deselect all currently eligible RIGIDs in the selected scope">' +
+      ['<label title="Select/deselect all eligible or, after Apply Nearest, reviewable WARNING RIGIDs in the selected scope">' +
         '<input type="checkbox" data-final-rigid-batch-approve-all-checkbox disabled ' +
         'aria-label="Approve all eligible RIGID pointers"> All eligible</label>',
         'RIGID', 'Element / FROM → TO', 'Element Length (mm)', 'Original CII units', 'Nearest suggestion (kg / score)',
@@ -127,24 +130,31 @@ export function installFinalRigidBatchControls({
     function updateStage() {
       const current = recalc();
       const selectable = [...current.eligible, ...current.warnings];
+      const bulkSelectable = nearestPrepared ? selectable : current.eligible;
+      const bulkIds = new Set(bulkSelectable.map((r) => r.pointer));
       const eligibleIds = new Set(selectable.map((r) => r.pointer));
       // Never retain a prior bulk selection if its candidate/eligibility changed.
-      for (const pointer of selections) if (!eligibleIds.has(pointer)) selections.delete(pointer);
+      for (const pointer of selections) if (!eligibleIds.has(pointer)) {
+        selections.delete(pointer);
+        bulkApprovedPointers.delete(pointer);
+      }
       const chosen = selectable.filter((r) => selections.has(r.pointer));
+      for (const pointer of bulkApprovedPointers) if (!selections.has(pointer)) bulkApprovedPointers.delete(pointer);
       const needsApproval = chosen.some((r) => r.reviewRequired);
       stage.disabled = !chosen.length || (needsApproval && !confirm.checked);
-      approveAll.disabled = current.eligible.length === 0;
-      approveAll.textContent = '✓ Approve All Eligible (' + current.eligible.length + ')';
-      approveAllCheckbox.disabled = current.eligible.length === 0;
-      approveAllCheckbox.checked = current.eligible.length > 0 &&
-        chosen.length === current.eligible.length;
-      approveAllCheckbox.indeterminate = chosen.length > 0 &&
-        chosen.length < current.eligible.length;
+      approveAll.disabled = bulkSelectable.length === 0;
+      approveAll.textContent = '✓ Approve All Eligible (' + bulkSelectable.length + ')';
+      approveAllCheckbox.disabled = bulkSelectable.length === 0;
+      const bulkSelected = bulkSelectable.filter((r) => selections.has(r.pointer)).length;
+      approveAllCheckbox.checked = bulkSelectable.length > 0 &&
+        bulkSelected === bulkSelectable.length;
+      approveAllCheckbox.indeterminate = bulkSelected > 0 &&
+        bulkSelected < bulkSelectable.length;
       clearAll.disabled = chosen.length === 0;
       const hardHoldCount = current.proposals.filter((r) =>
         r.status === 'HOLD' || r.status === 'ALREADY_EDITED').length;
       summary.textContent = current.eligible.length + ' eligible · ' +
-        current.warnings.length + ' warnings (individual selection) · ' +
+        current.warnings.length + ' warnings (bulk after Apply Nearest) · ' +
         hardHoldCount + ' hard-held · ' + current.belowThreshold.length +
         ' within threshold · ' + chosen.length + ' selected · ' +
         (needsApproval && !confirm.checked ? 'review acknowledgement required' :
@@ -201,10 +211,17 @@ export function installFinalRigidBatchControls({
     }
     const selectAllEligible = (checked) => {
       const current = recalc();
+      const bulkSelectable = nearestPrepared
+        ? [...current.eligible, ...current.warnings] : current.eligible;
       selections.clear();
-      if (checked) for (const proposal of current.eligible) selections.add(proposal.pointer);
-      // Bulk select only normal ELIGIBLE rows. WARNING is individually checked
-      // and must receive the separate review acknowledgement.
+      bulkApprovedPointers.clear();
+      if (checked) for (const proposal of bulkSelectable) {
+        selections.add(proposal.pointer);
+        bulkApprovedPointers.add(proposal.pointer);
+      }
+      // Clicking Approve All is the explicit approval action. Requiring a
+      // second acknowledgement checkbox would defeat this requested workflow.
+      confirm.checked = checked && bulkSelectable.length > 0;
       render();
     };
     applyNearest.addEventListener('click', () => {
@@ -214,6 +231,8 @@ export function installFinalRigidBatchControls({
       candidateIndices.clear();
       for (const [pointer, index] of prepared.selectedIndices) candidateIndices.set(pointer, index);
       selections.clear();
+      bulkApprovedPointers.clear();
+      nearestPrepared = true;
       confirm.checked = false;
       render();
       summary.textContent = prepared.preparedCount +
@@ -231,11 +250,13 @@ export function installFinalRigidBatchControls({
       if (target.matches('[data-final-rigid-batch-approve]')) {
         const pointer = Number(target.getAttribute('data-final-rigid-batch-approve'));
         if (target.checked) selections.add(pointer); else selections.delete(pointer);
+        bulkApprovedPointers.delete(pointer);
         updateStage();
       } else if (target.matches('[data-final-rigid-batch-candidate]')) {
         const pointer = Number(target.getAttribute('data-final-rigid-batch-candidate'));
         candidateIndices.set(pointer, Number(target.value));
         selections.delete(pointer);
+        bulkApprovedPointers.delete(pointer);
         confirm.checked = false;
         render();
       }
@@ -250,7 +271,8 @@ export function installFinalRigidBatchControls({
       stage.disabled = true;
       summary.textContent = 'Verifying exact RIGID pointer edits, full CII reparse and untouched-byte parity…';
       try {
-        const result = await stageAndVerify(chosen, current.thresholdPct, confirm.checked);
+        const result = await stageAndVerify(chosen, current.thresholdPct, confirm.checked,
+          new Set(bulkApprovedPointers));
         const count = result?.stagedCount ?? chosen.length;
         status.textContent = count ? 'Batch VERIFIED: ' + count +
           ' corrections staged; ' + (result?.skippedNoopPointers?.length || 0) +
