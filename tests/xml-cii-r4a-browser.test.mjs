@@ -137,7 +137,7 @@ try{
     assert.ok(ownership.rows.every(x=>x.physicallyApproved===false));
     const [csvDownload]=await Promise.all([page.waitForEvent('download'),csvButton.click()]);
     const csv=await readFile(await csvDownload.path(),'utf8');
-    assert.equal(csv.trimEnd().split('\\n').length,7);
+    assert.equal(csv.trimEnd().split('\n').length,7);
     assert.match(csv,/holdReasonCode/);
     await page.locator('[data-source-weight-search]').fill(String(result.owner.pointer));
     await page.locator('[data-source-weight-pointer]').selectOption(String(result.owner.pointer));
