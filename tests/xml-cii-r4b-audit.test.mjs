@@ -73,7 +73,16 @@ test('R4B read-only report covers every actual current-writer RIGID including HO
 });
 
 test('R4B held rows remain visible; candidate source does not become approval',async()=>{
-  const s=await session(),report=await buildR4bRigidOwnershipReport(s);
+  const s=await session();
+  // PR31 legitimately requalified the uniquely written R1 duplicate-ref
+  // witness, so inject an explicit incomplete owner to prove report coverage.
+  const edit=s.rows.find(row=>row.eligible);
+  assert.ok(edit,'synthetic converter must include a known qualified source');
+  const modified=s.rows.map(row=>row.rigidPointer===edit.rigidPointer
+    ? {...row,eligible:false,completeAllocation:false,status:'HOLD',
+       reasonCode:'SOURCE_OWNER_AMBIGUOUS',
+       reason:'Unverified physical owner for this isolated test'} : row);
+  const report=await buildR4bRigidOwnershipReport({...s,rows:modified});
   assert.ok(report.summary.heldOwners>0);
   for(const row of report.rows.filter(x=>!x.structurallyQualified)){
     assert.equal(row.sourceEditEligible,false);
@@ -100,6 +109,8 @@ test('R4B refuses missing inventory, stale config, failed replay and omitted RIG
   await assert.rejects(()=>buildR4bRigidOwnershipReport({...s,
     rows:s.rows.slice(1)}),/one row per declared final RIGID/);
   await assert.rejects(()=>buildR4bRigidOwnershipReport({...s,
+    rows:[...s.rows.slice(0,-1),s.rows[0]]}),/source projection pointers duplicate\/omit/);
+  await assert.rejects(()=>buildR4bRigidOwnershipReport({...s,
     custody:{...s.custody,engineSha:'stale'}}),/source or final CII changed/);
 });
 
@@ -120,4 +131,13 @@ test('R4B grouped multi-RIGID writer-source association is explicitly advisory',
   assert.equal(group.status,'UNAPPROVED_CANDIDATE_ONLY');
   assert.equal(group.allocationFractions,null);
   // No proposal, mass patch, source edit or qualification can arise from this report.
+});
+
+
+test('R4B CSV rejects formula injection even after source whitespace',async()=>{
+  const s=await session(),report=await buildR4bRigidOwnershipReport(s);
+  const tampered={...report,rows:report.rows.map((row,i)=>i===0
+    ? {...row,componentRefNo:' =HYPERLINK("https://unsafe.invalid")'} : row)};
+  const csv=r4bOwnershipAuditCsv(tampered);
+  assert.ok(csv.includes("' =HYPERLINK"),csv.slice(0,500));
 });
