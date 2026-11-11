@@ -61,8 +61,11 @@ function sourceIndex(xmlText, forwardLengths) {
     if (!branchName) continue;
     const nodes = [...(branch.childNodes || [])].filter((n) => n.nodeType === 1 && tag(n) === 'Node');
     const lengths = forwardLengths(nodes);
-    const qualifiedBranchBores = nodes.map((node) => positive(value(node, 'BoreMm')) ??
-      qualifiedXmlCiiNominalBoreFromOd(value(node, 'OutsideDiameter'))).filter((x) => x !== null);
+    const qualifiedBranchBores = nodes.map((node) => {
+      const od = positive(value(node, 'OutsideDiameter'));
+      return od !== null ? qualifiedXmlCiiNominalBoreFromOd(od)
+        : positive(value(node, 'BoreMm'));
+    }).filter((x) => x !== null);
     const uniqueBranchBores = [...new Set(qualifiedBranchBores)];
     const branchBore = uniqueBranchBores.length === 1 ? uniqueBranchBores[0] : null;
     let prev = null;
@@ -111,11 +114,14 @@ function metadataFor(node, issue, config, dtxrContext, branchBore) {
   const explicitBore = positive(node.boreRaw);
   const nominalFromOd = qualifiedXmlCiiNominalBoreFromOd(node.odRaw);
   const branchFallback = !node.odRaw && branchBore !== null && selectedBore === branchBore;
-  const bore = explicitBore !== null
-    ? observed(explicitBore, node.number, 'source BoreMm', { original: node.boreRaw })
-    : nominalFromOd !== null
-      ? observed(nominalFromOd, node.number, 'qualified Weight Match OD-to-DN', {
-        original: node.odRaw, originalField: 'OutsideDiameter' })
+  const bore = nominalFromOd !== null
+    ? observed(nominalFromOd, node.number, 'qualified Weight Match OD-to-DN', {
+      source:'node-outside-diameter',original:node.odRaw,
+      originalField:'OutsideDiameter',
+      staleSourceBoreMm: explicitBore !== null && explicitBore !== nominalFromOd
+        ? explicitBore : null })
+    : (!node.odRaw && explicitBore !== null)
+      ? observed(explicitBore, node.number, 'source BoreMm (no OD)', { original: node.boreRaw })
       : branchFallback
         ? observed(branchBore, node.number, 'single verified branch Bore / Weight Match context', {
           originalField: 'branch', original: String(branchBore) })
