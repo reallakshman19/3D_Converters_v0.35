@@ -12,7 +12,8 @@ import sys
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
 from roundtrip_foundation.snapshot_replay import capture_snapshot,run_existing_converter
-from tests.r4a_prepare_lineage import generate as generate_r1
+sys.path.insert(0,str(ROOT/'tests'))
+from r4a_prepare_lineage import generate as generate_r1
 
 OPTIONS={"coordsMode":"first","weightScale":"10",
          "splitCondensedValveFlange":True,
