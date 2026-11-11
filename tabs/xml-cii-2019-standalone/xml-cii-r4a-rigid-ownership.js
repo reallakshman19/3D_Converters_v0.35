@@ -47,23 +47,33 @@ export function classifyR4aComponentRepresentations({componentNodes,selectedSour
   const detail=nodes.map(node=>({
     identity:node.identity,branchName:node.branchName,
     nodeNumber:node.originalNodeNumber,
+    branchOrdinal:node.branchOrdinal,
     nodeOrdinal:node.nodeOrdinal,
     componentRefNo:node.componentRefNo,
     weightRaw:node.fields?.Weight??null,
     writerPointers:[...(writers.get(node.identity)||new Set())].sort((a,b)=>a-b),
   }));
   const selected=detail.find(n=>n.identity===selectedSourceIdentity);
-  if(!selected || detail.some(n=>n.identity!==selectedSourceIdentity &&
+  const selectedMass=numeric(selected?.weightRaw);
+  if(!selected || selectedMass===null || detail.some(n=>
+      n.identity!==selectedSourceIdentity &&
       (n.branchName!==selected.branchName ||
-        numeric(n.weightRaw)!==0 || n.writerPointers.length!==0))) {
-    return {qualified:false,reason:'Repeated ComponentRefNo crosses branches, has another positive/missing mass field, or controls another CII RIGID. Complete component allocation cannot be inferred.',nodes:detail};
+       n.branchOrdinal!==selected.branchOrdinal ||
+       n.writerPointers.length!==0 ||
+       (numeric(n.weightRaw)!==0 && numeric(n.weightRaw)!==selectedMass)))) {
+    return {qualified:false,reason:'Repeated ComponentRefNo crosses branches, has a different/missing mass field, or controls another CII RIGID. Complete component allocation cannot be inferred.',nodes:detail};
   }
   if(nodes.length>1 && !selected.writerPointers.length) {
     return {qualified:false,reason:'Selected source does not control a verified emitted RIGID.',nodes:detail};
   }
+  const aliases=detail.filter(n=>n.identity!==selectedSourceIdentity &&
+    numeric(n.weightRaw)===selectedMass && selectedMass>0);
   return {qualified:true,reason:nodes.length>1
-    ? 'Unique R1 writer plus explicitly zero-weight non-writer endpoint representations.'
-    : 'Single physical source node.',nodes:detail};
+    ? aliases.length
+      ? 'Unique R1 writer plus identical physical-mass representation on non-writer nodes; all equal positive XML Weight tokens must be edited atomically.'
+      : 'Unique R1 writer plus explicitly zero-weight non-writer endpoint representations.'
+    : 'Single physical source node.',nodes:detail,
+    aliases:aliases.map(n=>n.identity)};
 }
 
 const transformFor=(ledger,sourceId,edges)=>{
@@ -184,9 +194,17 @@ export async function projectR4aOwnership({result,inventory,verifiedLineage}) {
       selectedSourceIdentity:node.identity,
       writerDependents,
     });
-    if(!representation.qualified){
+    // Do not trust the ledger's duplicate nodes without matching their exact
+    // original source identity and mass token in the immutable XML.
+    const sourceGroupMatches=componentGroup.every(n=>{
+      const matches=matchingRows(source,n);
+      return matches.length===1 &&
+        matches[0].weightField?.value===(n.fields?.Weight??'');
+    });
+    if(!representation.qualified || !sourceGroupMatches){
       rejected.push(reject(row,'SOURCE_OWNER_AMBIGUOUS',
-        representation.reason,{
+        sourceGroupMatches?representation.reason:
+          'R1 repeated-source candidates do not match original frozen XML Node/Weight tokens.',{
           physicalComponentRefNo:component,
           sourceNodeCandidates:representation.nodes,
           dependentPointers:[...new Set(representation.nodes.flatMap(n=>n.writerPointers))],
@@ -234,6 +252,7 @@ export async function projectR4aOwnership({result,inventory,verifiedLineage}) {
       totalAllocatedMassKg:row.weight/scale,
       dependentPointers:[row.rigidPointer],
       sourceNodeCandidates:representation.nodes,
+      sourceWeightFieldsToEdit:[node.identity,...representation.aliases],
       representationBasis:representation.reason,
       completeAllocation:true,
       allocationRule:'ONE_UNIQUE_WRITER_SOURCE_ONE_EMITTED_RIGID',
