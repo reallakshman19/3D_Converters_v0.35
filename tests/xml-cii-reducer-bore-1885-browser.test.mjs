@@ -109,6 +109,11 @@ try {
    assert.match(await bore.innerText(),/CII OD 168\.3 mm/);
    assert.equal(await bore.getAttribute('data-final-rigid-bore-source'),'cii-od-dn');
    assert.doesNotMatch(await bore.innerText(),/DN 300/);
+   const stale=row.locator('[data-final-rigid-bore-stale]');
+   assert.equal(await stale.count(),1,'Review must flag stale XML bore separately');
+   assert.match(await stale.innerText(),/Stale XML DN300 ignored/);
+   const basis=await row.locator('[data-final-rigid-basis-detail]').textContent();
+   assert.match(basis,/STALE XML BoreMm DN300 ignored/);
    const edited=row.locator('[data-final-rigid-edited]');
    assert.equal(Number(await edited.inputValue()),590,
      'Bore repair must NOT silently edit the emitted physical RIGID mass');
