@@ -17,6 +17,7 @@ const SCRIPT_FILE_NAMES = Object.freeze([
   'inputxml_to_cii2019.py',
   'inputxml_to_cii2019_config.json',
   'cii2019_hanger_miscel_control.py',
+  'cii2019_reparse_proof.py', // R1 independent CII reparser for R4A bridge
 ]);
 
 const RUN_SNIPPET = `
@@ -215,4 +216,95 @@ export async function runXmlCii2019StandaloneEngine(job) {
   } catch (error) {
     return errorResult(normalizedJob, error, [...logs(stdout), ...logs(stderr)], partial);
   }
+}
+
+
+// R4A observational bridge reuses R1's actual Python preprocessing and
+// final ELEMENT/RIGID source map. It never invokes a second CII writer.
+const R4A_MODULES = Object.freeze([
+  'roundtrip_foundation/snapshot_replay.py',
+  'roundtrip_foundation/full_pointer_validation.py',
+  'roundtrip_foundation/ledger_integrity.py',
+  'roundtrip_foundation/lineage.py',
+  'roundtrip_foundation/browser_r4a_bridge.py',
+]);
+let r4aScriptsLoaded = false;
+
+async function ensureR4aLineageModules(pyodide) {
+  if (r4aScriptsLoaded) return;
+  pyodide.FS.mkdirTree('/r4a_repo/roundtrip_foundation');
+  pyodide.FS.mkdirTree('/r4a_repo/converters/scripts');
+  for (const fileName of SCRIPT_FILE_NAMES) {
+    const original = pyodide.FS.readFile('/scripts/'+fileName, {encoding:'utf8'});
+    pyodide.FS.writeFile('/r4a_repo/converters/scripts/'+fileName, original, {encoding:'utf8'});
+  }
+  for (const relativePath of R4A_MODULES) {
+    const url = new URL('../../'+relativePath, import.meta.url);
+    const response = await fetch(url, {cache:'no-store'});
+    if (!response.ok) throw Error('R4A lineage module '+relativePath+' HTTP '+response.status);
+    const python = await response.text();
+    if (!python.trim()) throw Error('R4A module '+relativePath+' was empty');
+    pyodide.FS.writeFile('/r4a_repo/'+relativePath, python, {encoding:'utf8'});
+  }
+  await pyodide.runPythonAsync(
+    "import sys\nif '/r4a_repo' not in sys.path: sys.path.insert(0, '/r4a_repo')\n");
+  r4aScriptsLoaded = true;
+}
+
+const R4A_LINEAGE_SNIPPET = [
+  'import json',
+  'from roundtrip_foundation.browser_r4a_bridge import browser_verified_lineage',
+  'def run_r4a_bridge():',
+  '  evidence = browser_verified_lineage(',
+  '    original_xml=r4a_original_xml.encode("utf-8"),',
+  '    original_cii=r4a_original_cii.encode("utf-8"),',
+  '    replay_cii=r4a_no_edit_cii.encode("utf-8"),',
+  '    config_json=r4a_config_json.encode("utf-8"),',
+  '    staged_json=(r4a_staged_json.encode("utf-8") if r4a_has_staged else None),',
+  '    options=json.loads(r4a_options_json), run_id=r4a_run_id,',
+  '    original_input_sha256=r4a_original_input_sha or None)',
+  '  return json.dumps(evidence, separators=(",",":"), ensure_ascii=False, allow_nan=False)',
+  'run_r4a_bridge()',
+].join('\n');
+
+/** No editing. Observes exact converter input and the real no-edit replay. */
+export async function buildR4aBrowserSourceLineage({
+  engineInputText, originalCiiText, noEditCiiText, supportConfigJson,
+  stagedJsonText = '', effectiveOptions, runId, originalInputSha256,
+}) {
+  if (![engineInputText, originalCiiText, noEditCiiText, supportConfigJson]
+    .every(value => typeof value === 'string' && value.length) ||
+    !effectiveOptions || typeof effectiveOptions !== 'object' || !runId) {
+    throw Error('CONFIGURATION_NOT_FROZEN: R4A Python lineage requires exact source, CII, config and options');
+  }
+  const pyodide = await getPyodide();
+  await ensureScripts(pyodide);
+  await ensureR4aLineageModules(pyodide);
+  const derived = {
+    coordsMode:effectiveOptions.coordsMode,
+    weightScale:String(effectiveOptions.kgToNewton === false ? 1 : 10),
+    splitCondensedValveFlange:effectiveOptions.splitCondensedValveFlange,
+    useRestraintTypeBasedOnJson:effectiveOptions.useRestraintTypeBasedOnJson,
+    stagedJsonPresent:Boolean(stagedJsonText),
+    templateCiiPresent:false,
+  };
+  if (!['first','all','none'].includes(derived.coordsMode) ||
+    typeof derived.splitCondensedValveFlange !== 'boolean' ||
+    typeof derived.useRestraintTypeBasedOnJson !== 'boolean') {
+    throw Error('CONFIGURATION_NOT_FROZEN: Exact converter flags are missing');
+  }
+  pyodide.globals.set('r4a_original_xml', engineInputText);
+  pyodide.globals.set('r4a_original_cii', originalCiiText);
+  pyodide.globals.set('r4a_no_edit_cii', noEditCiiText);
+  pyodide.globals.set('r4a_config_json', supportConfigJson);
+  pyodide.globals.set('r4a_staged_json', stagedJsonText || '');
+  pyodide.globals.set('r4a_has_staged', Boolean(stagedJsonText));
+  pyodide.globals.set('r4a_options_json', JSON.stringify(derived));
+  pyodide.globals.set('r4a_run_id', String(runId));
+  pyodide.globals.set('r4a_original_input_sha', originalInputSha256 || '');
+  const value = await pyodide.runPythonAsync(R4A_LINEAGE_SNIPPET);
+  const ledger = JSON.parse(String(value));
+  if (ledger?.status !== 'PASS_R1_STRUCTURAL_LINEAGE_WITH_UNATTESTED_MASS')
+    throw Error('R4A structural source lineage was not qualified');
+  return ledger;
 }
