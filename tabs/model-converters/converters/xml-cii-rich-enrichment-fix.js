@@ -1,4 +1,5 @@
 import { parseXmlCiiEnrichmentConfig } from '../../../converters/xml-cii2019-core/config.js';
+import { qualifiedXmlCiiNominalBoreFromOd } from '../../../converters/xml-cii2019-core/weight-match-model.js';
 import { computeLineNoKey, normalizeLineListRow } from '../../../converters/xml-cii2019-core/linelist-mapping.js';
 import { xmlCiiDryRunPreview } from './xmltocii2019_helper/preview-renderer.js?v=20260626-process-xml-fallback-1';
 
@@ -99,7 +100,14 @@ function writeNodeFacts(document, branch, row) {
   for (const n of branchNodes(branch)) {
     if (setText(document, n, 'PipingClass', rowVal(row, 'pipingClass', 'pipingClassResolved', 'resolvedPipingClass'))) count += 1;
     if (setText(document, n, 'Rating', rowVal(row, 'rating', 'branchRating'))) count += 1;
-    if (bore != null && text(bore) && setText(document, n, 'BoreMm', Number(bore).toFixed(3))) count += 1;
+    // Preview branch size cannot govern every node after a reducer.
+    // Node OutsideDiameter wins over a line-regex/branch nominal size.
+    const od = numberVal(value(n, 'OutsideDiameter'));
+    const nodeDn = od !== null && od > 0
+      ? qualifiedXmlCiiNominalBoreFromOd(od)
+      : (bore != null && text(bore) ? Number(bore) : null);
+    if (nodeDn !== null && Number.isFinite(nodeDn) &&
+      setText(document, n, 'BoreMm', Number(nodeDn).toFixed(3))) count += 1;
     if (setText(document, n, 'WallThickness', rowVal(row, 'wallThickness', 'wallThicknessMm', 'wallThk'))) count += 1;
     if (setText(document, n, 'CorrosionAllowance', rowVal(row, 'corrosion', 'corrosionAllowance', 'corrosionAllowanceMm'))) count += 1;
     if (setText(document, n, 'MaterialName', rowVal(row, 'material', 'materialName'))) count += 1;
