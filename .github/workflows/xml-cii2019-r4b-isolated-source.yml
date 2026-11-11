@@ -42,6 +42,16 @@ jobs:
           python3 tests/r4a_prepare_lineage.py --dir "$RUNNER_TEMP/r4a"
           R4A_FIXTURE_DIR="$RUNNER_TEMP/r4a" node --test tests/xml-cii-r4a-ownership.test.mjs
           R4A_FIXTURE_DIR="$RUNNER_TEMP/r4a" node --test tests/xml-cii-r4b-audit.test.mjs
+      - name: Export public converter source for separate private local GLRD replay
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: r4b-pinned-public-converter-python
+          path: |
+            converters/scripts/*.py
+            roundtrip_foundation/*.py
+            roundtrip_fidelity/*.py
+          if-no-files-found: error
       - name: Retain only synthetic test receipts (never user GLRD source)
         if: always()
         uses: actions/upload-artifact@v4
