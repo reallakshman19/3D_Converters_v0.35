@@ -238,6 +238,8 @@ try{
     await page.locator('[data-source-weight-apply]').click();
     await page.waitForFunction(()=>document.querySelector('[data-source-weight-report]')?.textContent.includes('VERIFIED SOURCE-BACKED RE-EXTRACTION'),
       null,{timeout:220000});
+    if(process.env.R4A_POINTER135_SCREENSHOT)
+      await page.screenshot({path:process.env.R4A_POINTER135_SCREENSHOT,fullPage:true});
 
     const downloads=[['revised-xml',expectedXml],['revised-cii',expectedCii]];
     for(const [label,expected] of downloads){
@@ -259,6 +261,15 @@ try{
     assert.equal(audit.massReconciliation.originalRigidPointer,135);
     assert.equal(audit.massReconciliation.newEmittedCiiWeight,29.84);
     assert.equal(await page.evaluate(()=>window.__source135.run.ciiText),origCii);
+    console.log('R4A_SOURCE_135_E2E='+JSON.stringify({
+      evidenceClass:'SYNTHETIC_REAL_CONVERTER_NOT_OWNER_GLRD',
+      rigidPointer:135,elementIndex:384,fromNode:'3429',toNode:'10120',
+      lengthMm:19.1,originalWeightKg:15,newWeightKg:2.984,
+      originalCiiWeight:150,revisedCiiWeight:29.84,
+      unchangedOtherXmlBytes:audit.unrelatedXmlBytesChanged,
+      unexpectedCiiDiffs:audit.ciiEngineeringDiff.unexpectedDifferences,
+      sourceUiEnabled:true,sourceAndCiiDownloadsVerified:true,
+    }));
     assert.deepEqual(errors,[],errors.join('\n'));
   });
 
