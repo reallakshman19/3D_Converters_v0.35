@@ -154,7 +154,7 @@ export function installFinalRigidBatchControls({
       const hardHoldCount = current.proposals.filter((r) =>
         r.status === 'HOLD' || r.status === 'ALREADY_EDITED').length;
       summary.textContent = current.eligible.length + ' eligible · ' +
-        current.warnings.length + ' reviewable warnings · ' +
+        current.warnings.length + ' warnings (bulk after Apply Nearest) · ' +
         hardHoldCount + ' hard-held · ' + current.belowThreshold.length +
         ' within threshold · ' + chosen.length + ' selected · ' +
         (needsApproval && !confirm.checked ? 'review acknowledgement required' :
