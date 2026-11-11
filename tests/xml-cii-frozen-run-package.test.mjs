@@ -36,13 +36,14 @@ test('current CII run bundle captures actual native-writer EnrichedXML/CII/confi
  assert.equal(pkg.payloads.supportConfigJson,'{}');
  assert.equal(pkg.payloads.stagedJsonText,'');
  assert.deepEqual(pkg.payloads.effectiveOptions,options);
- assert.equal(pkg.currentRun.elementCount,6);
+ assert.equal(pkg.currentRun.elementCount,11);
  assert.equal(pkg.currentRun.rigidCount,6);
  assert.equal(pkg.currentRun.weightScale,10);
  assert.equal(pkg.currentRun.runParity.status,'PASS');
  assert.equal(pkg.originalRawUpload,'NOT_CAPTURED_BY_CONVERTER_BOUNDARY');
  assert.equal(pkg.importedMasterBinaryFiles,'NOT_CAPTURED_USE_OWNER_ORIGINALS_WITH_HASHES');
  const verified=await verifyFrozenCiiRunPackage(JSON.parse(JSON.stringify(pkg)));
+ assert.equal(verified.elements,11);
  assert.equal(verified.status,'PASS_FROZEN_CONVERTER_BOUNDARY');
  assert.equal(verified.rigids,6);
 });
@@ -62,7 +63,7 @@ test('frozen package fails closed on stale source/CII, missing config/options or
  const cases=[
   [{...run,ciiText:cii+'\n'},/SHA-256/],
   [{...run,finalRigidReviewEvidence:{...run.finalRigidReviewEvidence,
-    supportConfigJson:''}},/exact effective EnrichedXML/],
+    supportConfigJson:''}},/Exact effective EnrichedXML/],
   [{...run,finalRigidReviewEvidence:{...run.finalRigidReviewEvidence,
     effectiveOptions:{...options,kgToNewton:'yes'}}},/Exact converter options/],
   [{...run,ciiInputSource:'topofix'},/successful normal XML-to-CII/],
