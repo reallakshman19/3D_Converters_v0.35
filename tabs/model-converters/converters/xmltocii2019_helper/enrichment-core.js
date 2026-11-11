@@ -23,7 +23,8 @@ import {
   xmlCiiRigidWeightOverrideForNode,
   xmlCiiForwardElementLengths,
   buildStagedComponentIndex,
-  stagedComponentForXmlNode
+  stagedComponentForXmlNode,
+  qualifiedXmlCiiNominalBoreFromOd
 } from '../../../../converters/xml-cii2019-core/weight-match-model.js';
 import {
   buildStagedSupportIndex,
@@ -628,7 +629,29 @@ export async function enrichXmlForCii2019(xmlTextVal, stagedJsonText, options = 
         xmlSetText(document, node, 'Rating', branchRating);
         stats.ratingAnnotations += 1;
       }
-      if (branchBore !== null) xmlSetText(document, node, 'BoreMm', branchBore.toFixed(3));
+      // Nominal DN is NODE-scoped across reducers; the branch name is only a
+      // fallback for nodes with no OD, never authority over a real OD.
+      const nodeOdText = xmlText(node, 'OutsideDiameter');
+      const nodeOd = xmlCiiNumberText(nodeOdText);
+      const nodeBore = nodeOd !== null && nodeOd > 0
+        ? qualifiedXmlCiiNominalBoreFromOd(nodeOd)
+        : branchBore;
+      if (nodeBore !== null) {
+        const oldBore = xmlText(node, 'BoreMm');
+        xmlSetText(document, node, 'BoreMm', nodeBore.toFixed(3));
+        if (oldBore && Number(oldBore) !== nodeBore) diagnostics.push({
+          type:'node-bore-rederived-from-outside-diameter',
+          branchName,nodeNumber:xmlText(node,'NodeNumber'),
+          outsideDiameterMm:nodeOd,previousBoreMm:oldBore,
+          revisedBoreMm:nodeBore,
+          authority:nodeOd !== null && nodeOd > 0 ? 'node-outside-diameter' : 'branch-fallback-no-od',
+        });
+      } else if (nodeOd !== null && nodeOd > 0) {
+        diagnostics.push({type:'node-bore-unqualified-od',
+          branchName,nodeNumber:xmlText(node,'NodeNumber'),
+          outsideDiameterMm:nodeOd,
+          reason:'Unknown OD-to-DN mapping; branch regex must not overwrite BoreMm'});
+      }
       if (lengthMm !== null) xmlSetText(document, node, 'ElementLengthMm', lengthMm.toFixed(3));
 
       if (resolved.wallThicknessMm) {
