@@ -17,7 +17,7 @@ const groupKey=(node,component)=>String(node?.branchOrdinal??'UNKNOWN_BRANCH')+'
 const csvCell=value=>{
   const raw=typeof value==='string'?value:JSON.stringify(value??'');
   // Also protect spreadsheet consumers from formula injection in source names.
-  const safe=/^[=+@\-\t\r]/.test(raw)?"'"+raw:raw;
+  const safe=/^\s*[=+@\-]/.test(raw)?"'"+raw:raw;
   return '"'+safe.replace(/"/g,'""')+'"';
 };
 function requireRun(ok,message){if(!ok)throw Error('R4B_AUDIT_HOLD: '+message);}
@@ -69,6 +69,12 @@ export async function buildR4bRigidOwnershipReport(session){
     }
   }
   const selectedByPointer=new Map(rows.map(row=>[row.rigidPointer,row]));
+  // An otherwise valid report must never mislabel RIGIDs because a projection
+  // repeats one pointer and silently omits another.
+  requireRun(selectedByPointer.size===rows.length &&
+    rows.every(row=>Number.isSafeInteger(row.rigidPointer)&&row.rigidPointer>0) &&
+    inventory.rows.every(row=>selectedByPointer.has(row.rigidPointer)),
+    'source projection pointers duplicate/omit final RIGIDs');
   const writerDependents=new Map(), componentDependents=new Map(), groupBranches=new Map();
   for(const aux of auxByPointer.values()){
     addIndex(writerDependents,aux.writerWeightSourceNode,aux.recordPointer);
