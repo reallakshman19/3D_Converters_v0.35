@@ -266,7 +266,6 @@ export async function applySourceBackedWeightChange(session,request,{
   const requestedOutputVerification=verifyRequestedCiiOutputWeight({
     requestedOutputWeight:request.requestedOutputWeight,rigidPointer:row.rigidPointer,
     ciiEngineeringDiff:delta,
-    ...(requestedOutputVerification?{requestedOutputVerification}:{ }),
   });
   const massReconciliation = row.completeAllocation ?
     reconcileR4aPhysicalMass({ownership:row,sourceWeightKg:normalizedNew,
@@ -294,6 +293,7 @@ export async function applySourceBackedWeightChange(session,request,{
     sourceWeightFieldCount:patch.edits.length,
     sourceOwnerRepresentationBasis:row.representationBasis||null,
     ciiEngineeringDiff:delta,
+    ...(requestedOutputVerification?{requestedOutputVerification}:{}),
     ...(massReconciliation ? {massReconciliation,
       R1LineageFingerprint:session.verifiedLineage?.runIdentity?.snapshotFingerprint,
       sourceTransformationHistory:row.transformationHistory,
