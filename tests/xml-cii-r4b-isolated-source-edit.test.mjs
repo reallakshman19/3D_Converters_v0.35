@@ -104,6 +104,12 @@ test('R4B stale conversion, changed plan, cross-branch duplication, and wrong wr
    {...approved,newValue:'2.7'},{getCurrentResult:()=>result}),/STALE_PLAN/);
  await assert.rejects(()=>applyR4bIsolatedSourceEdit(s,preview,
    approved,{getCurrentResult:()=>structuredClone(result)}),/STALE_RUN/);
+ const forged=structuredClone(preview);
+ forged.proposedEmittedGroupKg=18.6;
+ forged.memberAllocations[0].proposedCiiWeight=36;
+ await assert.rejects(()=>applyR4bIsolatedSourceEdit(s,forged,
+   {...approved,approvedGroupTotalKg:'18.6'},{getCurrentResult:()=>result}),
+   /PREVIEW_ALLOCATION_TAMPERED/);
  const broken={...s,verifiedLineage:structuredClone(s.verifiedLineage)};
  broken.verifiedLineage.sourceNodes.push({
    ...broken.verifiedLineage.sourceNodes.find(x=>x.componentRefNo==='/SHARED-COMP'),
