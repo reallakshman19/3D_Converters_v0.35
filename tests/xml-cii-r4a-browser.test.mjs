@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
-import { readFile } from 'node:fs/promises';
+import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { chromium } from 'playwright';
 
@@ -252,6 +252,8 @@ try{
     const [auditDownload]=await Promise.all([page.waitForEvent('download'),
       page.locator('[data-source-weight-audit]').click()]);
     const audit=JSON.parse(await readFile(await auditDownload.path(),'utf8'));
+    await writeFile(path.join(fixture,'pointer135-browser-change-audit.json'),
+      JSON.stringify(audit,null,2)+'\n','utf8');
     assert.equal(audit.approval.originalRigidPointer,135);
     assert.equal(audit.approval.approvedNewXmlWeight,2.984);
     assert.equal(audit.sourceXmlByteDiff.length,1);
