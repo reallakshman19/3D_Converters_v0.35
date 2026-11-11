@@ -4,8 +4,37 @@
  * RIGID.weight transaction/preview/reparse/byte-parity verifier.
  */
 import { finalRigidWeightErrorPercent } from './xml-cii-final-rigid-weight-error.js';
+import { productionCiiProperties } from './xml-cii-final-property-registry.js';
 
 const valid = (value) => Number.isFinite(Number(value)) && Number(value) > 0;
+const rigidWeightDescriptor=productionCiiProperties.get('RIGID.weight');
+
+/**
+ * Convert an approximate nearest reference to the EXACT decimal that can be
+ * stored in the current 15-character CII weight field. Do this in read-only
+ * preview, so users approve the serialized number they will actually get.
+ * Never truncate a genuine engineering source field or silently accept a
+ * non-representable delta > half of one millionth of the CII output unit.
+ */
+export function serializableNearestCiiWeight(referenceWeight) {
+  if(!valid(referenceWeight))return null;
+  const original=Number(referenceWeight);
+  const candidates=[String(original),...Array.from({length:7},(_,i)=>{
+    const decimals=6-i;
+    return Number(original.toFixed(decimals)).toString();
+  })];
+  for(const token of [...new Set(candidates)]) {
+    const parsed=Number(token);
+    if(!Number.isFinite(parsed) || parsed<=0 ||
+       Math.abs(parsed-original)>5.000001e-7)continue;
+    try {
+      const encoded=rigidWeightDescriptor.serializer(rigidWeightDescriptor,token);
+      if(encoded.number===parsed)return {weight:parsed,token,
+        delta:parsed-original,rounded:parsed!==original};
+    }catch{/* Try a width-safe exact decimal representation. */}
+  }
+  return null;
+}
 const keyOf = (mapping) => mapping?.componentRefNo
   ? JSON.stringify([mapping.branchName, mapping.componentRefNo]) : '';
 const selectedCandidate = (plan, selectedIndex) => {
@@ -74,12 +103,18 @@ export function planFinalRigidBatchCorrections(inventory, plans, options = {}) {
     const { candidate, index } = selectedCandidate(plan, indices.get(pointer));
     if (!candidate || !valid(candidate.referenceWeight))
       return { ...base, reason: 'No positive, qualified nearest suggestion.' };
-    const expected = Number(candidate.referenceWeight);
+    const serialized=serializableNearestCiiWeight(candidate.referenceWeight);
+    if(!serialized)
+      return { ...base,reason:'Selected catalog weight cannot be represented accurately in the fixed-width CII RIGID weight field. Select a different reference or enter an explicit representable value.' };
+    const expected=serialized.weight;
     const error = finalRigidWeightErrorPercent(Number(row.weight), expected);
     if (error === null)
       return { ...base, reason: 'Cannot calculate valid error in final CII output units.' };
     const full = {
       ...base, candidateIndex: index, candidate, proposedWeight: expected,
+      referenceWeightUnrounded:Number(candidate.referenceWeight),
+      serializedWeightToken:serialized.token,
+      serializationDelta:serialized.delta,
       // A trusted exact candidate from the existing component-verified
       // reference planner can be staged by explicit row selection. Mode A
       // comparison-only candidates, approximate weights and unverified owner
@@ -93,12 +128,15 @@ export function planFinalRigidBatchCorrections(inventory, plans, options = {}) {
     const belowThreshold = Math.abs(error) <= threshold;
     const noWeightChange = expected === Number(row.weight);
     const warningCodes = [...contextWarnings,
+      ...(serialized.rounded ? ['CII_PREVIEW_SERIALIZATION_ROUNDED'] : []),
       ...(belowThreshold ? ['BELOW_THRESHOLD'] : []),
       ...(noWeightChange ? ['NO_WEIGHT_CHANGE'] : []),
       ...(full.reviewRequired ? ['ADVISORY_CATALOG_REFERENCE'] : [])];
     if (warningCodes.length) {
       const descriptions = [
         contextWarnings.length ? 'Source metadata: ' + contextWarnings.join(', ') : '',
+        serialized.rounded ? 'Nearest weight is rounded to '+serialized.token+
+          ' CII units for exact fixed-width serialization (delta '+serialized.delta+')' : '',
         context?.dtxr?.suppressed && context.dtxr.suppressionReason
           ? 'DTXR: ' + context.dtxr.suppressionReason : '',
         belowThreshold ? 'Deviation ' + error.toFixed(1) +
