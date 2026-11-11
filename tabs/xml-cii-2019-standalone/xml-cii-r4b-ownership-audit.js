@@ -144,6 +144,9 @@ export async function buildR4bRigidOwnershipReport(session){
       sourceIdentity:existing.sourceIdentity||writerId,
       componentRefNo:component,componentCandidates:components,
       componentType:verifiedNode?.componentType||writerNode?.componentType||null,
+      sourceNodeCandidates:existing.sourceNodeCandidates||[],
+      ambiguityReasons:existing.ambiguityReasons||[],
+      ambiguityIssues:existing.ambiguityIssues||[],
       originalXmlWeightKg:originalMass,
       sourceMassBasis:verifiedNode?'R4A_UNIQUE_SOURCE_FIELD':'OBSERVED_R1_WRITER_FIELD_NOT_PHYSICAL_APPROVAL',
       referenceWeightKg:null,referenceBasis:'INDEPENDENT_APPROVED_PHYSICAL_REFERENCE_UNAVAILABLE',
@@ -151,6 +154,10 @@ export async function buildR4bRigidOwnershipReport(session){
       allocatedComponentMassKg:structural?existing.originalAllocatedMassKg:null,
       physicalComponentTotalMassKg:structural?existing.originalPhysicalMassKg:null,
       dependentRigidPointers:dependent,
+      ownerRepresentationCount:(existing.sourceNodeCandidates||[]).length,
+      probeCandidate:r1Verified&&Boolean(writerId)&&
+        ['SOURCE_OWNER_AMBIGUOUS','SPLIT_ALLOCATION_UNRESOLVED'].includes(code)&&
+        dependent.length>=1,
       dependentSetStatus:structural?'VERIFIED_ONE_TO_ONE':'CANDIDATE_SET_NOT_ALLOCATION_PROOF',
       writerSourceIdentity:writerId,
       writerSourceSelection:sourceSelection(aux,elementByIndex),
@@ -244,6 +251,8 @@ export function r4bOwnershipAuditCsv(report){
     'physicalComponentTotalMassKg','dependentRigidPointers','writerSourceIdentity',
     'writerSourceSelection','r1LineageStatus','ownershipStatus','structurallyQualified',
     'sourceEditEligible','holdReasonCode','holdExplanation','allocationRule',
+    'ambiguityReasons','ambiguityIssues','sourceNodeCandidates',
+    'ownerRepresentationCount','probeCandidate',
     'transformationHistory','elements','evidence'];
   return [keys.map(csvCell).join(','),
     ...report.rows.map(row=>keys.map(key=>csvCell(row[key])).join(','))].join('\n')+'\n';
