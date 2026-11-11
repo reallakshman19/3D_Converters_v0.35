@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
-import { readFile } from 'node:fs/promises';
+import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { chromium } from 'playwright';
 
@@ -122,12 +122,17 @@ try{
     await page.locator('[data-source-weight-open]').click();
     await page.waitForFunction(()=>document.querySelector('[data-source-weight-status]')?.textContent.includes('PASS:'),
       null,{timeout:220000});
-    // R4B audit is downloaded from the same current-run source-backed panel.
-    const jsonButton=page.locator('[data-source-weight-ownership-report]');
-    const csvButton=page.locator('[data-source-weight-ownership-csv]');
-    assert.equal(await jsonButton.isDisabled(),false);
-    assert.equal(await csvButton.isDisabled(),false);
-    const [jsonDownload]=await Promise.all([page.waitForEvent('download'),jsonButton.click()]);
+    // R4B is an additional read-only export, not a replacement for R4A.
+    const legacy=page.locator('[data-source-weight-ownership-report]');
+    const r4bJson=page.locator('[data-source-weight-r4b-json]');
+    const r4bCsv=page.locator('[data-source-weight-ownership-csv]');
+    assert.equal(await legacy.isDisabled(),false);
+    assert.equal(await r4bJson.isDisabled(),false);
+    assert.equal(await r4bCsv.isDisabled(),false);
+    const [oldDownload]=await Promise.all([page.waitForEvent('download'),legacy.click()]);
+    const oldAudit=JSON.parse(await readFile(await oldDownload.path(),'utf8'));
+    assert.equal(oldAudit.schema,'xml-cii-r4a-rigid-source-hold-report/v1');
+    const [jsonDownload]=await Promise.all([page.waitForEvent('download'),r4bJson.click()]);
     const ownership=JSON.parse(await readFile(await jsonDownload.path(),'utf8'));
     assert.equal(ownership.schema,'xml-cii-r4b-rigid-ownership-audit/v1');
     assert.equal(ownership.summary.finalRigidCount,6);
@@ -135,7 +140,7 @@ try{
     assert.equal(ownership.summary.qualifiedStructuralOwners+ownership.summary.heldOwners,6);
     assert.equal(ownership.summary.physicalMassApprovalCount,0);
     assert.ok(ownership.rows.every(x=>x.physicallyApproved===false));
-    const [csvDownload]=await Promise.all([page.waitForEvent('download'),csvButton.click()]);
+    const [csvDownload]=await Promise.all([page.waitForEvent('download'),r4bCsv.click()]);
     const csv=await readFile(await csvDownload.path(),'utf8');
     assert.equal(csv.trimEnd().split('\n').length,7);
     assert.match(csv,/holdReasonCode/);
@@ -166,6 +171,212 @@ try{
     assert.equal(audit.ciiEngineeringDiff.unexpectedDifferences,0);
     assert.deepEqual(errors,[],errors.join('\n'));
   });
+
+  await test('R4A 135th source-backed RIGID: actual Python/Pyodide XML Weight 15→2.984, CII 150→29.84 and exact downloads',async()=>{
+    const origXml=await readFile(path.join(fixture,'pointer135-original.xml'),'utf8');
+    const origCii=await readFile(path.join(fixture,'pointer135-original.cii'),'utf8');
+    const expectedXml=await readFile(path.join(fixture,'pointer135-approved.xml'),'utf8');
+    const expectedCii=await readFile(path.join(fixture,'pointer135-approved.cii'),'utf8');
+    await page.goto(origin+'/tests/fixtures/r2-source-weight-browser-host.html');
+    const imported=await page.evaluate(async({xml,cii})=>{
+      const {ciiSha256}=await import('/tabs/xml-cii-2019-standalone/xml-cii-final-property-reader.js');
+      const {initializeSourceWeightSession}=await import(
+        '/tabs/xml-cii-2019-standalone/xml-cii-source-weight-reextract.js');
+      const {parseFinalCiiRigidInventory}=await import(
+        '/tabs/xml-cii-2019-standalone/xml-cii-final-rigid-inventory.js');
+      const run={ok:true,ciiText:cii,ciiName:'pointer135-source-backed-SYNTHETIC.cii',
+        ciiInputSource:'original',
+        finalRigidReviewEvidence:{
+          sourceKind:'xml',engineInputText:xml,
+          engineInputSha256:await ciiSha256(xml),
+          originalCiiSha256:await ciiSha256(cii),
+          engineInputDigest:'R4A_WRITER_SYNTHETIC_POINTER135',
+          effectiveSourceName:'pointer135-original.xml',weightScale:10,
+          supportConfigJson:'{}',stagedJsonText:'',
+          effectiveOptions:{coordsMode:'first',kgToNewton:true,
+            splitCondensedValveFlange:true,useRestraintTypeBasedOnJson:true,
+            outputMode:'both',analyzeTopology:false,
+            generateTopoFix:false,useTopoFixForCii:false},
+        }};
+      const before=parseFinalCiiRigidInventory(cii);
+      if(before.rows.length!==135)throw Error('Expected actual final 135 RIGID records');
+      const target=before.rows[134];
+      if(target.linkedElements.length!==1 || target.linkedElements[0].index!==384 ||
+          target.linkedElements[0].fromNode!=='3429' ||
+          target.linkedElements[0].toNode!=='10120' ||
+          target.linkedElements[0].lengthMm!==19.1 ||
+          target.weight!==150)throw Error('Actual Python writer did not generate exact 135 / #384 19.1 mm shape');
+      window.__source135={xml,cii,run};
+      const session=await initializeSourceWeightSession(run,{requireR4aLineage:true});
+      const owner=session.rows.find(r=>r.rigidPointer===135);
+      return {n:before.rows.length,owner:{
+        eligible:owner.eligible,reason:owner.reason,reasonCode:owner.reasonCode,
+        componentRefNo:owner.physicalComponentRefNo,
+        sourceMass:owner.originalPhysicalMassKg,outputMass:owner.originalCiiWeight,
+        allocationRule:owner.allocationRule,element:owner.originalElement?.index,
+        from:owner.originalElement?.fromNode,to:owner.originalElement?.toNode},
+        noEdit:session.noEditParity,
+        held:session.rows.find(r=>!r.eligible)?.rigidPointer ?? null};
+    },{xml:origXml,cii:origCii});
+    assert.equal(imported.n,135);
+    assert.equal(imported.noEdit.status,'PASS_EXACT_REPLAY');
+    assert.equal(imported.noEdit.differingBytes,0);
+    assert.equal(imported.owner.eligible,true,JSON.stringify(imported.owner));
+    assert.equal(imported.owner.componentRefNo,'/POINTER-135-UNIQUE');
+    assert.equal(imported.owner.sourceMass,15);
+    assert.equal(imported.owner.outputMass,150);
+    assert.equal(imported.owner.allocationRule,'ONE_UNIQUE_WRITER_SOURCE_ONE_EMITTED_RIGID');
+    assert.equal(imported.owner.element,384);
+
+    await page.evaluate(async()=>{
+      const {openFinalRigidWeightReview}=await import(
+        '/tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-final-rigid-review.js');
+      openFinalRigidWeightReview(window.__source135.run,
+        {getCurrentResult:()=>window.__source135.run});
+    });
+    assert.equal(await page.locator('[data-final-rigid-row]').count(),135);
+    await page.locator('[data-final-rigid-row][data-pointer="135"] [data-source-weight-inspect]').click();
+    await page.waitForFunction(()=>document.querySelector('[data-source-weight-status]')?.textContent.includes('PASS:'),
+      null,{timeout:220000});
+    // Unqualified sources must remain disabled with the precise reason,
+    // while a verified source for pointer 135 becomes editable.
+    if(imported.held!==null){
+      await page.locator('[data-source-weight-pointer]').selectOption(String(imported.held));
+      assert.equal(await page.locator('[data-source-weight-value]').isDisabled(),true);
+      assert.match(await page.locator('[data-source-weight-eligibility-detail]').innerText(),/HOLD:/);
+    }
+    await page.locator('[data-source-weight-pointer]').selectOption('135');
+    const input=page.locator('[data-source-weight-value]');
+    assert.equal(await input.isDisabled(),false,'A qualified unique 135 source must become editable');
+    assert.match(await page.locator('[data-source-weight-eligibility-detail]').innerText(),/Verified source owner/);
+    assert.match(await page.locator('[data-source-weight-facts]').innerText(),/POINTER-135-UNIQUE/);
+    assert.equal(await page.locator('[data-source-weight-apply]').isDisabled(),true);
+    await input.fill('2.984');
+    await page.locator('[data-source-weight-owner-approved]').check();
+    await page.locator('[data-source-weight-approved]').check();
+    await page.locator('[data-source-weight-preview]').click();
+    assert.match(await page.locator('[data-source-weight-report]').innerText(),/APPROVED PREVIEW/);
+    assert.equal(await page.locator('[data-source-weight-apply]').isDisabled(),false);
+    await page.locator('[data-source-weight-apply]').click();
+    await page.waitForFunction(()=>document.querySelector('[data-source-weight-report]')?.textContent.includes('VERIFIED SOURCE-BACKED RE-EXTRACTION'),
+      null,{timeout:220000});
+    if(process.env.R4A_POINTER135_SCREENSHOT)
+      await page.screenshot({path:process.env.R4A_POINTER135_SCREENSHOT,fullPage:true});
+
+    const downloads=[['revised-xml',expectedXml],['revised-cii',expectedCii]];
+    for(const [label,expected] of downloads){
+      const button=page.locator('[data-source-weight-'+label+']');
+      assert.equal(await button.isDisabled(),false);
+      const [file]=await Promise.all([page.waitForEvent('download'),button.click()]);
+      assert.equal(await readFile(await file.path(),'utf8'),expected,
+        label+' not equal to fresh native Python converter output');
+    }
+    const [auditDownload]=await Promise.all([page.waitForEvent('download'),
+      page.locator('[data-source-weight-audit]').click()]);
+    const audit=JSON.parse(await readFile(await auditDownload.path(),'utf8'));
+    await writeFile(path.join(fixture,'pointer135-browser-change-audit.json'),
+      JSON.stringify(audit,null,2)+'\n','utf8');
+    assert.equal(audit.approval.originalRigidPointer,135);
+    assert.equal(audit.approval.approvedNewXmlWeight,2.984);
+    assert.equal(audit.sourceXmlByteDiff.length,1);
+    assert.equal(audit.unrelatedXmlBytesChanged,0);
+    assert.equal(audit.ciiEngineeringDiff.unexpectedDifferences,0);
+    assert.equal(audit.massReconciliation.status,'PASS_PHYSICAL_MASS_CONSERVATION_AFTER_APPROVAL');
+    assert.equal(audit.massReconciliation.originalRigidPointer,135);
+    assert.equal(audit.massReconciliation.newEmittedCiiWeight,29.84);
+    assert.equal(await page.evaluate(()=>window.__source135.run.ciiText),origCii);
+    console.log('R4A_SOURCE_135_E2E='+JSON.stringify({
+      evidenceClass:'SYNTHETIC_REAL_CONVERTER_NOT_OWNER_GLRD',
+      rigidPointer:135,elementIndex:384,fromNode:'3429',toNode:'10120',
+      lengthMm:19.1,originalWeightKg:15,newWeightKg:2.984,
+      originalCiiWeight:150,revisedCiiWeight:29.84,
+      unchangedOtherXmlBytes:audit.unrelatedXmlBytesChanged,
+      unexpectedCiiDiffs:audit.ciiEngineeringDiff.unexpectedDifferences,
+      sourceUiEnabled:true,sourceAndCiiDownloadsVerified:true,
+    }));
+    assert.deepEqual(errors,[],errors.join('\n'));
+  });
+
+
+  await test('R4A repeated same-component positive XML Weight aliases are edited atomically with a unique actual Python writer',async()=>{
+    await page.goto(origin+'/tests/fixtures/r2-source-weight-browser-host.html');
+    const originalXml=await readFile(path.join(fixture,'original15alias.xml'),'utf8');
+    const originalCii=await readFile(path.join(fixture,'original15alias.cii'),'utf8');
+    const expectedXml=await readFile(path.join(fixture,'approved15alias.xml'),'utf8');
+    const expectedCii=await readFile(path.join(fixture,'approved15alias.cii'),'utf8');
+    const result=await page.evaluate(async({xml,cii})=>{
+      const {ciiSha256}=await import('/tabs/xml-cii-2019-standalone/xml-cii-final-property-reader.js');
+      const {initializeSourceWeightSession}=await import(
+        '/tabs/xml-cii-2019-standalone/xml-cii-source-weight-reextract.js');
+      const run={ok:true,ciiText:cii,ciiName:'R4A-SYNTH-DUPLICATE-PHYSICAL-WEIGHT.cii',
+        ciiInputSource:'original',
+        finalRigidReviewEvidence:{sourceKind:'xml',engineInputText:xml,
+          engineInputSha256:await ciiSha256(xml),originalCiiSha256:await ciiSha256(cii),
+          engineInputDigest:'R4A_ALIAS_SYNTHETIC_CURRENT_WRITER',
+          effectiveSourceName:'original15alias.xml',weightScale:10,
+          supportConfigJson:'{}',stagedJsonText:'',
+          effectiveOptions:{coordsMode:'first',kgToNewton:true,
+            splitCondensedValveFlange:true,useRestraintTypeBasedOnJson:true,
+            outputMode:'both',analyzeTopology:false,generateTopoFix:false,useTopoFixForCii:false}}};
+      const session=await initializeSourceWeightSession(run,{requireR4aLineage:true});
+      const owner=session.rows.find(x=>x.sourceNode?.componentRefNo==='/RIGID-40');
+      window.__r4aAlias={run,session};
+      return {owner:{pointer:owner?.rigidPointer,eligible:owner?.eligible,
+          reason:owner?.reason,sourceFields:owner?.sourceWeightFieldsToEdit,
+          candidates:owner?.sourceNodeCandidates,
+          sourceMass:owner?.originalPhysicalMassKg,cii:owner?.originalCiiWeight},
+        status:session.noEditParity.status,bytes:session.noEditParity.differingBytes};
+    },{xml:originalXml,cii:originalCii});
+    assert.equal(result.status,'PASS_EXACT_REPLAY');
+    assert.equal(result.bytes,0);
+    assert.equal(result.owner.eligible,true,JSON.stringify(result.owner));
+    assert.equal(result.owner.sourceMass,15);
+    assert.equal(result.owner.cii,150);
+    assert.equal(result.owner.sourceFields.length,2);
+    assert.equal(result.owner.candidates.filter(c=>c.writerPointers.length).length,1);
+    await page.evaluate(async()=>{
+      const {openFinalRigidWeightReview}=await import(
+        '/tabs/xml-cii-2019-standalone/ui-adapted/xml-cii-adapted-final-rigid-review.js');
+      openFinalRigidWeightReview(window.__r4aAlias.run,
+        {getCurrentResult:()=>window.__r4aAlias.run});
+    });
+    await page.locator('[data-source-weight-open]').click();
+    await page.waitForFunction(()=>
+      document.querySelector('[data-source-weight-status]')?.textContent.includes('PASS:'),
+      null,{timeout:220000});
+    await page.locator('[data-source-weight-pointer]').selectOption(String(result.owner.pointer));
+    assert.equal(await page.locator('[data-source-weight-value]').isDisabled(),false);
+    assert.match(await page.locator('[data-source-weight-facts]').innerText(),
+      /one|RIGID-40|15/i);
+    await page.locator('[data-source-weight-value]').fill('2.984');
+    await page.locator('[data-source-weight-owner-approved]').check();
+    await page.locator('[data-source-weight-approved]').check();
+    await page.locator('[data-source-weight-preview]').click();
+    assert.match(await page.locator('[data-source-weight-report]').innerText(),
+      /APPROVED PREVIEW/);
+    await page.locator('[data-source-weight-apply]').click();
+    await page.waitForFunction(()=>
+      document.querySelector('[data-source-weight-report]')?.textContent.includes('VERIFIED SOURCE-BACKED RE-EXTRACTION'),
+      null,{timeout:220000});
+    for(const [label,expected] of [['revised-xml',expectedXml],['revised-cii',expectedCii]]){
+      const [file]=await Promise.all([page.waitForEvent('download'),
+        page.locator('[data-source-weight-'+label+']').click()]);
+      assert.equal(await readFile(await file.path(),'utf8'),expected);
+    }
+    const [auditDownload]=await Promise.all([page.waitForEvent('download'),
+      page.locator('[data-source-weight-audit]').click()]);
+    const audit=JSON.parse(await readFile(await auditDownload.path(),'utf8'));
+    assert.equal(audit.sourceWeightFieldCount,2);
+    assert.equal(audit.sourceXmlByteDiff.length,2);
+    assert.equal(audit.unrelatedXmlBytesChanged,0);
+    assert.equal(audit.ciiEngineeringDiff.unexpectedDifferences,0);
+    assert.equal(audit.massReconciliation.originalPhysicalMassKg,15);
+    assert.equal(audit.massReconciliation.approvedRevisedPhysicalMassKg,2.984);
+    assert.equal(audit.massReconciliation.newEmittedCiiWeight,29.84);
+    assert.equal(await page.evaluate(()=>window.__r4aAlias.run.ciiText),originalCii);
+    assert.deepEqual(errors,[],errors.join('\n'));
+  });
+
 }finally{
   await browser.close();
   await new Promise(resolve=>server.close(resolve));
